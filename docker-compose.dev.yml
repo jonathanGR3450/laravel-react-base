@@ -1,0 +1,76 @@
+version: '3'
+services:
+
+  #php service
+  backend:
+    build:
+      args:
+          user: www
+          uid: 1000
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: web-fusa
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+      - ./backend/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      - SERVICE_NAME=web-fusa
+      - SERVICE_TAGS=dev
+    networks:
+      - fusa-network
+  
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver-fusa
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend:/var/www
+      - ./backend/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - fusa-network
+
+  db:
+    image: postgis/postgis:12-3.1
+    container_name: db-fusa
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - pgdata-fusa-dev:/var/lib/postgresql/data
+    networks:
+      - fusa-network
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    container_name: front-fusa
+    restart: unless-stopped
+    volumes:
+       - ./front:/app
+       - ./front/node_modules:/app/node_modules
+    networks:
+      - fusa-network
+
+#Docker Networks
+networks:
+  fusa-network:
+    driver: bridge
+
+#Volumes
+volumes:
+  pgdata-fusa-dev:
+    driver: local

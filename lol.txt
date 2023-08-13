@@ -1,0 +1,1000 @@
+  212  ./xampp start
+  213  sudo ./xampp start
+  214  git branch 
+  215  git add .
+  216  git push origin CBE-528-be-bo-v-2-services-physical-locations
+  217  npm --version
+  218  sudo apt install npm
+  219  npm --version
+  220  node --version
+  221  sudo npm -g install create-react-app
+  222  sudo apt-get update
+  223  ls
+  224  pwd
+  225  mkdir projects
+  226  cd projects/
+  227  create-react-app --version
+  228  create-react-app task-test
+  229  ls
+  230  cd task-test/
+  231  code .
+  232  npm install bootstrap
+  233  npm start
+  234  cd /opt/lampp/
+  235  sudo ./xampp start
+  236  cd /home/jonathan/Desktop/remoteCashShip/cashShip
+  237  php artisan tinker
+  238  php artisan serve
+  239  php artisan tinker
+  240  git branch 
+  241  git checkout dev_cashship 
+  242  git pull
+  243  git pull origin dev_cashship 
+  244  git checkout -b CBE-529-b-ack-office-countries
+  245  git branch 
+  246  git push
+  247  git push origin CBE-529-b-ack-office-countries
+  248  php artisan optimize
+  249  git branch 
+  250  git checkout CBE-526-back-office-clients
+  251  git branch 
+  252  git push origin CBE-526-back-office-clients
+  253  git checkout dev_cashship 
+  254  git pull
+  255  git checkout -b CBE-507-error-last-transaction-send-money-v-2
+  256  git branch 
+  257  pwd
+  258  php artisan optimize
+  259  php artisan serve
+  260  php artisan tinker
+  261  php optimize
+  262  php artisan optimize
+  263  php artisan tinker
+  264  git branch 
+  265  php artisan serve
+  266  php artisan optimize
+  267  php artisan serve
+  268  php artisan optimize
+  269  php artisan serve
+  270  git branch 
+  271  git checkout CBE-528-be-bo-v-2-services-physical-locations
+  272  php artisan optimize
+  273  php artisan r:l
+  274  php artisan r:l -c
+  275  git branch 
+  276  git status --log
+  277  git log --oneline 
+  278  php artisan optimize
+  279  php artisan r:l -c
+  280  php artisan optimize
+  281  php artisan r:l -c
+  282  php artisan optimize
+  283  git pull origin dev_cashship 
+  284  git log --oneline 
+  285  php artisan optimize
+  286  php artisan r:l -c
+  287  php artisan optimize
+  288  php artisan r:l -c
+  289  php artisan optimize
+  290  php artisan make:controller API/BackOffice/Locations/Countries --invokable
+  291  php artisan optimize
+  292  git status
+  293  git checkout dev_cashship 
+  294  git pull origin dev_cashship 
+  295  php artisan optimize
+  296  git checkout -b CBE-533-be-bo-v-2-services-physical-locations-correciones
+  297  php artisan optimize
+  298  git checkout dev_cashship 
+  299  git pull origin dev_cashship 
+  300  git branch 
+  301  git checkout CBE-533-be-bo-v-2-services-physical-locations-correciones
+  302  git branch 
+  303  php artisan optimize
+  304  git push origin CBE-533-be-bo-v-2-services-physical-locations-correciones
+  305  git checkout dev_cashship 
+  306  git branch 
+  307  git checkout CBE-526-back-office-clients
+  308  php artisan tinker
+  309  cd /opt/lampp/
+  310  sudo ./xampp start
+  311  sudo ./xampp stop
+  312  php artisan serve
+  313  php artisan optimize
+  314  php artisan r:l
+  315  php artisan r:l -c
+  316  sudo /opt/lampp/xampp start
+  317  php artisan serve
+  318  git branch 
+  319  git checkout CBE-526-back-office-clients
+  320  git checkout CBE-546-error-back-office-v-2-clients-recipients
+  321  git branch 
+  322  git checkout CBE-547-back-office-v-2-clients-recipients-details
+  323  php artisan serve
+  324  git branch 
+  325  git push origin CBE-547-back-office-v-2-clients-recipients-details
+  326  php artisan optimize
+  327  php artisan r:l -c
+  328  git checkout dev_cashship 
+  329  git pull origin dev_cashship 
+  330  git checkout -b CBE-545-qa-cashship-back-office-v-2-errores
+  331  php artisan optimize
+  332  php artisan cache:clear
+  333  php artisan optimize
+  334  php artisan cache:clear
+  335  php artisan tinker
+  336  php artisan r:l -c
+  337  git branch 
+  338  php artisan optimize
+  339  php artisan cache:clear
+  340  php artisan config:clear
+  341  php artisan route:clear
+  342  php artisan view:clear
+  343  php artisan optimize:clear
+  344  php artisan migrate --path=database/migrations/2023_05_10_230727_create_country_relationship_table.php
+  345  php artisan migrate --path=database/migrations/2020_10_01_074759_create_relationships_table.php
+  346  php artisan make:migration rename_column_in_rela
+  347  php artisan migrate --path=database/migrations/2023_06_11_203502_rename_column_in_relationships_table.php
+  348  php artisan migrate --path=database/migrations/2023_05_10_230339_add_all_countries_relationships_table.php
+  349  php artisan migrate:rollback --step=1
+  350  php artisan migrate --path=database/migrations/2023_05_10_230339_add_all_countries_relationships_table.php
+  351  php artisan migrate --path=database/migrations/2023_05_16_111748_create_country_reason_table.php
+  352  php artisan migrate --path=database/migrations/2023_05_16_134343_add_all_countries_reasons_table.php
+  353  git branch 
+  354  git push origin CBE-545-qa-cashship-back-office-v-2-errores
+  355  git log --oneline 
+  356  git branch 
+  357  git checkout dev_cashship 
+  358  git pull origin dev_cashship 
+  359  php artisan serve
+  360  sudo /opt/lampp/xampp
+  361  sudo /opt/lampp/xampp start
+  362  cd /opt/lampp/
+  363  sudo ./xampp 
+  364  sudo ./xampp start
+  365  php artisan migrate
+  366  php artisan serve
+  367  sudo /opt/lampp/xampp start
+  368  cd /opt/lampp
+  369  sudo ./xampp start
+  370  php artisan tinker
+  371  git branch 
+  372  php artisan migrate
+  373  php artisan optimize
+  374  php artisan r:l -c
+  375  git pull origin dev_cashship 
+  376  php artisan optimze
+  377  php artisan optimize:clear
+  378  php artisan optimize
+  379  cd /opt/lampp/
+  380  sudo ./xampp start
+  381  php artisan tinker
+  382  php artisan optimize
+  383  php artisan r:l
+  384  php artisan r:l -c
+  385  php artisan optimize
+  386  php artisan r:l -c
+  387  php artisan optimize
+  388  php artisan optimize:clear
+  389  php artisan optimize
+  390  cd /opt/lampp/
+  391  sudo ./xampp start
+  392  cd /opt/lampp/
+  393  sudo ./xampp start
+  394  php artisan serve
+  395  php artisan optimize
+  396  git branch 
+  397  git push origin CBE-550-back-office-history-details
+  398  cd /opt/lampp/
+  399  sudo ./xampp start
+  400  git branch
+  401  git checkout dev_cashship 
+  402  git pull origin dev_cashship 
+  403  git branch 
+  404  git checkout CBE-550-back-office-history-details
+  405  git fetch -a
+  406  git checkout dev_cashship 
+  407  git checkout main 
+  408  git branch | grep -v "main" | xargs git branch -D
+  409  git branch 
+  410  git fetch -a
+  411  git checkout cashship_dev 
+  412  git pull origin cashship_dev 
+  413  composer install
+  414  php artisan migrate:fresh --seed
+  415  php artisan optimize
+  416  php artisan tinker
+  417  php artisan migrate:fresh --seed
+  418  php artisan db:seed --class=ConfigFlagSeeder
+  419  php artisan optimize
+  420  php artisan db:seed --class=ConfigFlagSeeder
+  421  php artisan cache:clear
+  422  php artisan db:seed --class=ConfigFlagSeeder
+  423  php artisan tinker
+  424  php artisan config:clear
+  425  php artisan tinker
+  426  php artisan db:seed --class=ConfigFlagSeeder
+  427  php artisan migrate:fresh --seed
+  428  passport:install --force
+  429  npm install
+  430  php artisan optimize
+  431  cd /opt/lampp/
+  432  sudo ./xampp start
+  433  php artisan serve
+  434  git checkout -b CBE-550-back-office-history-details
+  435  php artisan optimize
+  436  php artisan cache:clear
+  437  php artisan tinker
+  438  git checkout cashship_dev 
+  439  git pull origin cashship_dev 
+  440  git branch 
+  441  git pull origin cashship_dev 
+  442  git branch 
+  443  git push origin CBE-550-back-office-history-details 
+  444  git branch 
+  445  git checkout cashship_dev
+  446  git pull origin cashship_dev 
+  447  git checkout -b CBE-559-backoffice-ajuste-history-details
+  448  git branch 
+  449  git push origin CBE-559-backoffice-ajuste-history-details 
+  450  php artisan serve
+  451  sudo /opt/lampp/xampp start
+  452  git branch 
+  453  git pull origin cashship_dev 
+  454  git branch 
+  455  git checkout CBE-559-backoffice-ajuste-history-details
+  456  git pull origin cashship_dev 
+  457  git merge --abort
+  458  git branch 
+  459  php artisan serve
+  460  git branch 
+  461  git push origin CBE-559-backoffice-ajuste-history-details 
+  462  git checkout cashship_dev 
+  463  git pull origin cashship_dev 
+  464  php artisan serve
+  465  git pull origin cashship_dev 
+  466  git checkout -b CBE-575-back-office-administration-users-create
+  467  git checkout cashship_dev 
+  468  git checkout -b CBE-573-back-office-administration-users-details
+  469  git checkout cashship_dev 
+  470  git checkout -b CBE-574-back-office-adminsitration-users-toggle
+  471  sudo /opt/lampp/xampp start
+  472  php artisan serve
+  473  sudo /opt/lampp/xampp start
+  474  git branch 
+  475  git push origin CBE-594-back-office-history-history-details-errors 
+  476  git pull origin cashship_dev 
+  477  sudo /opt/lampp/xampp start
+  478  git branch 
+  479  git push origin CBE-594-back-office-history-history-details-errors
+  480  git branch 
+  481  git pull origin cashship_dev 
+  482  git status
+  483  git merge cashship_dev 
+  484  git branch 
+  485  git checkout -b CBE-594-back-office-history-history-details-errors-hotfix
+  486  php artisan serve
+  487  git push origin CBE-594-back-office-history-history-details-errors-hotfix
+  488  git checkout cashship_dev 
+  489  git pull origin cashship_dev 
+  490  git branch 
+  491  git branch -d CBE-594-back-office-history-history-details-errors-hotfix
+  492  git branch -D CBE-594-back-office-history-history-details-errors-hotfix
+  493  git checkout -b CBE-594-back-office-history-history-details-errors-hotfix
+  494  git push origin CBE-594-back-office-history-history-details-errors-hotfix
+  495  git branch 
+  496  git checkout cashship_dev 
+  497  git push origin --delete CBE-594-back-office-history-history-details-errors-hotfix
+  498  git checkout CBE-594-back-office-history-history-details-errors-hotfix
+  499  git push origin CBE-594-back-office-history-history-details-errors-hotfix
+  500  php artisan serve
+  501  git branch 
+  502  git pull origin cashship_dev 
+  503  git checkout -b CBE-594-back-office-history-history-details-errors-restructuring
+  504  php artisan serve
+  505  git branch 
+  506  git push origin CBE-594-back-office-history-history-details-errors-restructuring
+  507  php artisan serve
+  508  sudo dpkg -i mysql-workbench-community-dbgsym_8.0.33-1ubuntu23.04_amd64.deb 
+  509  sudo apt update
+  510  sudo snap install mysql-workbench-community
+  511  docker ps
+  512  sudo curl -L "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  513  sudo chmod +x /usr/local/bin/docker-compose
+  514  docker-compose --version
+  515  sudo apt update
+  516  sudo apt install apt-transport-https ca-certificates curl software-properties-common
+  517  apt --fix-broken install
+  518  sudo apt install apt-transport-https ca-certificates curl software-properties-common
+  519  sudo apt --fix-broken install
+  520  sudo apt update
+  521  sudo apt upgrade
+  522  sudo apt install mysql-workbench-community-dbgsym
+  523  sudo apt remove mysql-workbench-community
+  524  sudo apt install mysql-workbench-community-dbgsym
+  525  sudo apt install apt-transport-https ca-certificates curl software-properties-common
+  526  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  527  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+  528  sudo apt update
+  529  apt-cache policy docker-ce
+  530  sudo apt install docker-ce
+  531  sudo systemctl status docker
+  532  sudo usermod -aG docker ${USER}
+  533  su - ${USER}
+  534  sudo chmod a+rwx /var/run/docker.sock
+  535  sudo chmod a+rwx /var/run/docker.pid
+  536  docker ps
+  537  sudo docker ps
+  538  docker-compose up --build
+  539  rm .env 
+  540  ls 
+  541  git status
+  542  docker-compose up --build
+  543  sudo usermod -aG docker $USER
+  544  sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+  545  sudo service docker restart
+  546  docker-compose up --build
+  547  sudo service docker start
+  548  sudo systemctl start docker
+  549  sudo systemctl restart docker
+  550  docker-compose up --build
+  551  docker
+  552  sudo usermod -aG docker $USER
+  553  sudo systemctl status docker
+  554  export DOCKER_HOST="http+docker://localhost:2375"
+  555  sudo service docker restart   # For systems using SysVinit
+  556  sudo journalctl -u docker 
+  557  docker-compose up
+  558  docker-compose up --build
+  559  export DOCKER_HOST="http+docker://localhost"
+  560  sudo service docker restart   # For systems using SysVinit
+  561  docker-compose up --build
+  562  sudo usermod -a -G docker $USER
+  563  sudo systemctl enable docker # Auto-start on boot
+  564  sudo systemctl start docker # Start right now
+  565  docker-compose up --build
+  566  ls
+  567  git status
+  568  docker-compose up --build
+  569  docker-compose --version
+  570  sudo systemctl status docker   # For systems using systemd
+  571  docker-compose up --build
+  572  docker-machine env
+  573  docker-compose --version
+  574  env | grep DOCKER
+  575  DOCKER_HOST=http+docker://localhost
+  576  jonathan@jonathan-System-Product-Name:~/Desktop/michael/gublicar-backend/gublicar$ 
+  577  unset DOCKER_HOST
+  578  env | grep DOCKER
+  579  docker-compose up --build
+  580  docker compose run gublicar_django ./manage.py collectstatic docker compose run gublicar_django ./manage.py createsuperuser docker compose run gublicar_django ./manage.py changepassword $name
+  581  docker-compose up --build
+  582  ls -l /var/run/docker.sock
+  583  sudo usermod -aG docker $USER
+  584  sudo systemctl status docker   # Para sistemas que utilizan systemd
+  585  env | grep DOCKER
+  586  docker-compose up --build
+  587  sudo gpasswd -a $USER docker
+  588  sudo su $USER
+  589  deactivate
+  590  docker ps
+  591  docker ps
+  592  docker-compose up
+  593  sudo docker-compose up
+  594  sudo chmod a+x /usr/local/bin/docker-compose
+  595  sudo apt-get update
+  596  docker-compose up
+  597  ls -l /var/run/docker.sock 
+  598  sudo usermod -aG docker $USER
+  599  newgrp docker
+  600  systemctl status docker.service
+  601  sudo docker-compose up --build
+  602  mkdir -p /home/jonathan/Desktop/michael/gublicar-backend/gublicar/docker/database
+  603  sudo docker-compose up --build
+  604  docker-compose up
+  605  docker-compose up --build
+  606  docker-compose down -v
+  607  docker-compose u
+  608  docker-compose down
+  609  docker-compose up --build\
+  610  docker-compose up --build
+  611  sudo docker-compose up --build
+  612  docker-compose down
+  613  docker-compose up
+  614  sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+  615  sudo chmod g+rwx "$HOME/.docker" -R
+  616  docker-compose up
+  617  sudo systemctl enable docker.service
+  618  docker-compose up
+  619  sudo groupadd docker
+  620  sudo usermod -aG docker $USER
+  621  newgrp docker
+  622  git clone git@github.com:michael-pardo/gublicar-backend.git
+  623  ls
+  624  cp ./envs\ 2/.envs/production/.env ./gublicar-backend/gublicar/.env
+  625  cp ./envs\ 2/.envs/production/database.env ./gublicar-backend/gublicar/database.env
+  626  sudo apt-get remove docker-compose-plugin
+  627  rm $DOCKER_CONFIG/cli-plugins/docker-compose
+  628  cd ~/
+  629  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  630  sudo chmod +x /usr/local/bin/docker-compose
+  631  docker-compose --version
+  632  sudo groupadd docker
+  633  sudo usermod -aG docker $USER
+  634  newgrp docker
+  635  docker run hello-world
+  636  sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+  637  sudo chmod g+rwx "$HOME/.docker" -R
+  638  sudo systemctl enable docker.service
+  639  sudo systemctl enable containerd.service
+  640  sudo apt install gnome-terminal
+  641  sudo apt remove docker-desktop
+  642  rm -r $HOME/.docker/desktop
+  643  sudo apt-get update
+  644  cd Downloads/
+  645  sudo chmod a+r /home/jonathan/Downloads/docker-desktop-4.21.1-amd64.deb
+  646  sudo dpkg -i /home/jonathan/Downloads/docker-desktop-4.21.1-amd64.deb
+  647  systemctl --user start docker-desktop
+  648  gpg --generate-key
+  649  pass init <generated gpg-id public key>
+  650  ls
+  651  pass init F456E500D1CAA695D1D458A38EDC9FD68DD2CD2E
+  652  sudo usermod -aG docker $USER
+  653  newgrp docker
+  654  cd /home/jonathan/Desktop/michael/gublicar-backend/gublicar
+  655  docker-compose up
+  656  docker-compose down
+  657  sudo apt remove docker-desktop
+  658  rm -r $HOME/.docker/desktop
+  659  sudo rm /usr/local/bin/com.docker.cli
+  660  sudo apt purge docker-desktop
+  661  docker ps
+  662  docker ps
+  663  ls -l $(which docker-compose)
+  664  docker volume ls
+  665  docker volume rm gublicar_my_volume
+  666  docker ps
+  667  node --version
+  668  npm -v
+  669  python3 -v
+  670  python3 version
+  671  python3 --version
+  672  python --version
+  673  docker exec -it 835fc7c83847 bash
+  674  docker-compose down
+  675  docker ps
+  676  docker exce -it 3eac97087134 bash
+  677  docker exec -it 3eac97087134 bash
+  678  docker-compose down
+  679  git status
+  680  groups
+  681  sudo chown root:docker /var/run/docker.sock
+  682  sudo chown -R "$USER":"$USER" $HOME/.docker
+  683  sudo chmod -R g+rw "$HOME/.docker"
+  684  docker-compose up
+  685  sudo docker-compose up
+  686  docker-compose down
+  687  sudo docker-compose up
+  688  docker-compose down
+  689  docker-compose up
+  690  sudo docker-compose up
+  691  ls
+  692  pwd
+  693  docker-compose up
+  694  docker-compose up --build
+  695  docker image prune
+  696  docker rmi $(docker images -q)
+  697  docker rmi -F $(docker images -q)
+  698  docker rmi -D $(docker images -q)
+  699  docker rmi $(docker images -q)
+  700  docker-compose down
+  701  docker rmi $(docker images -q)
+  702  docker ps -a
+  703  docker rmi 14eaeac17694
+  704  docker rmi $(docker images -q)
+  705  docker ps -a
+  706  docker rm 14eaeac17694
+  707  docker rmi $(docker images -q)
+  708  docker ps -a
+  709  docker system prune
+  710  docker-compose up --builddocker stop $(docker ps -q)
+  711  docker stop $(docker ps -q)
+  712  docker rm -f $(docker ps -aq)
+  713  docker rmi -f $(docker images -q)
+  714  docker volume rm $(docker volume ls -q)
+  715  docker network rm $(docker network ls -q)
+  716  docker-compose up --build
+  717  which docker-credential-desktop
+  718  brew install docker-credential-helper
+  719  nano ~/.docker/config.json
+  720  docker-compose up --build
+  721  docker-compose up
+  722  sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+  723  sudo chmod g+rwx "$HOME/.docker" -R
+  724  sudo systemctl enable docker.service
+  725  sudo systemctl enable containerd.service
+  726  docker-compose up
+  727  docker images
+  728  sudo service docker restart
+  729  service docker status
+  730  sudo groupadd -f docker
+  731  sudo usermod -aG docker $USER
+  732  newgrp docker
+  733  git branch 
+  734  git checkout cashship_dev 
+  735  git pull origin cashship_dev 
+  736  php artisan optimize
+  737  git checkout -b CBE-604-be-bo-v-2-maintenance-services-physical-locations
+  738  git push origin CBE-604-be-bo-v-2-maintenance-services-physical-locations
+  739  git branch 
+  740  git checkout CBE-594-back-office-history-history-details-errors-restructuring
+  741  git pull origin cashship_dev 
+  742  git merge --abort
+  743  git checkout cashship_dev 
+  744  git pull origin cashship_dev 
+  745  git branch 
+  746  git branch -D CBE-594-back-office-history-history-details-errors-restructuring
+  747  git checkout -b CBE-594-back-office-history-history-details-errors-restructuring
+  748  git push CBE-594-back-office-history-history-details-errors-restructuring
+  749  git push origin CBE-594-back-office-history-history-details-errors-restructuring
+  750  git clone git@github.com:jonathanGR3450/restaurant-app.git
+  751  node --version
+  752  npm --version
+  753  cd front/node_modules/
+  754  ls
+  755  ls -la
+  756  cd ../
+  757  npm install
+  758  sudo rm -R node_modules
+  759  npm install
+  760  docker-compose down
+  761  cd ../
+  762  docker-compose -f docker-compose.dev.yml down
+  763  docker-compose -f docker-compose.dev down
+  764  docker-compose -f docker-compose.dev.yml up --build
+  765  docker-compose -f docker-compose.dev.yml up 
+  766  docker-compose -f docker-compose.dev.yml down
+  767  git status
+  768  docker ps
+  769  docker exec -it fb489b42244c bash
+  770  cat README.md 
+  771  cd ..
+  772  ls -la
+  773  cd DataGrip-2023.2/
+  774  ls -la
+  775  cd bin/
+  776  ./datagrip.sh 
+  777  docker-compose -f docker-compose.dev.yml up
+  778  docker-compose -f docker-compose.dev.yml down
+  779  docker-compose -f docker-compose.dev.yml up
+  780  docker-compose down
+  781  docker-compose -f docker-compose.dev.yml down
+  782  git log --oneline 
+  783  sudo chmod -R 777 back/
+  784  git config core.fileMode false
+  785  sudo snap install whatsdesk
+  786  sudo snap remove whatspp-for-linux
+  787  sudo pacman -S whatsapp-for-linux
+  788  cd Downloads/
+  789  ls
+  790  sudo dpkg -i datagrip-2023.2.tar.gz
+  791  php artisan serve
+  792  cd storage/app/public/img/operators/
+  793  pwd
+  794  docker ps
+  795  docker-compose -f docker-compose.dev.yml down
+  796  docker-compose -f docker-compose.dev.yml up
+  797  docker-compose -f docker-compose.dev.yml down
+  798  docker-compose -f docker-compose.dev.yml up
+  799  docker-compose down
+  800  docker-compose -f docker-compose.dev.yml down
+  801  sudo chmod -R 755 media
+  802  sudo chmod -R 77 media
+  803  sudo chmod -R 777 media
+  804  sudo chmod -R 777 media/gym.views/
+  805  php artisan serve
+  806  cd ../../../
+  807  cd ../../
+  808  php artisan optimize
+  809  git branch 
+  810  git push origin CBE-613-be-bo-v-2-operators
+  811  php artisan optimize
+  812  docker ps
+  813  docker exec -it 5ecfc1d450a9 bash 
+  814  docker ps
+  815  docker exec -it 538aa2ab4753 bash 
+  816  docker ps
+  817  docker exec -it b081a204e160 bash 
+  818  sudo chmod -R 777 .envs
+  819  docker-compose down
+  820  git branch 
+  821  git push origin feature/notification-twilio
+  822  git branch 
+  823  git checkout cashship_dev 
+  824  git pull origin cashship_dev 
+  825  git branch 
+  826  git checkout CBE-613-be-bo-v-2-operators
+  827  git checkout cashship_dev 
+  828  git checkout CBE-613-be-bo-v-2-operators
+  829  git checkout cashship_dev 
+  830  git checkout CBE-613-be-bo-v-2-operators
+  831  git checkout cashship_dev 
+  832  git checkout CBE-613-be-bo-v-2-operators
+  833  git checkout cashship_dev 
+  834  git checkout CBE-613-be-bo-v-2-operators
+  835  git checkout cashship_dev 
+  836  git checkout CBE-613-be-bo-v-2-operators
+  837  git checkout cashship_dev 
+  838  git checkout CBE-613-be-bo-v-2-operators
+  839  git checkout cashship_dev 
+  840  git pull origin cashship_dev 
+  841  git clone git@github.com:jonathanGR3450/tourism-app.git
+  842  ls
+  843  cd tourism-app/
+  844  code .
+  845  docker-compose -f docker-compose.dev.yml down
+  846  docker-compose -f docker-compose.dev.yml up
+  847  docker-compose -f docker-compose.dev.yml down
+  848  docker-compose -f docker-compose.dev.yml up --build
+  849  docker-compose -f docker-compose.dev.yml down
+  850  docker-compose -f docker-compose.dev.yml up -
+  851  docker-compose -f docker-compose.dev.yml up
+  852  docker-compose -f docker-compose.dev.yml down
+  853  docker-compose -f docker-compose.dev.yml up --build
+  854  docker-compose -f docker-compose.dev.yml down
+  855  docker-compose -f docker-compose.dev.yml up --build
+  856  docker-compose -f docker-compose.dev.yml down
+  857  sudo apt-get update
+  858  pwd
+  859  sudo fdisk -l
+  860  sudo update-grub
+  861  sudo fdisk -l
+  862  update-initramfs
+  863  sudo apt-get install linux-image-generic
+  864  dpkg --configure linux-kernel-6.2.0.26.26-generic
+  865  sudo dpkg --configure linux-kernel-6.2.0.26.26-generic
+  866  sudo update-initramfs -u -k 6.2.0.26.26
+  867  sudo update-grub
+  868  dpkg --list | grep linux-image
+  869  update-grub
+  870  sudo update-grub
+  871  dpkg --configure -a
+  872  sudo dpkg --configure -a
+  873  dpkg --list | grep linux-kernel | more
+  874  rpm -qa kernel
+  875  sudo fdisk -l
+  876  sudo mount /dev/nvme0n1p5 /mnt
+  877  sudo mount --bind /dev /mnt/dev
+  878  sudo mount --bind /dev/pts /mnt/dev/pts
+  879  sudo mount --bind /proc /mnt/proc
+  880  sudo mount --bind /sys /mnt/sys
+  881  sudo chroot /mnt
+  882  git branch 
+  883  git pull origin cashship_dev 
+  884  git checkout -b CBE-598-be-bo-v-2-providers-listar-crear
+  885  php artisan serve
+  886  php artisan make:model ProviderType -msf
+  887  php artisan migrate --path=database/migrations/2023_07_29_094338_create_provider_types_table.php
+  888  php artisan db:seeder --class=ProviderTypeSeeder
+  889  php artisan db:seed --class=ProviderTypeSeeder
+  890  php artisan make:model ProviderLicenseType -msf
+  891  php artisan migrate --path=database/migrations/2023_07_29_100055_create_provider_license_types_table.php
+  892  php artisan make:migration drop_columns_from_providers_table --table=providers
+  893  php artisan migrate --path=database/migrations/2023_07_29_101138_drop_columns_from_providers_table.php
+  894  php artisan make:migration add_columns_from_providers_table --table=providers
+  895  php artisan migrate --path=database/migrations/2023_07_29_102121_add_columns_from_providers_table.php
+  896  php artisan migrate --path=database/migrations/2023_07_29_094338_create_provider_types_table.php
+  897  php artisan db:seed --class=ProviderTypeSeeder
+  898  php artisan migrate --path=database/migrations/2023_07_29_100055_create_provider_license_types_table.php
+  899  php artisan migrate --path=database/migrations/2023_07_29_101138_drop_columns_from_providers_table.php
+  900  php artisan migrate --path=database/migrations/2023_07_29_102121_add_columns_from_providers_table.php
+  901  php artisan db:seed --class=ProvidersSeeder
+  902  php artisan optimize
+  903  php artisan r:l --path=api/back-off -c
+  904  php artisan optimize
+  905  php artisan r:l --path=api/back-off -c
+  906  php artisan optimize
+  907  /opt/
+  908  ls
+  909  cd /opt/
+  910  ls
+  911  cd lampp/
+  912  ls
+  913  ./xampp start
+  914  sudo ./xampp start
+  915  docker-compose -f docker-compose.dev.yml up
+  916  docker-compose -f docker-compose.dev.yml down
+  917  docker-compose -f docker-compose.dev.yml up 
+  918  docker-compose -f docker-compose.dev.yml down
+  919  docker-compose -f docker-compose.dev.yml up 
+  920  docker-compose -f docker-compose.dev.yml down
+  921  docker-compose -f docker-compose.dev.yml up --build
+  922  docker-compose -f docker-compose.dev.yml down
+  923  php artisan serve
+  924  git status
+  925  git log --oneline 
+  926  php artisan optimize
+  927  php artisan r:l
+  928  php artisan r:l -c
+  929  php artisan optimize
+  930  sudo apt update
+  931  php artisan make:migration reorder_slug_in_providers_table2023_08_02_225617_reorder_slug_in_providers_table
+  932  php artisan migrate --path=database/migrations/2023_08_02_225617_reorder_slug_in_providers_table.php
+  933  git branch 
+  934  git pull origin cashship_dev 
+  935  git merge abort
+  936  git merge --abort
+  937  git log --oneline 
+  938  git branch 
+  939  git push origin CBE-598-be-bo-v-2-providers-listar-crear
+  940  git pull origin CBE-598-be-bo-v-2-providers-listar-crear
+  941  git pull origin cashship_dev
+  942  git merge cashship_dev 
+  943  php artisan serve
+  944  git branch 
+  945  git checkout cashship_dev 
+  946  git pull origin cashship_dev 
+  947  git branch 
+  948  git checkout CBE-598-be-bov-2-providers-modulo-completo
+  949  git branch 
+  950  git checkout CBE-598-be-bo-v-2-providers-listar-crear 
+  951  git branch 
+  952  git pull origin CBE-598-be-bo-v-2-providers-listar-crear
+  953  git branch 
+  954  git push origin CBE-598-be-bo-v-2-providers-listar-crear
+  955  php artisan tinker
+  956  docker-compose -f docker-compose.dev.yml up
+  957  docker-compose -f docker-compose.dev.yml down
+  958  docker-compose -f docker-compose.dev.yml up
+  959  git branch 
+  960  git checkout cashship_dev 
+  961  git pull origin cashship_dev 
+  962  php artisan serve
+  963  git clone git@github.com:jonathanGR3450/laravel-domain-proyects.git
+  964  node -v 
+  965  npm -v  
+  966  cd backend/
+  967  ls -la
+  968  sudo chmod -R 777 .env
+  969  npx create-react-app front
+  970  cd  front/
+  971  npm start
+  972  cd ..
+  973  docker-compose -f docker-compose.dev.yml up --build
+  974  netstat
+  975  lsof
+  976  sudo lsof -i :5432
+  977  sudo kill 1779
+  978  sudo kill 1785
+  979  sudo lsof -i :5432
+  980  docker-compose -f docker-compose.dev.yml up --build
+  981  sudo lsof -i :5432
+  982  sudo netstat -p -nlp | grep 5432
+  983  sudo apt-get install netstat
+  984  sudo netstat -p -nlp | grep 5432
+  985  sudo apt instal net-tools
+  986  sudo apt install net-tools
+  987  sudo netstat -p -nlp | grep 5432
+  988  docker network inspect fusa-network
+  989  docker container ls
+  990  docker-compose -f docker-compose.dev.yml down
+  991  docker container ls
+  992  docker stop dcd9d8bcc8c8
+  993  docker-compose -f docker-compose.dev.yml up --build
+  994  docker-compose -f docker-compose.dev.yml down
+  995  docker-compose -f docker-compose.dev.yml up --build
+  996  docker-compose -f docker-compose.dev.yml down
+  997  docker-compose -f docker-compose.dev.yml up --build
+  998  docker-compose -f docker-compose.dev.yml down
+  999  docker-compose --env-file backend/.env -f docker-compose.dev.yml up --build
+ 1000  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1001  docker-compose --env-file backend/.env -f docker-compose.dev.yml up --build
+ 1002  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1003  docker-compose --env-file backend/.env -f docker-compose.dev.yml up --build
+ 1004  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1005  docker-compose --env-file backend/.env -f docker-compose.dev.yml up --build
+ 1006  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1007  docker-compose --env-file backend/.env -f docker-compose.dev.yml up --build
+ 1008  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1009  docker ps
+ 1010  docker volume ls
+ 1011  docker volume rm fusa-catastro_pgdata-fusa-dev
+ 1012  docker volume ls
+ 1013  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1014  docker-compose --env-file backend/.env -f docker-compose.dev.yml up --build
+ 1015  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1016  docker volume rm fusa-catastro_pgdata-fusa-dev
+ 1017  docker volume ls
+ 1018  docker-compose --env-file backend/.env -f docker-compose.dev.yml up --build
+ 1019  docker volume rm fusa-catastro_pgdata-fusa-dev
+ 1020  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1021  docker volume rm fusa-catastro_pgdata-fusa-dev
+ 1022  docker-compose -f docker-compose.dev.yml up --build
+ 1023  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1024  docker volume rm fusa-catastro_pgdata-fusa-dev
+ 1025  docker-compose -f docker-compose.dev.yml up --build
+ 1026  docker volume rm fusa-catastro_pgdata-fusa-dev
+ 1027  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1028  docker volume rm fusa-catastro_pgdata-fusa-dev
+ 1029  docker-compose -f docker-compose.dev.yml up --build
+ 1030  docker-compose --env-file backend/.env -f docker-compose.dev.yml down
+ 1031  docker volume rm fusa-catastro_pgdata-fusa-dev
+ 1032  npm start
+ 1033  git pull origin develop 
+ 1034  docker network ls
+ 1035  docker compose build --no-cache
+ 1036  docker-compose build --no-cache
+ 1037  docker-compose up
+ 1038  sudo rm respaldo_db/respaldo.sql
+ 1039  sudo rm -R respaldo_db/respaldo.sql
+ 1040  docker-compose up
+ 1041  docker volume ps
+ 1042  docker volume ls
+ 1043  docker volume rm gublicar_my_volume
+ 1044  docker-compose down
+ 1045  docker volume rm gublicar_my_volume
+ 1046  docker compose build --no-cache
+ 1047  docker-compose build --no-cache
+ 1048  docker-compose up
+ 1049  docker-compose down
+ 1050  docker-compose build --no-cache
+ 1051  docker volume ls
+ 1052  docker volume rm gublicar_my_volume
+ 1053  docker-compose up 
+ 1054  docker-compose down
+ 1055  docker-compose up --build
+ 1056  docker-compose down
+ 1057  docker-compose up
+ 1058  docker-compose down
+ 1059  docker-compose up --build
+ 1060  docker-compose down
+ 1061  docker-compose up --build
+ 1062  docker-compose down
+ 1063  docker-compose up --build
+ 1064  docker-compose down
+ 1065  docker-compose build --no-cache
+ 1066  docker-compose up
+ 1067  docker-compose up --build
+ 1068  docker-compose down
+ 1069  docker-compose build --no-cache
+ 1070  docker-compose build up
+ 1071  docker-compose up
+ 1072  docker-compose down
+ 1073  docker-compose up --build
+ 1074  npm run build
+ 1075  npm prod
+ 1076  npm run prod
+ 1077  npm run build
+ 1078  npm install
+ 1079  npm run build
+ 1080  docker-compose up --build
+ 1081  docker-compose down
+ 1082  docker-compose up --build
+ 1083  docker-compose down
+ 1084  docker-compose build --no-cache
+ 1085  docker-compose up
+ 1086  docker-compose down
+ 1087  docker-compose build --no-cache
+ 1088  docker-compose up
+ 1089  docker-compose down
+ 1090  npm run build
+ 1091  docker ps
+ 1092  docker-compose up --build
+ 1093  docker-compose down
+ 1094  docker-compose up --build
+ 1095  docker-compose build --no-cache
+ 1096  docker-compose down
+ 1097  docker-compose build --no-cache
+ 1098  docker-compose up --build --no-cache
+ 1099  docker-compose up --build
+ 1100  docker-compose down
+ 1101  docker-compose up 
+ 1102  docker-compose down
+ 1103  docker-compose up 
+ 1104  docker-compose down
+ 1105  docker-compose up --build
+ 1106  docker-compose down
+ 1107  docker-compose up --build
+ 1108  docker-compose down
+ 1109  docker-compose up --build
+ 1110  docker-compose down
+ 1111  docker-compose up --build
+ 1112  docker-compose down
+ 1113  docker-compose build --no-cache
+ 1114  docker-compose up --build
+ 1115  docker ps -a
+ 1116  docker-compose down
+ 1117  sudo docker rm 256e017a2698
+ 1118  docker-compose down
+ 1119  docker ps
+ 1120  docker ps -a
+ 1121  docker-compose up --build
+ 1122  docker-compose down
+ 1123  docker-compose up --build
+ 1124  docker-compose down
+ 1125  docker-compose up --build
+ 1126  docker-compose down
+ 1127  docker-compose up --build
+ 1128  docker-compose down
+ 1129  docker-compose up --build
+ 1130  docker-compose down
+ 1131  docker-compose build --no-cache
+ 1132  docker-compose up --build
+ 1133  docker-compose down
+ 1134  docker-compose up --build
+ 1135  docker-compose down
+ 1136  docker-compose up --build
+ 1137  docker-compose down
+ 1138  docker-compose up --build
+ 1139  docker-compose down
+ 1140  docker-compose up --build
+ 1141  docker-compose down
+ 1142  docker-compose up --build
+ 1143  docker-compose down
+ 1144  docker-compose up --build
+ 1145  docker-compose down
+ 1146  docker-compose up --build
+ 1147  docker-compose down
+ 1148  docker-compose up --build
+ 1149  docker-compose down
+ 1150  git clone git@github.com:michael-pardo/gublicar-backend.git
+ 1151  git clone git@github.com:michael-pardo/gublicar-manager.git
+ 1152  docker-compose up
+ 1153  docker-compose down
+ 1154  npm run build
+ 1155  docker-compose build --no-cache
+ 1156  docker-compose up
+ 1157  docker-compose down
+ 1158  docker-compose build --no-cache 
+ 1159  docker-compose up
+ 1160  docker-compose down
+ 1161  docker-compose build --no-cache 
+ 1162  docker-compose up
+ 1163  docker-compose down
+ 1164  docker-compose build --no-cache 
+ 1165  docker-compose up
+ 1166  docker-compose down
+ 1167  PUBLIC_URL=/myproject npm run build
+ 1168  PUBLIC_URL=/react npm run build
+ 1169  npm run build
+ 1170  docker ps
+ 1171  docker-compose down
+ 1172  docker rm 1bba8924feb9
+ 1173  docker rm -R 1bba8924feb9
+ 1174  sudo docker rm 1bba8924feb9
+ 1175  docker ps -a
+ 1176  docker container ls
+ 1177  docker container ls -a
+ 1178  docker-compose up
+ 1179  docker-compose down
+ 1180  docker-compose build --no-cache
+ 1181  docker-compose up --build
+ 1182  docker-compose down
+ 1183  docker-compose build --no-cache
+ 1184  docker-compose up --build
+ 1185  docker-compose down
+ 1186  docker-compose build --no-cache
+ 1187  docker-compose up --build
+ 1188  docker-compose down
+ 1189  docker-compose up --build
+ 1190  docker-compose down
+ 1191  docker-compose up --build
+ 1192  docker-compose down
+ 1193  docker ps -a
+ 1194  docker-compose up --build
+ 1195  docker-compose down
+ 1196  docker-compose up --build
+ 1197  docker-compose down
+ 1198  docker-compose up --build
+ 1199  docker-compose down
+ 1200  docker-compose build --no-cache
+ 1201  docker-compose up --build
+ 1202  docker-compose down
+ 1203  docker-compose up
+ 1204  docker-compose down
+ 1205  docker ps
+ 1206  docker volume ls
+ 1207  docker-compose build --no-cache
+ 1208  docker-compose -f docker-compose.dev.yml build --no-cache
+ 1209  docker-compose --env-file ./backend/.env  -f docker-compose.dev.yml 
+ 1210  docker-compose --version
+ 1211  history > lol.txt
