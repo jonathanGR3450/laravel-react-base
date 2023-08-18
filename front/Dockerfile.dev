@@ -1,0 +1,10 @@
+# Base image
+FROM node:18.14.1-alpine as frontend
+
+RUN mkdir /app
+WORKDIR /app
+COPY package.json package-lock.json /app/
+COPY . .
+RUN npm install
+EXPOSE 5173
+CMD ["npm", "run", "dev"]
