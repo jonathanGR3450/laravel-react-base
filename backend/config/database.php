@@ -64,7 +64,7 @@ return [
         ],
 
         'pgsql' => [
-            'driver' => 'pgsql',
+            'driver' => env('DB_CONNECTION', 'pgsql'),
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
@@ -75,6 +75,21 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
+        'pgsqlcatastro' => [
+            'driver' => env('DB_CONNECTION_CATASTRO', 'pgsql'),
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_CATASTRO', '127.0.0.1'),
+            'port' => env('DB_PORT_CATASTRO', '5432'),
+            'database' => env('DB_DATABASE_CATASTRO', 'forge'),
+            'username' => env('DB_USERNAME_CATASTRO', 'forge'),
+            'password' => env('DB_PASSWORD_CATASTRO', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => env('DB_SCHEMA_CATASTRO', 'public'),
             'sslmode' => 'prefer',
         ],
 
