@@ -1,7 +1,7 @@
 {
   "construcciones": [
     {
-      "general": {
+      "caracteristicasunidadconstruccion": {
         "identificador": "A",
         "tipo_construccion": 66,
         "tipo_unidad_construccion": 539,
@@ -19,92 +19,26 @@
         "fin_vida_util_version": "",
         "espacio_de_nombres": "Fusagasuga",
         "local_id": "",
-        "observaciones": "Buena ubicación, amplio jardín."
-      },
-      "estructura": {
-        "armazon": {
-          "material": "acero",
-          "puntaje": 8
-        },
-        "muros": {
-          "material": "ladrillo",
-          "puntaje": 9
-        },
-        "cubierta": {
-          "material": "teja de barro",
-          "puntaje": 8
-        },
-        "conservacion": {
-          "estado": "bueno",
-          "puntaje": 9
-        }
-      },
-      "acabados": {
-        "fachada": {
-          "nombre": "piedra",
-          "puntaje": 7
-        },
-        "cubrimiento_muros": {
-          "nombre": "pintura",
-          "puntaje": 8
-        },
-        "pisos": {
-          "nombre": "madera",
-          "puntaje": 9
-        },
-        "conservacion": {
-          "estado": "bueno",
-          "puntaje": 9
-        }
-      },
-      "cocina": {
-        "tamanio": {
-          "nombre": "grande",
-          "puntaje": 8
-        },
-        "enchapes": {
-          "nombre": "porcelanato",
-          "puntaje": 9
-        },
-        "mobiliario": {
-          "nombre": "moderno",
-          "puntaje": 8
-        },
-        "conservacion": {
-          "estado": "excelente",
-          "puntaje": 10
-        }
-      },
-      "banios": {
-        "tamanio": {
-          "nombre": "amplio",
-          "puntaje": 8
-        },
-        "enchapes": {
-          "nombre": "porcelanato",
-          "puntaje": 9
-        },
-        "mobiliario": {
-          "nombre": "moderno",
-          "puntaje": 8
-        },
-        "conservacion": {
-          "estado": "excelente",
-          "puntaje": 10
-        }
-      },
-      "complemento_industria":{
-        "cerchas": {
-            "material": "metalica",
-            "puntaje" : 12
-        }
-      },
-      "puntaje_total": 0,
-      "puntajes_sumados": {
-        "estructura": 34,
-        "acabados": 0,
-        "cocina": 0,
-        "banios": 0
+        "observaciones": "Buena ubicación, amplio jardín.",
+        "calificacionconvencional": [
+          {
+            "tipo_calificar": 716,
+            "total_calificacion": 100,
+            "grupocalificacion": [
+              {
+                "clase_calificacion": 1,
+                "conservacion": 1,
+                "subtotal": 50,
+                "objetoconstruccion": [
+                  {
+                    "tipo_objeto_construccion": 1,
+                    "puntos": 50
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     }
   ]
