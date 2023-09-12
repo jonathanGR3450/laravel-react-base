@@ -57,11 +57,11 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 5173:5173
+    user: "1000:1000"
     container_name: front-fusa
     restart: unless-stopped
     volumes:
        - ./front:/app
-       - ./front/node_modules:/app/node_modules
     networks:
       - fusa-network
 
