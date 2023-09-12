@@ -3,22 +3,25 @@
     {
       "Predio": [
         {
-          "id_predio": 1222,
-          "Numero_Predial": "252900100000012340001000000000",
-          "Matricula_Inmobiliaria": "1234",
-          "Direccion": "CLL 23A NORTE 1 03 ESTE"
+          "Cedula Catastral": 1222,
+          "Matricula Inmobiliaria": "1234",
+          "Direccion": "CLL 23A NORTE 1 03 ESTE",
+          "Numero Predial": "252900100000012340001000000000",
+          "Nombre Propietario": "Pepito Perez"
         },
         {
-          "id_predio": 2333,
-          "Numero_Predial": "252900100000012340001000000000",
-          "Matricula_Inmobiliaria": "5678",
-          "Direccion": "CLL 23A NORTE 1 03 ESTE"
+          "Cedula Catastral": 1234,
+          "Matricula Inmobiliaria": "1234",
+          "Direccion": "CLL 23A NORTE 1 03 ESTE",
+          "Numero Predial": "252900100000012340001000000000",
+          "Nombre Propietario": "Pepito Perez"
         },
         {
-          "id_predio": 3111,
-          "Numero_Predial": "252900100000012340001000000000",
-          "Matricula_Inmobiliaria": "9101",
-          "Direccion": "CLL 23A NORTE 1 03 ESTE"
+          "Cedula Catastral": 14123,
+          "Matricula Inmobiliaria": "1234",
+          "Direccion": "CLL 23A NORTE 1 03 ESTE",
+          "Numero Predial": "252900100000012340001000000000",
+          "Nombre Propietario": "Pepito Perez"
         }
       ],
       "Datos_Adicionales_Levan_Pred": [

@@ -10,15 +10,17 @@ const Tabs = ({ tabs }) => {
   };
 
   return (
-    <div className="max-w-5xl w-full">
+    <div className=" w-full">
       <div className="flex border-b border-gray-300">
         {tabs.map((tab) => {
           return (
             <button
               key={tab.label}
               className={`${
-                activeTab[0] === tab.label ? "border-b-2 border-green-950" : ""
-              } flex-1 bg-green-600 text-white  font-medium py-2`}
+                activeTab === tab.label
+                  ? " text-black border-teal-800 border-2"
+                  : ""
+              } flex-1   bg-teal-500 text-white  font-medium py-2`}
               onClick={(e) => handleClick(e, tab.label)}
             >
               {tab.label}
@@ -49,7 +51,7 @@ const Tab = ({ data }) => {
   const keys = Object.keys(data[0]);
   return (
     <div className="w-full flex flex-row items-center justify-center">
-      <table className="w-3/4  text-center text-base font-light  border-black border-2 border-solid ">
+      <table className="w-3/4  text-center text-base font-light  border-solid ">
         <thead className="border-b font-medium dark:border-neutral-500">
           <tr className="whitespace-nowrap px-6 py-4">
             {keys.map((header) => (
