@@ -18,21 +18,25 @@
         "comienzo_vida_util_version": "2022-10-05 09:27:32.381876",
         "fin_vida_util_version": "",
         "espacio_de_nombres": "Fusagasuga",
-        "local_id": "",
+        "local_id": "BAF0001ABEA",
         "observaciones": "Buena ubicación, amplio jardín.",
         "calificacionconvencional": [
           {
             "tipo_calificar": 716,
-            "total_calificacion": 100,
+            "total_calificacion": 68,
             "grupocalificacion": [
               {
-                "clase_calificacion": 1,
+                "clase_calificacion": 779,
                 "conservacion": 1,
-                "subtotal": 50,
+                "subtotal": 68,
                 "objetoconstruccion": [
                   {
-                    "tipo_objeto_construccion": 1,
-                    "puntos": 50
+                    "tipo_objeto_construccion": 100,
+                    "puntos": 34
+                  },
+                  {
+                    "tipo_objeto_construccion": 101,
+                    "puntos": 34
                   }
                 ]
               }

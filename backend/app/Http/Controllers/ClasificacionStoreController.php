@@ -12,6 +12,6 @@ class ClasificacionStoreController extends Controller
      */
     public function __invoke(ValidarConstruccionesFormRequest $request)
     {
-        
+        dd($request->validated());
     }
 }
