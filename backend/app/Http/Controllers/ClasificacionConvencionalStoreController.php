@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidarConstruccionesFormRequest;
 use App\Models\Local\LcCaracteristicasUnidadConstruccionLocal;
 
-class ClasificacionStoreController extends Controller
+class ClasificacionConvencionalStoreController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -66,7 +66,7 @@ class ClasificacionStoreController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Calificacion creada con exito',
+            'message' => 'Calificacion convencional creada con exito',
             'data' => null
         ]);
     }

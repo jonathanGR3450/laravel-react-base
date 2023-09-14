@@ -43,6 +43,11 @@ class LcCaracteristicasUnidadConstruccion  extends Model
         return $this->hasMany(LcCalificacionConvencional::class, 'lc_unidad_construccion');
     }
 
+    public function calificacionNoConvencional()
+    {
+        return $this->hasMany(LcCalificacionNoConvencional::class, 'lc_unidad_construccion');
+    }
+
     // // Relación con lc_construcciontipo
     // public function tipoConstruccion()
     // {
