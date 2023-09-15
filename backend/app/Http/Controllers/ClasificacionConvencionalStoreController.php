@@ -20,6 +20,7 @@ class ClasificacionConvencionalStoreController extends Controller
             $unidadConstruccionModel = LcCaracteristicasUnidadConstruccionLocal::create([
                 'identificador' => $caracteristicas->identificador,
                 'tipo_construccion' => $caracteristicas->tipo_construccion,
+                'tipo_dominio' => $caracteristicas->tipo_dominio,
                 'tipo_unidad_construccion' => $caracteristicas->tipo_unidad_construccion,
                 'tipo_planta' => $caracteristicas->tipo_planta,
                 'total_plantas' => $caracteristicas->total_plantas,
@@ -31,7 +32,7 @@ class ClasificacionConvencionalStoreController extends Controller
                 'avaluo_unidad_construccion' => $caracteristicas->avaluo_unidad_construccion,
                 'area_construida' => $caracteristicas->area_construida,
                 'area_privada_construida' => $caracteristicas->area_privada_construida,
-                'comienzo_vida_util_version' => $caracteristicas->comienzo_vida_util_version,
+                'comienzo_vida_util_version' => date('Y-m-d H:i:s'),
                 'fin_vida_util_version' => $caracteristicas->fin_vida_util_version,
                 'espacio_de_nombres' => $caracteristicas->espacio_de_nombres,
                 'local_id' => $caracteristicas->local_id,

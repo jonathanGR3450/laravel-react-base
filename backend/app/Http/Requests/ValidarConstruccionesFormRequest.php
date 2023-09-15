@@ -61,7 +61,7 @@ class ValidarConstruccionesFormRequest extends FormRequest
             'construcciones.*.caracteristicasunidadconstruccion.avaluo_unidad_construccion' => 'nullable|numeric|min:0|max:999999999999999',
             'construcciones.*.caracteristicasunidadconstruccion.area_construida' => 'nullable|numeric|min:0|max:99999999999999',
             'construcciones.*.caracteristicasunidadconstruccion.area_privada_construida' => 'nullable|numeric|min:0|max:99999999999999',
-            'construcciones.*.caracteristicasunidadconstruccion.comienzo_vida_util_version' => 'required|date',
+            // 'construcciones.*.caracteristicasunidadconstruccion.comienzo_vida_util_version' => 'required|date',
             'construcciones.*.caracteristicasunidadconstruccion.fin_vida_util_version' => 'nullable|date',
             'construcciones.*.caracteristicasunidadconstruccion.espacio_de_nombres' => 'required|string|max:255',
             'construcciones.*.caracteristicasunidadconstruccion.local_id' => 'required|string|max:255',

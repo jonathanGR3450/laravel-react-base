@@ -4,6 +4,7 @@
       "caracteristicasunidadconstruccion": {
         "identificador": "A",
         "tipo_construccion": 66,
+        "tipo_dominio": 322,
         "tipo_unidad_construccion": 539,
         "tipo_planta": 680,
         "total_plantas": 2,
