@@ -7,7 +7,7 @@
       "Numero Locales": "",
       "Año Construccion": "",
       "Estrato": "",
-      "Observación": ""
+      "Observacion": ""
     },
     "Destinacion": {
       "Residencial": {
@@ -176,7 +176,7 @@
               "Puntaje": 9
             }
           ],
-          "Convervación": [
+          "Conservación": [
             {
               "Nombre": "MALO",
               "Puntaje": 0
