@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Local;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LcCaracteristicasUnidadConstruccion  extends Model
+class LcCaracteristicasUnidadConstruccionLocal  extends Model
 {
     use HasFactory;
-
-    protected $connection = 'pgsqlcatastro';
 
     protected $table = 'lc_caracteristicasunidadconstruccion';
     protected $primaryKey = 't_id';
@@ -40,12 +38,12 @@ class LcCaracteristicasUnidadConstruccion  extends Model
     // Relación con lc_construcciontipo
     public function calificacionConvencional()
     {
-        return $this->hasMany(LcCalificacionConvencional::class, 'lc_unidad_construccion');
+        return $this->hasMany(LcCalificacionConvencionalLocal::class, 'lc_unidad_construccion');
     }
 
     public function calificacionNoConvencional()
     {
-        return $this->hasMany(LcCalificacionNoConvencional::class, 'lc_unidad_construccion');
+        return $this->hasMany(LcCalificacionNoConvencionalLocal::class, 'lc_unidad_construccion');
     }
 
     // // Relación con lc_construcciontipo

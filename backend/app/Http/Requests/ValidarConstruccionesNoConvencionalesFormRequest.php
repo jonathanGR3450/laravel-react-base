@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Traits\ValidationErrorResponseTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ValidarConstruccionesFormRequest extends FormRequest
+class ValidarConstruccionesNoConvencionalesFormRequest extends FormRequest
 {
 
     use ValidationErrorResponseTrait;
@@ -67,34 +67,12 @@ class ValidarConstruccionesFormRequest extends FormRequest
             'construcciones.*.caracteristicasunidadconstruccion.local_id' => 'required|string|max:255',
             'construcciones.*.caracteristicasunidadconstruccion.observaciones' => 'nullable|string',
         
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional' => 'required|array|min:1',
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional.*.tipo_calificar' => [
+            'construcciones.*.caracteristicasunidadconstruccion.calificacionnoconvencional' => 'required|array|min:1',
+            'construcciones.*.caracteristicasunidadconstruccion.calificacionnoconvencional.*.tipo_anexo' => [
                 'required',
                 'integer',
-                'exists:pgsqlcatastro.lc_calificartipo,t_id'
+                'exists:pgsqlcatastro.lc_anexotipo,t_id'
             ],
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional.*.total_calificacion' => 'required|integer|min:0|max:999999999',
-
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional.*.grupocalificacion' => 'nullable|array|min:1',
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional.*.grupocalificacion.*.clase_calificacion' => [
-                'required',
-                'integer',
-                'exists:pgsqlcatastro.lc_clasecalificaciontipo,t_id'
-            ],
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional.*.grupocalificacion.*.conservacion' => [
-                'required',
-                'integer',
-                'exists:pgsqlcatastro.lc_estadoconservaciontipo,t_id'
-            ],
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional.*.grupocalificacion.*.subtotal' => 'required|integer|min:0|max:9999999',
-
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional.*.grupocalificacion.*.objetoconstruccion' => 'nullable|array|min:1',
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional.*.grupocalificacion.*.objetoconstruccion.*.tipo_objeto_construccion' => [
-                'required',
-                'integer',
-                'exists:pgsqlcatastro.lc_objetoconstrucciontipo,t_id'
-            ],
-            'construcciones.*.caracteristicasunidadconstruccion.calificacionconvencional.*.grupocalificacion.*.objetoconstruccion.*.puntos' => 'required|integer|min:0|max:34',
         ];
     }
 }
