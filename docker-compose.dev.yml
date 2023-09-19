@@ -64,6 +64,14 @@ services:
        - ./front/node_modules:/app/node_modules
     networks:
       - fusa-network
+      
+  json-server:
+    image: clue/json-server
+    ports:
+      - "3000:80"
+    volumes:
+      - ./front/src/Json/estructure.json:/data/db.json
+
 
 #Docker Networks
 networks:

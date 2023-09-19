@@ -4,10 +4,9 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import ApiTest from "./Api";
-import { Tabs } from "./Tabs";
+import Tabs from "./Tabs";
 const Consulta = () => {
   let { data } = useParams();
-  console.log(data);
   const [db, setDb] = useState();
   const [numdata, setnumData] = useState(" ");
   const handleChange = (event) => {
