@@ -2,6 +2,7 @@
 
 namespace App\Models\Local;
 
+use App\Models\LcCalificarTipo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,10 +21,10 @@ class LcCalificacionConvencionalLocal extends Model
         'lc_unidad_construccion',
     ];
 
-    // public function tipoCalificar()
-    // {
-    //     return $this->belongsTo(LcCalificarTipo::class, 'tipo_calificar', 't_id');
-    // }
+    public function tipoCalificar()
+    {
+        return $this->belongsTo(LcCalificarTipo::class, 'tipo_calificar', 't_id');
+    }
 
     public function unidadConstruccion()
     {

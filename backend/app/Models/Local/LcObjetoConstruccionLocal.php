@@ -2,6 +2,7 @@
 
 namespace App\Models\Local;
 
+use App\Models\LcObjetoConstruccionTipo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,10 +20,10 @@ class LcObjetoConstruccionLocal extends Model
         'lc_grupo_calificacion',
     ];
 
-    // public function tipoObjetoConstruccion()
-    // {
-    //     return $this->belongsTo(LcObjetoConstruccionTipo::class, 'tipo_objeto_construccion', 't_id');
-    // }
+    public function tipoObjetoConstruccion()
+    {
+        return $this->belongsTo(LcObjetoConstruccionTipo::class, 'tipo_objeto_construccion', 't_id');
+    }
 
     public function grupoCalificacion()
     {

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Clasificacion;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidarConstruccionesNoConvencionalesFormRequest;
 use App\Models\Local\LcCaracteristicasUnidadConstruccionLocal;
 
-class ClasificacionNoConvencionalStoreController extends Controller
+class NoConvencionalStoreController extends Controller
 {
     /**
      * Handle the incoming request.
