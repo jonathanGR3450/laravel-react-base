@@ -2,6 +2,8 @@
 
 namespace App\Models\Local;
 
+use App\Models\LcClaseCalificacionTipo;
+use App\Models\LcEstadoConservacionTipo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,15 +23,15 @@ class LcGrupoCalificacionLocal extends Model
         'lc_calificacion_convencional',
     ];
 
-    // public function claseCalificacion()
-    // {
-    //     return $this->belongsTo(LcClaseCalificacionTipo::class, 'clase_calificacion', 't_id');
-    // }
+    public function claseCalificacion()
+    {
+        return $this->belongsTo(LcClaseCalificacionTipo::class, 'clase_calificacion', 't_id');
+    }
 
-    // public function estadoConservacion()
-    // {
-    //     return $this->belongsTo(LcEstadoConservacionTipo::class, 'conservacion', 't_id');
-    // }
+    public function estadoConservacion()
+    {
+        return $this->belongsTo(LcEstadoConservacionTipo::class, 'conservacion', 't_id');
+    }
 
     public function calificacionConvencional()
     {

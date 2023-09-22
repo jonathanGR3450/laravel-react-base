@@ -49,32 +49,32 @@ class LcCaracteristicasUnidadConstruccion  extends Model
     }
 
     // // Relación con lc_construcciontipo
-    // public function tipoConstruccion()
-    // {
-    //     return $this->belongsTo(LcConstruccionTipo::class, 'tipo_construccion');
-    // }
+    public function tipoConstruccion()
+    {
+        return $this->belongsTo(LcConstruccionTipo::class, 'tipo_construccion');
+    }
 
     // // Relación con lc_dominioconstrucciontipo
-    // public function tipoDominio()
-    // {
-    //     return $this->belongsTo(LcDominioConstruccionTipo::class, 'tipo_dominio');
-    // }
+    public function tipoDominio()
+    {
+        return $this->belongsTo(LcDominioConstruccionTipo::class, 'tipo_dominio');
+    }
 
     // // Relación con lc_unidadconstrucciontipo
-    // public function tipoUnidadConstruccion()
-    // {
-    //     return $this->belongsTo(LcUnidadConstruccionTipo::class, 'tipo_unidad_construccion');
-    // }
+    public function tipoUnidadConstruccion()
+    {
+        return $this->belongsTo(LcUnidadConstruccionTipo::class, 'tipo_unidad_construccion');
+    }
 
     // // Relación con lc_construccionplantatipo
-    // public function tipoPlanta()
-    // {
-    //     return $this->belongsTo(LcConstruccionPlantaTipo::class, 'tipo_planta');
-    // }
+    public function tipoPlanta()
+    {
+        return $this->belongsTo(LcConstruccionPlantaTipo::class, 'tipo_planta');
+    }
 
     // // Relación con lc_usouconstipo
-    // public function usoConstruccion()
-    // {
-    //     return $this->belongsTo(LcUsoUconstrTipo::class, 'uso');
-    // }
+    public function usoConstruccion()
+    {
+        return $this->belongsTo(LcUsoUconsTipo::class, 'uso');
+    }
 }

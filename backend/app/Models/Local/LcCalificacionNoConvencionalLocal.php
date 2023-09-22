@@ -2,6 +2,7 @@
 
 namespace App\Models\Local;
 
+use App\Models\LcAnexoTipo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,10 +21,10 @@ class LcCalificacionNoConvencionalLocal extends Model
     ];
 
     // Relación con lc_anexotipo
-    // public function tipoAnexo()
-    // {
-    //     return $this->belongsTo(LcAnexoTipo::class, 'tipo_anexo', 't_id');
-    // }
+    public function tipoAnexo()
+    {
+        return $this->belongsTo(LcAnexoTipo::class, 'tipo_anexo', 't_id');
+    }
 
     // Relación con lc_caracteristicasunidadconstruccion
     public function unidadConstruccion()

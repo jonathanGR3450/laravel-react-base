@@ -33,6 +33,7 @@ return new class extends Migration
             $table->timestamp('fin_vida_util_version')->nullable();
             $table->string('espacio_de_nombres', 255)->nullable(false);
             $table->string('local_id', 255)->nullable(false);
+            $table->boolean('sync')->default(false);
         });
     }
 

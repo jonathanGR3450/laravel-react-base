@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Clasificacion;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidarConstruccionesFormRequest;
 use App\Models\Local\LcCaracteristicasUnidadConstruccionLocal;
 
-class ClasificacionConvencionalStoreController extends Controller
+class ConvencionalStoreController extends Controller
 {
     /**
      * Handle the incoming request.

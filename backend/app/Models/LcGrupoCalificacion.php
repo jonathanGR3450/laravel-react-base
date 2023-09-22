@@ -23,15 +23,15 @@ class LcGrupoCalificacion extends Model
         'lc_calificacion_convencional',
     ];
 
-    // public function claseCalificacion()
-    // {
-    //     return $this->belongsTo(LcClaseCalificacionTipo::class, 'clase_calificacion', 't_id');
-    // }
+    public function claseCalificacion()
+    {
+        return $this->belongsTo(LcClaseCalificacionTipo::class, 'clase_calificacion', 't_id');
+    }
 
-    // public function estadoConservacion()
-    // {
-    //     return $this->belongsTo(LcEstadoConservacionTipo::class, 'conservacion', 't_id');
-    // }
+    public function estadoConservacion()
+    {
+        return $this->belongsTo(LcEstadoConservacionTipo::class, 'conservacion', 't_id');
+    }
 
     public function calificacionConvencional()
     {
