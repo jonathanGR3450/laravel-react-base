@@ -6,5 +6,6 @@ WORKDIR /app
 COPY package.json package-lock.json /app/
 RUN npm install
 COPY . .
+RUN npm install -g create-vite
 EXPOSE 5173
 CMD ["npm", "run", "dev"]
