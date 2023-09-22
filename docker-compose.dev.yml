@@ -48,6 +48,7 @@ services:
       POSTGRES_DB: ${DB_DATABASE}
     volumes:
       - pgdata-fusa-dev:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - fusa-network
 
@@ -57,13 +58,19 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 5173:5173
-    user: "1000:1000"
     container_name: front-fusa
     restart: unless-stopped
     volumes:
        - ./front:/app
     networks:
       - fusa-network
+
+  json-server:
+    image: clue/json-server
+    ports:
+      - "3000:80"
+    volumes:
+      - ./front/src/Json/estructure.json:/data/db.json
 
 #Docker Networks
 networks:
