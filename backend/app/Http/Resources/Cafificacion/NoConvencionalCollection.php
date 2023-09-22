@@ -2,11 +2,20 @@
 
 namespace App\Http\Resources\Cafificacion;
 
+use App\Http\Resources\Pagination\PaginationResourse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class NoConvencionalCollection extends ResourceCollection
 {
+
+    private $pagination;
+
+    public function __construct($resource)
+    {
+        $this->pagination = new PaginationResourse($resource);
+        parent::__construct($resource->getCollection());
+    }
     /**
      * Transform the resource collection into an array.
      *
@@ -14,7 +23,8 @@ class NoConvencionalCollection extends ResourceCollection
      */
     public function toArray(Request $request)
     {
-        return $this->collection->transform(function ($item) {
+        return array_merge($this->pagination->resolve(), [
+            "data" => $this->collection->transform(function ($item) {
             return [
                 "identificador" => $item->identificador,
                 "tipo_construccion" => [
@@ -60,6 +70,8 @@ class NoConvencionalCollection extends ResourceCollection
                     ];
                 }),
             ];
-        });
+        })
+        ]
+    );
     }
 }
