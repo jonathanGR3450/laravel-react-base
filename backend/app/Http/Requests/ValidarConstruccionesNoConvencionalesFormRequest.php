@@ -5,6 +5,154 @@ namespace App\Http\Requests;
 use App\Traits\ValidationErrorResponseTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *    schema="ValidarConstruccionesNoConvencionalesFormRequest",
+ *    @OA\Property(
+ *      property="construcciones",
+ *      type="array",
+ *      description="Lista de construcciones",
+ *      @OA\Items(
+ *          @OA\Property(
+ *         property="caracteristicasunidadconstruccion",
+ *         type="object",
+ *         required={
+ *             "identificador",
+ *             "tipo_construccion",
+ *             "tipo_dominio",
+ *             "tipo_unidad_construccion",
+ *             "tipo_planta",
+ *             "total_plantas",
+ *             "total_habitaciones",
+ *             "total_banios",
+ *             "total_locales",
+ *             "anio_construccion",
+ *             "uso",
+ *             "avaluo_unidad_construccion",
+ *             "area_construida",
+ *             "area_privada_construida",
+ *             "fin_vida_util_version",
+ *             "espacio_de_nombres",
+ *             "local_id",
+ *             "observaciones",
+ *             "calificacionnoconvencional"
+ *         },
+ *         @OA\Property(
+ *             property="identificador",
+ *             type="string",
+ *             maxLength=20,
+ *             description="Identificador de la construcción"
+ *         ),
+ *         @OA\Property(
+ *             property="tipo_construccion",
+ *             type="integer",
+ *             description="ID del tipo de construcción"
+ *         ),
+ *         @OA\Property(
+ *             property="tipo_dominio",
+ *             type="integer",
+ *             description="ID del tipo de dominio"
+ *         ),
+ *         @OA\Property(
+ *             property="tipo_unidad_construccion",
+ *             type="integer",
+ *             description="ID del tipo de unidad de construcción"
+ *         ),
+ *         @OA\Property(
+ *             property="tipo_planta",
+ *             type="integer",
+ *             description="ID del tipo de planta"
+ *         ),
+ *         @OA\Property(
+ *             property="total_plantas",
+ *             type="integer",
+ *             description="Total de plantas"
+ *         ),
+ *         @OA\Property(
+ *             property="total_habitaciones",
+ *             type="integer",
+ *             description="Total de habitaciones"
+ *         ),
+ *         @OA\Property(
+ *             property="total_banios",
+ *             type="integer",
+ *             description="Total de baños"
+ *         ),
+ *         @OA\Property(
+ *             property="total_locales",
+ *             type="integer",
+ *             description="Total de locales"
+ *         ),
+ *         @OA\Property(
+ *             property="anio_construccion",
+ *             type="integer",
+ *             description="Año de construcción"
+ *         ),
+ *         @OA\Property(
+ *             property="uso",
+ *             type="integer",
+ *             description="ID del tipo de uso de construcción"
+ *         ),
+ *         @OA\Property(
+ *             property="avaluo_unidad_construccion",
+ *             type="string",
+ *             description="Avalúo de la unidad de construcción"
+ *         ),
+ *         @OA\Property(
+ *             property="area_construida",
+ *             type="number",
+ *             description="Área construida"
+ *         ),
+ *         @OA\Property(
+ *             property="area_privada_construida",
+ *             type="number",
+ *             description="Área privada construida"
+ *         ),
+ *         @OA\Property(
+ *             property="fin_vida_util_version",
+ *             type="string",
+ *             description="Fin de vida útil (versión)"
+ *         ),
+ *         @OA\Property(
+ *             property="espacio_de_nombres",
+ *             type="string",
+ *             maxLength=255,
+ *             description="Espacio de nombres"
+ *         ),
+ *         @OA\Property(
+ *             property="local_id",
+ *             type="string",
+ *             maxLength=255,
+ *             description="ID del local"
+ *         ),
+ *         @OA\Property(
+ *             property="observaciones",
+ *             type="string",
+ *             description="Observaciones"
+ *         ),
+ *         @OA\Property(
+ *             property="calificacionnoconvencional",
+ *             type="array",
+ *             description="Calificación no convencional",
+ *             @OA\Items(
+ *                 type="object",
+ *                 required={
+ *                     "tipo_anexo",
+ *                 },
+ *                 properties={
+ *                     @OA\Property(
+ *                         property="tipo_anexo",
+ *                         type="integer",
+ *                         description="ID del tipo de calificación"
+ *                     ),
+ *                 },
+ *             ),
+ *         ),
+ *     ),
+ *      )
+ *     ),
+ * )
+ */
 class ValidarConstruccionesNoConvencionalesFormRequest extends FormRequest
 {
 
