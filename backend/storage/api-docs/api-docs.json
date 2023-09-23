@@ -1,0 +1,2484 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "L5 OpenApi",
+        "description": "L5 Swagger OpenApi description",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0",
+        "x-logo": {
+            "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
+        }
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Iniciar sesión de usuario",
+                "description": "Autenticar un usuario",
+                "operationId": "44212a9096e4b09358281e9ec8a0701d",
+                "requestBody": {
+                    "description": "Credenciales de inicio de sesión",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "usuario@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "contraseña"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Inicio de sesión exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "description": "Información del usuario",
+                                            "type": "object"
+                                        },
+                                        "authorization": {
+                                            "description": "Detalles de autorización",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de error",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Registrar un nuevo usuario",
+                "operationId": "a718f172ff3ac464d723835815f8fb57",
+                "requestBody": {
+                    "description": "Datos de registro del usuario",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Nombre del Usuario"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 255,
+                                        "example": "usuario@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 6,
+                                        "example": "contraseña"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario registrado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de éxito",
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "description": "Información del usuario registrado",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de error de validación",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "description": "Detalles de errores de validación",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Cerrar sesión de usuario",
+                "operationId": "79854151e609bd20032aa5aa4d5a35c0",
+                "responses": {
+                    "200": {
+                        "description": "Cierre de sesión exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de éxito",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de error",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Refrescar token de autenticación",
+                "operationId": "7d5da2870d3eba95cdd67878ab20da3a",
+                "responses": {
+                    "200": {
+                        "description": "Token de acceso refrescado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "description": "Datos del usuario autenticado",
+                                            "type": "object"
+                                        },
+                                        "authorisation": {
+                                            "description": "Información de autorización",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de error",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/caracteristicasunidadconstruccion/convencional": {
+            "get": {
+                "tags": [
+                    "Construccion"
+                ],
+                "summary": "Obtener información de contrucciones convencionales",
+                "operationId": "f3eb283d5cf6d0a97c320311381e3878",
+                "responses": {
+                    "200": {
+                        "description": "Información de la construccion convencional",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de la respuesta",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "description": "Datos de la construccion",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ConvencionalCollection"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de error",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Construccion"
+                ],
+                "summary": "Almacenar construcciones convencionales",
+                "operationId": "a002d217a44f94f2759b163b24dca145",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ValidarConstruccionesFormRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contruccion creada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Estado de la peticion",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Estado de la peticion",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/caracteristicasunidadconstruccion/convencional/{id}": {
+            "get": {
+                "tags": [
+                    "Construccion"
+                ],
+                "summary": "Obtener información de una construccion por ID",
+                "operationId": "2734825483cc3c27947cff77f7cbcac7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del Construccion a obtener",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Información del Construccion",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de la respuesta",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "description": "Datos de la Construccion",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ConvencionalResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de error",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/caracteristicasunidadconstruccion/no-convencional": {
+            "get": {
+                "tags": [
+                    "Construccion"
+                ],
+                "summary": "Obtener información de contrucciones no convencionales",
+                "operationId": "752eccd8eac531d2244ff623839a1858",
+                "responses": {
+                    "200": {
+                        "description": "Información de la construccion no convencional",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de la respuesta",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "description": "Datos de la construccion",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/NoConvencionalCollection"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de error",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Construccion"
+                ],
+                "summary": "Almacenar construcciones no convencionales",
+                "operationId": "f6015cd6b1ea26f523a427e1be9723c9",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ValidarConstruccionesNoConvencionalesFormRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contruccion creada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Estado de la peticion",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Estado de la peticion",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/caracteristicasunidadconstruccion/no-convencional/{id}": {
+            "get": {
+                "tags": [
+                    "Construccion"
+                ],
+                "summary": "Obtener información de una construccion por ID",
+                "operationId": "b36ae87c4bb2819202256dc9e5c17d2b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del Construccion a obtener",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Información del Construccion",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de la respuesta",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "description": "Datos de la Construccion",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/NoConvencionalResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de error",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/predio/{id}": {
+            "get": {
+                "tags": [
+                    "Predio"
+                ],
+                "summary": "Obtener información de un predio por ID",
+                "operationId": "ee083f75f1bce643aa73942d21b55b76",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del predio a obtener",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Información del predio",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de la respuesta",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "description": "Datos del predio",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/PredioResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Estado de la respuesta",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje de error",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/predio/numeros-prediales": {
+            "post": {
+                "tags": [
+                    "Predio"
+                ],
+                "summary": "Almacenar números prediales",
+                "operationId": "4f41f42f74fa0a916caa34cd550e0c14",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreNumerosPredialesFormRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Inicio de sesión exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Estado de la peticion",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Estado de la peticion",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Mensaje",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "StoreNumerosPredialesFormRequest": {
+                "properties": {
+                    "numeros_prediales": {
+                        "description": "Array de numeros prediales",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "ValidarConstruccionesFormRequest": {
+                "properties": {
+                    "construcciones": {
+                        "description": "Lista de construcciones",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "caracteristicasunidadconstruccion": {
+                                    "required": [
+                                        "identificador",
+                                        "tipo_construccion",
+                                        "tipo_dominio",
+                                        "tipo_unidad_construccion",
+                                        "tipo_planta",
+                                        "total_plantas",
+                                        "total_habitaciones",
+                                        "total_banios",
+                                        "total_locales",
+                                        "anio_construccion",
+                                        "uso",
+                                        "avaluo_unidad_construccion",
+                                        "area_construida",
+                                        "area_privada_construida",
+                                        "fin_vida_util_version",
+                                        "espacio_de_nombres",
+                                        "local_id",
+                                        "observaciones",
+                                        "calificacionconvencional"
+                                    ],
+                                    "properties": {
+                                        "identificador": {
+                                            "description": "Identificador de la construcción",
+                                            "type": "string",
+                                            "maxLength": 20
+                                        },
+                                        "tipo_construccion": {
+                                            "description": "ID del tipo de construcción",
+                                            "type": "integer"
+                                        },
+                                        "tipo_dominio": {
+                                            "description": "ID del tipo de dominio",
+                                            "type": "integer"
+                                        },
+                                        "tipo_unidad_construccion": {
+                                            "description": "ID del tipo de unidad de construcción",
+                                            "type": "integer"
+                                        },
+                                        "tipo_planta": {
+                                            "description": "ID del tipo de planta",
+                                            "type": "integer"
+                                        },
+                                        "total_plantas": {
+                                            "description": "Total de plantas",
+                                            "type": "integer"
+                                        },
+                                        "total_habitaciones": {
+                                            "description": "Total de habitaciones",
+                                            "type": "integer"
+                                        },
+                                        "total_banios": {
+                                            "description": "Total de baños",
+                                            "type": "integer"
+                                        },
+                                        "total_locales": {
+                                            "description": "Total de locales",
+                                            "type": "integer"
+                                        },
+                                        "anio_construccion": {
+                                            "description": "Año de construcción",
+                                            "type": "integer"
+                                        },
+                                        "uso": {
+                                            "description": "ID del tipo de uso de construcción",
+                                            "type": "integer"
+                                        },
+                                        "avaluo_unidad_construccion": {
+                                            "description": "Avalúo de la unidad de construcción",
+                                            "type": "string"
+                                        },
+                                        "area_construida": {
+                                            "description": "Área construida",
+                                            "type": "number"
+                                        },
+                                        "area_privada_construida": {
+                                            "description": "Área privada construida",
+                                            "type": "number"
+                                        },
+                                        "fin_vida_util_version": {
+                                            "description": "Fin de vida útil (versión)",
+                                            "type": "string"
+                                        },
+                                        "espacio_de_nombres": {
+                                            "description": "Espacio de nombres",
+                                            "type": "string",
+                                            "maxLength": 255
+                                        },
+                                        "local_id": {
+                                            "description": "ID del local",
+                                            "type": "string",
+                                            "maxLength": 255
+                                        },
+                                        "observaciones": {
+                                            "description": "Observaciones",
+                                            "type": "string"
+                                        },
+                                        "calificacionconvencional": {
+                                            "description": "Calificación convencional",
+                                            "type": "array",
+                                            "items": {
+                                                "required": [
+                                                    "tipo_calificar",
+                                                    "total_calificacion",
+                                                    "grupocalificacion"
+                                                ],
+                                                "properties": {
+                                                    "tipo_calificar": {
+                                                        "description": "ID del tipo de calificación",
+                                                        "type": "integer"
+                                                    },
+                                                    "total_calificacion": {
+                                                        "description": "Total de calificación",
+                                                        "type": "integer"
+                                                    },
+                                                    "grupocalificacion": {
+                                                        "description": "Grupo de calificación",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "required": [
+                                                                "clase_calificacion",
+                                                                "conservacion",
+                                                                "subtotal",
+                                                                "objetoconstruccion"
+                                                            ],
+                                                            "properties": {
+                                                                "clase_calificacion": {
+                                                                    "description": "ID de la clase de calificación",
+                                                                    "type": "integer"
+                                                                },
+                                                                "conservacion": {
+                                                                    "description": "ID del estado de conservación",
+                                                                    "type": "integer"
+                                                                },
+                                                                "subtotal": {
+                                                                    "description": "Subtotal de calificación",
+                                                                    "type": "integer"
+                                                                },
+                                                                "objetoconstruccion": {
+                                                                    "description": "Objeto de construcción",
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "required": [
+                                                                            "tipo_objeto_construccion",
+                                                                            "puntos"
+                                                                        ],
+                                                                        "properties": {
+                                                                            "tipo_objeto_construccion": {
+                                                                                "description": "ID del tipo de objeto de construcción",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "puntos": {
+                                                                                "description": "Puntos de objeto de construcción",
+                                                                                "type": "integer"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ValidarConstruccionesNoConvencionalesFormRequest": {
+                "properties": {
+                    "construcciones": {
+                        "description": "Lista de construcciones",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "caracteristicasunidadconstruccion": {
+                                    "required": [
+                                        "identificador",
+                                        "tipo_construccion",
+                                        "tipo_dominio",
+                                        "tipo_unidad_construccion",
+                                        "tipo_planta",
+                                        "total_plantas",
+                                        "total_habitaciones",
+                                        "total_banios",
+                                        "total_locales",
+                                        "anio_construccion",
+                                        "uso",
+                                        "avaluo_unidad_construccion",
+                                        "area_construida",
+                                        "area_privada_construida",
+                                        "fin_vida_util_version",
+                                        "espacio_de_nombres",
+                                        "local_id",
+                                        "observaciones",
+                                        "calificacionnoconvencional"
+                                    ],
+                                    "properties": {
+                                        "identificador": {
+                                            "description": "Identificador de la construcción",
+                                            "type": "string",
+                                            "maxLength": 20
+                                        },
+                                        "tipo_construccion": {
+                                            "description": "ID del tipo de construcción",
+                                            "type": "integer"
+                                        },
+                                        "tipo_dominio": {
+                                            "description": "ID del tipo de dominio",
+                                            "type": "integer"
+                                        },
+                                        "tipo_unidad_construccion": {
+                                            "description": "ID del tipo de unidad de construcción",
+                                            "type": "integer"
+                                        },
+                                        "tipo_planta": {
+                                            "description": "ID del tipo de planta",
+                                            "type": "integer"
+                                        },
+                                        "total_plantas": {
+                                            "description": "Total de plantas",
+                                            "type": "integer"
+                                        },
+                                        "total_habitaciones": {
+                                            "description": "Total de habitaciones",
+                                            "type": "integer"
+                                        },
+                                        "total_banios": {
+                                            "description": "Total de baños",
+                                            "type": "integer"
+                                        },
+                                        "total_locales": {
+                                            "description": "Total de locales",
+                                            "type": "integer"
+                                        },
+                                        "anio_construccion": {
+                                            "description": "Año de construcción",
+                                            "type": "integer"
+                                        },
+                                        "uso": {
+                                            "description": "ID del tipo de uso de construcción",
+                                            "type": "integer"
+                                        },
+                                        "avaluo_unidad_construccion": {
+                                            "description": "Avalúo de la unidad de construcción",
+                                            "type": "string"
+                                        },
+                                        "area_construida": {
+                                            "description": "Área construida",
+                                            "type": "number"
+                                        },
+                                        "area_privada_construida": {
+                                            "description": "Área privada construida",
+                                            "type": "number"
+                                        },
+                                        "fin_vida_util_version": {
+                                            "description": "Fin de vida útil (versión)",
+                                            "type": "string"
+                                        },
+                                        "espacio_de_nombres": {
+                                            "description": "Espacio de nombres",
+                                            "type": "string",
+                                            "maxLength": 255
+                                        },
+                                        "local_id": {
+                                            "description": "ID del local",
+                                            "type": "string",
+                                            "maxLength": 255
+                                        },
+                                        "observaciones": {
+                                            "description": "Observaciones",
+                                            "type": "string"
+                                        },
+                                        "calificacionnoconvencional": {
+                                            "description": "Calificación no convencional",
+                                            "type": "array",
+                                            "items": {
+                                                "required": [
+                                                    "tipo_anexo"
+                                                ],
+                                                "properties": {
+                                                    "tipo_anexo": {
+                                                        "description": "ID del tipo de calificación",
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ConvencionalCollection": {
+                "title": "ConvencionalCollection",
+                "description": "Colección de recursos Convencional",
+                "properties": {
+                    "total": {
+                        "description": "Número total de elementos en la colección",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "per_page": {
+                        "description": "Número de elementos por página",
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "current_page": {
+                        "description": "Página actual",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "description": "Número de la última página",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "from": {
+                        "description": "Índice del primer elemento en la página actual",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "to": {
+                        "description": "Índice del último elemento en la página actual",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "first_page_url": {
+                        "description": "URL de la primera página",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/caracteristicasunidadconstruccion/convencional?page=1"
+                    },
+                    "self": {
+                        "description": "URL de la página actual",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/caracteristicasunidadconstruccion/convencional?page=1"
+                    },
+                    "last_page_url": {
+                        "description": "URL de la última página",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/caracteristicasunidadconstruccion/convencional?page=1"
+                    },
+                    "next_page_url": {
+                        "description": "URL de la página siguiente (si existe)",
+                        "type": "string",
+                        "example": null
+                    },
+                    "prev_page_url": {
+                        "description": "URL de la página anterior (si existe)",
+                        "type": "string",
+                        "example": null
+                    },
+                    "path": {
+                        "description": "Ruta base de la API",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/caracteristicasunidadconstruccion/convencional"
+                    },
+                    "data": {
+                        "description": "Ruta base de la API",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "identificador": {
+                                    "description": "Identificador del objeto.",
+                                    "type": "string"
+                                },
+                                "tipo_construccion": {
+                                    "description": "Tipo de construcción.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de construcción.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo de construcción.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "tipo_dominio": {
+                                    "description": "Tipo de dominio.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de dominio.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo de dominio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "tipo_unidad_construccion": {
+                                    "description": "Tipo de unidad de construcción.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de unidad de construcción.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo de unidad de construcción.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "tipo_planta": {
+                                    "description": "Tipo de planta.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de planta.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo de planta.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "total_plantas": {
+                                    "description": "Total de plantas.",
+                                    "type": "integer"
+                                },
+                                "total_habitaciones": {
+                                    "description": "Total de habitaciones.",
+                                    "type": "integer"
+                                },
+                                "total_banios": {
+                                    "description": "Total de baños.",
+                                    "type": "integer"
+                                },
+                                "total_locales": {
+                                    "description": "Total de locales.",
+                                    "type": "integer"
+                                },
+                                "anio_construccion": {
+                                    "description": "Año de construcción.",
+                                    "type": "integer"
+                                },
+                                "uso": {
+                                    "description": "Uso de construcción.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del uso de construcción.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del uso de construcción.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "avaluo_unidad_construccion": {
+                                    "description": "Avalúo de la unidad de construcción.",
+                                    "type": "number",
+                                    "format": "float"
+                                },
+                                "area_construida": {
+                                    "description": "Área construida.",
+                                    "type": "number",
+                                    "format": "float"
+                                },
+                                "area_privada_construida": {
+                                    "description": "Área privada construida.",
+                                    "type": "number",
+                                    "format": "float"
+                                },
+                                "comienzo_vida_util_version": {
+                                    "description": "Fecha de inicio de vida útil de la versión.",
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "fin_vida_util_version": {
+                                    "description": "Fecha de fin de vida útil de la versión.",
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "espacio_de_nombres": {
+                                    "description": "Espacio de nombres.",
+                                    "type": "string"
+                                },
+                                "local_id": {
+                                    "description": "ID local.",
+                                    "type": "string"
+                                },
+                                "observaciones": {
+                                    "description": "Observaciones.",
+                                    "type": "string"
+                                },
+                                "sync": {
+                                    "description": "Sincronización.",
+                                    "type": "boolean"
+                                },
+                                "calificacionconvencional": {
+                                    "description": "Calificación convencional.",
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "tipo_calificar": {
+                                                "description": "Tipo de calificación.",
+                                                "properties": {
+                                                    "t_id": {
+                                                        "description": "ID del tipo de calificación.",
+                                                        "type": "integer"
+                                                    },
+                                                    "dispname": {
+                                                        "description": "Nombre del tipo de calificación.",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "total_calificacion": {
+                                                "description": "Total de calificación.",
+                                                "type": "integer"
+                                            },
+                                            "grupocalificacion": {
+                                                "description": "Grupo de calificación.",
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "clase_calificacion": {
+                                                            "description": "Clase de calificación.",
+                                                            "properties": {
+                                                                "t_id": {
+                                                                    "description": "ID de la clase de calificación.",
+                                                                    "type": "integer"
+                                                                },
+                                                                "dispname": {
+                                                                    "description": "Nombre de la clase de calificación.",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "conservacion": {
+                                                            "description": "Estado de conservación.",
+                                                            "properties": {
+                                                                "t_id": {
+                                                                    "description": "ID del estado de conservación.",
+                                                                    "type": "integer"
+                                                                },
+                                                                "dispname": {
+                                                                    "description": "Nombre del estado de conservación.",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "subtotal": {
+                                                            "description": "Subtotal de calificación.",
+                                                            "type": "integer"
+                                                        },
+                                                        "objetoconstruccion": {
+                                                            "description": "Objeto de construcción.",
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "tipo_objeto_construccion": {
+                                                                        "description": "Tipo de objeto de construcción.",
+                                                                        "properties": {
+                                                                            "t_id": {
+                                                                                "description": "ID del tipo de objeto de construcción.",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "dispname": {
+                                                                                "description": "Nombre del tipo de objeto de construcción.",
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    },
+                                                                    "puntos": {
+                                                                        "description": "Puntos de objeto de construcción.",
+                                                                        "type": "integer"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ConvencionalResource": {
+                "title": "ConvencionalResource",
+                "description": "recurso Contruccion Convencional",
+                "properties": {
+                    "identificador": {
+                        "description": "Identificador del objeto.",
+                        "type": "string"
+                    },
+                    "tipo_construccion": {
+                        "description": "Tipo de construcción.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del tipo de construcción.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del tipo de construcción.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tipo_dominio": {
+                        "description": "Tipo de dominio.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del tipo de dominio.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del tipo de dominio.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tipo_unidad_construccion": {
+                        "description": "Tipo de unidad de construcción.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del tipo de unidad de construcción.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del tipo de unidad de construcción.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tipo_planta": {
+                        "description": "Tipo de planta.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del tipo de planta.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del tipo de planta.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "total_plantas": {
+                        "description": "Total de plantas.",
+                        "type": "integer"
+                    },
+                    "total_habitaciones": {
+                        "description": "Total de habitaciones.",
+                        "type": "integer"
+                    },
+                    "total_banios": {
+                        "description": "Total de baños.",
+                        "type": "integer"
+                    },
+                    "total_locales": {
+                        "description": "Total de locales.",
+                        "type": "integer"
+                    },
+                    "anio_construccion": {
+                        "description": "Año de construcción.",
+                        "type": "integer"
+                    },
+                    "uso": {
+                        "description": "Uso de construcción.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del uso de construcción.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del uso de construcción.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "avaluo_unidad_construccion": {
+                        "description": "Avalúo de la unidad de construcción.",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "area_construida": {
+                        "description": "Área construida.",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "area_privada_construida": {
+                        "description": "Área privada construida.",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "comienzo_vida_util_version": {
+                        "description": "Fecha de inicio de vida útil de la versión.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "fin_vida_util_version": {
+                        "description": "Fecha de fin de vida útil de la versión.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "espacio_de_nombres": {
+                        "description": "Espacio de nombres.",
+                        "type": "string"
+                    },
+                    "local_id": {
+                        "description": "ID local.",
+                        "type": "string"
+                    },
+                    "observaciones": {
+                        "description": "Observaciones.",
+                        "type": "string"
+                    },
+                    "sync": {
+                        "description": "Sincronización.",
+                        "type": "boolean"
+                    },
+                    "calificacionconvencional": {
+                        "description": "Calificación convencional.",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "tipo_calificar": {
+                                    "description": "Tipo de calificación.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de calificación.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo de calificación.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "total_calificacion": {
+                                    "description": "Total de calificación.",
+                                    "type": "integer"
+                                },
+                                "grupocalificacion": {
+                                    "description": "Grupo de calificación.",
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "clase_calificacion": {
+                                                "description": "Clase de calificación.",
+                                                "properties": {
+                                                    "t_id": {
+                                                        "description": "ID de la clase de calificación.",
+                                                        "type": "integer"
+                                                    },
+                                                    "dispname": {
+                                                        "description": "Nombre de la clase de calificación.",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "conservacion": {
+                                                "description": "Estado de conservación.",
+                                                "properties": {
+                                                    "t_id": {
+                                                        "description": "ID del estado de conservación.",
+                                                        "type": "integer"
+                                                    },
+                                                    "dispname": {
+                                                        "description": "Nombre del estado de conservación.",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "subtotal": {
+                                                "description": "Subtotal de calificación.",
+                                                "type": "integer"
+                                            },
+                                            "objetoconstruccion": {
+                                                "description": "Objeto de construcción.",
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "tipo_objeto_construccion": {
+                                                            "description": "Tipo de objeto de construcción.",
+                                                            "properties": {
+                                                                "t_id": {
+                                                                    "description": "ID del tipo de objeto de construcción.",
+                                                                    "type": "integer"
+                                                                },
+                                                                "dispname": {
+                                                                    "description": "Nombre del tipo de objeto de construcción.",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "puntos": {
+                                                            "description": "Puntos de objeto de construcción.",
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "NoConvencionalCollection": {
+                "title": "NoConvencionalCollection",
+                "description": "Colección de recursos No Convencional",
+                "properties": {
+                    "total": {
+                        "description": "Número total de elementos en la colección",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "per_page": {
+                        "description": "Número de elementos por página",
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "current_page": {
+                        "description": "Página actual",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "description": "Número de la última página",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "from": {
+                        "description": "Índice del primer elemento en la página actual",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "to": {
+                        "description": "Índice del último elemento en la página actual",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "first_page_url": {
+                        "description": "URL de la primera página",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/caracteristicasunidadconstruccion/no-convencional?page=1"
+                    },
+                    "self": {
+                        "description": "URL de la página actual",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/caracteristicasunidadconstruccion/no-convencional?page=1"
+                    },
+                    "last_page_url": {
+                        "description": "URL de la última página",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/caracteristicasunidadconstruccion/no-convencional?page=1"
+                    },
+                    "next_page_url": {
+                        "description": "URL de la página siguiente (si existe)",
+                        "type": "string",
+                        "example": null
+                    },
+                    "prev_page_url": {
+                        "description": "URL de la página anterior (si existe)",
+                        "type": "string",
+                        "example": null
+                    },
+                    "path": {
+                        "description": "Ruta base de la API",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/caracteristicasunidadconstruccion/no-convencional"
+                    },
+                    "data": {
+                        "description": "Ruta base de la API",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "identificador": {
+                                    "description": "Identificador del objeto.",
+                                    "type": "string"
+                                },
+                                "tipo_construccion": {
+                                    "description": "Tipo de construcción.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de construcción.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo de construcción.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "tipo_dominio": {
+                                    "description": "Tipo de dominio.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de dominio.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo de dominio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "tipo_unidad_construccion": {
+                                    "description": "Tipo de unidad de construcción.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de unidad de construcción.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo de unidad de construcción.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "tipo_planta": {
+                                    "description": "Tipo de planta.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de planta.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo de planta.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "total_plantas": {
+                                    "description": "Total de plantas.",
+                                    "type": "integer"
+                                },
+                                "total_habitaciones": {
+                                    "description": "Total de habitaciones.",
+                                    "type": "integer"
+                                },
+                                "total_banios": {
+                                    "description": "Total de baños.",
+                                    "type": "integer"
+                                },
+                                "total_locales": {
+                                    "description": "Total de locales.",
+                                    "type": "integer"
+                                },
+                                "anio_construccion": {
+                                    "description": "Año de construcción.",
+                                    "type": "integer"
+                                },
+                                "uso": {
+                                    "description": "Uso de construcción.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del uso de construcción.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del uso de construcción.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "avaluo_unidad_construccion": {
+                                    "description": "Avalúo de la unidad de construcción.",
+                                    "type": "number",
+                                    "format": "float"
+                                },
+                                "area_construida": {
+                                    "description": "Área construida.",
+                                    "type": "number",
+                                    "format": "float"
+                                },
+                                "area_privada_construida": {
+                                    "description": "Área privada construida.",
+                                    "type": "number",
+                                    "format": "float"
+                                },
+                                "comienzo_vida_util_version": {
+                                    "description": "Fecha de inicio de vida útil de la versión.",
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "fin_vida_util_version": {
+                                    "description": "Fecha de fin de vida útil de la versión.",
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "espacio_de_nombres": {
+                                    "description": "Espacio de nombres.",
+                                    "type": "string"
+                                },
+                                "local_id": {
+                                    "description": "ID local.",
+                                    "type": "string"
+                                },
+                                "observaciones": {
+                                    "description": "Observaciones.",
+                                    "type": "string"
+                                },
+                                "sync": {
+                                    "description": "Sincronización.",
+                                    "type": "boolean"
+                                },
+                                "calificacionnoconvencional": {
+                                    "description": "Calificación no convencional.",
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "tipo_anexo": {
+                                                "description": "Tipo anexo.",
+                                                "properties": {
+                                                    "t_id": {
+                                                        "description": "ID del tipo anexo.",
+                                                        "type": "integer"
+                                                    },
+                                                    "dispname": {
+                                                        "description": "Nombre del tipo anexo.",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "NoConvencionalResource": {
+                "title": "NoConvencionalResource",
+                "description": "recurso Contruccion No Convencional",
+                "properties": {
+                    "identificador": {
+                        "description": "Identificador del objeto.",
+                        "type": "string"
+                    },
+                    "tipo_construccion": {
+                        "description": "Tipo de construcción.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del tipo de construcción.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del tipo de construcción.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tipo_dominio": {
+                        "description": "Tipo de dominio.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del tipo de dominio.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del tipo de dominio.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tipo_unidad_construccion": {
+                        "description": "Tipo de unidad de construcción.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del tipo de unidad de construcción.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del tipo de unidad de construcción.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tipo_planta": {
+                        "description": "Tipo de planta.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del tipo de planta.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del tipo de planta.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "total_plantas": {
+                        "description": "Total de plantas.",
+                        "type": "integer"
+                    },
+                    "total_habitaciones": {
+                        "description": "Total de habitaciones.",
+                        "type": "integer"
+                    },
+                    "total_banios": {
+                        "description": "Total de baños.",
+                        "type": "integer"
+                    },
+                    "total_locales": {
+                        "description": "Total de locales.",
+                        "type": "integer"
+                    },
+                    "anio_construccion": {
+                        "description": "Año de construcción.",
+                        "type": "integer"
+                    },
+                    "uso": {
+                        "description": "Uso de construcción.",
+                        "properties": {
+                            "t_id": {
+                                "description": "ID del uso de construcción.",
+                                "type": "integer"
+                            },
+                            "dispname": {
+                                "description": "Nombre del uso de construcción.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "avaluo_unidad_construccion": {
+                        "description": "Avalúo de la unidad de construcción.",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "area_construida": {
+                        "description": "Área construida.",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "area_privada_construida": {
+                        "description": "Área privada construida.",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "comienzo_vida_util_version": {
+                        "description": "Fecha de inicio de vida útil de la versión.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "fin_vida_util_version": {
+                        "description": "Fecha de fin de vida útil de la versión.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "espacio_de_nombres": {
+                        "description": "Espacio de nombres.",
+                        "type": "string"
+                    },
+                    "local_id": {
+                        "description": "ID local.",
+                        "type": "string"
+                    },
+                    "observaciones": {
+                        "description": "Observaciones.",
+                        "type": "string"
+                    },
+                    "sync": {
+                        "description": "Sincronización.",
+                        "type": "boolean"
+                    },
+                    "calificacionnoconvencional": {
+                        "description": "Calificación no convencional.",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "tipo_anexo": {
+                                    "description": "Tipo anexo.",
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo anexo.",
+                                            "type": "integer"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre del tipo anexo.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "PredioResource": {
+                "title": "PredioResource",
+                "description": "Recursos de predio",
+                "properties": {
+                    "Predio": {
+                        "description": "Datos del predio",
+                        "properties": {
+                            "Departamento": {
+                                "description": "Nombre del departamento del predio.",
+                                "type": "string"
+                            },
+                            "Municipio": {
+                                "description": "Nombre del municipio del predio.",
+                                "type": "string"
+                            },
+                            "Id_Operacion": {
+                                "description": "ID de operación del predio.",
+                                "type": "integer"
+                            },
+                            "Tiene_FMI": {
+                                "description": "Indica si el predio tiene FMI (Fondo Monetario Internacional).",
+                                "type": "boolean"
+                            },
+                            "Codigo_ORIP": {
+                                "description": "Código ORIP del predio.",
+                                "type": "string"
+                            },
+                            "Matricula_Inmobiliaria": {
+                                "description": "Número de matrícula inmobiliaria del predio.",
+                                "type": "string"
+                            },
+                            "Referencia_Registral_Sistema_Antiguo": {
+                                "description": "Referencia registral en el sistema antiguo del predio.",
+                                "properties": {
+                                    "Tipo_Refencia": {
+                                        "description": "Tipo de referencia registral.",
+                                        "type": "string"
+                                    },
+                                    "Oficina": {
+                                        "description": "Oficina de la referencia registral.",
+                                        "type": "string"
+                                    },
+                                    "Libro": {
+                                        "description": "Libro de la referencia registral.",
+                                        "type": "string"
+                                    },
+                                    "Tomo": {
+                                        "description": "Tomo de la referencia registral.",
+                                        "type": "string"
+                                    },
+                                    "Pagina": {
+                                        "description": "Página de la referencia registral.",
+                                        "type": "string"
+                                    },
+                                    "Numero": {
+                                        "description": "Número de la referencia registral.",
+                                        "type": "string"
+                                    },
+                                    "Dia": {
+                                        "description": "Día de la referencia registral.",
+                                        "type": "string"
+                                    },
+                                    "Mes": {
+                                        "description": "Mes de la referencia registral.",
+                                        "type": "string"
+                                    },
+                                    "Anio": {
+                                        "description": "Año de la referencia registral.",
+                                        "type": "string"
+                                    },
+                                    "Matricula": {
+                                        "description": "Matrícula de la referencia registral.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "Numero_Predial": {
+                                "description": "Número predial del predio.",
+                                "type": "string"
+                            },
+                            "Numero_Predial_Anterior": {
+                                "description": "Número predial anterior del predio.",
+                                "type": "string"
+                            },
+                            "Codigo_Homologado": {
+                                "description": "Código homologado del predio.",
+                                "type": "string"
+                            },
+                            "Codigo_Homologado_FMI": {
+                                "description": "Código homologado FMI del predio.",
+                                "type": "string"
+                            },
+                            "NUPRE": {
+                                "description": "Número único de predio (NUPRE) del predio.",
+                                "type": "string"
+                            },
+                            "Avaluo_Catastral": {
+                                "description": "Avalúo catastral del predio.",
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "Valor_Referencia": {
+                                "description": "Valor de referencia del predio.",
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "Tipo": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del tipo de predio.",
+                                            "type": "integer"
+                                        },
+                                        "itfcode": {
+                                            "description": "Código ITF del tipo de predio.",
+                                            "type": "string"
+                                        },
+                                        "ilicode": {
+                                            "description": "Código ILI del tipo de predio.",
+                                            "type": "string"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre para mostrar del tipo de predio.",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Descripción del tipo de predio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "Condicion_Predio": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID de la condición del predio.",
+                                            "type": "integer"
+                                        },
+                                        "itfcode": {
+                                            "description": "Código ITF de la condición del predio.",
+                                            "type": "string"
+                                        },
+                                        "ilicode": {
+                                            "description": "Código ILI de la condición del predio.",
+                                            "type": "string"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre para mostrar de la condición del predio.",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Descripción de la condición del predio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "Direccion": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID de la dirección del predio.",
+                                            "type": "integer"
+                                        },
+                                        "Tipo_Direccion": {
+                                            "description": "Tipo de dirección del predio.",
+                                            "type": "string"
+                                        },
+                                        "Es_Direccion_Principal": {
+                                            "description": "Indica si es la dirección principal del predio.",
+                                            "type": "boolean"
+                                        },
+                                        "Localizacion": {
+                                            "description": "Localización de la dirección del predio.",
+                                            "type": "string"
+                                        },
+                                        "Codigo_Postal": {
+                                            "description": "Código postal de la dirección del predio.",
+                                            "type": "string"
+                                        },
+                                        "Clase_Via_Principal": {
+                                            "description": "Clase de la vía principal del predio.",
+                                            "type": "string"
+                                        },
+                                        "Valor_Via_Principal": {
+                                            "description": "Valor de la vía principal del predio.",
+                                            "type": "string"
+                                        },
+                                        "Letra_Via_Principal": {
+                                            "description": "Letra de la vía principal del predio.",
+                                            "type": "string"
+                                        },
+                                        "Numero_Predio": {
+                                            "description": "Número del predio.",
+                                            "type": "string"
+                                        },
+                                        "Sector_Predio": {
+                                            "description": "Sector del predio.",
+                                            "type": "string"
+                                        },
+                                        "Complemento": {
+                                            "description": "Complemento de la dirección del predio.",
+                                            "type": "string"
+                                        },
+                                        "Nombre_Predio": {
+                                            "description": "Nombre del predio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "Destinacion_Economica": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID de la destinación económica del predio.",
+                                            "type": "integer"
+                                        },
+                                        "itfcode": {
+                                            "description": "Código ITF de la destinación económica del predio.",
+                                            "type": "string"
+                                        },
+                                        "ilicode": {
+                                            "description": "Código ILI de la destinación económica del predio.",
+                                            "type": "string"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre para mostrar de la destinación económica del predio.",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Descripción de la destinación económica del predio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "Clase_Suelo": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID de la clase de suelo del predio.",
+                                            "type": "integer"
+                                        },
+                                        "itfcode": {
+                                            "description": "Código ITF de la clase de suelo del predio.",
+                                            "type": "string"
+                                        },
+                                        "ilicode": {
+                                            "description": "Código ILI de la clase de suelo del predio.",
+                                            "type": "string"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre para mostrar de la clase de suelo del predio.",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Descripción de la clase de suelo del predio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "Categoria_Suelo": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID de la categoría de suelo del predio.",
+                                            "type": "integer"
+                                        },
+                                        "itfcode": {
+                                            "description": "Código ITF de la categoría de suelo del predio.",
+                                            "type": "string"
+                                        },
+                                        "ilicode": {
+                                            "description": "Código ILI de la categoría de suelo del predio.",
+                                            "type": "string"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre para mostrar de la categoría de suelo del predio.",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Descripción de la categoría de suelo del predio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "Datos_Adicionales_Levantamiento_Catastral": {
+                        "description": "Datos adicionales del predio",
+                        "properties": {
+                            "Tiene_Area_Registral": {
+                                "description": "Indica si el predio tiene un área registral.",
+                                "type": "boolean"
+                            },
+                            "Area_Registral_M2": {
+                                "description": "Área registral en metros cuadrados del predio.",
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "Procedimiento_Catastral_Registral": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID del procedimiento catastral registral del predio.",
+                                            "type": "integer"
+                                        },
+                                        "itfcode": {
+                                            "description": "Código ITF del procedimiento catastral registral del predio.",
+                                            "type": "string"
+                                        },
+                                        "ilicode": {
+                                            "description": "Código ILI del procedimiento catastral registral del predio.",
+                                            "type": "string"
+                                        },
+                                        "dispname": {
+                                            "description": "Nombre para mostrar del procedimiento catastral registral del predio.",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Descripción del procedimiento catastral registral del predio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "Novedad_Numeros_Prediales": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID de la novedad de números prediales del predio.",
+                                            "type": "integer"
+                                        },
+                                        "t_seq": {
+                                            "description": "ID de secuencia de la novedad de números prediales del predio.",
+                                            "type": "integer"
+                                        },
+                                        "numero_predial": {
+                                            "description": "Número predial de la novedad.",
+                                            "type": "string"
+                                        },
+                                        "tipo_novedad": {
+                                            "description": "Tipo de novedad de números prediales del predio.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "Novedad_FMI": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "t_id": {
+                                            "description": "ID de la novedad FMI del predio.",
+                                            "type": "integer"
+                                        },
+                                        "t_seq": {
+                                            "description": "ID de secuencia de la novedad FMI del predio.",
+                                            "type": "integer"
+                                        },
+                                        "codigo_orip": {
+                                            "description": "Código ORIP de la novedad FMI.",
+                                            "type": "string"
+                                        },
+                                        "numero_fmi": {
+                                            "description": "Número FMI de la novedad.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "Observaciones": {
+                                "description": "Observaciones del levantamiento catastral del predio.",
+                                "type": "string"
+                            },
+                            "Fecha_Visita_predial": {
+                                "description": "Fecha de visita predial del levantamiento catastral del predio.",
+                                "type": "string",
+                                "format": "date"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

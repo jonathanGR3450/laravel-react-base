@@ -15,7 +15,31 @@ class NoConvencionalIndexController extends Controller
     use PaginationTrait;
 
     /**
-     * Handle the incoming request.
+     * @OA\Get(
+     *     path="/api/v1/caracteristicasunidadconstruccion/no-convencional",
+     *     summary="Obtener información de contrucciones no convencionales",
+     *     tags={"Construccion"},
+     *     security={{ "bearerAuth": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Información de la construccion no convencional",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", description="Estado de la respuesta"),
+     *             @OA\Property(property="message", type="string", description="Mensaje de la respuesta"),
+     *             @OA\Property(property="data", type="array", description="Datos de la construccion", @OA\Items(
+     *                  ref="#/components/schemas/NoConvencionalCollection"
+     *              )),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", description="Estado de la respuesta"),
+     *             @OA\Property(property="message", type="string", description="Mensaje de error"),
+     *         ),
+     *     ),
+     * )
      */
     public function __invoke(Request $request)
     {

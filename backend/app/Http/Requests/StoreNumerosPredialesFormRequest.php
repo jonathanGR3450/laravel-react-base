@@ -5,6 +5,21 @@ namespace App\Http\Requests;
 use App\Traits\ValidationErrorResponseTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
+
+/**
+ * @OA\Schema(
+ *    schema="StoreNumerosPredialesFormRequest",
+ *    @OA\Property(
+ *        property="numeros_prediales",
+ *        type="array",
+ *        @OA\Items(
+ *            type="string"
+ *        ),
+ *        description="Array de numeros prediales",
+ *        nullable=false,
+ *    ),
+ * )
+ */
 class StoreNumerosPredialesFormRequest extends FormRequest
 {
     use ValidationErrorResponseTrait;
