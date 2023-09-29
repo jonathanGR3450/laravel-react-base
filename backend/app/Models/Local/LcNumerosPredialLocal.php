@@ -4,6 +4,7 @@ namespace App\Models\Local;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LcNumerosPredialLocal extends Model
 {
@@ -15,6 +16,11 @@ class LcNumerosPredialLocal extends Model
 
     protected $fillable = [
         'numero_predial',
+        'matricula_inmobiliaria',
         'taken',
     ];
+
+    function direccion(): HasOne {
+        return $this->hasOne(ExtDireccionLocal::class, 'lc_numeros_prediales_id', 't_id');
+    }
 }

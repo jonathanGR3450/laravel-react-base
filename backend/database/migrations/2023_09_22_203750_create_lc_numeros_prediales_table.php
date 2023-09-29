@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('lc_numeros_prediales', function (Blueprint $table) {
             $table->bigIncrements('t_id');
             $table->string('numero_predial')->nullable(false);
+            $table->string('matricula_inmobiliaria')->nullable(false);
             $table->boolean('taken')->default(false);
         });
     }

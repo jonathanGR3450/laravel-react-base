@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Predio;
 
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\StoreNumerosPredialesFormRequest;
+use App\Models\Local\ExtDireccionLocal;
 use App\Models\Local\LcNumerosPredialLocal;
+use Illuminate\Support\Facades\DB;
 
 class StoreNumeroPredialController extends AppBaseController
 {
@@ -38,10 +40,18 @@ class StoreNumeroPredialController extends AppBaseController
     {
         try {
             $numerosPrediales = $request->input('numeros_prediales', []);
-            foreach ($numerosPrediales as $numeroPredial) {
-                LcNumerosPredialLocal::create([
-                    'numero_predial' => $numeroPredial
+            foreach ($numerosPrediales as $predio) {
+                $predio = (object) $predio;
+                $predial = LcNumerosPredialLocal::create([
+                    'numero_predial' => $predio->numero_predial,
+                    'matricula_inmobiliaria' => $predio->matricula_inmobiliaria,
                 ]);
+                $direccionPredial = $predio->extdireccion;
+                // $direccionPredial['localizacion'] = DB::raw("ST_Force3D(st_multi(st_buffer((ST_SetSRID(st_makepoint(4848927.985,2038128.138),9377)),1)))");
+                $direccionPredial['localizacion'] = DB::raw("ST_GeomFromText('SRID=9377;POINT Z(4848927.985 2038128.138 0)', 9377)");
+                $direccionPredial['lc_numeros_prediales_id'] = $predial->t_id;
+
+                $direccion = ExtDireccionLocal::create($direccionPredial);
             }
             return $this->sendSuccess('Numeros Prediales store successful');
         } catch (\Exception $e) {
