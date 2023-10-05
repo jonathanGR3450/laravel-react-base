@@ -1,8 +1,11 @@
 import Ruta from "../Routes/Routes";
+import { TableProvider } from "./Context/Context";
 const App = () => {
   return (
     <>
-      <Ruta />
+      <TableProvider>
+        <Ruta />
+      </TableProvider>
     </>
   );
 };

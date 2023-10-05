@@ -5,6 +5,7 @@ import Consulta from "../Page/Consulta";
 import FichaPredial from "../Page/FichaPredial";
 import UniconstForm from "../Page/Uniconst";
 import { ResumenForm } from "../Page/Resume";
+import { NumPredialForm } from "../Page/NumPredial";
 const Ruta = () => {
   return (
     <Routes>
@@ -14,7 +15,8 @@ const Ruta = () => {
         <Route path="/Ficha" element={<FichaPredial />}>
           <Route path="Uniconst/:info" element={<UniconstForm />}></Route>
         </Route>
-        <Route path="Resumen" element={<ResumenForm />}></Route>
+        <Route path="/Resumen" element={<ResumenForm />}></Route>
+        <Route path="/NumPredial" element={<NumPredialForm />}></Route>
       </Route>
     </Routes>
   );

@@ -220,9 +220,9 @@ export let ResumenForm = () => {
           value={valueobj}
         >
           <option></option>
-          <option value="A">Unidad A</option>
-          <option value="B">Unidad B</option>
-          <option value="C">Unidad C</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
         </select>
         <p className="text-2xl mb-2 font-semibold">
           Caracteristicas de Contruccion: {valueobj}

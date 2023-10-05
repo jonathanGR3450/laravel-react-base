@@ -1,4 +1,18 @@
-//Json Cuando se tengan mas de una Unidad
+export let json = {
+  Dpto: "",
+  Mpio: "",
+  Zona: "",
+  Sector: "",
+  Comuna: "",
+  Barrio: "",
+  Manzana: "",
+  Terreno: "",
+  Condicion: "",
+  Edificio: "",
+  Piso: "",
+  Unidad: "",
+}; //Json Cuando se tengan mas de una Unidad
+
 export let FinalJson = {
   Unidad: [],
 };

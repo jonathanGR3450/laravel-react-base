@@ -26,6 +26,9 @@ const Menu = () => {
           <li className="ml-4 text-white">
             <Link to="/Ficha">Ficha Tecnica</Link>
           </li>
+          <li className="ml-4 text-white">
+            <Link to="/NumPredial">Numero Predial</Link>
+          </li>
         </ul>
       </nav>
 

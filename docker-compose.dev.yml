@@ -70,8 +70,8 @@ services:
     ports:
       - "3000:80"
     volumes:
-      - ./front/src/Json/estructure.json:/data/db.json
-
+      - ./front/src/Json/Numpredial.json:/data/db.json
+    
 
 #Docker Networks
 networks:
