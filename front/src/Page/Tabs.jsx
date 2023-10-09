@@ -46,6 +46,11 @@ const Tabs = ({ tabs }) => {
   //Activar Pestaña
   const handleClick = (e, newActiveTab) => {
     e.preventDefault();
+    //Guardar los puntajes de los campos seleccionados
+    setSelect({ ...selectSel, [activeTab]: djson });
+    //Guardar los tipos de objeto de los campos seleccionados
+    setSelecttipo({ ...selecttipo, [activeTab]: tipoSel });
+    //Cambia la pestaña
     setActiveTab(newActiveTab);
   };
 
