@@ -6,6 +6,8 @@ import FichaPredial from "../Page/FichaPredial";
 import UniconstForm from "../Page/Uniconst";
 import { ResumenForm } from "../Page/Resume";
 import { NumPredialForm } from "../Page/NumPredial";
+import { LoadCodHom } from "../Page/LoadCodHom";
+import { ArrayFinalProvider, TableProvider } from "../Page/Context/Context";
 const Ruta = () => {
   return (
     <Routes>
@@ -16,7 +18,17 @@ const Ruta = () => {
           <Route path="Uniconst/:info" element={<UniconstForm />}></Route>
         </Route>
         <Route path="/Resumen" element={<ResumenForm />}></Route>
-        <Route path="/NumPredial" element={<NumPredialForm />}></Route>
+        <Route
+          path="/NumPredial"
+          element={
+            <ArrayFinalProvider>
+              <TableProvider>
+                <NumPredialForm />{" "}
+              </TableProvider>
+            </ArrayFinalProvider>
+          }
+        ></Route>
+        <Route path="/DataHom" element={<LoadCodHom />}></Route>
       </Route>
     </Routes>
   );

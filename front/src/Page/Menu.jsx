@@ -29,6 +29,9 @@ const Menu = () => {
           <li className="ml-4 text-white">
             <Link to="/NumPredial">Numero Predial</Link>
           </li>
+          <li className="ml-4 text-white">
+            <Link to="/DataHom">Carga Datos Homologados</Link>
+          </li>
         </ul>
       </nav>
 

@@ -7,7 +7,14 @@ import {
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import DataJson from "../Json/numeros.json";
-import { TableContext, TableProvider } from "./Context/Context";
+
+import {
+  ArrayFinalContext,
+  NumPreContext,
+  NumPreProvider,
+  TableContext,
+} from "./Context/Context";
+import { parse } from "papaparse";
 //Objetos base con los datos que se necesitan
 const PredioMatriz = {
   Dpto: "25",
@@ -23,7 +30,7 @@ const PredioMatriz = {
   Piso: "00",
   Unidad: "0000",
   Matricula: "",
-  Direccion: "",
+  Direccion: [],
 };
 //Tamaño de predios segregados
 let tamaño = 0;
@@ -43,6 +50,7 @@ let mayorTerreno8bd = 0;
 let mayorUnidadbd = 0;
 
 export const NumPredialForm = () => {
+  console.log("Actualiza");
   //Estados
   //Captura de datos para generar numeros prediales
   // 1 Estado para Cargar el valor de Tamaño0
@@ -64,8 +72,10 @@ export const NumPredialForm = () => {
   const [bttfin, setBttfin] = useState(true);
   //Estado Boton Actualizar
   //const [bact, setBact] = useState(true);
-  //Contexto de la tabla
-  const { tableData, numPredial, updateTableData } = useContext(TableContext);
+  const { updateTableData } = useContext(TableContext);
+  //
+  const { ArrayFinal, updateArrayFinal } = useContext(ArrayFinalContext);
+
   //Eventos o Funciones
   //GENERACION DE NUMEROS PREDIALES
   // 1 Funcion para cargar el input del tamaño
@@ -85,8 +95,10 @@ export const NumPredialForm = () => {
   function ShowData() {
     setBttgen(true);
     setBttload(false);
+    //Aux = Arreglo Actual o Data de DataBase
     let aux = "";
     if (ArrayFinal.length == 0) {
+      //DataJson.numeros_prediales Valor del Envio de Datos
       aux = DataJson.numeros_prediales;
       JSONtoObject(aux);
     } else {
@@ -98,16 +110,16 @@ export const NumPredialForm = () => {
         setTable(false);
         break;
       default:
-        //Buscar en Terreno el ultimo valor que tenga 900
+        //Buscar en Terreno el ultimo valor
         lastTerreno(tpredio);
         break;
     }
     PredioMatriz.Condicion = tpredio;
-    //Clono el arreglo modificado con los ultimos numeros
-    const clonePMatriz = PredioMatriz;
     setSelect(true);
     setTable(true);
-    CreateObject(clonePMatriz, tpredio);
+    //Creo los Objetos con los valores del ultimo valor de terreno y unidad
+    CreateObject(PredioMatriz, tpredio);
+    //Actualizo loa valores que se van a mostrar en la tabla
     updateTableData(ArrayPredial);
   }
   // 4 Funcion para Crear los objetos de los numeros prediales carga  ArrayJsonBack
@@ -292,6 +304,7 @@ export const NumPredialForm = () => {
     });
   }
   // 5 Buscar Ultimo Terreno mayor y modificar la posicion de terreno y unidad segun se necesite
+  //Llena PredioMatriz
   function lastTerreno(aux) {
     //aux= value del select de tipo de predio
     //Llena Predio Matriz
@@ -299,7 +312,6 @@ export const NumPredialForm = () => {
     let mayorTerreno = 0;
     //Mayor Unidad
     let mayorUnidad = 0;
-
     //si no se han agregado buscar en datos de bd
     if (ArrayFinal.length == 0) {
       ArrayJsonBack.map((item, index) => {
@@ -401,18 +413,52 @@ export const NumPredialForm = () => {
     } else {
       setBttfin(false);
       //Sino hacerlo con el array Final para buscar el ultimo terreno
-      ArrayFinal.map((items, index) => {
-        console.log("tamaño", items.length);
-        items.map((item, index) => {
-          //Num = item de terreno
-          let numTerreno = parseInt(item.Terreno);
-          //Num = item de Unidad
-          let numUnidad = parseInt(item.Unidad);
-          //Si Tipo de Predio es 9
-          if (aux == "9") {
-            mayorTerreno = mayorTerrenobd;
+      ArrayFinal.map((item, index) => {
+        //Num = item de terreno
+        let numTerreno = parseInt(item.Terreno);
+        //Num = item de Unidad
+        let numUnidad = parseInt(item.Unidad);
+        //Si Tipo de Predio es 9
+        //Numero mayores a 900 valores del PH
+        if (aux == "9") {
+          mayorTerreno = mayorTerrenobd;
+
+          for (let i = 0; i <= item.Terreno.length; i++) {
+            if (i == 1 && item.Terreno[i] == 9) {
+              if (numTerreno > mayorTerreno) {
+                mayorTerreno = numTerreno;
+              }
+              if (numUnidad > mayorUnidad) {
+                mayorUnidad = numUnidad;
+              }
+            } else {
+              if (i == 1 && item.Terreno[1] != 9) {
+                if (item.Terreno[1] != 8) {
+                  if (numTerreno > mayorUnidad) {
+                    mayorUnidad = numTerreno;
+                  }
+                } else {
+                  if (numUnidad > mayorUnidad) {
+                    mayorUnidad = numUnidad;
+                  }
+                }
+              }
+            }
+          }
+
+          /* if (numTerreno > mayorTerrenobd) {
+                      numTerreno = mayorTerrenobd;
+                    }*/
+          //PredioMatriz.Unidad = item.Terreno;
+          let datoTerreno = mayorTerreno + 1;
+          PredioMatriz.Terreno = datoTerreno.toString().padStart(4, "09");
+          PredioMatriz.Unidad = mayorUnidad.toString().padStart(4, "0");
+        } else {
+          //Si Tipo de Predio es 8
+          if (aux == "8") {
+            mayorTerreno = mayorTerreno8bd;
             for (let i = 0; i <= item.Terreno.length; i++) {
-              if (i == 1 && item.Terreno[i] == 9) {
+              if (i == 1 && item.Terreno[i] == 8) {
                 if (numTerreno > mayorTerreno) {
                   mayorTerreno = numTerreno;
                 }
@@ -420,8 +466,8 @@ export const NumPredialForm = () => {
                   mayorUnidad = numUnidad;
                 }
               } else {
-                if (i == 1 && item.Terreno[1] != 9) {
-                  if (item.Terreno[1] != 8) {
+                if (i == 1 && item.Terreno[1] != 8) {
+                  if (item.Terreno[1] != 9) {
                     if (numTerreno > mayorUnidad) {
                       mayorUnidad = numTerreno;
                     }
@@ -433,77 +479,55 @@ export const NumPredialForm = () => {
                 }
               }
             }
-
-            /* if (numTerreno > mayorTerrenobd) {
-              numTerreno = mayorTerrenobd;
-            }*/
             //PredioMatriz.Unidad = item.Terreno;
             let datoTerreno = mayorTerreno + 1;
-            PredioMatriz.Terreno = datoTerreno.toString().padStart(4, "09");
+            PredioMatriz.Terreno = datoTerreno.toString().padStart(4, "08");
             PredioMatriz.Unidad = mayorUnidad.toString().padStart(4, "0");
           } else {
-            //Si Tipo de Predio es 8
-            if (aux == "8") {
-              mayorTerreno = mayorTerreno8bd;
-              for (let i = 0; i <= item.Terreno.length; i++) {
-                if (i == 1 && item.Terreno[i] == 8) {
-                  if (numTerreno > mayorTerreno) {
-                    mayorTerreno = numTerreno;
-                  }
-                  if (numUnidad > mayorUnidad) {
-                    mayorUnidad = numUnidad;
-                  }
-                } else {
-                  if (i == 1 && item.Terreno[1] != 8) {
-                    if (item.Terreno[1] != 9) {
-                      if (numTerreno > mayorUnidad) {
-                        mayorUnidad = numTerreno;
-                      }
-                    } else {
-                      if (numUnidad > mayorUnidad) {
-                        mayorUnidad = numUnidad;
-                      }
-                    }
-                  }
-                }
-              }
-              //PredioMatriz.Unidad = item.Terreno;
-              let datoTerreno = mayorTerreno + 1;
-              PredioMatriz.Terreno = datoTerreno.toString().padStart(4, "08");
-              PredioMatriz.Unidad = mayorUnidad.toString().padStart(4, "0");
-            } else {
-              if (numTerreno < 800) {
-                numUnidad = mayorUnidadbd;
-                mayorUnidad = mayorUnidad + parseInt(inputValue);
-              }
+            if (numTerreno < 800) {
+              mayorUnidad = mayorUnidadbd;
 
-              //mayorUnidad = mayorUnidadbd + parseInt(inputValue);
-              //Diferente a esos Valores
-              for (let i = 0; i <= item.Terreno.length; i++) {
-                if (i == 1 && item.Terreno[1] != 9 && item.Terreno[1] != 8) {
-                  if (numTerreno > mayorTerreno) {
-                    mayorTerreno = numTerreno;
-                  }
-                  PredioMatriz.Unidad = mayorUnidad.toString().padStart(4, "0");
+              //mayorUnidad = 0;
+              //mayorUnidad = numUnidad;
+              //mayorUnidad = mayorUnidad + parseInt(inputValue);
+            }
+
+            //Diferente a esos Valores
+            for (let i = 0; i <= item.Terreno.length; i++) {
+              if (i == 1 && item.Terreno[1] != 9 && item.Terreno[1] != 8) {
+                if (numTerreno > mayorTerreno) {
+                  mayorTerreno = numTerreno;
+                }
+                PredioMatriz.Unidad = mayorUnidad.toString().padStart(4, "0");
+              } else {
+                if (numUnidad > mayorUnidad) {
+                  mayorUnidad = numUnidad;
                 } else {
-                  if (numUnidad > mayorUnidad) {
-                    mayorUnidad = numUnidad;
-                  }
+                  numUnidad = mayorUnidad;
                 }
               }
-              PredioMatriz.Terreno = mayorUnidad.toString().padStart(4, "0");
-              PredioMatriz.Unidad = "0000";
             }
+
+            PredioMatriz.Terreno = mayorUnidad.toString().padStart(4, "0");
+            PredioMatriz.Unidad = "0000";
+            mayorUnidadbd = mayorTerreno + 1;
           }
-        });
+        }
       });
+
       //mayorUnidad = mayorUnidad;
     }
   }
+
   // 6 Funcion para Llenar el arreglo con los datos del predio Matriz
+  //Llena ArregloPredial Arreglo de los numeros generados
   function CreateObject(aux, valueaux) {
+    //Aux= PredioMatriz
+    //valueaux=Tipo de Predio elegido
     let valorUnidad = parseInt(aux.Unidad);
     let valorTerreno = parseInt(aux.Terreno);
+    tamaño = parseInt(inputValue);
+    //Reset Array Predial
     if (ArrayPredial.length >= tamaño) {
       ArrayPredial = [];
     }
@@ -511,6 +535,7 @@ export const NumPredialForm = () => {
     tamaño = inputValue;
     //Crea los Numeros Prediales
     for (let i = 0; i < tamaño; i++) {
+      //Propiedades de Predio Matriz y creacion de objeto
       let nuevoaux = { ...aux };
       if (valueaux == 8 || valueaux == 9) {
         valorUnidad++;
@@ -523,17 +548,16 @@ export const NumPredialForm = () => {
       ArrayPredial.push(nuevoaux);
     }
   }
-  //Solo Numeros
+  //Se Aceptan solo  Numeros
   function soloNumeros(event) {
     const input = event.target;
     input.value = input.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
   }
-  //Solo Letras
+  //Se Aceptan solo Letras
   function soloLetras(event) {
     const input = event.target;
     input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
   }
-  //Capturar Valores de direccion
 
   //Formularios
   // 1 Formulario  para despues de seleccionar el Tipo de Predio
@@ -552,49 +576,49 @@ export const NumPredialForm = () => {
     //Funcion para cargar los valores de los ID
 
     return (
-      <div className="w-full flex flex-col">
-        <div
-          id="Columna"
-          className="w-full
-             border-2 text-center flex flex-col p-2"
-        >
-          <h2 className="uppercase text-lg font-bold border-b pb-2">
-            Modificar Columna
-          </h2>
+      <NumPreProvider>
+        <div className="w-full flex flex-col">
           <div
-            className="w-full mt-2 p-2
-             flex flex-col h-full  items-center"
+            id="Columna"
+            className="w-full
+             border-2 text-center flex flex-col p-2"
           >
-            <select
-              className="w-3/4 border-2 rounded-lg text-center p-1"
-              onChange={UpdateForm}
-              value={numP}
+            <h2 className="uppercase text-lg font-bold border-b pb-2">
+              Modificar Columna
+            </h2>
+            <div
+              className="w-full mt-2 p-2
+             flex flex-col h-full  items-center"
             >
-              <option value="50"> </option>
-              <option value="1">Numero Predial</option>
-              <option value="3">Matricula Inmobiliaria</option>
-              <option value="2">Direccion</option>
-            </select>
+              <select
+                className="w-3/4 border-2 rounded-lg text-center p-1"
+                onChange={UpdateForm}
+                value={numP}
+              >
+                <option value="50"> </option>
+                <option value="1">Numero Predial</option>
+                <option value="3">Matricula Inmobiliaria</option>
+                <option value="2">Direccion</option>
+              </select>
+            </div>
+          </div>
+          <div className="flex flex-row">
+            {numP == "2" || numP == "3" ? <IdForm /> : null}
+            {numP == "1" ? <IdFormOne /> : null}
+            {numP == "1" ? <NumPredialForm /> : null}
+            {numP == "3" ? <ReplicarDataForm /> : null}
+            {numP == "2" ? <DireccionForm /> : null}
           </div>
         </div>
-        <div className="flex flex-row">
-          {numP == "2" || numP == "3" || numP == "1" ? (
-            <IdForm data={numP} />
-          ) : null}
-          {numP == "1" ? <NumPredialForm /> : null}
-          {numP == "3" ? <ReplicarDataForm /> : null}
-          {numP == "2" ? <DireccionForm /> : null}
-        </div>
-      </div>
+      </NumPreProvider>
     );
   };
   // 2 Formulario de ID
-  const IdForm = ({ data }) => {
+  const IdForm = () => {
     //mostrar los datos de id
     const [showid, setShowid] = useState({
       first: "",
       second: "",
-      unique: "",
     });
     //Funcion para mostrar los datos
     function showDataId(e) {
@@ -606,200 +630,269 @@ export const NumPredialForm = () => {
         finID = e.target.value;
       }
     }
-    function shownumData(e) {
-      setShowid({ ...showid, [e.target.name]: e.target.value });
-      numID = e.target.value;
-      console.log(numID);
-    }
-    if (data != "1") {
-      return (
-        <div
-          id="SeleccionarID"
-          className="w-1/5 border-2 text-center flex flex-col items-center p-2"
-        >
-          <h2 className="uppercase text-lg font-bold border-b pb-2">
-            Seleccionar ID
-          </h2>
-          <div className="flex flex-row items-center justify-center mt-2 p-2">
-            <input
-              name="first"
-              type="text"
-              className="border-2 rounded-lg w-4/12 p-1"
-              onChange={showDataId}
-              onInput={soloNumeros}
-              value={showid.first}
-            ></input>
-            <label className="w-2/12">-</label>
-            <input
-              name="second"
-              type="text"
-              className="border-2 rounded-lg w-4/12 p-1"
-              onChange={showDataId}
-              onInput={soloNumeros}
-              value={showid.second}
-            ></input>
-          </div>
+    return (
+      <div
+        id="SeleccionarID"
+        className="w-1/5 border-2 text-center flex flex-col items-center p-2"
+      >
+        <h2 className="uppercase text-lg font-bold border-b pb-2">
+          Seleccionar ID
+        </h2>
+        <div className="flex flex-row items-center justify-center mt-2 p-2">
+          <input
+            name="first"
+            type="text"
+            className="border-2 rounded-lg w-4/12 p-1"
+            onChange={showDataId}
+            onInput={soloNumeros}
+            value={showid.first}
+          ></input>
+          <label className="w-2/12">-</label>
+          <input
+            name="second"
+            type="text"
+            className="border-2 rounded-lg w-4/12 p-1"
+            onChange={showDataId}
+            onInput={soloNumeros}
+            value={showid.second}
+          ></input>
         </div>
-      );
-    } else {
-      const { tableData, updateNumPredial } = useContext(TableContext);
-      function Load_Data() {
-        let aux = tableData;
-        let num = showid.unique - 1;
-        aux.map((item, index) => {
-          if (index == num) {
-            updateNumPredial(item);
+      </div>
+    );
+  };
+  const IdFormOne = () => {
+    const { tableData } = useContext(TableContext);
+    const { updateNumPredial } = useContext(NumPreContext);
+    const { ArrayFinal } = useContext(ArrayFinalContext);
+    const [uniqueData, setUniqueData] = useState("");
+    function shownumData(e) {
+      setUniqueData(e.target.value);
+      numID = e.target.value;
+    }
+    function Load_Data() {
+      let aux = tableData;
+      let num = uniqueData - 1;
+
+      Object.entries(aux).map((item, index) => {
+        if (index == num) {
+          updateNumPredial(item[1]);
+        }
+      });
+    }
+    return (
+      <div
+        id="SeleccionarID"
+        className="w-2/5 border-2 text-center flex flex-col items-center p-2"
+      >
+        <h2 className="uppercase text-lg font-bold border-b pb-2">
+          Seleccionar ID
+        </h2>
+        <div className="flex flex-row items-center justify-center mt-2 p-2">
+          <input
+            name="unique"
+            type="text"
+            className="border-2 rounded-lg w-2/3 p-1"
+            onChange={shownumData}
+            onInput={soloNumeros}
+            value={uniqueData}
+          ></input>
+          <button
+            className=" p-1 w-1/3 text-center rounded-md text-white bg-teal-500 text-lg ml-2"
+            onClick={Load_Data}
+          >
+            Cargar
+          </button>
+        </div>
+      </div>
+    );
+  };
+  //1.1 Formulario para Editar Numero Predial
+  const NumPredialForm = () => {
+    const { numPredial } = useContext(NumPreContext);
+    const { tableData } = useContext(TableContext);
+    const [inputValues, setInputValues] = useState({
+      Dpto: numPredial.Dpto || "",
+      Mpio: numPredial.Mpio || "",
+      Zona: numPredial.Zona || "",
+      Sector: numPredial.Sector || "",
+      Comuna: numPredial.Comuna || "",
+      Barrio: numPredial.Barrio || "",
+      Manzana: numPredial.Manzana || "",
+      Terreno: numPredial.Terreno || "",
+      Condicion: numPredial.Condicion || "",
+      Edificio: numPredial.Edificio || "",
+      Piso: numPredial.Piso || "",
+      Unidad: numPredial.Unidad || "",
+    });
+    useEffect(() => {
+      setInputValues({
+        Dpto: numPredial.Dpto || "",
+        Mpio: numPredial.Mpio || "",
+        Zona: numPredial.Zona || "",
+        Sector: numPredial.Sector || "",
+        Comuna: numPredial.Comuna || "",
+        Barrio: numPredial.Barrio || "",
+        Manzana: numPredial.Manzana || "",
+        Terreno: numPredial.Terreno || "",
+        Condicion: numPredial.Condicion || "",
+        Edificio: numPredial.Edificio || "",
+        Piso: numPredial.Piso || "",
+        Unidad: numPredial.Unidad || "",
+      });
+    }, [numPredial]);
+
+    if (numPredial.length != 0) {
+      function aux(e) {
+        const { name, value } = e.target;
+        setInputValues((prevValues) => ({
+          ...prevValues,
+          [name]: value,
+        }));
+      }
+      const handleUpdateTable = (data) => {
+        // Lógica para actualizar la tabla
+        const newData = { ...data }; // You may replace this with your logic to update data
+        updateTableData(newData);
+      };
+      function ReloadData() {
+        const clonetable = tableData;
+        Object.entries(clonetable).map((items, index) => {
+          let item = items[1];
+          console.log(item);
+          if (numID - 1 == index) {
+            item.Dpto = inputValues.Dpto;
+            item.Mpio = inputValues.Mpio;
+            item.Zona = inputValues.Zona;
+            item.Sector = inputValues.Sector;
+            item.Comuna = inputValues.Comuna;
+            item.Barrio = inputValues.Barrio;
+            item.Manzana = inputValues.Manzana;
+            item.Terreno = inputValues.Terreno;
+            item.Condicion = inputValues.Condicion;
+            item.Edificio = inputValues.Edificio;
+            item.Piso = inputValues.Piso;
+            item.Unidad = inputValues.Unidad;
           }
         });
+        handleUpdateTable(clonetable);
       }
       return (
         <div
-          id="SeleccionarID"
-          className="w-4/5 border-2 text-center flex flex-col items-center p-2"
+          id="NumPredial"
+          className="flex flex-col p-2  w-3/5 border-2 text-center"
         >
           <h2 className="uppercase text-lg font-bold border-b pb-2">
-            Seleccionar ID
+            Modificar Numero Predial
           </h2>
-          <div className="flex flex-row items-center justify-center mt-2 p-2">
-            <input
-              name="unique"
-              type="text"
-              className="border-2 rounded-lg w-2/3 p-1"
-              onChange={shownumData}
-              onInput={soloNumeros}
-              value={showid.unique}
-            ></input>
+          <div>
+            <div>
+              <input
+                name="Dpto"
+                className="w-8 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Dpto"]}
+                maxLength={2}
+              ></input>
+              <input
+                name="Mpio"
+                className="w-12 border-2 rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Mpio"]}
+                maxLength={3}
+              ></input>
+              <input
+                name="Zona"
+                className="w-8 border-2 rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Zona"]}
+                maxLength={2}
+              ></input>
+              <input
+                name="Sector"
+                className="w-8 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Sector"]}
+                maxLength={2}
+              ></input>
+              <input
+                name="Comuna"
+                className="w-8 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Comuna"]}
+                maxLength={2}
+              ></input>
+              <input
+                name="Barrio"
+                className="w-8 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Barrio"]}
+                maxLength={2}
+              ></input>
+              <input
+                name="Manzana"
+                className="w-16 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Manzana"]}
+                maxLength={4}
+              ></input>
+              <input
+                name="Terreno"
+                className="w-16 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Terreno"]}
+                maxLength={4}
+              ></input>
+              <input
+                name="Condicion"
+                className="w-8 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Condicion"]}
+                maxLength={1}
+              ></input>
+              <input
+                name="Edificio"
+                className="w-8 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Edificio"]}
+                maxLength={2}
+              ></input>
+              <input
+                name="Piso"
+                className="w-8 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Piso"]}
+                maxLength={2}
+              ></input>
+              <input
+                name="Unidad"
+                className="w-16 border-2  rounded-md text-center mr-2"
+                type="text"
+                onChange={aux}
+                value={inputValues["Unidad"]}
+                maxLength={4}
+              ></input>
+            </div>
             <button
-              className=" p-1 w-1/3 text-center rounded-md text-white bg-teal-500 text-lg ml-2"
-              onClick={Load_Data}
+              className="text-xl border-2 rounded-xl  w-1/5 bg-teal-500 text-white"
+              onClick={ReloadData}
             >
-              Cargar
+              Guardar
             </button>
           </div>
         </div>
       );
     }
-  };
-  //1.1 Formulario para Editar Numero Predial
-  const NumPredialForm = () => {
-    const {
-      Dpto,
-      Mpio,
-      Zona,
-      Sector,
-      Comuna,
-      Barrio,
-      Manzana,
-      Terreno,
-      Condicion,
-      Edificio,
-      Piso,
-      Unidad,
-    } = numPredial;
-    console.log("prueba", numPredial.Dpto);
-    function aux(e) {}
-    return (
-      <div
-        id="NumPredial"
-        className="flex flex-col p-2  w-2/3 border-2 text-center"
-      >
-        <h2 className="uppercase text-lg font-bold border-b pb-2">
-          Modificar Numero Predial
-        </h2>
-        <div>
-          {" "}
-          <div>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Dpto}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-12 border-2 rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Mpio}
-              maxLength={3}
-            ></input>
-            <input
-              className="w-8 border-2 rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Zona}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Sector}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Comuna}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Barrio}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-16 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Manzana}
-              maxLength={4}
-            ></input>
-            <input
-              className="w-16 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Terreno}
-              maxLength={4}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Condicion}
-              maxLength={1}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Edificio}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Piso}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-16 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={Unidad}
-              maxLength={4}
-            ></input>
-          </div>
-          <button className="text-xl border-2 rounded-xl  w-1/5 bg-teal-500 text-white">
-            Guardar
-          </button>
-        </div>
-      </div>
-    );
   };
   // 1.2 Formulario para Replicar los datos de direccion o Matricula Inmobiliaria
   const ReplicarDataForm = () => {
@@ -810,7 +903,6 @@ export const NumPredialForm = () => {
     const handleUpdateTable = (data) => {
       // Lógica para actualizar la tabla
       const newData = { ...data }; // You may replace this with your logic to update data
-      console.log("Nuevos Datos", newData);
       updateTableData(newData);
     };
     //Estado Replicar Dato
@@ -849,7 +941,7 @@ export const NumPredialForm = () => {
           onChange={Replicate}
           onInput={soloNumeros}
           value={rdata}
-          maxLength={6}
+          maxLength={80}
         ></input>
         <button
           className="mt-2 p-2 text-center rounded-md  text-white bg-teal-500 text-base"
@@ -894,18 +986,18 @@ export const NumPredialForm = () => {
   const DirestForm = () => {
     //Contexto de Tabla
     const { tableData, updateTableData } = useContext(TableContext);
+    const [estbutton, setEstButton] = useState(true);
     //7 Modificar Tabla
     const handleUpdateTable = (data) => {
       // Lógica para actualizar la tabla
       const newData = { ...data }; // You may replace this with your logic to update data
-      console.log("Nuevos Datos", newData);
       updateTableData(newData);
     };
     //Valores a Tener en cuanta en la Direccion
     const [direction, setDirection] = useState({
       t_id: 0,
       t_seq: null,
-      tipo_direccion: 0,
+      tipo_direccion: 218,
       es_direccion_principal: false,
       codigo_postal: null,
       clase_via_principal: "",
@@ -931,7 +1023,7 @@ export const NumPredialForm = () => {
     const [directData, setDirecdata] = useState({
       t_id: 0,
       t_seq: null,
-      tipo_direccion: 0,
+      tipo_direccion: 218,
       es_direccion_principal: false,
       codigo_postal: null,
       clase_via_principal: "",
@@ -970,39 +1062,26 @@ export const NumPredialForm = () => {
     }
     //Recarga la Tabla con los valores agregados
     ////////////////////
-    function ReloadDataDirection(e) {
-      let data = "";
-      console.log(iniID + " - " + finID);
+    function ReloadDataDirection() {
       ArrayPredial.map((items, index) => {
         if (index >= parseInt(iniID) - 1 && index <= parseInt(finID) - 1) {
-          Object.entries(directData).map((item, index) => {
-            if (
-              item[0] == "clase_via_principal" ||
-              item[0] == "valor_via_principal" ||
-              item[0] == "letra_via_principal" ||
-              item[0] == "sector_ciudad" ||
-              item[0] == "valor_via_generadora" ||
-              item[0] == "letra_via_generadora" ||
-              item[0] == "numero_predio" ||
-              item[0] == "sector_predio" ||
-              item[0] == "complemento"
-            ) {
-              data = data + " " + item[1];
-              items.Direccion = data;
-              console.log("datos", data);
-            }
-          });
-        } else {
-          items.Direccion = items.Direccion;
+          items.Direccion = direction;
         }
-        data = "";
       });
-
-      console.log("Datos de predial", ArrayPredial);
       handleUpdateTable(ArrayPredial);
-      console.log("Datos de Tabla", tableData);
     }
-
+    useEffect(() => {
+      if (
+        directData.clase_via_principal.length != 0 &&
+        directData.valor_via_generadora.length != 0 &&
+        directData.valor_via_principal.length != 0 &&
+        directData.numero_predio.length != 0
+      ) {
+        setEstButton(false);
+      } else {
+        setEstButton(true);
+      }
+    }, [directData]);
     return (
       <div>
         <div className="w-full flex flex-row justify-center items-center">
@@ -1150,8 +1229,13 @@ export const NumPredialForm = () => {
           </div>
           <div className="w-1/2">
             <button
-              className="mt-1 p-2 text-center rounded-md  text-white bg-teal-500 text-base"
+              className={`${
+                estbutton ? "opacity-50 cursor-not-allowed" : "opacity-100"
+              }
+                 p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2
+                 `}
               onClick={ReloadDataDirection}
+              disabled={estbutton}
             >
               Actualizar
             </button>
@@ -1162,14 +1246,171 @@ export const NumPredialForm = () => {
   };
   //1.3.2 Formulario de Direccion No Estructurada
   const DirnoestForm = () => {
-    return <div></div>;
+    const { updateTableData } = useContext(TableContext);
+
+    const [directData, setDirecdata] = useState({
+      t_id: 0,
+      t_seq: null,
+      tipo_direccion: 219,
+      es_direccion_principal: false,
+      codigo_postal: null,
+      clase_via_principal: "",
+      valor_via_principal: "",
+      letra_via_principal: "",
+      sector_ciudad: "",
+      valor_via_generadora: "",
+      letra_via_generadora: "",
+      numero_predio: "",
+      sector_predio: "",
+      complemento: "",
+      nombre_predio: "",
+      extunidadedificcnfsica_ext_direccion_id: null,
+      extinteresado_ext_direccion_id: null,
+      lc_construccion_ext_direccion_id: null,
+      lc_nu_spcjrdcrdsrvcios_ext_direccion_id: null,
+      lc_n_spcjrdcndddfccion_ext_direccion_id: null,
+      lc_terreno_ext_direccion_id: null,
+      lc_unidadconstruccion_ext_direccion_id: null,
+      lc_servidumbretransito_ext_direccion_id: null,
+    });
+    const [datanom, setDataNom] = useState("");
+
+    const handleUpdateTable = (data) => {
+      // Lógica para actualizar la tabla
+      const newData = { ...data }; // You may replace this with your logic to update data
+      updateTableData(newData);
+    };
+    function LoadDataNom(e) {
+      const { value } = e.target;
+      setDataNom(value);
+    }
+    function LoadDirection() {
+      ArrayPredial.map((items, index) => {
+        if (index >= parseInt(iniID) - 1 && index <= parseInt(finID) - 1) {
+          directData.nombre_predio = datanom;
+          items.Direccion = directData;
+        } else {
+          items.Direccion = items.Direccion;
+        }
+      });
+
+      handleUpdateTable(ArrayPredial);
+    }
+
+    return (
+      <div className="flex flex-row items-center justify-center">
+        <h2>Nombre Predio</h2>
+        <input
+          type="text"
+          className="border-2 rounded-lg text-center p-1 ml-2"
+          onChange={LoadDataNom}
+          value={datanom}
+        ></input>
+        <button
+          className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg mr-2 ml-2"
+          onClick={LoadDirection}
+        >
+          Cargar
+        </button>
+      </div>
+    );
   };
   // 2 Generacion de una Tabla con los datos tabledata son los datos que se van a mostrar
   const TableForm = () => {
-    let arrayAux = tableData;
-    function aux(e) {}
-    const filas = Object.entries(arrayAux).map((items, index) => {
+    //Contexto de la tabla
+    const { tableData } = useContext(TableContext);
+    const filas = Object.entries(tableData).map((items, index) => {
       let item = items[1];
+      let direccionText = "";
+      if (item.Direccion.length !== 0) {
+        //<td className="border-2 rounded-xl p-2">{item.Direccion}</td>;
+        let previa = item.Direccion;
+        if (previa.tipo_direccion == 218) {
+          let clase = "";
+          let sectorciudad = "";
+          let sectorpredio = "";
+          switch (previa.clase_via_principal) {
+            case "688":
+              clase = "Avenida calle";
+              break;
+            case "689":
+              clase = "Avenida carrera";
+              break;
+            case "690":
+              clase = "Avenida";
+              break;
+            case "691":
+              clase = "Autopista";
+              break;
+            case "692":
+              clase = "Circunvalar";
+              break;
+            case "693":
+              clase = "Calle";
+              break;
+            case "694":
+              clase = "Carrera";
+              break;
+            case "695":
+              clase = "Diagonal";
+              break;
+            case "696":
+              clase = "Transversal";
+              break;
+            case "697":
+              clase = "Circular";
+              break;
+          }
+          switch (previa.sector_ciudad) {
+            case "881":
+              sectorciudad = "Norte";
+              break;
+            case "882":
+              sectorciudad = "Sur";
+              break;
+            case "883":
+              sectorciudad = "Este";
+              break;
+            case "884":
+              sectorciudad = "Oeste";
+              break;
+          }
+          switch (previa.sector_predio) {
+            case "752":
+              sectorpredio = "Norte";
+              break;
+            case "753":
+              sectorpredio = "Sur";
+              break;
+            case "754":
+              sectorpredio = "Este";
+              break;
+            case "755":
+              sectorpredio = "Oeste";
+              break;
+          }
+          direccionText =
+            clase +
+            " " +
+            previa.valor_via_principal +
+            " " +
+            previa.letra_via_principal +
+            " " +
+            sectorciudad +
+            " " +
+            previa.valor_via_generadora +
+            " " +
+            previa.letra_via_generadora +
+            " " +
+            previa.numero_predio +
+            " " +
+            sectorpredio +
+            " " +
+            previa.complemento;
+        } else {
+          direccionText = previa.nombre_predio;
+        }
+      }
       return (
         <tr key={index}>
           <td className="border-2 rounded-xl p-2">{index + 1}</td>
@@ -1179,7 +1420,7 @@ export const NumPredialForm = () => {
             {item.Edificio}-{item.Piso}-{item.Unidad}
           </td>
           <td className="border-2 rounded-xl p-2">{item.Matricula}</td>
-          <td className="border-2 rounded-xl p-2">{item.Direccion}</td>
+          <td className="border-2 rounded-xl p-2">{direccionText}</td>
         </tr>
       );
     });
@@ -1204,17 +1445,22 @@ export const NumPredialForm = () => {
 
   //Form Boton Inferior de Agregar y Terminar
   const ChangeForm = () => {
+    const { ArrayFinal, updateArrayFinal } = useContext(ArrayFinalContext);
+
     function addData() {
-      let newDataTable = [];
-      ArrayFinal.push(ArrayPredial);
-      console.log("Arreglo Final ", ArrayFinal);
-      ArrayFinal.map((item, index) => {
-        item.map((items, index) => {
-          newDataTable.push(items);
-        });
+      let ArrayTemp = [];
+      console.log("Array Final", ArrayFinal);
+      ArrayTemp = ArrayFinal;
+      ArrayPredial.map((item, index) => {
+        ArrayTemp.push(item);
       });
-      console.log("new Data table ", newDataTable);
-      updateTableData(newDataTable);
+      console.log("Array Temporal", ArrayTemp);
+      //ArrayFinal.push(ArrayPredial);
+
+      // ArrayPredial.map((item, index) => {        ArrayAux.push(item);               item.map((items, index) => {});      });
+
+      updateArrayFinal(ArrayTemp);
+      updateTableData(ArrayFinal);
       setBttload(true);
     }
     return (
@@ -1257,7 +1503,7 @@ export const NumPredialForm = () => {
           className="flex flex-row w-2/5 items-start mt-2 mb-2 p-2"
         >
           <div className="flex flex-col w-full justify-start">
-            <label>¿En cuantos predios desea segregar al predio matriz ?</label>
+            <label>Numero de predios a segregar al predio matriz</label>
             <input
               className="border-2 p-2 rounded-md w-full"
               type="text"
@@ -1321,275 +1567,12 @@ export const NumPredialForm = () => {
     </div>
   );
 };
-/*  
-   const EditForm = ({ data, index }) => {
-      let item = data;
-      let i = index;
-      return (
-        <td className="border-2 rounded-xl p-2" id={i}>
-          <div>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Dpto}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-12 border-2 rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Mpio}
-              maxLength={3}
-            ></input>
-            <input
-              className="w-8 border-2 rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Zona}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Sector}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Comuna}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Barrio}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-16 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Manzana}
-              maxLength={4}
-            ></input>
-            <input
-              className="w-16 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Terreno}
-              maxLength={4}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Condicion}
-              maxLength={1}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Edificio}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-8 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Piso}
-              maxLength={2}
-            ></input>
-            <input
-              className="w-16 border-2  rounded-md text-center mr-2"
-              type="text"
-              onChange={aux}
-              value={item.Unidad}
-              maxLength={4}
-            ></input>
-          </div>
-          <button
-            className="text-xl border-2 rounded-xl  w-1/5 bg-teal-500 text-white"
-            onClick={generarEdit}
-          >
-            Guardar
-          </button>
-        </td>
-      );
-    };
-const NoEditForm = ({ data, index }) => {
-      let item = data;
-      let i = index;
-
-      return (
-        <td className="border-2 rounded-xl p-2 w-5/12" name={i}>
-          <div className="w-full flex flex-row items-center justify-center">
-            <label className="w-4/5">
-              {item.Dpto}-{item.Mpio}-{item.Zona}-{item.Sector}-{item.Comuna}-
-              {item.Barrio}-{item.Manzana}-{item.Terreno}-{item.Condicion}-
-              {item.Edificio}-{item.Piso}-{item.Unidad}{" "}
-            </label>
-            <button
-              className="text-xl border-2 rounded-xl  w-1/5 bg-teal-500 text-white"
-              onClick={generarEdit}
-              name={i}
-            >
-              Editar
-            </button>
-          </div>
-        </td>
-      );
-    }; */
-/* 
-
-{
-  "numeros_prediales": [
-    "252900100000000110007000000000",
-    "252900100000000110008000000000",
-    "252900100000000110019000000000",
-    "252900100000000110901900000020",
-    "252900100000000110021000000000",
-    "252900100000000110023000000000",
-    "252900100000000110025000000000",
-    "252900100000000110026000000000",
-    "252900100000000110027000000000",
-    "252900100000000110036000000000",
-    "252900100000000110038000000000",
-    "252900100000000110039000000000",
-    "252900100000000110040000000000",
-    "252900100000000110041000000000",
-    "252900100000000110042000000000",
-    "252900100000000110043000000000",
-    "252900100000000110044000000000",
-    "252900100000000110045000000000",
-    "252900100000000110046000000000",
-    "252900100000000110047000000000",
-    "252900100000000110048000000000",
-    "252900100000000110049000000000",
-    "252900100000000110050000000000",
-    "252900100000000110051000000000",
-    "252900100000000110052000000000",
-    "252900100000000110053000000000",
-    "252900100000000110054000000000",
-    "252900100000000110055000000000",
-    "252900100000000110070000000000",
-    "252900100000000110071000000000",
-    "252900100000000110072000000000",
-    "252900100000000110073000000000",
-    "252900100000000110901900000074",
-    "252900100000000110075000000000",
-    "252900100000000110076000000000",
-    "252900100000000110077000000000",
-    "252900100000000110078000000000",
-    "252900100000000110079000000000",
-    "252900100000000110080000000000",
-    "252900100000000110081000000000",
-    "252900100000000110082000000000",
-    "252900100000000110083000000000",
-    "252900100000000110084000000000",
-    "252900100000000110085000000000",
-    "252900100000000110086000000000",
-    "252900100000000110087000000000",
-    "252900100000000110098000000000",
-    "252900100000000110099000000000",
-    "252900100000000110106000000000",
-    "252900100000000110109000000000",
-    "252900100000000110110000000000",
-    "252900100000000110111000000000",
-    "252900100000000110112000000000",
-    "252900100000000110902900000113",
-    "252900100000000110902900000114",
-    "252900100000000110115000000000",
-    "252900100000000110117000000000",
-    "252900100000000110118000000000",
-    "252900100000000110119000000000",
-    "252900100000000110120000000000",
-    "252900100000000110121000000000",
-    "252900100000000110122000000000",
-    "252900100000000110123000000000",
-    "252900100000000110124000000000",
-    "252900100000000110131000000000",
-    "252900100000000110132000000000",
-    "252900100000000110133000000000",
-    "252900100000000110134000000000",
-    "252900100000000110135000000000",
-    "252900100000000110136000000000",
-    "252900100000000110137000000000",
-    "252900100000000110138000000000",
-    "252900100000000110139000000000",
-    "252900100000000110140000000000",
-    "252900100000000110141000000000",
-    "252900100000000110142000000000",
-    "252900100000000110143000000000",
-    "252900100000000110144000000000",
-    "252900100000000110145000000000",
-    "252900100000000110146000000000",
-    "252900100000000110147000000000",
-    "252900100000000110148000000000",
-    "252900100000000110903900000149",
-    "252900100000000110903900000150",
-    "252900100000000110903900000151",
-    "252900100000000110903900000152",
-    "252900100000000110903900000153",
-    "252900100000000110903900000154",
-    "252900100000000110903900000155",
-    "252900100000000110903900000156",
-    "252900100000000110903900000157",
-    "252900100000000110903900000158",
-    "252900100000000110903900000159",
-    "252900100000000110903900000160",
-    "252900100000000110903900000161",
-    "252900100000000110903900000162",
-    "252900100000000110903900000163",
-    "252900100000000110903900000164",
-    "252900100000000110903900000165",
-    "252900100000000110903900000166",
-    "252900100000000110903900000167",
-    "252900100000000110903900000168",
-    "252900100000000110903900000169",
-    "252900100000000110903900000170",
-    "252900100000000110903900000171",
-    "252900100000000110903900000172",
-    "252900100000000110903900000173",
-    "252900100000000110903900000174",
-    "252900100000000110903900000175",
-    "252900100000000110903900000176",
-    "252900100000000110903900000177",
-    "252900100000000110903900000178",
-    "252900100000000110903900000179",
-    "252900100000000110903900000180",
-    "252900100000000110903900000181",
-    "252900100000000110903900000182",
-    "252900100000000110903900000183",
-    "252900100000000110903900000184",
-    "252900100000000110903900000185",
-    "252900100000000110903900000186",
-    "252900100000000110903900000187",
-    "252900100000000110903900000188",
-    "252900100000000110903900000189",
-    "252900100000000110903900000190",
-    "252900100000000110903900000191",
-    "252900100000000110903900000192",
-    "252900100000000110903900000193",
-    "252900100000000110903900000194",
-    "252900100000000110903900000195",
-    "252900100000000110903900000196",
-    "252900100000000110903900000197",
-    "252900100000000110903900000198",
-    "252900100000000110903900000199",
-    "252900100000000110903900000200",
-    "252900100000000110903900000201",
-    "252900100000000110903900000202",
-    "252900100000000110903900000203",
-    "252900100000000110904900000204",
-    "252900100000000110904900000205",
-    "252900100000000110904900000206"
-  ]
-}
-
+//Contexto para Guardar los Array Predial const { ArrayPredial, updateArrayPredial } =useContext(ArrayPredialContext);
+/*if (numTerreno < 800 && index == 0) {
+              numUnidad = mayorUnidadbd;
+              mayorUnidad = 0;
+              //mayorUnidad = numUnidad;
+              //mayorUnidad = mayorUnidad + parseInt(inputValue);
+            }
+            
 */
