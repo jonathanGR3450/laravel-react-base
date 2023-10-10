@@ -61,7 +61,6 @@ const NoConven = () => {
             <select className="p-1 w-1/3 text-center border-2 rounded-md">
               <option></option>
               {Object.entries(select).map((tipo) => {
-                console.log(tipo);
                 return (
                   <option
                     value={tipo[1].Tipo}

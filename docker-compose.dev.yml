@@ -73,12 +73,7 @@ services:
       - ./front/src/Json/Numpredial.json:/data/db.json
     
 
-  json-server:
-    image: clue/json-server
-    ports:
-      - "3000:80"
-    volumes:
-      - ./front/src/Json/estructure.json:/data/db.json
+
 
 #Docker Networks
 networks:

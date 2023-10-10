@@ -1,6 +1,5 @@
 export const ApiTest = () => {
   const customFetch = (endpoint, options) => {
-   
     const defaultHeader = {
       accept: "application/json",
     };
@@ -13,8 +12,8 @@ export const ApiTest = () => {
       : defaultHeader;
     options.body = JSON.stringify(options.body) || false;
     if (!options.body) delete options.body;
-    
-    setTimeout(() => controller.abort(), 100000);
+
+    setTimeout(() => controller.abort(), 10000);
 
     return fetch(endpoint, options)
       .then((res) =>
