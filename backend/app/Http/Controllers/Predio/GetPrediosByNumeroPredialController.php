@@ -19,10 +19,10 @@ class GetPrediosByNumeroPredialController extends AppBaseController
     /**
      * Handle the incoming request.
      */
-    public function __invoke(PrediosByNumeroPredialFormRequest $request)
+    public function __invoke(PrediosByNumeroPredialFormRequest $request, string $numero_predial)
     {
         try {
-            $numeroPredial = $request->input('numero_predial');
+            $numeroPredial = $numero_predial;
             $numeroPredial = Str::substr($numeroPredial, 0, 17);
             $query = LcPredio::where(DB::raw("LEFT(numero_predial, 17)"), $numeroPredial);
 
