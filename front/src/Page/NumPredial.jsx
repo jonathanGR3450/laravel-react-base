@@ -1,11 +1,6 @@
 import React, { useContext } from "react";
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFloppyDisk,
-  faL,
-  faPenToSquare,
-} from "@fortawesome/free-solid-svg-icons";
+
 import DataJson from "../Json/numeros.json";
 
 import {
@@ -35,6 +30,7 @@ const PredioMatriz = {
 //Tamaño de predios segregados
 let tamaño = 0;
 //Array Final
+//25290010000000011001
 let ArrayFinal = [];
 //Array de datos Generados
 let ArrayPredial = [];
@@ -52,6 +48,11 @@ let mayorUnidadbd = 0;
 export const NumPredialForm = () => {
   console.log("Actualiza");
   //Estados
+  //0 CAPTURA DE DATA MATRIZ
+  const [dataMatriz, setDataMatriz] = useState("");
+  const [msjCadena, setMsjCadena] = useState("");
+  const [bttCadena, setBttCadena] = useState(true);
+  const [msjCarga, setMsjCarga] = useState("");
   //Captura de datos para generar numeros prediales
   // 1 Estado para Cargar el valor de Tamaño0
   const [inputValue, setInputValue] = useState("");
@@ -75,9 +76,11 @@ export const NumPredialForm = () => {
   const { updateTableData } = useContext(TableContext);
   //
   const { ArrayFinal, updateArrayFinal } = useContext(ArrayFinalContext);
-
+  const [allData, setAllData] = useState([]);
   //Eventos o Funciones
   //GENERACION DE NUMEROS PREDIALES
+
+  //0.1 CARGAR VALOR de input
   // 1 Funcion para cargar el input del tamaño
   function inputLength(e) {
     setInputValue(e.target.value);
@@ -99,7 +102,8 @@ export const NumPredialForm = () => {
     let aux = "";
     if (ArrayFinal.length == 0) {
       //DataJson.numeros_prediales Valor del Envio de Datos
-      aux = DataJson.numeros_prediales;
+      aux = allData;
+      console.log("Datos A lEER", aux);
       JSONtoObject(aux);
     } else {
       aux = ArrayFinal;
@@ -558,6 +562,101 @@ export const NumPredialForm = () => {
     const input = event.target;
     input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
   }
+
+  /////////////////////////////Formularios/////////////////////////////
+
+  const DataMatrizForm = () => {
+    //0 Cargar data de bd
+    //const [allData, setAllData] = useState([]);
+
+    const datos = async () => {
+      setMsjCarga("Consultando Datos");
+      const data = await fetchData();
+      let dataLength = data.last_page;
+      let tempData = [];
+      for (let currentPage = 1; currentPage <= dataLength; currentPage++) {
+        const currentPageData = await fetchData(currentPage);
+        currentPageData.data.map((item, index) => {
+          tempData.push(item.numero_predial);
+        });
+      }
+      setMsjCarga("Datos Consultados");
+      setAllData(tempData);
+    };
+
+    const fetchData = async (currentPage) => {
+      try {
+        const response = await fetch(
+          `http://localhost/api/v1/predio/list/numeros-prediales/${dataMatriz}?page=${currentPage}`,
+          {
+            method: "GET",
+            redirect: "follow",
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        return data.data || [];
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        return [];
+      }
+    };
+    const dataDB = async () => {
+      try {
+        await datos();
+      } catch (error) {
+        console.error("Error en dataDB:", error);
+      }
+    };
+    useEffect(() => {
+      console.log("Todos los Datos", allData);
+    }, [allData]);
+    //Tamaño Minimo
+    function validarCadena(e) {
+      soloNumeros(e);
+      let { value } = e.target;
+      setDataMatriz(value);
+      if (value.length < 20 && value.length > 0) {
+        setMsjCadena("Digitalizar hasta Componente Manzana (20 Digitos)");
+        setBttCadena(true);
+      } else {
+        if (value.length == 20) {
+          setBttCadena(false);
+        }
+        setMsjCadena("");
+      }
+      //return cadena.length === 20;
+    }
+    return (
+      <div className="w-full flex flex-col mt-2">
+        <div className="w-full flex flex-row ">
+          <label>Digitar el numero predial</label>
+          <input
+            className="border-2 p-2 rounded-md w-full"
+            maxLength={20}
+            type="text"
+            onInput={validarCadena}
+            value={dataMatriz}
+          ></input>
+          <button
+            className={`${
+              bttCadena ? "opacity-50 cursor-not-allowed" : "opacity-100"
+            }
+           p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2
+           `}
+            onClick={dataDB}
+            disabled={bttCadena}
+          >
+            Cargar
+          </button>
+        </div>
+        <label className="text-red-600">{msjCadena}</label>
+        <label className="text-green-500">{msjCarga}</label>
+      </div>
+    );
+  };
 
   //Formularios
   // 1 Formulario  para despues de seleccionar el Tipo de Predio
@@ -1485,6 +1584,7 @@ export const NumPredialForm = () => {
       </div>
     );
   };
+
   //UseEffect
   //Actualizar valor tamaño si se modifica el valor del input
   useEffect(() => {
@@ -1497,6 +1597,7 @@ export const NumPredialForm = () => {
   return (
     <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
       <h1 className="text-4xl">Iniciar Desenglobe</h1>
+      <DataMatrizForm />
       <div className="w-full flex flex-row">
         <div
           id="Pregunta"
@@ -1567,12 +1668,73 @@ export const NumPredialForm = () => {
     </div>
   );
 };
+
 //Contexto para Guardar los Array Predial const { ArrayPredial, updateArrayPredial } =useContext(ArrayPredialContext);
-/*if (numTerreno < 800 && index == 0) {
-              numUnidad = mayorUnidadbd;
-              mayorUnidad = 0;
-              //mayorUnidad = numUnidad;
-              //mayorUnidad = mayorUnidad + parseInt(inputValue);
-            }
-            
+/*
+  /* var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    let url =
+      "http://localhost/api/v1/predio/list/numeros-prediales/" + dataMatriz;
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => datos())
+      .catch((error) => console.log("error", error));
+    
+
+  Object.entries(result.data.data).map((item, index) => {
+        console.log(item[1].numero_predial);
+      });
+      import React, { useState, useEffect } from 'react';
+
+const PaginatedDataFetcher = () => {
+  const [allData, setAllData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`http://localhost/api/v1/predio/list/numeros-prediales?page=${currentPage}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      return data.data || [];
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return [];
+    }
+  };
+
+  const fetchAllData = async () => {
+    let nextPage = true;
+    let tempData = [];
+    
+    while (nextPage) {
+      const data = await fetchData();
+      tempData = [...tempData, ...data];
+      nextPage = data.next_page_url !== null;
+      setCurrentPage(prevPage => prevPage + 1);
+    }
+
+    setAllData(tempData);
+  };
+
+  useEffect(() => {
+    fetchAllData();
+  }, []); // Fetch data on component mount
+
+  return (
+    <div>
+      <h2>Total de datos recopilados: {allData.length}</h2>
+      <ul>
+        {allData.map((item, index) => (
+          <li key={index}>{index + 1}. Número predial: {item.numero_predial}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default PaginatedDataFetcher;
 */
