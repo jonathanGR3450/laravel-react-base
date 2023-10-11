@@ -36,7 +36,7 @@ Route::prefix('v1')->group(function () {
     Route::get('predio/{id}', GetPredioController::class);
     Route::post('predio/numeros-prediales', StoreNumeroPredialController::class);
     Route::post('predio/numeros-homologados', StoreNumeroHomologadosController::class);
-    Route::get('predio/list/numeros-prediales', GetPrediosByNumeroPredialController::class);
+    Route::get('predio/list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
     Route::get('predio/list/local/numeros-prediales', IndexNumerosPredialesController::class);
 
 

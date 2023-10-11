@@ -25,7 +25,9 @@ class PrediosByNumeroPredialFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'numero_predial' => 'required|string|min:17'
+            'perPage'       => ['nullable', 'integer'],
+            'sort'          => ['nullable', 'string'],
+            'direction'     => ['nullable', 'string', 'in:ASC,DESC,asc,desc'],
         ];
     }
 }
