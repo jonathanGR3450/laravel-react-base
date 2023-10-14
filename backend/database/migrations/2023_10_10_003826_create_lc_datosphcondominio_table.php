@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('lc_datosphcondominio', function (Blueprint $table) {
             $table->bigIncrements('t_id');
-            $table->uuid('t_ili_tid')->default(DB::raw('uuid_generate_v4()'));
             $table->decimal('area_total_terreno', 16, 2)->nullable(false);
             $table->decimal('area_total_terreno_privada', 16, 2)->nullable(false);
             $table->decimal('area_total_terreno_comun', 16, 2)->nullable(false);

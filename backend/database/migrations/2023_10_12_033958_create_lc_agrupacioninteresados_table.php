@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('lc_agrupacioninteresados', function (Blueprint $table) {
             $table->bigIncrements('t_id');
-            $table->uuid('t_ili_tid')->default(DB::raw('public.uuid_generate_v4()'));
             $table->bigInteger('tipo')->unsigned();
             $table->string('nombre', 255);
             $table->timestamp('comienzo_vida_util_version');

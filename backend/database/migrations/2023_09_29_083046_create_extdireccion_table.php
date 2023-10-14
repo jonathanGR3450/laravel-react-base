@@ -17,7 +17,6 @@ return new class extends Migration
             $table->bigInteger('t_seq')->nullable();
             $table->bigInteger('tipo_direccion');
             $table->boolean('es_direccion_principal');
-            // $table->geometry('localizacion', 'POINTZ', 9377)->nullable();
             $table->string('codigo_postal', 255)->nullable();
             $table->bigInteger('clase_via_principal')->nullable();
             $table->string('valor_via_principal', 100)->nullable();
@@ -42,8 +41,6 @@ return new class extends Migration
             $table->unsignedBigInteger('lc_numeros_prediales_id')->unique();
             $table->foreign('lc_numeros_prediales_id')->references('t_id')->on('lc_numeros_prediales')->onDelete('cascade');
         });
-
-        DB::statement('ALTER TABLE extdireccion ADD COLUMN localizacion geometry(pointz, 9377)');
     }
 
     /**

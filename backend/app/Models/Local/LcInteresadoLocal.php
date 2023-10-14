@@ -15,7 +15,6 @@ class LcInteresadoLocal extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        't_ili_tid',
         'tipo',
         'tipo_documento',
         'documento_identidad',

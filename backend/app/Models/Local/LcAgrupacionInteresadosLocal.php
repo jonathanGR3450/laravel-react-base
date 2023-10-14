@@ -15,7 +15,6 @@ class LcAgrupacionInteresadosLocal extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        't_ili_tid',
         'tipo',
         'nombre',
         'comienzo_vida_util_version',
