@@ -48,7 +48,7 @@ class StoreNumeroPredialController extends AppBaseController
                 ]);
                 $direccionPredial = $predio->extdireccion;
                 // $direccionPredial['localizacion'] = DB::raw("ST_Force3D(st_multi(st_buffer((ST_SetSRID(st_makepoint(4848927.985,2038128.138),9377)),1)))");
-                $direccionPredial['localizacion'] = DB::raw("ST_GeomFromText('SRID=9377;POINT Z(4848927.985 2038128.138 0)', 9377)");
+                // $direccionPredial['localizacion'] = DB::raw("ST_GeomFromText('SRID=9377;POINT Z(4848927.985 2038128.138 0)', 9377)");
                 $direccionPredial['lc_numeros_prediales_id'] = $predial->t_id;
 
                 $direccion = ExtDireccionLocal::create($direccionPredial);

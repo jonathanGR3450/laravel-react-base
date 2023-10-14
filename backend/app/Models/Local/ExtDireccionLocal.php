@@ -18,7 +18,6 @@ class ExtDireccionLocal extends Model
         't_seq',
         'tipo_direccion',
         'es_direccion_principal',
-        'localizacion',
         'codigo_postal',
         'clase_via_principal',
         'valor_via_principal',

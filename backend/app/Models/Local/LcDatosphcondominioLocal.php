@@ -14,7 +14,6 @@ class LcDatosphcondominioLocal extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        't_ili_tid',
         'area_total_terreno',
         'area_total_terreno_privada',
         'area_total_terreno_comun',

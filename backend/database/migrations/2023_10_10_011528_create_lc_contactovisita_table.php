@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('lc_contactovisita', function (Blueprint $table) {
             $table->id('t_id');
-            $table->uuid('t_ili_tid')->default(DB::raw('public.uuid_generate_v4()'));
             $table->bigInteger('tipo_documento_quien_atendio')->unsigned();
             $table->string('numero_documento_quien_atendio', 50);
             $table->string('primer_nombre_quien_atendio', 100);
