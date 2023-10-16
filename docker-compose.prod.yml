@@ -20,8 +20,6 @@ services:
     environment:
       - SERVICE_NAME=web-fusa
       - SERVICE_TAGS=prod
-    depends_on:
-      - db
     networks:
       - fusa-network
 
@@ -36,27 +34,6 @@ services:
     volumes:
       - ./backend:/var/www
       - ./backend/nginx/conf.d/:/etc/nginx/conf.d/
-    networks:
-      - fusa-network
-
-
-  db:
-    image: postgres:12.8-alpine
-    container_name: db-fusa
-    restart: unless-stopped
-    env_file:
-      - ./backend/.env
-    tty: true
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_HOST_AUTH_METHOD: trust
-      PGDATA: /var/lib/postgresql/data
-    volumes:
-      - pgdata-fusa-prod:/var/lib/postgresql/data
     networks:
       - fusa-network
 

@@ -8,8 +8,10 @@ use App\Http\Controllers\Clasificacion\NoConvencionalIndexController;
 use App\Http\Controllers\Clasificacion\NoConvencionalShowController;
 use App\Http\Controllers\Clasificacion\NoConvencionalStoreController;
 use App\Http\Controllers\GetPredioController;
+use App\Http\Controllers\Interesado\StoreColMiembros;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
 use App\Http\Controllers\Predio\IndexNumerosPredialesController;
+use App\Http\Controllers\Predio\StoreLcPredio;
 use App\Http\Controllers\Predio\StoreNumeroHomologadosController;
 use App\Http\Controllers\Predio\StoreNumeroPredialController;
 use Illuminate\Support\Facades\Route;
@@ -34,11 +36,13 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::prefix('v1')->group(function () {
     Route::get('predio/{id}', GetPredioController::class);
+    Route::post('predio', StoreLcPredio::class);
     Route::post('predio/numeros-prediales', StoreNumeroPredialController::class);
     Route::post('predio/numeros-homologados', StoreNumeroHomologadosController::class);
     Route::get('predio/list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
     Route::get('predio/list/local/numeros-prediales', IndexNumerosPredialesController::class);
 
+    Route::post('interesados', StoreColMiembros::class);
 
     Route::get('caracteristicasunidadconstruccion/convencional', ConvencionalIndexController::class);
     Route::get('caracteristicasunidadconstruccion/convencional/{id}', ConvencionalShowController::class);

@@ -14,7 +14,6 @@ class LcContactoVisitaLocal extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        't_ili_tid',
         'tipo_documento_quien_atendio',
         'numero_documento_quien_atendio',
         'primer_nombre_quien_atendio',

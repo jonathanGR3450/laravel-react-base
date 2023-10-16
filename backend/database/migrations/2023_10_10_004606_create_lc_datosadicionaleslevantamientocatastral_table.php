@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('lc_datosadicionaleslevantamientocatastral', function (Blueprint $table) {
             $table->bigIncrements('t_id');
-            $table->uuid('t_ili_tid')->default(DB::raw('public.uuid_generate_v4()'));
             $table->boolean('tiene_area_registral')->default(false);
             $table->decimal('area_registral_m2', 25, 2)->default(0);
             $table->bigInteger('procedimiento_catastral_registral')->default(0);

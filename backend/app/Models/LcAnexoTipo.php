@@ -17,7 +17,6 @@ class LcAnexoTipo extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        't_ili_tid',
         'thisclass',
         'baseclass',
         'itfcode',

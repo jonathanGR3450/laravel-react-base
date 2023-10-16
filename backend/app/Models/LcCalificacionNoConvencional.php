@@ -16,7 +16,6 @@ class LcCalificacionNoConvencional extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        't_ili_tid',
         'tipo_anexo',
         'lc_unidad_construccion',
     ];

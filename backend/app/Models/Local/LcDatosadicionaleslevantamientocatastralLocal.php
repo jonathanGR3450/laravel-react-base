@@ -14,7 +14,6 @@ class LcDatosadicionaleslevantamientocatastralLocal extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        't_ili_tid',
         'tiene_area_registral',
         'area_registral_m2',
         'procedimiento_catastral_registral',

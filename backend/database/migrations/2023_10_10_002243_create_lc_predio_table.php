@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('lc_predio', function (Blueprint $table) {
             $table->id('t_id');
-            $table->uuid('t_ili_tid')->default(DB::raw('uuid_generate_v4()'));
             $table->string('departamento', 2)->notNull();
             $table->string('municipio', 3)->notNull();
             $table->string('id_operacion', 30)->notNull();
