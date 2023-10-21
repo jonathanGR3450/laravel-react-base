@@ -4,6 +4,7 @@ namespace App\Models\Local;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LcNumerosHomologadosLocal extends Model
@@ -20,7 +21,7 @@ class LcNumerosHomologadosLocal extends Model
         'lc_numeros_prediales_id',
     ];
 
-    function numeroPredial(): HasOne {
-        return $this->hasOne(LcNumerosPredialLocal::class, 'lc_numeros_prediales_id', 't_id');
+    function numeroPredial(): BelongsTo {
+        return $this->belongsTo(LcNumerosPredialLocal::class, 'lc_numeros_prediales_id', 't_id');
     }
 }

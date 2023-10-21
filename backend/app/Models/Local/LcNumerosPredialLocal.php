@@ -23,4 +23,8 @@ class LcNumerosPredialLocal extends Model
     function direccion(): HasOne {
         return $this->hasOne(ExtDireccionLocal::class, 'lc_numeros_prediales_id', 't_id');
     }
+
+    function numeroHomologado(): HasOne {
+        return $this->hasOne(LcNumerosHomologadosLocal::class, 'lc_numeros_prediales_id', 't_id');
+    }
 }
