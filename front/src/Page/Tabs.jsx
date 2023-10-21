@@ -27,10 +27,8 @@ const Tabs = ({ tabs }) => {
   //Evento de los Select de los objetos de construccion
   const handleChange = (event) => {
     let { name, value } = event.target;
-
     let opt = event.target.options[event.target.selectedIndex];
     let nom = opt.dataset.nom;
-    console.log(nom);
     let toc = opt.dataset.toc;
     //guarda el valor del puntaje que se elije en el select
     setDjson({ ...djson, [name]: value });

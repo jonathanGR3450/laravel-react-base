@@ -9,7 +9,6 @@ import {
   NumPreProvider,
   TableContext,
 } from "./Context/Context";
-import { parse } from "papaparse";
 //Objetos base con los datos que se necesitan
 const PredioMatriz = {
   Dpto: "25",
@@ -18,7 +17,7 @@ const PredioMatriz = {
   Sector: "00",
   Comuna: "00",
   Barrio: "00",
-  Manzana: "0069",
+  Manzana: "0000",
   Terreno: "0000",
   Condicion: "0",
   Edificio: "00",
@@ -31,7 +30,6 @@ const PredioMatriz = {
 let tamaño = 0;
 //Array Final
 //25290010000000011001
-let ArrayFinal = [];
 //Array de datos Generados
 let ArrayPredial = [];
 //Array de los datos
@@ -137,7 +135,7 @@ export const NumPredialForm = () => {
         Sector: "00",
         Comuna: "00",
         Barrio: "00",
-        Manzana: "0069",
+        Manzana: "0000",
         Terreno: "0000",
         Condicion: "0",
         Edificio: "00",
@@ -610,9 +608,7 @@ export const NumPredialForm = () => {
         console.error("Error en dataDB:", error);
       }
     };
-    useEffect(() => {
-      console.log("Todos los Datos", allData);
-    }, [allData]);
+
     //Tamaño Minimo
     function validarCadena(e) {
       soloNumeros(e);
@@ -1668,73 +1664,3 @@ export const NumPredialForm = () => {
     </div>
   );
 };
-
-//Contexto para Guardar los Array Predial const { ArrayPredial, updateArrayPredial } =useContext(ArrayPredialContext);
-/*
-  /* var requestOptions = {
-      method: "GET",
-      redirect: "follow",
-    };
-    let url =
-      "http://localhost/api/v1/predio/list/numeros-prediales/" + dataMatriz;
-    fetch(url, requestOptions)
-      .then((response) => response.json())
-      .then((result) => datos())
-      .catch((error) => console.log("error", error));
-    
-
-  Object.entries(result.data.data).map((item, index) => {
-        console.log(item[1].numero_predial);
-      });
-      import React, { useState, useEffect } from 'react';
-
-const PaginatedDataFetcher = () => {
-  const [allData, setAllData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`http://localhost/api/v1/predio/list/numeros-prediales?page=${currentPage}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      return data.data || [];
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return [];
-    }
-  };
-
-  const fetchAllData = async () => {
-    let nextPage = true;
-    let tempData = [];
-    
-    while (nextPage) {
-      const data = await fetchData();
-      tempData = [...tempData, ...data];
-      nextPage = data.next_page_url !== null;
-      setCurrentPage(prevPage => prevPage + 1);
-    }
-
-    setAllData(tempData);
-  };
-
-  useEffect(() => {
-    fetchAllData();
-  }, []); // Fetch data on component mount
-
-  return (
-    <div>
-      <h2>Total de datos recopilados: {allData.length}</h2>
-      <ul>
-        {allData.map((item, index) => (
-          <li key={index}>{index + 1}. Número predial: {item.numero_predial}</li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default PaginatedDataFetcher;
-*/

@@ -16,7 +16,6 @@
       "Año Construccion": {
         "nom": "anio_construccion"
       },
-
       "Observacion": {
         "nom": "observaciones"
       }

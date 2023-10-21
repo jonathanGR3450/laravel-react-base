@@ -12,25 +12,39 @@ const Menu = () => {
       <nav className="h-he-5 bg-teal-500">
         <ul className="flex flex-row h-full  items-center ">
           <li>
-            <img className="h-8 ml-4 mr-4" src={Logoblanco} />
+            <img className="h-8 ml-2 mr-4" src={Logoblanco} />
           </li>
           <li className="text-white">
             <Link to="/Tablero">Home</Link>
           </li>
-          <li className="ml-4 text-white">
+          <li className="ml-2 text-white">
             <Link to="/Consulta/Tramite"> Consultar Tramite</Link>
           </li>
-          <li className="ml-4 text-white">
+          <li className="ml-2 text-white">
             <Link to="/Consulta/Predio">Consultar Predio</Link>
           </li>
-          <li className="ml-4 text-white">
+          <li className="ml-2 text-white">
             <Link to="/Ficha">Ficha Predial</Link>
           </li>
-          <li className="ml-4 text-white">
+          <li className="ml-2 text-white">
             <Link to="/NumPredial">Numero Predial</Link>
           </li>
-          <li className="ml-4 text-white">
+          <li className="ml-2 text-white">
             <Link to="/DataHom">Carga Datos Homologados</Link>
+          </li>
+
+          <li className="ml-2 text-white">
+            <Link to="/AddInteresado">Agregar Interesado (Propietario)</Link>
+          </li>
+
+          <li className="ml-2 text-white">
+            <Link to="/AddPredio">Predio</Link>
+          </li>
+          <li className="ml-2 text-white">
+            <Link to="/FuenteAdmin">Fuente Administrativa</Link>
+          </li>
+          <li className="ml-2 text-white">
+            <Link to="/AddDerecho">Derecho</Link>
           </li>
         </ul>
       </nav>
@@ -50,3 +64,5 @@ const Menu = () => {
 };
 
 export default Menu;
+/*
+ */

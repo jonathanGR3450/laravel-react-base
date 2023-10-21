@@ -6,7 +6,7 @@ import ApiTest from "./Api";
 import Tabs from "./Tabs";
 import { variable, destino, dataobjetoconstruccion } from "./DataContext";
 import { useParams } from "react-router-dom";
-
+import Estructura from "../Json/estructure.json";
 const UniconstForm = () => {
   let { info } = useParams();
   const [data, setData] = useState();
@@ -14,16 +14,9 @@ const UniconstForm = () => {
 
   //Cargar el json Structure
   function Load_Data() {
-    let api = ApiTest();
-    let url = import.meta.env.VITE_API_URL;
-    api.get(url).then((response) => {
-      if (!response.err) {
-        setData(response);
-      } else {
-        setData([]);
-      }
-      setLoading(false);
-    });
+    //let url = import.meta.env.VITE_API_URL;
+    setData(Estructura.general);
+    setLoading(false);
   }
 
   useEffect(() => {
