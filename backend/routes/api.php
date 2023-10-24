@@ -7,6 +7,10 @@ use App\Http\Controllers\Clasificacion\ConvencionalStoreController;
 use App\Http\Controllers\Clasificacion\NoConvencionalIndexController;
 use App\Http\Controllers\Clasificacion\NoConvencionalShowController;
 use App\Http\Controllers\Clasificacion\NoConvencionalStoreController;
+use App\Http\Controllers\Derecho\StoreLocal AS StoreDerechoLocal;
+use App\Http\Controllers\FuenteAdministrativa\StoreLocal AS StoreFuenteAdministrativaLocal;
+use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
+use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
 use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
 use App\Http\Controllers\Interesado\StoreColMiembros;
@@ -49,6 +53,14 @@ Route::prefix('v1')->group(function () {
 
     Route::get('interesados/{nit}', Show::class);
     Route::post('interesados', StoreColMiembros::class);
+
+    Route::post('derecho/local', StoreDerechoLocal::class);
+
+    Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
+
+    Route::post('terreno/local', StoreTerrenoLocal::class);
+
+    Route::post('construccion/local', StoreConstruccionLocal::class);
 
     Route::get('caracteristicasunidadconstruccion/convencional', ConvencionalIndexController::class);
     Route::get('caracteristicasunidadconstruccion/convencional/{id}', ConvencionalShowController::class);
