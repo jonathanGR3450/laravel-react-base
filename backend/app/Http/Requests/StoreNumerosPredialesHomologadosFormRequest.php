@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @OA\Schema(
- *    schema="StoreNumerosHomologadosFormRequest",
+ *    schema="StoreNumerosPredialesFormRequest",
  *    @OA\Property(
  *        property="numeros_prediales",
  *        type="array",
@@ -20,7 +20,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *    ),
  * )
  */
-class IndexNumerosHomologadosFormRequest extends FormRequest
+class StoreNumerosPredialesHomologadosFormRequest extends FormRequest
 {
     use ValidationErrorResponseTrait;
 
@@ -40,7 +40,9 @@ class IndexNumerosHomologadosFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'limit' => 'required|integer|min:1',
+            'numeros_relacion' => 'required|array|min:1',
+            'numeros_relacion.*.numero_predial' => 'required|exists:lc_numeros_prediales,numero_predial,taken,false',
+            'numeros_relacion.*.numero_homologado' => 'required|exists:lc_numeros_homologados,numeros_homologados,taken,false',
         ];
     }
 }
