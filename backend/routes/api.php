@@ -11,6 +11,7 @@ use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
 use App\Http\Controllers\Interesado\StoreColMiembros;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
+use App\Http\Controllers\Predio\IndexNumerosHomologadosController;
 use App\Http\Controllers\Predio\IndexNumerosPredialesController;
 use App\Http\Controllers\Predio\StoreLcPredio;
 use App\Http\Controllers\Predio\StoreNumeroHomologadosController;
@@ -36,12 +37,13 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::get('predio/{id}', GetPredioController::class);
     Route::post('predio', StoreLcPredio::class);
     Route::post('predio/numeros-prediales', StoreNumeroPredialController::class);
+    Route::get('predio/numeros-homologados', IndexNumerosHomologadosController::class);
     Route::post('predio/numeros-homologados', StoreNumeroHomologadosController::class);
     Route::get('predio/list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
     Route::get('predio/list/local/numeros-prediales', IndexNumerosPredialesController::class);
+    Route::get('predio/{id}', GetPredioController::class);
 
     Route::get('interesados/{nit}', Show::class);
     Route::post('interesados', StoreColMiembros::class);
