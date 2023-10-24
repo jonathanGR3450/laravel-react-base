@@ -10,6 +10,7 @@ use App\Http\Controllers\Clasificacion\NoConvencionalStoreController;
 use App\Http\Controllers\Derecho\StoreLocal AS StoreDerechoLocal;
 use App\Http\Controllers\FuenteAdministrativa\StoreLocal AS StoreFuenteAdministrativaLocal;
 use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
+use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
 use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
 use App\Http\Controllers\Interesado\StoreColMiembros;
@@ -58,6 +59,8 @@ Route::prefix('v1')->group(function () {
     Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
 
     Route::post('terreno/local', StoreTerrenoLocal::class);
+
+    Route::post('construccion/local', StoreConstruccionLocal::class);
 
     Route::get('caracteristicasunidadconstruccion/convencional', ConvencionalIndexController::class);
     Route::get('caracteristicasunidadconstruccion/convencional/{id}', ConvencionalShowController::class);
