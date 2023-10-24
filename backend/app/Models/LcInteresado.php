@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LcInteresado extends Model
 {
@@ -34,9 +35,28 @@ class LcInteresado extends Model
         'local_id',
     ];
 
-    // Relación con LcDerecho
-    public function derechos()
+    public function miembro()
     {
-        return $this->hasMany(LcDerecho::class, 'interesado_lc_interesado', 't_id');
+        return $this->hasOne(ColMiembro::class, 'interesado_lc_interesado', 't_id');
+    }
+
+    function tipoInteresado(): BelongsTo {
+        return $this->belongsTo(LcInteresadoTipo::class, 'tipo', 't_id');
+    }
+
+    function documentoTipo(): BelongsTo {
+        return $this->belongsTo(LcInteresadoDocumentoTipo::class, 'tipo_documento', 't_id');
+    }
+
+    function sexoTipo(): BelongsTo {
+        return $this->belongsTo(LcSexoTipo::class, 'sexo', 't_id');
+    }
+
+    function grupoEtnico(): BelongsTo {
+        return $this->belongsTo(LcGrupoEtnicoTipo::class, 'grupo_etnico', 't_id');
+    }
+
+    function estadoCivil(): BelongsTo {
+        return $this->belongsTo(LcEstadoCivilTipo::class, 'estado_civil', 't_id');
     }
 }

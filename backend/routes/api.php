@@ -8,6 +8,7 @@ use App\Http\Controllers\Clasificacion\NoConvencionalIndexController;
 use App\Http\Controllers\Clasificacion\NoConvencionalShowController;
 use App\Http\Controllers\Clasificacion\NoConvencionalStoreController;
 use App\Http\Controllers\GetPredioController;
+use App\Http\Controllers\Interesado\Show;
 use App\Http\Controllers\Interesado\StoreColMiembros;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
 use App\Http\Controllers\Predio\IndexNumerosPredialesController;
@@ -42,6 +43,7 @@ Route::prefix('v1')->group(function () {
     Route::get('predio/list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
     Route::get('predio/list/local/numeros-prediales', IndexNumerosPredialesController::class);
 
+    Route::get('interesados/{nit}', Show::class);
     Route::post('interesados', StoreColMiembros::class);
 
     Route::get('caracteristicasunidadconstruccion/convencional', ConvencionalIndexController::class);
