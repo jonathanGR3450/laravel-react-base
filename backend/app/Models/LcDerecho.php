@@ -16,7 +16,6 @@ class LcDerecho extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        't_ili_tid',
         'tipo',
         'fraccion_derecho',
         'fecha_inicio_tenencia',

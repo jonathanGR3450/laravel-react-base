@@ -1,0 +1,1846 @@
+{
+  "general": {
+    "Datos Generales": {
+      "Numero Pisos": {
+        "nom": "total_plantas"
+      },
+      "Numero Habitaciones": {
+        "nom": "total_habitaciones"
+      },
+      "Numero Baños": {
+        "nom": "total_banios"
+      },
+      "Numero Locales": {
+        "nom": "total_locales"
+      },
+      "Año Construccion": {
+        "nom": "anio_construccion"
+      },
+      "Observacion": {
+        "nom": "observaciones"
+      }
+    },
+    "Tipo Planta": [
+      {
+        "t_id": 680,
+        "dispname": "Piso"
+      },
+      {
+        "t_id": 681,
+        "dispname": "Mezanine"
+      },
+      {
+        "t_id": 682,
+        "dispname": "Sótano"
+      },
+      {
+        "t_id": 683,
+        "dispname": "Semisótano"
+      },
+      {
+        "t_id": 684,
+        "dispname": "Subterráneo"
+      }
+    ],
+    "Convencional": {
+      "tipo_construccion": 66,
+      "Tipo Unidad Construccion": {
+        "Residencial": {
+          "id": 539,
+          "Uso": [
+            {
+              "t_id": 220,
+              "dispname": " Apartamentos 4 y más pisos en PH"
+            },
+            {
+              "t_id": 221,
+              "dispname": " Apartamentos en edificio de 4 y 5 pisos (Cartagena)"
+            },
+            {
+              "t_id": 222,
+              "dispname": " Apartamentos más de 4 pisos"
+            },
+            {
+              "t_id": 223,
+              "dispname": " Barracas"
+            },
+            {
+              "t_id": 224,
+              "dispname": " Casa elbas"
+            },
+            {
+              "t_id": 225,
+              "dispname": " Depósitos o lockers"
+            },
+            {
+              "t_id": 226,
+              "dispname": " Garajes cubiertos"
+            },
+            {
+              "t_id": 227,
+              "dispname": " Garajes en PH"
+            },
+            {
+              "t_id": 228,
+              "dispname": " Salón comunal"
+            },
+            {
+              "t_id": 229,
+              "dispname": " Secadero de ropa"
+            },
+            {
+              "t_id": 230,
+              "dispname": " Vivienda colonial"
+            },
+            {
+              "t_id": 231,
+              "dispname": " Vivienda hasta 3 pisos"
+            },
+            {
+              "t_id": 232,
+              "dispname": " Vivienda hasta 3 pisos en PH"
+            },
+            {
+              "t_id": 233,
+              "dispname": " Vivienda recreacional"
+            },
+            {
+              "t_id": 234,
+              "dispname": " Vivienda recreacional en PH"
+            }
+          ]
+        },
+        "Comercial": {
+          "id": 540,
+          "Uso": [
+            {
+              "t_id": 235,
+              "dispname": " Bodegas comerciales - Grandes almacenes"
+            },
+            {
+              "t_id": 236,
+              "dispname": " Bodegas comerciales en PH"
+            },
+            {
+              "t_id": 237,
+              "dispname": " Centros comerciales"
+            },
+            {
+              "t_id": 238,
+              "dispname": " Centros comerciales en PH"
+            },
+            {
+              "t_id": 239,
+              "dispname": " Clubes - Casinos"
+            },
+            {
+              "t_id": 240,
+              "dispname": " Comercio"
+            },
+            {
+              "t_id": 241,
+              "dispname": " Comercio colonial"
+            },
+            {
+              "t_id": 242,
+              "dispname": " Comercio en PH"
+            },
+            {
+              "t_id": 243,
+              "dispname": " Hotel colonial"
+            },
+            {
+              "t_id": 244,
+              "dispname": " Hoteles"
+            },
+            {
+              "t_id": 245,
+              "dispname": " Hoteles en PH"
+            },
+            {
+              "t_id": 246,
+              "dispname": " Oficinas - Consultorios"
+            },
+            {
+              "t_id": 247,
+              "dispname": " Oficinas - Consultorios coloniales"
+            },
+            {
+              "t_id": 248,
+              "dispname": " Oficinas consultorios en PH"
+            },
+            {
+              "t_id": 249,
+              "dispname": " Parque de diversiones"
+            },
+            {
+              "t_id": 250,
+              "dispname": " Parqueaderos"
+            },
+            {
+              "t_id": 251,
+              "dispname": " Parqueaderos en PH"
+            },
+            {
+              "t_id": 252,
+              "dispname": " Pensiones y residencias"
+            },
+            {
+              "t_id": 253,
+              "dispname": " Plaza de mercado"
+            },
+            {
+              "t_id": 254,
+              "dispname": " Restaurante colonial"
+            },
+            {
+              "t_id": 255,
+              "dispname": " Restaurantes"
+            },
+            {
+              "t_id": 256,
+              "dispname": " Restaurantes en PH"
+            },
+            {
+              "t_id": 257,
+              "dispname": " Teatro - Cinemas"
+            },
+            {
+              "t_id": 258,
+              "dispname": " Teatro - Cinemas en PH"
+            }
+          ]
+        },
+        "Industrial": {
+          "id": 541,
+          "Uso": [
+            {
+              "t_id": 259,
+              "dispname": " Bodega casa bomba"
+            },
+            {
+              "t_id": 260,
+              "dispname": " Bodegas casa bomba en PH"
+            },
+            {
+              "t_id": 261,
+              "dispname": " Industrias"
+            },
+            {
+              "t_id": 262,
+              "dispname": " Industrias en PH"
+            },
+            {
+              "t_id": 263,
+              "dispname": " Talleres"
+            }
+          ]
+        },
+        "Institucional": {
+          "id": 542,
+          "Uso": [
+            {
+              "t_id": 264,
+              "dispname": " Aula de clases"
+            },
+            {
+              "t_id": 265,
+              "dispname": " Biblioteca"
+            },
+            {
+              "t_id": 266,
+              "dispname": " Cárceles"
+            },
+            {
+              "t_id": 267,
+              "dispname": " Casas de culto"
+            },
+            {
+              "t_id": 268,
+              "dispname": " Clínicas, hospitales, centros médicos"
+            },
+            {
+              "t_id": 269,
+              "dispname": " Colegios y universidades"
+            },
+            {
+              "t_id": 270,
+              "dispname": " Coliseos"
+            },
+            {
+              "t_id": 271,
+              "dispname": " Entidad educativa colonial colegio colonial"
+            },
+            {
+              "t_id": 272,
+              "dispname": " Estadios"
+            },
+            {
+              "t_id": 273,
+              "dispname": " Fuertes y Castillos"
+            },
+            {
+              "t_id": 274,
+              "dispname": " Iglesia"
+            },
+            {
+              "t_id": 275,
+              "dispname": " Iglesia en PH"
+            },
+            {
+              "t_id": 276,
+              "dispname": " Instalaciones militares"
+            },
+            {
+              "t_id": 277,
+              "dispname": " Jardín infantil en casa"
+            },
+            {
+              "t_id": 278,
+              "dispname": " Parque Cementerio"
+            },
+            {
+              "t_id": 279,
+              "dispname": " Planetario"
+            },
+            {
+              "t_id": 280,
+              "dispname": " Plaza de toros"
+            },
+            {
+              "t_id": 281,
+              "dispname": " Puestos de salud"
+            },
+            {
+              "t_id": 282,
+              "dispname": " Museos"
+            },
+            {
+              "t_id": 283,
+              "dispname": " Seminarios, conventos"
+            },
+            {
+              "t_id": 284,
+              "dispname": " Teatro"
+            },
+            {
+              "t_id": 285,
+              "dispname": " Unidad deportiva"
+            },
+            {
+              "t_id": 286,
+              "dispname": " Velódromo, patinódromo"
+            }
+          ]
+        }
+      },
+      "Destinacion": {
+        "Residencial": {
+          "tipo_calificar": "716",
+          "Estructura": {
+            "clase_calificacion": 1,
+            "Armazon": [
+              {
+                "tipo_objeto_construccion": 1,
+                "Nombre": "MADERA",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 2,
+                "Nombre": "PREFABRICADO",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 3,
+                "Nombre": "LADRILLO, BLOQUE",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 4,
+                "Nombre": "CONCRETO HASTA 3 PISOS",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 5,
+                "Nombre": "CONCRETO CUATRO O MAS PISOS",
+                "puntos": 6
+              }
+            ],
+            "Muros": [
+              {
+                "tipo_objeto_construccion": 6,
+                "Nombre": "MATERIALES DE DERECHO, ESTERILLA",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 7,
+                "Nombre": "BAHAREQUE, ADOBE, TAPIA",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 8,
+                "Nombre": "MADERA",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 8,
+                "Nombre": "CONCRETO PREFABRICADO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 9,
+                "Nombre": "LADRILLO, BLOQUE",
+                "puntos": 4
+              }
+            ],
+            "Cubierta": [
+              {
+                "tipo_objeto_construccion": 10,
+                "Nombre": "MATERIALES DE DESECHO, TELAS ASFALTICAS",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 11,
+                "Nombre": "ZINC, TEJA DE BARRO, ETERNIT RUSTICO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 12,
+                "Nombre": "ENTREPISO (CUBIERTA PROVISIONAL) PREFABRICADO",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 13,
+                "Nombre": "ETERNIT O TEJA DE BARRO (CUBIERTA SENCILLA)",
+                "puntos": 9
+              },
+              {
+                "tipo_objeto_construccion": 14,
+                "Nombre": "AZOTEA, ALUMINIO, PLACA SENCILLA CON ETERNIT O TEJA DE BARRO",
+                "puntos": 13
+              },
+              {
+                "tipo_objeto_construccion": 15,
+                "Nombre": "PLACA IMPERMEABILIZADA CUBIERTA LUJOSA U ORNAMENTAL",
+                "puntos": 16
+              }
+            ],
+            "Conservacion": [
+              {
+                "tipo_objeto_construccion": 16,
+                "Nombre": "MALO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 17,
+                "Nombre": "REGULAR",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 18,
+                "Nombre": "BUENO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 19,
+                "Nombre": "EXCELENTE",
+                "puntos": 5
+              }
+            ]
+          },
+          "Acabados Principales": {
+            "clase_calificacion": 2,
+            "Fachadas": [
+              {
+                "tipo_objeto_construccion": 20,
+                "Nombre": "POBRE",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 21,
+                "Nombre": "SENCILLA",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 22,
+                "Nombre": "REGULAR",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 23,
+                "Nombre": "BUENA",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 24,
+                "Nombre": "LUJOSA",
+                "puntos": 8
+              }
+            ],
+            "Cubrimiento Muros": [
+              {
+                "tipo_objeto_construccion": 25,
+                "Nombre": "SIN CUBRIMIENTO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 26,
+                "Nombre": "PAÑETE, PAPEL COMÚN, LADRILLO PRENSADO",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 27,
+                "Nombre": "ESTUCO, CERAMICA, PEPEL FINO",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 28,
+                "Nombre": "MADERA, PIEDRA ORNAMENTAL",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 29,
+                "Nombre": "MARMOL, LUJOSOS , OTROS",
+                "puntos": 4
+              }
+            ],
+            "Pisos": [
+              {
+                "tipo_objeto_construccion": 30,
+                "Nombre": "TIERRA PISADA",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 31,
+                "Nombre": "CEMENTO, MADERA BURDA",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 32,
+                "Nombre": "BALDOSA COMUN DE CEMENTO , TABLON LADRILLO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 33,
+                "Nombre": "LISTO MACHIHEMBRADO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 34,
+                "Nombre": "TABLETA, CAUCHO, ACRILICOM GRANITO, BALDOSA FINA",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 35,
+                "Nombre": "PARQUET, ALFOMBRA, RETAL DE MARMOL (GRANO PEQUEÑO)",
+                "puntos": 8
+              },
+              {
+                "tipo_objeto_construccion": 36,
+                "Nombre": "RETAL DE MARMOL, MARMOL, OTROS LUJOSOS",
+                "puntos": 9
+              }
+            ],
+
+            "Conservacion": [
+              {
+                "tipo_objeto_construccion": 16,
+                "Nombre": "MALO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 17,
+                "Nombre": "REGULAR",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 18,
+                "Nombre": "BUENO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 19,
+                "Nombre": "EXCELENTE",
+                "puntos": 5
+              }
+            ]
+          },
+          "Baño": {
+            "clase_calificacion": 3,
+            "Tamaño": [
+              {
+                "tipo_objeto_construccion": 41,
+                "Nombre": "SIN BAÑO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 42,
+                "Nombre": "ENCHAPES",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 43,
+                "Nombre": "MEDIANO",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 44,
+                "Nombre": "GRANDE",
+                "puntos": 3
+              }
+            ],
+            "Enchapes": [
+              {
+                "tipo_objeto_construccion": 45,
+                "Nombre": "SIN CUBRIMIENTO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 46,
+                "Nombre": "PAÑETE, BALDOSA COMUN DE CEMENTO",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 47,
+                "Nombre": "BALDOSIN UNICOLOR, PAPEL COMUN",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 48,
+                "Nombre": "BALDOSIN DECORADO, PAPEL FINO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 49,
+                "Nombre": "CERAMICA, CRISTANAC, GRANITO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 50,
+                "Nombre": "MARMOL, ENCHAPE LUJOSO",
+                "puntos": 5
+              }
+            ],
+            "Mobiliario": [
+              {
+                "tipo_objeto_construccion": 51,
+                "Nombre": "POBRE",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 52,
+                "Nombre": "SENCILLO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 53,
+                "Nombre": "REGULAR",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 54,
+                "Nombre": "BUENO",
+                "puntos": 9
+              },
+              {
+                "tipo_objeto_construccion": 55,
+                "Nombre": "LUJOSO",
+                "puntos": 11
+              }
+            ],
+            "Conservacion": [
+              {
+                "tipo_objeto_construccion": 16,
+                "Nombre": "MALO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 17,
+                "Nombre": "REGULAR",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 18,
+                "Nombre": "BUENO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 19,
+                "Nombre": "EXCELENTE",
+                "puntos": 5
+              }
+            ]
+          },
+          "Cocina": {
+            "clase_calificacion": 4,
+            "Tamaño": [
+              {
+                "tipo_objeto_construccion": 60,
+                "Nombre": "SIN COCINA",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 61,
+                "Nombre": "PEQUEÑA",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 62,
+                "Nombre": "MEDIANA",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 63,
+                "Nombre": "GRANDE",
+                "puntos": 3
+              }
+            ],
+            "Enchapes": [
+              {
+                "tipo_objeto_construccion": 64,
+                "Nombre": "SIN CUBRIMIENTO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 65,
+                "Nombre": "PAÑETE, BALDOSA COMUN DE CEMENTO",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 66,
+                "Nombre": "BALDOSIN UNICOLOR, PAPEL COMUN",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 67,
+                "Nombre": "BALDOSIN DECORADO, PAPEL FINO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 68,
+                "Nombre": "CERAMICA, CRISTANAC, GRANITO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 69,
+                "Nombre": "MARMOL, ENCHAPE LUJOSO",
+                "puntos": 5
+              }
+            ],
+            "Mobiliario": [
+              {
+                "tipo_objeto_construccion": 70,
+                "Nombre": "POBRE",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 71,
+                "Nombre": "SENCILLO",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 71,
+                "Nombre": "REGULAR",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 72,
+                "Nombre": "BUENO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 73,
+                "Nombre": "LUJOSO",
+                "puntos": 6
+              }
+            ],
+            "Conservacion": [
+              {
+                "tipo_objeto_construccion": 16,
+                "Nombre": "MALO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 17,
+                "Nombre": "REGULAR",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 18,
+                "Nombre": "BUENO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 19,
+                "Nombre": "EXCELENTE",
+                "puntos": 5
+              }
+            ]
+          }
+        },
+        "Comercial": {
+          "tipo_calificar": "718",
+          "Estructura": {
+            "clase_calificacion": 1,
+            "Armazon": [
+              {
+                "tipo_objeto_construccion": 78,
+                "Nombre": "MADERA",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 79,
+                "Nombre": "PREFABRICADO",
+                "puntos": 8
+              },
+              {
+                "tipo_objeto_construccion": 80,
+                "Nombre": "LADRILLO, BLOQUE",
+                "puntos": 12
+              },
+              {
+                "tipo_objeto_construccion": 81,
+                "Nombre": "CONCRETO HASTA 3 PISOS",
+                "puntos": 22
+              },
+              {
+                "tipo_objeto_construccion": 82,
+                "Nombre": "CONCRETO CUATRO O MAS PISOS",
+                "puntos": 22
+              }
+            ],
+            "Muros": [
+              {
+                "tipo_objeto_construccion": 6,
+                "Nombre": "MATERIALES DE DERECHO, ESTERILLA",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 7,
+                "Nombre": "BAHAREQUE, ADOBE, TAPIA",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 8,
+                "Nombre": "MADERA",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 8,
+                "Nombre": "CONCRETO PREFABRICADO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 9,
+                "Nombre": "LADRILLO, BLOQUE",
+                "puntos": 4
+              }
+            ],
+            "Cubierta": [
+              {
+                "tipo_objeto_construccion": 10,
+                "Nombre": "MATERIALES DE DESECHO, TELAS ASFALTICAS",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 11,
+                "Nombre": "ZINC, TEJA DE BARRO, ETERNIT RUSTICO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 12,
+                "Nombre": "ENTREPISO (CUBIERTA PROVISIONAL) PREFABRICADO",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 13,
+                "Nombre": "ETERNIT O TEJA DE BARRO (CUBIERTA SENCILLA)",
+                "puntos": 9
+              },
+              {
+                "tipo_objeto_construccion": 14,
+                "Nombre": "AZOTEA, ALUMINIO, PLACA SENCILLA CON ETERNIT O TEJA DE BARRO",
+                "puntos": 13
+              },
+              {
+                "tipo_objeto_construccion": 15,
+                "Nombre": "PLACA IMPERMEABILIZADA CUBIERTA LUJOSA U ORNAMENTAL",
+                "puntos": 16
+              }
+            ],
+
+            "Conservacion": [
+              {
+                "tipo_objeto_construccion": 16,
+                "Nombre": "MALO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 17,
+                "Nombre": "REGULAR",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 18,
+                "Nombre": "BUENO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 19,
+                "Nombre": "EXCELENTE",
+                "puntos": 5
+              }
+            ]
+          },
+          "Acabados Principales": {
+            "clase_calificacion": 2,
+            "Fachadas": [
+              {
+                "tipo_objeto_construccion": 83,
+                "Nombre": "POBRE",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 84,
+                "Nombre": "SENCILLA",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 85,
+                "Nombre": "REGULAR",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 86,
+                "Nombre": "BUENA",
+                "puntos": 8
+              },
+              {
+                "tipo_objeto_construccion": 87,
+                "Nombre": "LUJOSA",
+                "puntos": 12
+              }
+            ],
+            "Cubrimiento Muros": [
+              {
+                "tipo_objeto_construccion": 20,
+                "Nombre": "SIN CUBRIMIENTO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 88,
+                "Nombre": "PAÑETE, PAPEL COMÚN, LADRILLO PRENSADO",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 89,
+                "Nombre": "ESTUCO, CERAMICA, PEPEL FINO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 90,
+                "Nombre": "MADERA, PIEDRA ORNAMENTAL",
+                "puntos": 5
+              },
+              {
+                "tipo_objeto_construccion": 91,
+                "Nombre": "MARMOL, LUJOSOS , OTROS",
+                "puntos": 7
+              }
+            ],
+            "Pisos": [
+              {
+                "tipo_objeto_construccion": 30,
+                "Nombre": "TIERRA PISADA",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 92,
+                "Nombre": "CEMENTO, MADERA BURDA",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 93,
+                "Nombre": "BALDOSA COMUN DE CEMENTO , TABLON LADRILLO",
+                "puntos": 5
+              },
+              {
+                "tipo_objeto_construccion": 94,
+                "Nombre": "LISTO MACHIHEMBRADO",
+                "puntos": 7
+              },
+              {
+                "tipo_objeto_construccion": 95,
+                "Nombre": "TABLETA, CAUCHO, ACRILICOM GRANITO, BALDOSA FINA",
+                "puntos": 9
+              },
+              {
+                "tipo_objeto_construccion": 96,
+                "Nombre": "PARQUET, ALFOMBRA, RETAL DE MARMOL (GRANO PEQUEÑO)",
+                "puntos": 11
+              },
+              {
+                "tipo_objeto_construccion": 97,
+                "Nombre": "RETAL DE MARMOL, MARMOL, OTROS LUJOSOS",
+                "puntos": 13
+              }
+            ],
+
+            "Conservacion": [
+              {
+                "tipo_objeto_construccion": 16,
+                "Nombre": "MALO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 17,
+                "Nombre": "REGULAR",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 18,
+                "Nombre": "BUENO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 19,
+                "Nombre": "EXCELENTE",
+                "puntos": 5
+              }
+            ]
+          },
+          "Baño": {
+            "clase_calificacion": 3,
+            "Mobiliario": [
+              {
+                "tipo_objeto_construccion": 51,
+                "Nombre": "POBRE",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 52,
+                "Nombre": "SENCILLO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 53,
+                "Nombre": "REGULAR",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 54,
+                "Nombre": "BUENO",
+                "puntos": 9
+              },
+              {
+                "tipo_objeto_construccion": 97,
+                "Nombre": "LUJOSO",
+                "puntos": 16
+              }
+            ]
+          },
+          "Cocina": {
+            "clase_calificacion": 4,
+            "Mobiliario": [
+              {
+                "tipo_objeto_construccion": 74,
+                "Nombre": "POBRE",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 99,
+                "Nombre": "SENCILLO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 100,
+                "Nombre": "REGULAR",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 101,
+                "Nombre": "BUENO",
+                "puntos": 9
+              },
+              {
+                "tipo_objeto_construccion": 102,
+                "Nombre": "LUJOSO",
+                "puntos": 13
+              }
+            ]
+          }
+        },
+        "Industrial": {
+          "tipo_calificar": "717",
+          "Estructura": {
+            "clase_calificacion": 1,
+            "Armazon": [
+              {
+                "tipo_objeto_construccion": 78,
+                "Nombre": "MADERA",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 79,
+                "Nombre": "PREFABRICADO",
+                "puntos": 8
+              },
+              {
+                "tipo_objeto_construccion": 80,
+                "Nombre": "LADRILLO, BLOQUE",
+                "puntos": 12
+              },
+              {
+                "tipo_objeto_construccion": 81,
+                "Nombre": "CONCRETO HASTA 3 PISOS",
+                "puntos": 22
+              },
+              {
+                "tipo_objeto_construccion": 82,
+                "Nombre": "CONCRETO CUATRO O MAS PISOS",
+                "puntos": 22
+              }
+            ],
+            "Muros": [
+              {
+                "tipo_objeto_construccion": 6,
+                "Nombre": "MATERIALES DE DERECHO, ESTERILLA",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 7,
+                "Nombre": "BAHAREQUE, ADOBE, TAPIA",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 8,
+                "Nombre": "MADERA",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 8,
+                "Nombre": "CONCRETO PREFABRICADO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 9,
+                "Nombre": "LADRILLO, BLOQUE",
+                "puntos": 4
+              }
+            ],
+            "Cubierta": [
+              {
+                "tipo_objeto_construccion": 10,
+                "Nombre": "MATERIALES DE DESECHO, TELAS ASFALTICAS",
+                "puntos": 1
+              },
+              {
+                "tipo_objeto_construccion": 11,
+                "Nombre": "ZINC, TEJA DE BARRO, ETERNIT RUSTICO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 12,
+                "Nombre": "ENTREPISO (CUBIERTA PROVISIONAL) PREFABRICADO",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 13,
+                "Nombre": "ETERNIT O TEJA DE BARRO (CUBIERTA SENCILLA)",
+                "puntos": 9
+              },
+              {
+                "tipo_objeto_construccion": 14,
+                "Nombre": "AZOTEA, ALUMINIO, PLACA SENCILLA CON ETERNIT O TEJA DE BARRO",
+                "puntos": 13
+              },
+              {
+                "tipo_objeto_construccion": 15,
+                "Nombre": "PLACA IMPERMEABILIZADA CUBIERTA LUJOSA U ORNAMENTAL",
+                "puntos": 16
+              }
+            ],
+            "Conservacion": [
+              {
+                "tipo_objeto_construccion": 16,
+                "Nombre": "MALO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 17,
+                "Nombre": "REGULAR",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 18,
+                "Nombre": "BUENO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 19,
+                "Nombre": "EXCELENTE",
+                "puntos": 5
+              }
+            ]
+          },
+          "Acabados Principales": {
+            "clase_calificacion": 2,
+            "Fachadas": [
+              {
+                "tipo_objeto_construccion": 83,
+                "Nombre": "POBRE",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 84,
+                "Nombre": "SENCILLA",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 85,
+                "Nombre": "REGULAR",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 86,
+                "Nombre": "BUENA",
+                "puntos": 8
+              },
+              {
+                "tipo_objeto_construccion": 87,
+                "Nombre": "LUJOSA",
+                "puntos": 12
+              }
+            ],
+            "Cubrimiento Muros": [
+              {
+                "tipo_objeto_construccion": 20,
+                "Nombre": "SIN CUBRIMIENTO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 88,
+                "Nombre": "PAÑETE, PAPEL COMÚN, LADRILLO PRENSADO",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 89,
+                "Nombre": "ESTUCO, CERAMICA, PEPEL FINO",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 90,
+                "Nombre": "MADERA, PIEDRA ORNAMENTAL",
+                "puntos": 5
+              },
+              {
+                "tipo_objeto_construccion": 91,
+                "Nombre": "MARMOL, LUJOSOS , OTROS",
+                "puntos": 7
+              }
+            ],
+            "Pisos": [
+              {
+                "tipo_objeto_construccion": 30,
+                "Nombre": "TIERRA PISADA",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 92,
+                "Nombre": "CEMENTO, MADERA BURDA",
+                "puntos": 3
+              },
+              {
+                "tipo_objeto_construccion": 93,
+                "Nombre": "BALDOSA COMUN DE CEMENTO , TABLON LADRILLO",
+                "puntos": 5
+              },
+              {
+                "tipo_objeto_construccion": 94,
+                "Nombre": "LISTO MACHIHEMBRADO",
+                "puntos": 7
+              },
+              {
+                "tipo_objeto_construccion": 95,
+                "Nombre": "TABLETA, CAUCHO, ACRILICOM GRANITO, BALDOSA FINA",
+                "puntos": 9
+              },
+              {
+                "tipo_objeto_construccion": 96,
+                "Nombre": "PARQUET, ALFOMBRA, RETAL DE MARMOL (GRANO PEQUEÑO)",
+                "puntos": 11
+              },
+              {
+                "tipo_objeto_construccion": 97,
+                "Nombre": "RETAL DE MARMOL, MARMOL, OTROS LUJOSOS",
+                "puntos": 13
+              }
+            ],
+
+            "Conservacion": [
+              {
+                "tipo_objeto_construccion": 16,
+                "Nombre": "MALO",
+                "puntos": 0
+              },
+              {
+                "tipo_objeto_construccion": 17,
+                "Nombre": "REGULAR",
+                "puntos": 2
+              },
+              {
+                "tipo_objeto_construccion": 18,
+                "Nombre": "BUENO",
+                "puntos": 4
+              },
+              {
+                "tipo_objeto_construccion": 19,
+                "Nombre": "EXCELENTE",
+                "puntos": 5
+              }
+            ]
+          },
+          "Complemento Industria": {
+            "clase_calificacion": 5,
+            "Cerchas": [
+              {
+                "tipo_objeto_construccion": 103,
+                "Nombre": "MADERA",
+                "puntos": 6
+              },
+              {
+                "tipo_objeto_construccion": 104,
+                "Nombre": "METALICA LIVIANA",
+                "puntos": 12
+              },
+              {
+                "tipo_objeto_construccion": 105,
+                "Nombre": "METALICA MEDIANA",
+                "puntos": 22
+              },
+              {
+                "tipo_objeto_construccion": 106,
+                "Nombre": "METALICA PESADA",
+                "puntos": 34
+              },
+              {
+                "tipo_objeto_construccion": 107,
+                "Nombre": "ALTURA",
+                "puntos": 6
+              }
+            ]
+          }
+        }
+      }
+    },
+    "No_Convencional": {
+      "tipo_construccion": 67,
+      "Tipo Unidad Construccion": {
+        "Anexo": {
+          "id": 543,
+          "Uso": [
+            {
+              "t_id": 287,
+              "dispname": " Albercas - Bañaderas"
+            },
+            {
+              "t_id": 288,
+              "dispname": " Beneficiaderos"
+            },
+            {
+              "t_id": 289,
+              "dispname": " Camaroneras"
+            },
+            {
+              "t_id": 290,
+              "dispname": " Canchas"
+            },
+            {
+              "t_id": 291,
+              "dispname": " Canchas de tenis"
+            },
+            {
+              "t_id": 292,
+              "dispname": " Carretera"
+            },
+            {
+              "t_id": 293,
+              "dispname": " Cerramiento"
+            },
+            {
+              "t_id": 294,
+              "dispname": " Cimientos, estructura, muros y placa base"
+            },
+            {
+              "t_id": 295,
+              "dispname": " Cocheras - Marraneras - Porquerizas"
+            },
+            {
+              "t_id": 296,
+              "dispname": " Construcción en membrana arquitectónica"
+            },
+            {
+              "t_id": 297,
+              "dispname": " Contenedor"
+            },
+            {
+              "t_id": 298,
+              "dispname": " Corrales"
+            },
+            {
+              "t_id": 299,
+              "dispname": " Establos - Pesebreras - Caballerizas"
+            },
+            {
+              "t_id": 300,
+              "dispname": " Estación de bombeo"
+            },
+            {
+              "t_id": 301,
+              "dispname": " Estación de sistema de transporte"
+            },
+            {
+              "t_id": 302,
+              "dispname": " Galpones - Gallineros"
+            },
+            {
+              "t_id": 303,
+              "dispname": " Hangar"
+            },
+            {
+              "t_id": 304,
+              "dispname": " Kioscos"
+            },
+            {
+              "t_id": 305,
+              "dispname": " Lagunas de oxidación"
+            },
+            {
+              "t_id": 306,
+              "dispname": " Marquesinas - Patios cubiertos"
+            },
+            {
+              "t_id": 307,
+              "dispname": " Muelles"
+            },
+            {
+              "t_id": 308,
+              "dispname": " Murallas"
+            },
+            {
+              "t_id": 309,
+              "dispname": " Pérgolas"
+            },
+            {
+              "t_id": 310,
+              "dispname": " Piscinas"
+            },
+            {
+              "t_id": 311,
+              "dispname": " Pista aeropuerto"
+            },
+            {
+              "t_id": 312,
+              "dispname": " Pozos"
+            },
+            {
+              "t_id": 313,
+              "dispname": " Ramadas - Cobertizos - Caneyes"
+            },
+            {
+              "t_id": 314,
+              "dispname": " Secaderos"
+            },
+            {
+              "t_id": 315,
+              "dispname": " Silos"
+            },
+            {
+              "t_id": 316,
+              "dispname": " Tanques"
+            },
+            {
+              "t_id": 317,
+              "dispname": " Toboganes"
+            },
+            {
+              "t_id": 318,
+              "dispname": " Torre de control"
+            },
+            {
+              "t_id": 319,
+              "dispname": " Torres de enfriamiento"
+            },
+            {
+              "t_id": 320,
+              "dispname": " Unidad predial por construir"
+            },
+            {
+              "t_id": 321,
+              "dispname": " Vía férrea"
+            }
+          ]
+        }
+      },
+      "Destinacion": {
+        "Enramadas, Cobertizos, Caneyes": [
+          {
+            "tipo_anexo": 452,
+            "Tipo": 90
+          },
+          {
+            "tipo_anexo": 453,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 454,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 455,
+            "Tipo": 40
+          }
+        ],
+        "Galpones o Gallineros": [
+          {
+            "tipo_anexo": 456,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 457,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 458,
+            "Tipo": 40
+          },
+          {
+            "tipo_anexo": 459,
+            "Tipo": 20
+          }
+        ],
+        "Establos o Pesebreras": [
+          {
+            "tipo_anexo": 460,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 461,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 462,
+            "Tipo": 40
+          },
+          {
+            "tipo_anexo": 463,
+            "Tipo": 20
+          }
+        ],
+        "Cocheras, Marraneras, Porquerizas": [
+          {
+            "tipo_anexo": 464,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 465,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 466,
+            "Tipo": 40
+          },
+          {
+            "tipo_anexo": 467,
+            "Tipo": 20
+          }
+        ],
+        "Silos": [
+          {
+            "tipo_anexo": 468,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 469,
+            "Tipo": 60
+          }
+        ],
+        "Piscinas": [
+          {
+            "tipo_anexo": 470,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 471,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 472,
+            "Tipo": 50
+          },
+          {
+            "tipo_anexo": 473,
+            "Tipo": 40
+          }
+        ],
+        "Tanques": [
+          {
+            "tipo_anexo": 474,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 475,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 476,
+            "Tipo": 50
+          },
+          {
+            "tipo_anexo": 477,
+            "Tipo": 40
+          }
+        ],
+        "Beneficiaderos": [
+          {
+            "tipo_anexo": 478,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 479,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 480,
+            "Tipo": 40
+          }
+        ],
+        "Secaderos": [
+          {
+            "tipo_anexo": 481,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 482,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 483,
+            "Tipo": 40
+          }
+        ],
+        "Kioscos": [
+          {
+            "tipo_anexo": 484,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 485,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 486,
+            "Tipo": 40
+          },
+          {
+            "tipo_anexo": 487,
+            "Tipo": 20
+          }
+        ],
+        "Albercas, Bañaderas": [
+          {
+            "tipo_anexo": 488,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 489,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 490,
+            "Tipo": 40
+          }
+        ],
+        "Corrales": [
+          {
+            "tipo_anexo": 491,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 492,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 493,
+            "Tipo": 40
+          },
+          {
+            "tipo_anexo": 494,
+            "Tipo": 20
+          }
+        ],
+        "Pozos": [
+          {
+            "tipo_anexo": 495,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 496,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 497,
+            "Tipo": 40
+          }
+        ],
+        "Torres Enfriamiento": [
+          {
+            "tipo_anexo": 498
+          }
+        ],
+        "Muelles": [
+          {
+            "tipo_anexo": 499,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 500,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 501,
+            "Tipo": 40
+          }
+        ],
+        "Cancha Tenis": [
+          {
+            "tipo_anexo": 502,
+            "Tipo": 20
+          },
+          {
+            "tipo_anexo": 503,
+            "Tipo": 10
+          }
+        ],
+        "Toboganes": [
+          {
+            "tipo_anexo": 504,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 505,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 506,
+            "Tipo": 50
+          },
+          {
+            "tipo_anexo": 507,
+            "Tipo": 40
+          }
+        ],
+        "Marquesinas, Patios, Cubiertos": [
+          {
+            "tipo_anexo": 508,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 509,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 510,
+            "Tipo": 40
+          },
+          {
+            "tipo_anexo": 511,
+            "Tipo": 20
+          }
+        ],
+        "Estadios, Coliseos": [
+          {
+            "tipo_anexo": 512,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 513,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 514,
+            "Tipo": 40
+          }
+        ],
+        "Plaza de Toros": [
+          {
+            "tipo_anexo": 515,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 516,
+            "Tipo": 20
+          }
+        ],
+        "Via Ferrea": [
+          {
+            "tipo_anexo": 517,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 518,
+            "Tipo": 60
+          }
+        ],
+        "Carreteras": [
+          {
+            "tipo_anexo": 519,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 520,
+            "Tipo": 40
+          }
+        ],
+        "Cimientos, Estructura, Muros, Placabase": [
+          {
+            "tipo_anexo": 521,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 522,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 523,
+            "Tipo": 40
+          },
+          {
+            "tipo_anexo": 524,
+            "Tipo": 20
+          }
+        ],
+        "Estructuras Aeroportuarias": [
+          {
+            "tipo_anexo": 525,
+            "Tipo": 80
+          },
+          {
+            "tipo_anexo": 526,
+            "Tipo": 60
+          },
+          {
+            "tipo_anexo": 527,
+            "Tipo": 40
+          }
+        ],
+        "Laguna de Oxidacion": [
+          {
+            "tipo_anexo": 508,
+            "Tipo": 20
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,264 @@
+{
+  "data": [
+    {
+      "Generales": [
+        {
+          "Construccion": [
+            {
+              "Nombre": "A",
+              "Residencial": [
+                {
+                  "Estructura": [
+                    {
+                      "Armazon": [
+                        {
+                          "Nom_Tipo": "Ladrillo,Bloque",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "Muros": [
+                        {
+                          "Nom_Tipo": "Bloque,Ladrillo",
+                          "Puntaje": "4"
+                        }
+                      ],
+                      "Cubierta": [
+                        {
+                          "Nom_Tipo": "Entrepiso(Cubierta Provisional) Prefabricado",
+                          "Puntaje": "6"
+                        }
+                      ],
+                      "Conservacion": [
+                        {
+                          "Nom_Tipo": "Excelente",
+                          "Puntaje": "4"
+                        }
+                      ],
+                      "SubTotal": 16
+                    }
+                  ],
+                  "Acabados": [
+                    {
+                      "Fachadas": [
+                        {
+                          "Nom_Tipo": "Buena",
+                          "Puntaje": "6"
+                        }
+                      ],
+                      "Cubrimiento_Muros": [
+                        {
+                          "Nom_Tipo": "Estuco,Ceramica,Papel Fino",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "Pisos": [
+                        {
+                          "Nom_Tipo": "Cemento, Madera Burda",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "Conservacion": [
+                        {
+                          "Nom_Tipo": "Regular",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "SubTotal": 12
+                    }
+                  ],
+                  "Baño": [
+                    {
+                      "Tamaño": [
+                        {
+                          "Nom_Tipo": "Pequeño",
+                          "Puntaje": "1"
+                        }
+                      ],
+                      "Enchapes": [
+                        {
+                          "Nom_Tipo": "Baldosin Unicolor, Papel Comun",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "Mobiliario": [
+                        {
+                          "Nom_Tipo": "Regular",
+                          "Puntaje": "6"
+                        }
+                      ],
+                      "Conservacion": [
+                        {
+                          "Nom_Tipo": "Regular",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "SubTotal": 11
+                    }
+                  ],
+                  "Cocina": [
+                    {
+                      "Tamaño": [
+                        {
+                          "Nom_Tipo": "Pequeño",
+                          "Puntaje": "1"
+                        }
+                      ],
+                      "Enchapes": [
+                        {
+                          "Nom_Tipo": "Baldosin Unicolor, Papel Comun",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "Mobiliario": [
+                        {
+                          "Nom_Tipo": "Regular",
+                          "Puntaje": "6"
+                        }
+                      ],
+                      "Conservacion": [
+                        {
+                          "Nom_Tipo": "Regular",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "SubTotal": 11
+                    }
+                  ],
+                  "Subtotal_Residencial": 50
+                }
+              ]
+            },
+            {
+              "Nombre": "B",
+              "Indus_Comer": [
+                {
+                  "Estructura": [
+                    {
+                      "Armazon": [
+                        {
+                          "Nom_Tipo": "Ladrillo,Bloque",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "Muros": [
+                        {
+                          "Nom_Tipo": "Bloque,Ladrillo",
+                          "Puntaje": "4"
+                        }
+                      ],
+                      "Cubierta": [
+                        {
+                          "Nom_Tipo": "Entrepiso(Cubierta Provisional) Prefabricado",
+                          "Puntaje": "6"
+                        }
+                      ],
+                      "Conservacion": [
+                        {
+                          "Nom_Tipo": "Excelente",
+                          "Puntaje": "4"
+                        }
+                      ],
+                      "SubTotal": 16
+                    }
+                  ],
+                  "Acabados": [
+                    {
+                      "Fachadas": [
+                        {
+                          "Tipo": "A",
+                          "Nom_Tipo": "Buena",
+                          "Puntaje": "6"
+                        }
+                      ],
+                      "Cubrimiento_Muros": [
+                        {
+                          "Tipo": "A",
+                          "Nom_Tipo": "Estuco,Ceramica,Papel Fino",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "Pisos": [
+                        {
+                          "Tipo": "A",
+                          "Nom_Tipo": "Cemento, Madera Burda",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "Conservacion": [
+                        {
+                          "Tipo": "A",
+                          "Nom_Tipo": "Regular",
+                          "Puntaje": "2"
+                        }
+                      ],
+                      "SubTotal": 12
+                    }
+                  ],
+                  "Baño": [
+                    {
+                      "Mobiliario": [
+                        {
+                          "Tipo": "A",
+                          "Nom_Tipo": "Regular",
+                          "Puntaje": "6"
+                        }
+                      ],
+                      "SubTotal": 6
+                    }
+                  ],
+                  "Cocina": [
+                    {
+                      "Mobiliario": [
+                        {
+                          "Tipo": "A",
+                          "Nom_Tipo": "Regular",
+                          "Puntaje": "6"
+                        }
+                      ],
+                      "SubTotal": 6
+                    }
+                  ],
+                  "Complemento Industria": [
+                    {
+                      "Cerchas": [
+                        {
+                          "Tipo": "A",
+                          "Nom_Tipo": "Madera",
+                          "Puntaje": "6"
+                        }
+                      ]
+                    }
+                  ],
+                  "Subtotal_Industrial": 40,
+                  "Total_Industrial": 34
+                }
+              ]
+            },
+            {
+              "Anexo": [{}]
+            }
+          ],
+          "Total": 90,
+          "Numero": [
+            {
+              "Total_Pisos": 0,
+              "Total_Habitaciones": 0,
+              "Total_Baños": 0,
+              "Total_Locales": 0
+            }
+          ],
+          "Año de Construccion": 0,
+          "Estrato": 0,
+          "Observaciones": "---",
+          "Fecha": [
+            {
+              "Dia": 6,
+              "Mes": 9,
+              "Año": 2023
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

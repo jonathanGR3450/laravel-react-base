@@ -1,0 +1,69 @@
+{
+  "data": [
+    {
+      "Predio": [
+        {
+          "Cedula Catastral": 1222,
+          "Matricula Inmobiliaria": "1234",
+          "Direccion": "CLL 23A NORTE 1 03 ESTE",
+          "Numero Predial": "252900100000012340001000000000",
+          "Nombre Propietario": "Pepito Perez"
+        },
+        {
+          "Cedula Catastral": 1234,
+          "Matricula Inmobiliaria": "1234",
+          "Direccion": "CLL 23A NORTE 1 03 ESTE",
+          "Numero Predial": "252900100000012340001000000000",
+          "Nombre Propietario": "Pepito Perez"
+        },
+        {
+          "Cedula Catastral": 14123,
+          "Matricula Inmobiliaria": "1234",
+          "Direccion": "CLL 23A NORTE 1 03 ESTE",
+          "Numero Predial": "252900100000012340001000000000",
+          "Nombre Propietario": "Pepito Perez"
+        }
+      ],
+      "Datos_Adicionales_Levan_Pred": [
+        {
+          "id_datos": 1112,
+          "Tiene_Area_Registral": "True",
+          "Area_Registral_m2": 200
+        },
+        {
+          "id_datos": 2314123,
+          "Tiene_Area_Registral": "True",
+          "Area_Registral_m2": 250
+        },
+        {
+          "id_datos": 313123123,
+          "Tiene_Area_Registral": "True",
+          "Area_Registral_m2": 150
+        }
+      ],
+      "Construccion": [
+        {
+          "id_construccion": 112312,
+          "Numero_Pisos": 5,
+          "Numero_Sotanos": 2,
+          "Anio_Construccion": 2000,
+          "Avaluo_Construccion": "$ 100.000.000"
+        },
+        {
+          "id_construccion": 21231241,
+          "Numero_Pisos": 2,
+          "Numero_Sotanos": 1,
+          "Anio_Construccion": 2000,
+          "Avaluo_Construccion": "$ 80.000.000"
+        },
+        {
+          "id_construccion": 31231231,
+          "Numero_Pisos": 1,
+          "Numero_Sotanos": 0,
+          "Anio_Construccion": 2000,
+          "Avaluo_Construccion": "$ 50.000.000"
+        }
+      ]
+    }
+  ]
+}

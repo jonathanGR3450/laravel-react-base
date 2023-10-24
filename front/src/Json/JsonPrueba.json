@@ -1,0 +1,33 @@
+{
+  "numeros_prediales": [
+    {
+      "numero_predial": 123,
+      "matricula_inmobiliaria": "21212",
+      "extdireccion": {
+        "t_id": 75418,
+        "t_seq": null,
+        "tipo_direccion": 219,
+        "es_direccion_principal": false,
+        "codigo_postal": null,
+        "clase_via_principal": null,
+        "valor_via_principal": null,
+        "letra_via_principal": null,
+        "sector_ciudad": null,
+        "valor_via_generadora": null,
+        "letra_via_generadora": null,
+        "numero_predio": null,
+        "sector_predio": null,
+        "complemento": null,
+        "nombre_predio": "",
+        "extunidadedificcnfsica_ext_direccion_id": null,
+        "extinteresado_ext_direccion_id": null,
+        "lc_construccion_ext_direccion_id": null,
+        "lc_nu_spcjrdcrdsrvcios_ext_direccion_id": null,
+        "lc_n_spcjrdcndddfccion_ext_direccion_id": null,
+        "lc_terreno_ext_direccion_id": null,
+        "lc_unidadconstruccion_ext_direccion_id": null,
+        "lc_servidumbretransito_ext_direccion_id": null
+      }
+    }
+  ]
+}
