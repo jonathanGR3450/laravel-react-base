@@ -16,6 +16,7 @@ use App\Http\Controllers\Predio\IndexNumerosPredialesController;
 use App\Http\Controllers\Predio\StoreLcPredio;
 use App\Http\Controllers\Predio\StoreNumeroHomologadosController;
 use App\Http\Controllers\Predio\StoreNumeroPredialController;
+use App\Http\Controllers\Predio\StoreNumeroPredialHomologadoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::prefix('v1')->group(function () {
     Route::post('predio', StoreLcPredio::class);
+    Route::post('predio/numeros-prediales/numeros-homologados', StoreNumeroPredialHomologadoController::class);
     Route::post('predio/numeros-prediales', StoreNumeroPredialController::class);
     Route::get('predio/numeros-homologados', IndexNumerosHomologadosController::class);
     Route::post('predio/numeros-homologados', StoreNumeroHomologadosController::class);
