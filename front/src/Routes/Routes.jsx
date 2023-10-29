@@ -8,11 +8,13 @@ import { ResumenForm } from "../Page/Resume";
 import { NumPredialForm } from "../Page/NumPredial";
 import { LoadCodHom } from "../Page/LoadCodHom";
 import { ArrayFinalProvider, TableProvider } from "../Page/Context/Context";
-import { FuenteAdminForm } from "../Page/FuenteAdmin";
-import { AddInteresadoForm } from "../Page/AddInteresado";
-import { InteresadoProvider } from "../Page/Context/InteresadoContext";
-import { DerechoForm } from "../Page/Derecho";
-import { NewPredioForm } from "../Page/Predio";
+import { DataProvider } from "../Page/Context/DataContext";
+//import FuenteAdminForm from "../Page/FuenteAdmin";
+//import { AddInteresadoForm } from "../Page/AddInteresado";
+
+//import { DerechoForm } from "../Page/Derecho";
+import { LoadDataForm } from "../Page/CargaDatos";
+import { LoadDataConstruccion } from "../Page/CargaConstruccion";
 const Ruta = () => {
   return (
     <Routes>
@@ -34,27 +36,30 @@ const Ruta = () => {
           }
         ></Route>
         <Route
-          path="/Predio"
+          path="/LoadData"
           element={
             <ArrayFinalProvider>
               <TableProvider>
-                <NewPredioForm />
+                <DataProvider>
+                  <LoadDataForm />
+                </DataProvider>
+              </TableProvider>
+            </ArrayFinalProvider>
+          }
+        ></Route>
+        <Route
+          path="/LoadConstruccion"
+          element={
+            <ArrayFinalProvider>
+              <TableProvider>
+                <DataProvider>
+                  <LoadDataConstruccion />
+                </DataProvider>
               </TableProvider>
             </ArrayFinalProvider>
           }
         ></Route>
         <Route path="/DataHom" element={<LoadCodHom />}></Route>
-        <Route path="/FuenteAdmin" element={<FuenteAdminForm />}></Route>
-
-        <Route
-          path="/AddInteresado"
-          element={
-            <InteresadoProvider>
-              <AddInteresadoForm />{" "}
-            </InteresadoProvider>
-          }
-        ></Route>
-        <Route path="/AddDerecho" element={<DerechoForm />}></Route>
       </Route>
     </Routes>
   );
@@ -63,3 +68,11 @@ const Ruta = () => {
 export default Ruta;
 //<Route path="/Dash"  Component = {LoginForm} />
 //<Route path="/AddPredio" element={<PredioForm />}></Route>
+/* <Route
+          path="/AddInteresado"
+          element={
+            <InteresadoProvider>
+              <AddInteresadoForm />{" "}
+            </InteresadoProvider>
+          }
+        ></Route> */

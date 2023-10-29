@@ -18,7 +18,6 @@ export const InteresadoProvider = ({ children }) => {
     console.log(aux);
     setInteresadoData(newData);
   };
-  console.log("Nuevos Datos", interesadoData);
   return (
     <InteresadoContext.Provider
       value={{ interesadoData, updateInteresadoData, updateDataFinal }}

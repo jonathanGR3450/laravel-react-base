@@ -19,7 +19,6 @@ export let ResumenForm = () => {
     if (e.target.value == "") {
       setObjeto(true);
     }
-    console.log("Entra");
   }
 
   let EditForm = () => {

@@ -1,23 +1,51 @@
-import { useState, useContext, useEffect } from "react";
+import { Modal } from "./Modal";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+  useContext,
+} from "react";
 import { InteresadoContext } from "./Context/InteresadoContext";
+import { TableContext } from "./Context/Context";
 
-export const AddInteresadoForm = () => {
+const InteresadoForm = (props, ref) => {
   //const [groupInterest, setGroupInterest] = useState(false);
+
+  const { tableData, updateTableData } = useContext(TableContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { updateInteresadoData, updateDataFinal } =
     useContext(InteresadoContext);
   const [isChecked, setIsChecked] = useState(false);
+
   const [dataInteresado, setDataInteresado] = useState({
     tipo: 0,
   });
-  console.log("actualizo");
-  const [estForm, setEstForm] = useState(0);
+
+  //const [estForm, setEstForm] = useState(0);
   const handleOnChange = () => {
     setIsChecked(!isChecked);
   };
+  let [dataId, setDataId] = useState({
+    first: "",
+    second: "",
+  });
+  const openModal = (aux) => {
+    aux.first = parseInt(aux.first);
+    aux.second = parseInt(aux.second);
+    setDataId(aux);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+
   function Load_Data(e) {
     const { name, value } = e.target;
-    console.log("nombre", name);
-    console.log("Valor", value);
     setDataInteresado((prevValues) => ({
       ...prevValues,
       [name]: value,
@@ -65,7 +93,6 @@ export const AddInteresadoForm = () => {
     };
     useEffect(() => {
       updateNom();
-      console.log("Entra");
     }, [
       dataInteresado.primer_nombre,
       dataInteresado.segundo_nombre,
@@ -256,16 +283,6 @@ export const AddInteresadoForm = () => {
               Guardar
             </button>
           </div>
-          <div className="w-1/3 flex flex-col items-center">
-            <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2 mt-4">
-              Ver Resumen
-            </button>
-          </div>
-          <div className="w-1/3 flex flex-col items-center">
-            <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2 mt-4">
-              Terminar Proceso
-            </button>
-          </div>
         </div>
       </div>
     );
@@ -295,7 +312,14 @@ export const AddInteresadoForm = () => {
         interesado_lc_interesado: dataInteresado,
       };
       updateInteresadoData(newData, 1);
-      updateDataFinal();
+
+      tableData.map((item, index) => {
+        if (index >= dataId.first - 1 && index <= dataId.second - 1) {
+          item.interesado = dataInteresado;
+          console.log(item);
+        }
+      });
+      updateTableData(tableData);
     }
     function Load_Data(e) {
       const { name, value } = e.target;
@@ -306,7 +330,6 @@ export const AddInteresadoForm = () => {
     }
     const updateNom = () => {
       const { razon_social } = dataInteresado;
-      console.log("asdas", razon_social);
       setDataInteresado({ ...dataInteresado, nombre: razon_social });
     };
     useEffect(() => {
@@ -380,21 +403,10 @@ export const AddInteresadoForm = () => {
               Guardar
             </button>
           </div>
-          <div className="w-1/3 flex flex-col items-center">
-            <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2 mt-4">
-              Ver Resumen
-            </button>
-          </div>
-          <div className="w-1/3 flex flex-col items-center">
-            <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2 mt-4">
-              Terminar Proceso
-            </button>
-          </div>
         </div>
       </div>
     );
   };
-
   const GroupInterestForm = () => {
     const { updateInteresadoData } = useContext(InteresadoContext);
     const [parti, setParti] = useState("");
@@ -481,63 +493,194 @@ export const AddInteresadoForm = () => {
       </div>
     );
   };
+  const [numInteresados, setNumInteresados] = useState();
+  const [interesados, setInteresados] = useState([]);
+  const [interesadosData, setInteresadosData] = useState();
 
-  return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-      <h1 className="text-2xl">Caracteristicas del Interesado</h1>
-      <p>A continuación se muestran las caracteristicas del Interesado:</p>
-      <div className="w-full pt-4 flex flex-col">
-        <h2 className="font-semibold">Datos Generales del Interesado</h2>
-        <div className="m-2 font-semibold">
-          <input
-            type="checkbox"
-            value="Grupo de Interesados ?"
-            checked={isChecked}
-            onChange={handleOnChange}
-          ></input>
-          <label> Grupo de Interesados ?</label>
-        </div>
-        {isChecked ? <GroupInterestForm /> : null}
+  const Load_Num = (e) => {
+    const newValue = parseInt(e.target.value);
+    setNumInteresados(newValue);
+    const newInteresadosData = Array.from({ length: newValue }, () => ({
+      tipo: 659,
+      tipo_documento: 0,
+      documento_identidad: "",
+      primer_nombre: "",
+      segundo_nombre: "",
+      primer_apellido: "",
+      segundo_apellido: "",
+      sexo: 0,
+      grupo_etnico: 0,
+      razon_social: "",
+      estado_civil: 0,
+      nombre: "",
+      comienzo_vida_util_version: "",
+      fin_vida_util_version: "",
+      espacio_de_nombres: "Fusagasuga",
+      local_id: "",
+    }));
+    setInteresadosData(newInteresadosData);
+  };
+  //Form de Interesados
+  const agregarInteresados = () => {
+    const nuevosInteresados = [];
+    for (let i = 0; i < numInteresados; i++) {
+      nuevosInteresados.push(
+        <ValidarInteresado
+          key={i}
+          index={i}
+          onDataChange={actualizarDatosInteresado}
+        />
+      );
+    }
+    console.log("datos sss", nuevosInteresados);
+    console.log("datos Interesados", interesadosData);
+    setInteresados(nuevosInteresados);
+  };
+  const actualizarDatosInteresado = (index, newData) => {
+    // Aquí puedes manejar los datos del Interesado individualmente
+    console.log(`Datos del Interesado ${index + 1}:`, newData);
+    setInteresadosData((prevData) => {
+      const newDataArray = [...prevData];
+      console.log("asdasdasdasd", newDataArray);
+      console.log("Inedx", index);
+      newDataArray[index] = newData;
+      console.log("as222", newDataArray);
+      return newDataArray;
+    });
+    //console.log("datos Array Completo", interesadosData);
+  };
+  useEffect(() => {
+    console.log("datos Array Completo actualizado", interesadosData);
+  }, [interesadosData]);
 
-        <div className="w-full flex flex-col">
-          <div className="w-full flex flex-row">
-            <div className="w-1/3 flex flex-col">
-              <label className="font-semibold">Tipo Interesado*:</label>
-              <select
-                name="tipo"
-                type="text"
-                className="border-2 p-1 rounded-md w-full"
-                onChange={Load_Data}
-              >
-                <option></option>
-                <option value={658}>Persona Natural</option>
-                <option value={659}>Persona Juridica</option>
-              </select>
-            </div>
+  const ValidarInteresado = (index, onDataChange) => {
+    const [dataInteresado, setDataInteresado] = useState({
+      tipo: 659,
+      tipo_documento: 0,
+      documento_identidad: "",
+      primer_nombre: "",
+      segundo_nombre: "",
+      primer_apellido: "",
+      segundo_apellido: "",
+      sexo: 0,
+      grupo_etnico: 0,
+      razon_social: "",
+      estado_civil: 0,
+      nombre: "",
+      comienzo_vida_util_version: "",
+      fin_vida_util_version: "",
+      espacio_de_nombres: "Fusagasuga",
+      local_id: "",
+    });
+    const Load_Data = (e) => {
+      const { name, value } = e.target;
+      setDataInteresado((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+
+      // Notificar cambios al componente principal
+    };
+    useEffect(() => {
+      index.onDataChange(index.index, dataInteresado);
+    }, [dataInteresado]);
+    return (
+      <div>
+        <h2>Interesado #{index.index + 1}</h2>
+        <div className="m-2 font-semibold flex flex-col">
+          <label>Validar Interesado</label>
+          <label>Tipo de Documento</label>
+          <select
+            type="text"
+            name="tipo_documento"
+            className="border-2 p-1 rounded-md w-full"
+            onChange={Load_Data}
+            value={dataInteresado.tipo_documento}
+          >
+            <option></option>
+            <option value={529}>Cedula de Ciudadania</option>
+            <option value={530}>Cedula de Extranjeria</option>
+            <option value={531}>NIT</option>
+            <option value={532}>Tarjeta Identidad</option>
+            <option value={533}>Registro Civil</option>
+            <option value={534}>Secuencial</option>
+            <option value={535}>Pasaporte</option>
+          </select>
+          <div className="w-full flex flex-row mt-2">
+            <label>Numero de Documento</label>
+            <input
+              name="documento_identidad"
+              type="text"
+              className="border-2 p-1 rounded-md w-full"
+              onChange={Load_Data}
+              value={dataInteresado.documento_identidad}
+            ></input>
+            <button className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4">
+              Validar
+            </button>
           </div>
         </div>
-        {dataInteresado.tipo === "658" ? <PersonNaturalForm /> : null}
-        {dataInteresado.tipo === "659" ? <PersonJuridicForm /> : null}
       </div>
-    </div>
+    );
+  };
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
+        <h1 className="text-2xl">Datos Generales del Interesado</h1>
+        <div className="w-full pt-4 flex flex-row text-left">
+          <input
+            type="number"
+            placeholder="Número de interesados"
+            className="border-2 p-1 rounded-md w-full"
+            value={numInteresados}
+            onChange={Load_Num}
+            onInput={soloNumeros}
+          />
+          <button
+            className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
+            onClick={agregarInteresados}
+          >
+            Agregar Interesados
+          </button>
+        </div>
+        <div className="w-full">{interesados}</div>
+      </div>
+    </Modal>
   );
 };
-/*  <div className="w-1/3 ml-4">
-              <label className="font-semibold">Derecho Id*:</label>
-              <input
-                name="local_id"
-                type="text"
-                className="border-2 p-1 rounded-md w-full"
-                onChange={Load_Data}
-              ></input>
-            </div>
-            <div className="w-1/3 ml-4">
-              <label className="font-semibold">
-                Coeficiente de Copropiedad* :
-              </label>
-              <input
-                type="text"
-                className="border-2 p-1 rounded-md w-full"
-                onInput={soloNumeros}
-              ></input>
-            </div>*/
+export default forwardRef(InteresadoForm);
+/*
+<div className="w-full pt-4 flex flex-col text-left">
+  <div className="m-2 font-semibold">
+    <input
+      type="checkbox"
+      value="Grupo de Interesados ?"
+      checked={isChecked}
+      onChange={handleOnChange}
+    ></input>
+    <label> Grupo de Interesados ?</label>
+  </div>
+  {isChecked ? <GroupInterestForm /> : null}
+
+  <div className="w-full flex flex-col">
+    <div className="w-full flex flex-row">
+      <div className="w-1/3 flex flex-col">
+        <label className="font-semibold">Tipo Interesado*:</label>
+        <select
+          name="tipo"
+          type="text"
+          className="border-2 p-1 rounded-md w-full"
+          onChange={Load_Data}
+        >
+          <option></option>
+          <option value={658}>Persona Natural</option>
+          <option value={659}>Persona Juridica</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  {dataInteresado.tipo === "658" ? <PersonNaturalForm /> : null}
+  {dataInteresado.tipo === "659" ? <PersonJuridicForm /> : null}
+</div>
+;
+ */

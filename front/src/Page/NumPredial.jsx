@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 import DataJson from "../Json/numeros.json";
 
 import {
@@ -44,7 +44,6 @@ let mayorTerreno8bd = 0;
 let mayorUnidadbd = 0;
 
 export const NumPredialForm = () => {
-  console.log("Actualiza");
   //Estados
   //0 CAPTURA DE DATA MATRIZ
   const [dataMatriz, setDataMatriz] = useState("");
@@ -101,7 +100,6 @@ export const NumPredialForm = () => {
     if (ArrayFinal.length == 0) {
       //DataJson.numeros_prediales Valor del Envio de Datos
       aux = allData;
-      console.log("Datos A lEER", aux);
       JSONtoObject(aux);
     } else {
       aux = ArrayFinal;
@@ -414,6 +412,7 @@ export const NumPredialForm = () => {
       mayorUnidadbd = mayorUnidad;
     } else {
       setBttfin(false);
+      console.log("bttfin", bttfin);
       //Sino hacerlo con el array Final para buscar el ultimo terreno
       ArrayFinal.map((item, index) => {
         //Num = item de terreno
@@ -853,7 +852,6 @@ export const NumPredialForm = () => {
         const clonetable = tableData;
         Object.entries(clonetable).map((items, index) => {
           let item = items[1];
-          console.log(item);
           if (numID - 1 == index) {
             item.Dpto = inputValues.Dpto;
             item.Mpio = inputValues.Mpio;
@@ -1544,12 +1542,10 @@ export const NumPredialForm = () => {
 
     function addData() {
       let ArrayTemp = [];
-      console.log("Array Final", ArrayFinal);
       ArrayTemp = ArrayFinal;
       ArrayPredial.map((item, index) => {
         ArrayTemp.push(item);
       });
-      console.log("Array Temporal", ArrayTemp);
       //ArrayFinal.push(ArrayPredial);
 
       // ArrayPredial.map((item, index) => {        ArrayAux.push(item);               item.map((items, index) => {});      });
@@ -1557,17 +1553,20 @@ export const NumPredialForm = () => {
       updateArrayFinal(ArrayTemp);
       updateTableData(ArrayFinal);
       setBttload(true);
+      setBttfin(false);
     }
     return (
       <div className="flex flex-row-reverse mt-2 w-full p-2">
-        <button
-          className={`${
-            bttfin ? "opacity-50 cursor-not-allowed" : "opacity-100"
-          } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
-          disabled={bttfin}
-        >
-          Terminar
-        </button>
+        <Link to="/LoadData">
+          <button
+            className={`${
+              bttfin ? "opacity-50 cursor-not-allowed" : "opacity-100"
+            } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
+            disabled={bttfin}
+          >
+            Siguiente
+          </button>
+        </Link>
         <button
           className={`${
             bttload ? "opacity-50 cursor-not-allowed" : "opacity-100"

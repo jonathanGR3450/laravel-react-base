@@ -8,7 +8,6 @@ const Menu = () => {
       <header className="h-he-5  bg-blue-600 flex flex-row items-center ">
         <img className="h-5 ml-12" src={Logogov} />
       </header>
-
       <nav className="h-he-5 bg-teal-500">
         <ul className="flex flex-row h-full  items-center ">
           <li>
@@ -34,17 +33,10 @@ const Menu = () => {
           </li>
 
           <li className="ml-2 text-white">
-            <Link to="/AddInteresado">Agregar Interesado (Propietario)</Link>
-          </li>
-
-          <li className="ml-2 text-white">
-            <Link to="/AddPredio">Predio</Link>
+            <Link to="/LoadData">Cargar Datos</Link>
           </li>
           <li className="ml-2 text-white">
-            <Link to="/FuenteAdmin">Fuente Administrativa</Link>
-          </li>
-          <li className="ml-2 text-white">
-            <Link to="/AddDerecho">Derecho</Link>
+            <Link to="/LoadConstruccion">Cargar Datos Construccion</Link>
           </li>
         </ul>
       </nav>
@@ -65,4 +57,14 @@ const Menu = () => {
 
 export default Menu;
 /*
+   <li className="ml-2 text-white">
+            <Link to="/AddPredio">Predio</Link>
+          </li>
+
+            <li className="ml-2 text-white">
+            <Link to="/FuenteAdmin">Fuente Administrativa</Link>
+          </li>
+          <li className="ml-2 text-white">
+            <Link to="/AddDerecho">Derecho</Link>
+          </li>
  */
