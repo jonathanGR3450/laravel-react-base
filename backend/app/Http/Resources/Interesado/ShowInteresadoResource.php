@@ -127,33 +127,17 @@ class ShowInteresadoResource extends JsonResource
     {
         return [
             "interesado" => [
-                "t_id" => $this->t_id,
-                "tipo" => [
-                    "t_id" => $this->tipoInteresado->t_id,
-                    "dispname" => $this->tipoInteresado->dispname,
-                ],
-                "tipo_documento" => [
-                    "t_id" => $this->documentoTipo->t_id,
-                    "dispname" => $this->documentoTipo->dispname,
-                ],
+                "tipo" => $this->tipo ?? null,
+                "tipo_documento" => $this->tipo_documento ?? null,
                 "documento_identidad" => $this->documento_identidad ?? null,
                 "primer_nombre" => $this->primer_nombre ?? null,
                 "segundo_nombre" => $this->segundo_nombre ?? null,
                 "primer_apellido" => $this->primer_apellido ?? null,
                 "segundo_apellido" => $this->segundo_apellido ?? null,
-                "sexo" => [
-                    "t_id" => $this->sexoTipo?->t_id,
-                    "dispname" => $this->sexoTipo?->dispname,
-                ],
-                "grupo_etnico" => [
-                    "t_id" => $this->grupoEtnico?->t_id,
-                    "dispname" => $this->grupoEtnico?->dispname,
-                ],
+                "sexo" => $this->sexo ?? null,
+                "grupo_etnico" => $this->grupo_etnico ?? null,
                 "razon_social" => $this->razon_social ?? null,
-                "estado_civil" => [
-                    "t_id" => $this->estadoCivil?->t_id,
-                    "dispname" => $this->estadoCivil?->dispname,
-                ],
+                "estado_civil" => $this->estado_civil ?? null,
                 "nombre" => $this->nombre ?? null,
                 "comienzo_vida_util_version" => $this->comienzo_vida_util_version ?? null,
                 "fin_vida_util_version" => $this->fin_vida_util_version ?? null,

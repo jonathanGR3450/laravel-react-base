@@ -41,8 +41,8 @@ class StoreNumerosPredialesHomologadosFormRequest extends FormRequest
     {
         return [
             'numeros_relacion' => 'required|array|min:1',
-            'numeros_relacion.*.numero_predial' => 'required|exists:lc_numeros_prediales,numero_predial,taken,false',
-            'numeros_relacion.*.numero_homologado' => 'required|exists:lc_numeros_homologados,numeros_homologados,taken,false',
+            'numeros_relacion.*.numero_predial' => 'required|integer|exists:lc_numeros_prediales,t_id,taken,false',
+            'numeros_relacion.*.numero_homologado' => 'required|integer|exists:lc_numeros_homologados,t_id,taken,false',
         ];
     }
 }
