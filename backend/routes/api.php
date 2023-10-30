@@ -11,6 +11,7 @@ use App\Http\Controllers\Derecho\StoreLocal AS StoreDerechoLocal;
 use App\Http\Controllers\FuenteAdministrativa\StoreLocal AS StoreFuenteAdministrativaLocal;
 use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
+use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
 use App\Http\Controllers\Interesado\StoreColMiembros;
@@ -69,4 +70,6 @@ Route::prefix('v1')->group(function () {
     Route::get('caracteristicasunidadconstruccion/no-convencional', NoConvencionalIndexController::class);
     Route::get('caracteristicasunidadconstruccion/no-convencional/{id}', NoConvencionalShowController::class);
     Route::post('caracteristicasunidadconstruccion/no-convencional', NoConvencionalStoreController::class);
+
+    Route::get('document/generate', GenerateDocumentPdf::class);
 });
