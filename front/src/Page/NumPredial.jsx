@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DataJson from "../Json/numeros.json";
-
+import Loader from "./Loader";
 import {
   ArrayFinalContext,
   NumPreContext,
@@ -10,26 +10,27 @@ import {
   TableContext,
 } from "./Context/Context";
 //Objetos base con los datos que se necesitan
-const PredioMatriz = {
-  Dpto: "25",
-  Mpio: "290",
-  Zona: "01",
-  Sector: "00",
-  Comuna: "00",
-  Barrio: "00",
-  Manzana: "0000",
-  Terreno: "0000",
-  Condicion: "0",
-  Edificio: "00",
-  Piso: "00",
-  Unidad: "0000",
+let PredioMatriz = {
+  Dpto: "",
+  Mpio: "",
+  Zona: "",
+  Sector: "",
+  Comuna: "",
+  Barrio: "",
+  Manzana: "",
+  Terreno: "",
+  Condicion: "",
+  Edificio: "",
+  Piso: "",
+  Unidad: "",
   Matricula: "",
   Direccion: [],
+  codigo_homologado: "",
 };
 //Tamaño de predios segregados
 let tamaño = 0;
 //Array Final
-//25290010000000011001
+//25290040000000003
 //Array de datos Generados
 let ArrayPredial = [];
 //Array de los datos
@@ -45,11 +46,12 @@ let mayorUnidadbd = 0;
 
 export const NumPredialForm = () => {
   //Estados
+  const [loading, setLoading] = useState(false);
+  const [formState, setFormState] = useState(true);
   //0 CAPTURA DE DATA MATRIZ
   const [dataMatriz, setDataMatriz] = useState("");
   const [msjCadena, setMsjCadena] = useState("");
   const [bttCadena, setBttCadena] = useState(true);
-  const [msjCarga, setMsjCarga] = useState("");
   //Captura de datos para generar numeros prediales
   // 1 Estado para Cargar el valor de Tamaño0
   const [inputValue, setInputValue] = useState("");
@@ -66,6 +68,8 @@ export const NumPredialForm = () => {
   const [bttgen, setBttgen] = useState(true);
   //Estado para activar y desactivar el boton de cargar
   const [bttload, setBttload] = useState(true);
+  //Estado despues de agregar
+  const [bttchange, setBttChange] = useState();
   // estado Boton terminaro
   const [bttfin, setBttfin] = useState(true);
   //Estado Boton Actualizar
@@ -92,9 +96,9 @@ export const NumPredialForm = () => {
     setTpredio(value);
   }
   // 3 Funcion para generar los datos y mostrar la tabla button Generar No Prediales
-  function ShowData() {
+  async function ShowData() {
     setBttgen(true);
-    setBttload(false);
+    setBttChange(false);
     //Aux = Arreglo Actual o Data de DataBase
     let aux = "";
     if (ArrayFinal.length == 0) {
@@ -124,36 +128,37 @@ export const NumPredialForm = () => {
   }
   // 4 Funcion para Crear los objetos de los numeros prediales carga  ArrayJsonBack
   function JSONtoObject(aux) {
+    let sum = "";
+
     aux.map((item) => {
-      let sum = "";
-      const ObjectPredio = {
-        Dpto: "00",
-        Mpio: "000",
-        Zona: "00",
-        Sector: "00",
-        Comuna: "00",
-        Barrio: "00",
-        Manzana: "0000",
-        Terreno: "0000",
-        Condicion: "0",
-        Edificio: "00",
-        Piso: "00",
-        Unidad: "0000",
+      let ObjectPredio = {
+        Dpto: "",
+        Mpio: "",
+        Zona: "",
+        Sector: "",
+        Comuna: "",
+        Barrio: "",
+        Manzana: "",
+        Terreno: "",
+        Condicion: "",
+        Edificio: "",
+        Piso: "",
+        Unidad: "",
+        Direccion: [],
       };
       var cont = 0;
       //capturar los datos del numero predial
       for (let i = 0; i < item.length; i++) {
         //Departamento
         if (i <= 1) {
+          sum += item[i];
+          ObjectPredio.Dpto = sum;
+          //console.log("DPTO", sum);
           if (cont == 1) {
-            sum += item[i];
-            ObjectPredio.Dpto = sum;
-            if (cont == 1) {
-              cont = 0;
-              sum = "";
-            } else {
-              cont++;
-            }
+            cont = 0;
+            sum = "";
+          } else {
+            cont++;
           }
         }
         //Municipio
@@ -293,13 +298,13 @@ export const NumPredialForm = () => {
             ObjectPredio.Unidad = sum;
             if (cont == 3) {
               cont = 0;
+              sum = "";
             } else {
               cont++;
             }
           }
         }
       }
-      //Llena los datos en ArrayJsonBack
       ArrayJsonBack.push(ObjectPredio);
     });
   }
@@ -314,11 +319,22 @@ export const NumPredialForm = () => {
     let mayorUnidad = 0;
     //si no se han agregado buscar en datos de bd
     if (ArrayFinal.length == 0) {
-      ArrayJsonBack.map((item, index) => {
+      ArrayJsonBack.map((item) => {
+        PredioMatriz.Dpto = item.Dpto;
+        PredioMatriz.Mpio = item.Mpio;
+        PredioMatriz.Zona = item.Zona;
+        PredioMatriz.Sector = item.Sector;
+        PredioMatriz.Comuna = item.Comuna;
+        PredioMatriz.Barrio = item.Barrio;
+        PredioMatriz.Manzana = item.Manzana;
+        PredioMatriz.Edificio = item.Edificio;
+        PredioMatriz.Piso = item.Piso;
         //Num = item de terreno
         let numTerreno = parseInt(item.Terreno);
+
         //Num = item de Unidad
         let numUnidad = parseInt(item.Unidad);
+
         for (let p = 0; p < item.Terreno.length; p++) {
           if (p == 1 && item.Terreno[p] == 9) {
             if (numTerreno > mayorTerrenobd) {
@@ -404,7 +420,7 @@ export const NumPredialForm = () => {
                 }
               }
             }
-            PredioMatriz.Terreno = mayorUnidad.toString().padStart(4, "0");
+            PredioMatriz.Terreno = mayorTerreno.toString().padStart(4, "0");
             PredioMatriz.Unidad = "0000";
           }
         }
@@ -412,7 +428,6 @@ export const NumPredialForm = () => {
       mayorUnidadbd = mayorUnidad;
     } else {
       setBttfin(false);
-      console.log("bttfin", bttfin);
       //Sino hacerlo con el array Final para buscar el ultimo terreno
       ArrayFinal.map((item, index) => {
         //Num = item de terreno
@@ -562,12 +577,12 @@ export const NumPredialForm = () => {
 
   /////////////////////////////Formularios/////////////////////////////
 
+  //Llenar Data
   const DataMatrizForm = () => {
     //0 Cargar data de bd
     //const [allData, setAllData] = useState([]);
 
     const datos = async () => {
-      setMsjCarga("Consultando Datos");
       const data = await fetchData();
       let dataLength = data.last_page;
       let tempData = [];
@@ -577,14 +592,15 @@ export const NumPredialForm = () => {
           tempData.push(item.numero_predial);
         });
       }
-      setMsjCarga("Datos Consultados");
+      setLoading(false);
+      setFormState(false);
       setAllData(tempData);
     };
 
     const fetchData = async (currentPage) => {
       try {
         const response = await fetch(
-          `http://localhost/api/v1/predio/list/numeros-prediales/${dataMatriz}?page=${currentPage}`,
+          `http://localhost/api/v1/predio/list/numeros-prediales/${dataMatriz}?page=${currentPage}&limit=2000`,
           {
             method: "GET",
             redirect: "follow",
@@ -601,6 +617,7 @@ export const NumPredialForm = () => {
       }
     };
     const dataDB = async () => {
+      setLoading(true);
       try {
         await datos();
       } catch (error) {
@@ -613,11 +630,11 @@ export const NumPredialForm = () => {
       soloNumeros(e);
       let { value } = e.target;
       setDataMatriz(value);
-      if (value.length < 20 && value.length > 0) {
-        setMsjCadena("Digitalizar hasta Componente Manzana (20 Digitos)");
+      if (value.length < 30 && value.length > 0) {
+        setMsjCadena("Digitalizar hasta Componente Manzana (17 Digitos)");
         setBttCadena(true);
       } else {
-        if (value.length == 20) {
+        if (value.length == 30) {
           setBttCadena(false);
         }
         setMsjCadena("");
@@ -630,7 +647,7 @@ export const NumPredialForm = () => {
           <label>Digitar el numero predial</label>
           <input
             className="border-2 p-2 rounded-md w-full"
-            maxLength={20}
+            maxLength={30}
             type="text"
             onInput={validarCadena}
             value={dataMatriz}
@@ -647,12 +664,11 @@ export const NumPredialForm = () => {
             Cargar
           </button>
         </div>
+        {loading ? <Loader /> : null}
         <label className="text-red-600">{msjCadena}</label>
-        <label className="text-green-500">{msjCarga}</label>
       </div>
     );
   };
-
   //Formularios
   // 1 Formulario  para despues de seleccionar el Tipo de Predio
   const ChangeDataForm = () => {
@@ -1178,7 +1194,7 @@ export const NumPredialForm = () => {
     return (
       <div>
         <div className="w-full flex flex-row justify-center items-center">
-          <div name="clase" className="w-2/12 flex flex-col m-1">
+          <div name="clase" className="w-1/12 flex flex-col m-1">
             <label>Clase</label>
             <select
               name="clase_via_principal"
@@ -1284,7 +1300,7 @@ export const NumPredialForm = () => {
               <option value="755">Oeste</option>
             </select>
           </div>
-          <div className=" w-3/12 flex flex-col m-1">
+          <div className=" w-2/12 flex flex-col m-1">
             <label>Complemento</label>
             <input
               name="complemento"
@@ -1415,6 +1431,31 @@ export const NumPredialForm = () => {
     const filas = Object.entries(tableData).map((items, index) => {
       let item = items[1];
       let direccionText = "";
+      let cont = 0;
+      /////////////////////////////////////
+      function validadData() {
+        const datosArray = Object.values(tableData);
+        datosArray.map((item, index) => {
+          if (
+            item.Matricula &&
+            item.Direccion &&
+            item.Direccion.nombre_predio
+          ) {
+            cont = 0;
+          } else {
+            cont++;
+          }
+        });
+        if (cont == 0 && !bttchange) {
+          setBttload(false);
+        } else {
+          setBttload(true);
+        }
+      }
+      ////////////////////
+      useEffect(() => {
+        validadData();
+      }, [tableData]);
       if (item.Direccion.length !== 0) {
         //<td className="border-2 rounded-xl p-2">{item.Direccion}</td>;
         let previa = item.Direccion;
@@ -1539,21 +1580,100 @@ export const NumPredialForm = () => {
   //Form Boton Inferior de Agregar y Terminar
   const ChangeForm = () => {
     const { ArrayFinal, updateArrayFinal } = useContext(ArrayFinalContext);
-
+    const [dataRel, setDataRel] = useState({
+      numeros_relacion: [],
+    });
     function addData() {
       let ArrayTemp = [];
       ArrayTemp = ArrayFinal;
       ArrayPredial.map((item, index) => {
         ArrayTemp.push(item);
       });
-      //ArrayFinal.push(ArrayPredial);
-
-      // ArrayPredial.map((item, index) => {        ArrayAux.push(item);               item.map((items, index) => {});      });
-
       updateArrayFinal(ArrayTemp);
       updateTableData(ArrayFinal);
-      setBttload(true);
+      setBttChange(true);
       setBttfin(false);
+    }
+    //Llenar primero Store Numero Predial
+
+    async function addDataHomo() {
+      try {
+        const url =
+          import.meta.env.VITE_API_URL_FIRST +
+          "predio/numeros-homologados?limit=" +
+          ArrayFinal.length;
+        var requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+
+        const response = await fetch(url, requestOptions);
+        if (response.ok) {
+          const result = await response.json();
+          const data = result.data;
+          console.log(ArrayFinal);
+          console.log(result.data);
+          const dataArray = [];
+          ArrayFinal.map((item, index) => {
+            console.log("carga datos", item);
+            item.codigo_homologado = data[index].numeros_homologados;
+            const newData = {
+              numero_predial:
+                item.Dpto +
+                item.Mpio +
+                item.Zona +
+                item.Sector +
+                item.Comuna +
+                item.Barrio +
+                item.Manzana +
+                item.Terreno +
+                item.Condicion +
+                item.Edificio +
+                item.Piso +
+                item.Unidad,
+              numero_homologado: item.codigo_homologado,
+            };
+            dataArray.push(newData);
+          });
+          dataRel.numeros_relacion = dataArray;
+          reDataHomoPredial(JSON.stringify(dataRel));
+          console.log(JSON.stringify(dataRel));
+          updateTableData(ArrayFinal);
+        } else {
+          const error = await response.json();
+          console.log("Error en la solicitud:", error);
+        }
+        console.log("Tamaño", url);
+      } catch (error) {
+        console.log("Error en la solicitud:", error);
+      }
+    }
+    async function reDataHomoPredial(data) {
+      try {
+        const url =
+          import.meta.env.VITE_API_URL_FIRST +
+          "predio/numeros-prediales/numeros-homologados";
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        let raw = data;
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        const response = await fetch(url, requestOptions);
+        if (response.ok) {
+          const result = await response.json();
+          console.log(result);
+        } else {
+          const error = await response.json();
+          console.log("error", error);
+        }
+      } catch (error) {
+        console.log("Error en la solicitud:", error);
+      }
     }
     return (
       <div className="flex flex-row-reverse mt-2 w-full p-2">
@@ -1563,6 +1683,7 @@ export const NumPredialForm = () => {
               bttfin ? "opacity-50 cursor-not-allowed" : "opacity-100"
             } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
             disabled={bttfin}
+            onClick={addDataHomo}
           >
             Siguiente
           </button>
@@ -1588,78 +1709,83 @@ export const NumPredialForm = () => {
       tamaño = 0;
     }
   }, [itemchange]);
+
   //Return General
   return (
     <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
       <h1 className="text-4xl">Iniciar Desenglobe</h1>
       <DataMatrizForm />
-      <div className="w-full flex flex-row">
-        <div
-          id="Pregunta"
-          className="flex flex-row w-2/5 items-start mt-2 mb-2 p-2"
-        >
-          <div className="flex flex-col w-full justify-start">
-            <label>Numero de predios a segregar al predio matriz</label>
-            <input
-              className="border-2 p-2 rounded-md w-full"
-              type="text"
-              onChange={inputLength}
-              onInput={soloNumeros}
-            ></input>
-          </div>
-        </div>
-        <div
-          id="Tipo_Predio"
-          className="flex flex-col w-2/5 items-start mt-2 mb-2 p-2"
-        >
-          <label>Selecciona el tipo de predio</label>
-          <select
-            className="w-full p-2 border-2 rounded-md"
-            onChange={ItemSelect}
-          >
-            <option value="A"></option>
-            <option value="0" className="text-center">
-              NPH
-            </option>
-            <option value="9" className="text-center">
-              PH
-            </option>
-            <option value="8" className="text-center">
-              Condominio
-            </option>
-            <option value="7" className="text-center">
-              Parques Cementerios
-            </option>
-            <option value="5" className="text-center">
-              Mejoras por edificaciones en terreno ajeno de propiedades no
-              reglamentadas en PH{" "}
-            </option>
-            <option value="4" className="text-center">
-              Vias
-            </option>
-            <option value="3" className="text-center">
-              Bienes de uso público diferentes a las vias
-            </option>
-          </select>
-        </div>
-        <div className="flex flex-col  w-1/5  mt-2 mb-2 p-2">
-          <label className="text-white">-</label>
-          <button
-            className={`${
-              bttgen ? "opacity-50 cursor-not-allowed" : "opacity-100"
-            }
+      {!formState ? (
+        <div className="w-full">
+          <div className="w-full flex flex-row">
+            <div
+              id="Pregunta"
+              className="flex flex-row w-2/5 items-start mt-2 mb-2 p-2"
+            >
+              <div className="flex flex-col w-full justify-start">
+                <label>Numero de predios a segregar al predio matriz</label>
+                <input
+                  className="border-2 p-2 rounded-md w-full"
+                  type="text"
+                  onChange={inputLength}
+                  onInput={soloNumeros}
+                ></input>
+              </div>
+            </div>
+            <div
+              id="Tipo_Predio"
+              className="flex flex-col w-2/5 items-start mt-2 mb-2 p-2"
+            >
+              <label>Selecciona el tipo de predio</label>
+              <select
+                className="w-full p-2 border-2 rounded-md"
+                onChange={ItemSelect}
+              >
+                <option value="A"></option>
+                <option value="0" className="text-center">
+                  NPH
+                </option>
+                <option value="9" className="text-center">
+                  PH
+                </option>
+                <option value="8" className="text-center">
+                  Condominio
+                </option>
+                <option value="7" className="text-center">
+                  Parques Cementerios
+                </option>
+                <option value="5" className="text-center">
+                  Mejoras por edificaciones en terreno ajeno de propiedades no
+                  reglamentadas en PH{" "}
+                </option>
+                <option value="4" className="text-center">
+                  Vias
+                </option>
+                <option value="3" className="text-center">
+                  Bienes de uso público diferentes a las vias
+                </option>
+              </select>
+            </div>
+            <div className="flex flex-col  w-1/5  mt-2 mb-2 p-2">
+              <label className="text-white">-</label>
+              <button
+                className={`${
+                  bttgen ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                }
                p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2
                `}
-            onClick={ShowData}
-            disabled={bttgen}
-          >
-            Generar No. Prediales
-          </button>
+                onClick={ShowData}
+                disabled={bttgen}
+              >
+                Generar No. Prediales
+              </button>
+            </div>
+          </div>
+          {select && <ChangeDataForm />}
+          <TableForm />
+          {table && <ChangeForm />}
         </div>
-      </div>
-      {select && <ChangeDataForm />}
-      <TableForm />
-      {table && <ChangeForm />}
+      ) : null}
     </div>
   );
 };
