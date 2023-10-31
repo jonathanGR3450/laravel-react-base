@@ -37,6 +37,10 @@ class LcInteresadoLocal extends Model
         return $this->hasMany(ColMiembroLocal::class, 't_id', 'interesado_lc_interesado');
     }
 
+    function lcRestricion() : HasMany {
+        return $this->hasMany(LcRestriccionLocal::class, 't_id', 'interesado_lc_interesado');
+    }
+
     // public function tipo()
     // {
     //     return $this->belongsTo(Tipo::class, 'tipo');
