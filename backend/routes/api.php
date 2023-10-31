@@ -18,6 +18,7 @@ use App\Http\Controllers\Interesado\StoreColMiembros;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
 use App\Http\Controllers\Predio\IndexNumerosHomologadosController;
 use App\Http\Controllers\Predio\IndexNumerosPredialesController;
+use App\Http\Controllers\Predio\StoreFuenteAdministrativaDerechoController;
 use App\Http\Controllers\Predio\StoreLcPredio;
 use App\Http\Controllers\Predio\StoreNumeroHomologadosController;
 use App\Http\Controllers\Predio\StoreNumeroPredialController;
@@ -62,6 +63,8 @@ Route::prefix('v1')->group(function () {
     Route::post('terreno/local', StoreTerrenoLocal::class);
 
     Route::post('construccion/local', StoreConstruccionLocal::class);
+
+    Route::post('rrrfuente/fuente-administrativa/derecho', StoreFuenteAdministrativaDerechoController::class);
 
     Route::get('caracteristicasunidadconstruccion/convencional', ConvencionalIndexController::class);
     Route::get('caracteristicasunidadconstruccion/convencional/{id}', ConvencionalShowController::class);
