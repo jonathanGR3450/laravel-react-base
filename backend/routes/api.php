@@ -11,12 +11,14 @@ use App\Http\Controllers\Derecho\StoreLocal AS StoreDerechoLocal;
 use App\Http\Controllers\FuenteAdministrativa\StoreLocal AS StoreFuenteAdministrativaLocal;
 use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
+use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
 use App\Http\Controllers\Interesado\StoreColMiembros;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
 use App\Http\Controllers\Predio\IndexNumerosHomologadosController;
 use App\Http\Controllers\Predio\IndexNumerosPredialesController;
+use App\Http\Controllers\Predio\StoreFuenteAdministrativaDerechoController;
 use App\Http\Controllers\Predio\StoreLcPredio;
 use App\Http\Controllers\Predio\StoreNumeroHomologadosController;
 use App\Http\Controllers\Predio\StoreNumeroPredialController;
@@ -62,6 +64,8 @@ Route::prefix('v1')->group(function () {
 
     Route::post('construccion/local', StoreConstruccionLocal::class);
 
+    Route::post('rrrfuente/fuente-administrativa/derecho', StoreFuenteAdministrativaDerechoController::class);
+
     Route::get('caracteristicasunidadconstruccion/convencional', ConvencionalIndexController::class);
     Route::get('caracteristicasunidadconstruccion/convencional/{id}', ConvencionalShowController::class);
     Route::post('caracteristicasunidadconstruccion/convencional', ConvencionalStoreController::class);
@@ -69,4 +73,6 @@ Route::prefix('v1')->group(function () {
     Route::get('caracteristicasunidadconstruccion/no-convencional', NoConvencionalIndexController::class);
     Route::get('caracteristicasunidadconstruccion/no-convencional/{id}', NoConvencionalShowController::class);
     Route::post('caracteristicasunidadconstruccion/no-convencional', NoConvencionalStoreController::class);
+
+    Route::get('document/generate', GenerateDocumentPdf::class);
 });

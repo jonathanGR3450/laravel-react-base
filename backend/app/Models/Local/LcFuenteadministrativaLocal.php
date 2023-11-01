@@ -4,6 +4,7 @@ namespace App\Models\Local;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LcFuenteadministrativaLocal extends Model
 {
@@ -23,6 +24,10 @@ class LcFuenteadministrativaLocal extends Model
         'fecha_documento_fuente',
         'espacio_de_nombres',
     ];
+
+    function colRrrFuente() : HasMany {
+        return $this->hasMany(ColRrrfuenteLocal::class, 't_id', 'fuente_administrativa');
+    }
 
     // public function fuenteAdministrativaTipo()
     // {

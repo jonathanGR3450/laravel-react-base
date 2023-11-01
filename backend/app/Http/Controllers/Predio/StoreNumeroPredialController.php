@@ -39,6 +39,7 @@ class StoreNumeroPredialController extends AppBaseController
     public function __invoke(StoreNumerosPredialesFormRequest $request)
     {
         try {
+            $prediales = [];
             $numerosPrediales = $request->input('numeros_prediales', []);
             foreach ($numerosPrediales as $predio) {
                 $predio = (object) $predio;
@@ -47,13 +48,13 @@ class StoreNumeroPredialController extends AppBaseController
                     'matricula_inmobiliaria' => $predio->matricula_inmobiliaria,
                 ]);
                 $direccionPredial = $predio->extdireccion;
-                // $direccionPredial['localizacion'] = DB::raw("ST_Force3D(st_multi(st_buffer((ST_SetSRID(st_makepoint(4848927.985,2038128.138),9377)),1)))");
-                // $direccionPredial['localizacion'] = DB::raw("ST_GeomFromText('SRID=9377;POINT Z(4848927.985 2038128.138 0)', 9377)");
                 $direccionPredial['lc_numeros_prediales_id'] = $predial->t_id;
+
+                $prediales[] = $predial->t_id;
 
                 $direccion = ExtDireccionLocal::create($direccionPredial);
             }
-            return $this->sendSuccess('Numeros Prediales store successful');
+            return $this->sendResponse($prediales, 'Numeros Prediales store successful');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }

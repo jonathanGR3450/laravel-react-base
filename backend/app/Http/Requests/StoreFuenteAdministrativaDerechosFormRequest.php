@@ -20,7 +20,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *    ),
  * )
  */
-class StoreNumerosPredialesHomologadosFormRequest extends FormRequest
+class StoreFuenteAdministrativaDerechosFormRequest extends FormRequest
 {
     use ValidationErrorResponseTrait;
 
@@ -41,8 +41,9 @@ class StoreNumerosPredialesHomologadosFormRequest extends FormRequest
     {
         return [
             'numeros_relacion' => 'required|array|min:1',
-            'numeros_relacion.*.numero_predial' => 'required|integer|exists:lc_numeros_prediales,t_id,taken,false',
-            'numeros_relacion.*.numero_homologado' => 'required|integer|exists:lc_numeros_homologados,t_id,taken,false',
+            'numeros_relacion.*.fuente_administrativa' => 'required|integer|exists:lc_fuenteadministrativa,t_id',
+            'numeros_relacion.*.rrr_lc_derecho' => 'nullable|integer|exists:lc_derecho,t_id',
+            'numeros_relacion.*.rrr_lc_restriccion' => 'nullable|integer|exists:lc_restriccion,t_id',
         ];
     }
 }

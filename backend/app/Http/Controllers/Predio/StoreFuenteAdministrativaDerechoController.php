@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Predio;
 
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\StoreFuenteAdministrativaDerechosFormRequest;
 use App\Http\Requests\StoreNumerosPredialesFormRequest;
 use App\Http\Requests\StoreNumerosPredialesHomologadosFormRequest;
+use App\Models\Local\ColRrrfuenteLocal;
 use App\Models\Local\ExtDireccionLocal;
 use App\Models\Local\LcNumerosHomologadosLocal;
 use App\Models\Local\LcNumerosPredialLocal;
 use Illuminate\Support\Facades\DB;
 
-class StoreNumeroPredialHomologadoController extends AppBaseController
+class StoreFuenteAdministrativaDerechoController extends AppBaseController
 {
     /**
      * @OA\Post(
@@ -38,20 +40,16 @@ class StoreNumeroPredialHomologadoController extends AppBaseController
      *     ),
      * )
      */
-    public function __invoke(StoreNumerosPredialesHomologadosFormRequest $request)
+    public function __invoke(StoreFuenteAdministrativaDerechosFormRequest $request)
     {
         try {
             $numerosRelacion = $request->input('numeros_relacion', []);
+            $ids = [];
             foreach ($numerosRelacion as $numero) {
-                $numero = (object) $numero;
-                // dd($numero);
-                $numeroPredial = LcNumerosPredialLocal::find($numero->numero_predial);
-                $numeroHomologado = LcNumerosHomologadosLocal::find($numero->numero_homologado);
-                
-                $numeroHomologado->lc_numeros_prediales_id = $numeroPredial->t_id;
-                $numeroHomologado->save();
+                $rFuente = ColRrrfuenteLocal::create($numero);
+                $ids[] = $rFuente->t_id;
             }
-            return $this->sendSuccess('Numeros Prediales y Numeros Homologados Relacionados successful');
+            return $this->sendResponse($ids, 'rrr fuente successful');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }

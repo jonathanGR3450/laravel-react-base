@@ -6,18 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class LcDerechoLocal extends Model
+class LcRestriccionLocal extends Model
 {
     use HasFactory;
 
-    protected $table = 'lc_derecho';
+    protected $table = 'lc_restriccion';
     protected $primaryKey = 't_id';
     public $timestamps = false;
 
     protected $fillable = [
         'tipo',
-        'fraccion_derecho',
-        'fecha_inicio_tenencia',
         'descripcion',
         'interesado_lc_interesado',
         'interesado_lc_agrupacioninteresados',
@@ -25,33 +23,30 @@ class LcDerechoLocal extends Model
         'comienzo_vida_util_version',
         'fin_vida_util_version',
         'espacio_de_nombres',
+        'local_id',
     ];
 
-    // Relación con lc_derechotipo
-    public function lcDerechoTipo()
-    {
-        return $this->belongsTo(LcDerechoTipo::class, 'tipo');
-    }
-
-    // // Relación con lc_interesado (Interesado)
     public function interesado()
     {
         return $this->belongsTo(LcInteresadoLocal::class, 'interesado_lc_interesado', 't_id');
     }
 
-    // // Relación con lc_agrupacioninteresados (Agrupación de Interesados)
     public function agrupacionInteresados()
     {
-        return $this->belongsTo(LcAgrupacionInteresadosLocal::class, 'interesado_lc_agrupacioninteresados');
+        return $this->belongsTo(LcAgrupacionInteresadosLocal::class, 'interesado_lc_agrupacioninteresados', 't_id');
     }
 
-    // // Relación con lc_predio (Unidad)
-    public function predio()
+    // public function tipo()
+    // {
+    //     return $this->belongsTo(LcRestriccionTipo::class, 'tipo', 't_id');
+    // }
+
+    public function unidad()
     {
-        return $this->belongsTo(LcPredioLocal::class, 'unidad');
+        return $this->belongsTo(LcPredioLocal::class, 'unidad', 't_id');
     }
 
     function colRrrFuente() : HasMany {
-        return $this->hasMany(ColRrrfuenteLocal::class, 't_id', 'rrr_lc_derecho');
+        return $this->hasMany(ColRrrfuenteLocal::class, 't_id', 'rrr_lc_restriccion');
     }
 }

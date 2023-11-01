@@ -22,13 +22,16 @@ class Show extends AppBaseController
                 throw new Exception("El interesado con documento de identidad $nit no existe");
             }
 
-            if (!$miembro = $interesado->miembro) {
-                $detalle = new ShowInteresadoResource($interesado);
-                return $this->sendResponse($detalle, "El interesado con documento de identidad $nit encontrado en la tabla lc_interesado");
-            }
+            // if (!$miembro = $interesado->miembro) {
+            //     $detalle = new ShowInteresadoResource($interesado);
+            //     return $this->sendResponse($detalle, "El interesado con documento de identidad $nit encontrado en la tabla lc_interesado");
+            // }
 
-            $detalle = new InteresadoResource($miembro);
-            return $this->sendResponse($detalle, "El interesado con documento de identidad $nit encontrado en la tabla col_miembros");
+            $detalle = new ShowInteresadoResource($interesado);
+                return $this->sendResponse($detalle, "El interesado con documento de identidad $nit encontrado en la tabla lc_interesado");
+
+            // $detalle = new InteresadoResource($miembro);
+            // return $this->sendResponse($detalle, "El interesado con documento de identidad $nit encontrado en la tabla col_miembros");
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }
