@@ -11,7 +11,6 @@ import { TableContext } from "./Context/Context";
 const UniConstruccionForm = (props, ref) => {
   const { tableData, updateTableData } = useContext(TableContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   let [dataId, setDataId] = useState({
     first: "",
     second: "",
@@ -76,11 +75,13 @@ const UniConstruccionForm = (props, ref) => {
   };
 
   const CreateUnidad = (index) => {
+    const { tableData, updateTableData } = useContext(TableContext);
     const [dataUnidad, setDataUnidad] = useState({
       planta_ubicacion: "",
       altura: "",
       area_construida: "",
       etiqueta: "",
+      construccion: "",
     });
     const Load_Data = (e) => {
       const { name, value } = e.target;
@@ -97,6 +98,36 @@ const UniConstruccionForm = (props, ref) => {
         <h1 className="text-3xl">
           Caracteristicas de Unidad de Construccion #{index.index + 1}
         </h1>
+        <div className="w-full flex flex-row mt-4">
+          <div className="w-1/3 flex flex-col">
+            <label>Relacion Construccion</label>
+            <select className="border-2 p-1 rounded-md w-full">
+              <option></option>
+              {tableData.map((item, index) => {
+                if (index >= dataId.first - 1 && index <= dataId.second - 1) {
+                  if (item.construccion) {
+                    return item.construccion.map((items, index) => {
+                      console.log("Carga0", items);
+                      return (
+                        <option value={index}>Construccion #{index + 1}</option>
+                      );
+                    });
+                  }
+                }
+              })}
+            </select>
+          </div>
+          <div className="w-1/3 ml-4 flex flex-col">
+            <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg">
+              Carga Puntuacion
+            </button>
+          </div>
+          <div className="w-1/3 ml-4 flex flex-col">
+            <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg">
+              Crear Puntuacion
+            </button>
+          </div>
+        </div>
         <div className="w-full flex flex-row items-center justify-center">
           <div className="w-1/4 flex flex-col">
             <label>Planta Ubicacion</label>
