@@ -15,26 +15,7 @@ const ConstruccionForm = (props, ref) => {
     first: "",
     second: "",
   });
-  const [construccionData, setConstruccionData] = useState({
-    tipo_construccion: "",
-    tipo_dominio: "",
-    num_pisos: "",
-    num_semisotanos: "",
-    num_mezanines: "",
-    anio_cons: "",
-    area: "",
-    avaluo: "",
-    valor_referencia: "",
-    altura: "",
-    observacion: "",
-  });
 
-  const Load_Data = (e) => {
-    const { name, value } = e.target;
-    setConstruccionData((prevValues) => ({ ...prevValues, [name]: value }));
-    console.log("name", construccionData);
-    console.log("value", value);
-  };
   const openModal = (aux) => {
     aux.first = parseInt(aux.first);
     aux.second = parseInt(aux.second);
@@ -44,22 +25,88 @@ const ConstruccionForm = (props, ref) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const sendData = () => {
-    tableData.map((item, index) => {
-      if (index >= dataId.first - 1 && index <= dataId.second - 1) {
-        item.construccion = construccionData;
-        console.log(item);
-      }
-    });
-    updateTableData(tableData);
-  };
   useImperativeHandle(ref, () => ({
     openModal,
   }));
-  return (
-    <Modal isOpen={isModalOpen} onClose={closeModal}>
+  /**/
+  const [numConstruccion, setNumConstruccion] = useState();
+  const [construccion, setConstruccion] = useState([]);
+  const [construccionData, setConstruccionData] = useState();
+
+  const Load_Num = (e) => {
+    const newValue = parseInt(e.target.value);
+    console.log(newValue);
+    setNumConstruccion(newValue);
+    const newConstruccionData = Array.from({ length: newValue }, () => ({
+      tipo_construccion: "",
+      tipo_dominio: "",
+      num_pisos: "",
+      num_semisotanos: "",
+      num_mezanines: "",
+      anio_cons: "",
+      area: "",
+      avaluo: "",
+      valor_referencia: "",
+      altura: "",
+      observacion: "",
+    }));
+    setConstruccionData(newConstruccionData);
+  };
+
+  const agregarConstruccion = () => {
+    console.log(numConstruccion);
+    const nuevaConstruccion = [];
+    for (let i = 0; i < numConstruccion; i++) {
+      nuevaConstruccion.push(
+        <CreateConstruction
+          key={i}
+          index={i}
+          onDataChange={actualizarDatosConstruccion}
+        />
+      );
+    }
+    setConstruccion(nuevaConstruccion);
+  };
+  const actualizarDatosConstruccion = (index, newData) => {
+    console.log("caergadasdasd");
+    // Aquí puedes manejar los datos del Interesado individualmente
+    setConstruccionData((prevData) => {
+      const newDataArray = [...prevData];
+      newDataArray[index] = newData;
+      return newDataArray;
+    });
+  };
+  const CreateConstruction = (index) => {
+    console.log(index);
+    const [construccionData, setConstruccionData] = useState({
+      tipo_construccion: "",
+      tipo_dominio: "",
+      num_pisos: "",
+      num_semisotanos: "",
+      num_mezanines: "",
+      anio_cons: "",
+      area: "",
+      avaluo: "",
+      valor_referencia: "",
+      altura: "",
+      observacion: "",
+    });
+    const Load_Data = (e) => {
+      const { name, value } = e.target;
+      setConstruccionData((prevValues) => ({ ...prevValues, [name]: value }));
+      console.log("name", construccionData);
+      console.log("value", value);
+    };
+    useEffect(() => {
+      index.onDataChange(index.index, construccionData);
+      console.log("Actualizacion datos", construccionData);
+    }, [construccionData]);
+    return (
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
-        <h1 className="text-3xl">Caracteristicas de Construcciones</h1>
+        {" "}
+        <h1 className="text-3xl">
+          Caracteristicas de Construccion #{index.index + 1}
+        </h1>
         <div className="w-full flex flex-row items-center justify-center">
           <div className="w-1/3 flex flex-col">
             <label>Tipo de Construccion</label>
@@ -184,14 +231,58 @@ const ConstruccionForm = (props, ref) => {
             ></input>
           </div>
         </div>
-        <div className="w-full flex flex-row items-start mt-2">
-          <button
-            onClick={sendData}
-            className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
-          >
-            Guardar
-          </button>
-        </div>
+      </div>
+    );
+  };
+
+  //Se Aceptan solo  Numeros
+  function soloNumeros(event) {
+    const input = event.target;
+    input.value = input.value.replace(/[^0-9.,]/g, "");
+  }
+  //Se Aceptan solo Letras
+  function soloLetras(event) {
+    const input = event.target;
+    input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
+  }
+
+  const sendData = () => {
+    tableData.map((item, index) => {
+      if (index >= dataId.first - 1 && index <= dataId.second - 1) {
+        item.construccion = construccionData;
+        console.log(item);
+      }
+    });
+    updateTableData(tableData);
+  };
+
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <h1 className="text-2xl">Datos Generales del Construcciones</h1>
+      <div className="w-full pt-4 flex flex-row text-left">
+        <input
+          type="number"
+          placeholder="Número de Construcciones"
+          className="border-2 p-1 rounded-md w-full"
+          value={numConstruccion}
+          onChange={Load_Num}
+          onInput={soloNumeros}
+        />
+        <button
+          className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
+          onClick={agregarConstruccion}
+        >
+          Crear Construcciones
+        </button>
+      </div>
+      <div className="w-full">{construccion}</div>
+      <div className="w-full  mt-4">
+        <button
+          onClick={sendData}
+          className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
+        >
+          Guardar Todo
+        </button>
       </div>
     </Modal>
   );

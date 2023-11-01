@@ -606,7 +606,7 @@ export const TerrenoResumeForm = React.forwardRef((props, ref) => {
 export const ConstruccionResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const datos = props.datos;
-  console.log(datos);
+  console.log("carga valores", datos);
   const openModal = (aux) => {
     setIsModalOpen(true);
   };
@@ -619,83 +619,86 @@ export const ConstruccionResumeForm = React.forwardRef((props, ref) => {
   const mostrar = (data) => {
     const aux = data;
     let aux1 = aux.construccion;
-    let tipo_con = "";
-    let tipo_dom = "";
-    switch (aux1.tipo_construccion) {
-      case "66":
-        tipo_con = "Convencional";
-        break;
-      case "67":
-        tipo_con = "No Convencional";
-        break;
-    }
-    switch (aux1.tipo_dominio) {
-      case "322":
-        tipo_dom = "Común";
-        break;
-      case "323":
-        tipo_dom = "Privado";
-        break;
-    }
+
     console.log(aux1);
-    return (
-      <div className="w-full">
-        <h2 className="text-3xl">Datos de Construccion</h2>
-        <div className="w-full flex flex-row">
-          <div className="w-1/2 flex flex-col">
-            <label className="font-semibold">Tipo de Construccion</label>
-            <label>{tipo_con}</label>
+    return aux1.map((item, index) => {
+      let tipo_con = "";
+      let tipo_dom = "";
+      switch (item.tipo_construccion) {
+        case "66":
+          tipo_con = "Convencional";
+          break;
+        case "67":
+          tipo_con = "No Convencional";
+          break;
+      }
+      switch (item.tipo_dominio) {
+        case "322":
+          tipo_dom = "Común";
+          break;
+        case "323":
+          tipo_dom = "Privado";
+          break;
+      }
+      return (
+        <div className="w-full">
+          <h2 className="text-3xl">Datos de Construccion #{index + 1}</h2>
+          <div className="w-full flex flex-row">
+            <div className="w-1/2 flex flex-col">
+              <label className="font-semibold">Tipo de Construccion</label>
+              <label>{tipo_con}</label>
+            </div>
+            <div className="w-1/2 flex flex-col">
+              {" "}
+              <label className="font-semibold">Tipo de Dominio</label>
+              <label>{tipo_dom}</label>
+            </div>
           </div>
-          <div className="w-1/2 flex flex-col">
-            {" "}
-            <label className="font-semibold">Tipo de Dominio</label>
-            <label>{tipo_dom}</label>
+          <div className="w-full flex flex-row">
+            <div className="w-1/3 flex flex-col">
+              <label className="font-semibold">Numero Pisos</label>
+              <label>{item.num_pisos}</label>
+            </div>
+            <div className="w-1/3 flex flex-col">
+              <label className="font-semibold">Numero de Semisotanos</label>
+              <label>{item.num_semisotanos}</label>
+            </div>
+            <div className="w-1/3 flex flex-col">
+              <label className="font-semibold">Numero de Mezanines</label>
+              <label>{item.num_mezanines}</label>
+            </div>
+          </div>
+          <div className="w-full flex flex-row">
+            <div className="w-1/3 flex flex-col">
+              <label className="font-semibold">Año Construccion</label>
+              <label>{item.anio_cons}</label>
+            </div>
+            <div className="w-1/3 flex flex-col">
+              <label className="font-semibold">Area Construccion</label>
+              <label>{item.area}</label>
+            </div>
+            <div className="w-1/3 flex flex-col">
+              <label className="font-semibold">Avaluo Construccion</label>
+              <label>{item.avaluo}</label>
+            </div>
+          </div>
+          <div className="w-full flex flex-row">
+            <div className="w-1/3 flex flex-col">
+              <label className="font-semibold">Valor Referencia</label>
+              <label>{item.valor_referencia}</label>
+            </div>
+            <div className="w-1/3 flex flex-col">
+              <label className="font-semibold">Altura</label>
+              <label>{item.altura}</label>
+            </div>
+            <div className="w-1/3 flex flex-col">
+              <label className="font-semibold">Observaciones</label>
+              <label>{item.observacion}</label>
+            </div>
           </div>
         </div>
-        <div className="w-full flex flex-row">
-          <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Numero Pisos</label>
-            <label>{aux1.num_pisos}</label>
-          </div>
-          <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Numero de Semisotanos</label>
-            <label>{aux1.num_semisotanos}</label>
-          </div>
-          <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Numero de Mezanines</label>
-            <label>{aux1.num_mezanines}</label>
-          </div>
-        </div>
-        <div className="w-full flex flex-row">
-          <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Año Construccion</label>
-            <label>{aux1.anio_cons}</label>
-          </div>
-          <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Area Construccion</label>
-            <label>{aux1.area}</label>
-          </div>
-          <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Avaluo Construccion</label>
-            <label>{aux1.avaluo}</label>
-          </div>
-        </div>
-        <div className="w-full flex flex-row">
-          <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Valor Referencia</label>
-            <label>{aux1.valor_referencia}</label>
-          </div>
-          <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Altura</label>
-            <label>{aux1.altura}</label>
-          </div>
-          <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Observaciones</label>
-            <label>{aux1.observacion}</label>
-          </div>
-        </div>
-      </div>
-    );
+      );
+    });
   };
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -706,6 +709,7 @@ export const ConstruccionResumeForm = React.forwardRef((props, ref) => {
 export const UnidadConstruccionResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const datos = props.datos;
+  console.log("carga valores", datos);
   const openModal = (aux) => {
     setIsModalOpen(true);
   };
@@ -718,26 +722,31 @@ export const UnidadConstruccionResumeForm = React.forwardRef((props, ref) => {
   const mostrar = (data) => {
     const aux = data;
     let aux1 = aux.unidad_construccion;
-    console.log(aux1);
-    return (
-      <div className="w-full">
-        <h2 className="text-3xl">Datos de Unidad de Construccion</h2>
-        <div className="w-full flex flex-row ">
-          <div className=" w-1/3 flex flex-col mt-4">
-            <label className="font-semibold">Planta Ubicacion</label>
-            <label>{aux1.planta_ubicacion}</label>
-          </div>
-          <div className="w-1/3 flex flex-col mt-4 ml-4">
-            <label className="font-semibold">Altura</label>
-            <label>{aux1.altura}</label>
-          </div>
-          <div className="w-1/3 flex flex-col mt-4 ml-4">
-            <label className="font-semibold">Area Construida</label>
-            <label>{aux1.area_construida} </label>
+    console.log("Data aux", aux1);
+    return aux1.map((item, index) => {
+      console.log(item);
+      return (
+        <div key={index} className="w-full">
+          <h2 className="text-3xl">
+            Datos de Unidad de Construccion #{index + 1}
+          </h2>
+          <div className="w-full flex flex-row ">
+            <div className=" w-1/3 flex flex-col mt-4">
+              <label className="font-semibold">Planta Ubicacion</label>
+              <label>{item.planta_ubicacion}</label>
+            </div>
+            <div className="w-1/3 flex flex-col mt-4 ml-4">
+              <label className="font-semibold">Altura</label>
+              <label>{item.altura}</label>
+            </div>
+            <div className="w-1/3 flex flex-col mt-4 ml-4">
+              <label className="font-semibold">Area Construida</label>
+              <label>{item.area_construida} </label>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    });
   };
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
