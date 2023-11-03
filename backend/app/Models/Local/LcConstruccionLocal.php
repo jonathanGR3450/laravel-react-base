@@ -4,6 +4,7 @@ namespace App\Models\Local;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LcConstruccionLocal extends Model
 {
@@ -35,6 +36,11 @@ class LcConstruccionLocal extends Model
         'fin_vida_util_version',
         'espacio_de_nombres',
     ];
+
+    public function documentos(): HasMany
+    {
+        return $this->hasMany(LcDocumentosConstruccionLocal::class, 'construccion', 't_id');
+    }
 
     // public function dimension()
     // {
