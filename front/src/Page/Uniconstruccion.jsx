@@ -5,7 +5,12 @@ import {
   useImperativeHandle,
   useState,
   useContext,
+  useRef,
 } from "react";
+import {
+  LoadCaracteristicasForm,
+  CreateCaracteristicasForm,
+} from "./Caracteristicas";
 import { InteresadoContext } from "./Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
 const UniConstruccionForm = (props, ref) => {
@@ -73,7 +78,6 @@ const UniConstruccionForm = (props, ref) => {
       return newDataArray;
     });
   };
-
   const CreateUnidad = (index) => {
     const { tableData, updateTableData } = useContext(TableContext);
     const [dataUnidad, setDataUnidad] = useState({
@@ -83,16 +87,28 @@ const UniConstruccionForm = (props, ref) => {
       etiqueta: "",
       construccion: "",
     });
+    const [tipoConstruccion, setTipoConstruccion] = useState();
     const Load_Data = (e) => {
       const { name, value } = e.target;
       setDataUnidad((prevValues) => ({ ...prevValues, [name]: value }));
       console.log("name", dataUnidad);
       console.log("value", value);
     };
+    //Modal de Crear y Cargar Caracteristicas
+    const LoadCaracRef = useRef();
+    const CreateCaracRef = useRef();
+    const openLoadCaractForm = () => {
+      LoadCaracRef.current.openModal();
+    };
+    const openCreateCaracRef = () => {
+      CreateCaracRef.current.openModal();
+    };
     useEffect(() => {
       index.onDataChange(index.index, dataUnidad);
       console.log("Actualizacion datos", dataUnidad);
+      console.log("");
     }, [dataUnidad]);
+
     return (
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
         <h1 className="text-3xl">
@@ -106,8 +122,7 @@ const UniConstruccionForm = (props, ref) => {
               {tableData.map((item, index) => {
                 if (index >= dataId.first - 1 && index <= dataId.second - 1) {
                   if (item.construccion) {
-                    return item.construccion.map((items, index) => {
-                      console.log("Carga0", items);
+                    return item.construccion.map((item, index) => {
                       return (
                         <option value={index}>Construccion #{index + 1}</option>
                       );
@@ -118,14 +133,22 @@ const UniConstruccionForm = (props, ref) => {
             </select>
           </div>
           <div className="w-1/3 ml-4 flex flex-col">
-            <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg">
-              Carga Puntuacion
+            <button
+              onClick={openLoadCaractForm}
+              className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
+            >
+              Carga Caracteristicas
             </button>
+            <LoadCaracteristicasForm ref={LoadCaracRef} />
           </div>
           <div className="w-1/3 ml-4 flex flex-col">
-            <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg">
-              Crear Puntuacion
+            <button
+              onClick={openCreateCaracRef}
+              className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
+            >
+              Crear Caracteristica
             </button>
+            <CreateCaracteristicasForm ref={CreateCaracRef} />
           </div>
         </div>
         <div className="w-full flex flex-row items-center justify-center">
@@ -176,6 +199,7 @@ const UniConstruccionForm = (props, ref) => {
       </div>
     );
   };
+
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <h1 className="text-2xl">Datos Generales de Unidad de Construccion</h1>

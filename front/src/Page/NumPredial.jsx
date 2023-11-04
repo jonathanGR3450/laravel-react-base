@@ -39,6 +39,9 @@ let ArrayJsonBack = [];
 let iniID = 0;
 let finID = 0;
 let numID = 500;
+let validNumbers = [];
+let numeroId = "";
+let coma = "";
 //Terrenos y unidades mayores en bd
 let mayorTerrenobd = 0;
 let mayorTerreno8bd = 0;
@@ -725,31 +728,55 @@ export const NumPredialForm = () => {
   };
   // 2 Formulario de ID
   const IdForm = () => {
-    //mostrar los datos de id
-    const [showid, setShowid] = useState({
-      first: "",
-      second: "",
-    });
+    const [inputId, setInputId] = useState("");
+    const [tamaño, setTamaño] = useState(50);
     //Funcion para mostrar los datos
-    function showDataId(e) {
-      setShowid({ ...showid, [e.target.name]: e.target.value });
-      if (e.target.name == "first") {
-        iniID = e.target.value;
+    /////////////////////////////////////////////////////////////////////
+    function NumComa(e) {
+      const input = event.target;
+      let value = input.value;
+      value = value.replace(/[^0-9,-]/g, ""); // Elimina caracteres no numéricos
+      if (value.includes("-")) {
+        coma = false;
+        if (value.split("-").length <= 2) {
+          //setTamaño(3);
+          let aux = value.split("-");
+
+          iniID = parseInt(aux[0]);
+          finID = parseInt(aux[1]);
+          console.log(iniID + " - " + finID);
+        }
+      } else {
+        setTamaño(50);
+        let aux = "";
+        if (value.length === 0) {
+          console.log("Borrar Todo", value.length);
+          aux = 0;
+        } else {
+          aux = value.split(",");
+        }
+        if (value.includes(",")) {
+          coma = true;
+          let numeros = aux.map((item) => {
+            return parseInt(item);
+          });
+
+          validNumbers = numeros;
+          console.log(" Contiene comas ", validNumbers);
+        } else {
+          validNumbers = [value];
+          console.log(validNumbers);
+        }
       }
-      if (e.target.name == "second") {
-        finID = e.target.value;
-      }
+      setInputId(input.value);
+      console.log(coma);
+      /*console.log(input.value);
+      
+      numeroId = input.value;*/
+      //modId(numeroId);
     }
-    return (
-      <div
-        id="SeleccionarID"
-        className="w-1/5 border-2 text-center flex flex-col items-center p-2"
-      >
-        <h2 className="uppercase text-lg font-bold border-b pb-2">
-          Seleccionar ID
-        </h2>
-        <div className="flex flex-row items-center justify-center mt-2 p-2">
-          <input
+    /*
+    <input
             name="first"
             type="text"
             className="border-2 rounded-lg w-4/12 p-1"
@@ -766,7 +793,23 @@ export const NumPredialForm = () => {
             onInput={soloNumeros}
             value={showid.second}
           ></input>
-        </div>
+    */
+    return (
+      <div
+        id="SeleccionarID"
+        className="w-1/5 border-2 text-center flex flex-col items-center p-2"
+      >
+        <h2 className="uppercase text-lg font-bold border-b pb-2">
+          Seleccionar ID
+        </h2>
+        <input
+          type="text"
+          className="border-2 rounded-lg w-full p-1 mt-4"
+          onChange={NumComa}
+          maxLength={tamaño}
+          value={inputId}
+        ></input>
+        <div className="flex flex-row items-center justify-center mt-2 p-2"></div>
       </div>
     );
   };
@@ -775,6 +818,7 @@ export const NumPredialForm = () => {
     const { updateNumPredial } = useContext(NumPreContext);
     const { ArrayFinal } = useContext(ArrayFinalContext);
     const [uniqueData, setUniqueData] = useState("");
+
     function shownumData(e) {
       setUniqueData(e.target.value);
       numID = e.target.value;
@@ -816,6 +860,7 @@ export const NumPredialForm = () => {
       </div>
     );
   };
+
   //1.1 Formulario para Editar Numero Predial
   const NumPredialForm = () => {
     const { numPredial } = useContext(NumPreContext);
@@ -1024,10 +1069,19 @@ export const NumPredialForm = () => {
     //Replicar datos
     function ReplicateData(e) {
       let sum = rdata;
-      cloneArray.map((item, index) => {
-        if (index >= parseInt(iniID) - 1 && index <= parseInt(finID) - 1) {
-          item.Matricula = sum;
-          sum = parseInt(sum) + 1;
+      cloneArray.map((item, index1) => {
+        if (coma) {
+          validNumbers.map((items) => {
+            if (index1 === items - 1) {
+              item.Matricula = sum;
+              sum = parseInt(sum) + 1;
+            }
+          });
+        } else {
+          if (index1 >= iniID - 1 && index1 <= finID - 1) {
+            item.Matricula = sum;
+            sum = parseInt(sum) + 1;
+          }
         }
       });
       ArrayPredial = cloneArray;
@@ -1061,13 +1115,13 @@ export const NumPredialForm = () => {
       </div>
     );
   };
+
   // 1.3 Formulario Direccion
   const DireccionForm = () => {
     //Form
     //Estado de Direccion Estructurada y No Estructurada
     const [dir, setDir] = useState(0);
     function Load_Direction(e) {
-      let name = e.target.name;
       let value = e.target.value;
       setDir(value);
     }
@@ -1173,8 +1227,16 @@ export const NumPredialForm = () => {
     ////////////////////
     function ReloadDataDirection() {
       ArrayPredial.map((items, index) => {
-        if (index >= parseInt(iniID) - 1 && index <= parseInt(finID) - 1) {
-          items.Direccion = direction;
+        if (coma) {
+          validNumbers.map((item) => {
+            if (index === item - 1) {
+              items.Direccion = direction;
+            }
+          });
+        } else {
+          if (index >= iniID - 1 && index <= finID - 1) {
+            items.Direccion = direction;
+          }
         }
       });
       handleUpdateTable(ArrayPredial);
@@ -1393,13 +1455,21 @@ export const NumPredialForm = () => {
       const { value } = e.target;
       setDataNom(value);
     }
+
     function LoadDirection() {
       ArrayPredial.map((items, index) => {
-        if (index >= parseInt(iniID) - 1 && index <= parseInt(finID) - 1) {
-          directData.nombre_predio = datanom;
-          items.Direccion = directData;
+        if (coma) {
+          validNumbers.map((item) => {
+            if (index === item - 1) {
+              directData.nombre_predio = datanom;
+              items.Direccion = directData;
+            }
+          });
         } else {
-          items.Direccion = items.Direccion;
+          if (index >= iniID - 1 && index <= finID - 1) {
+            directData.nombre_predio = datanom;
+            items.Direccion = directData;
+          }
         }
       });
 
@@ -1446,6 +1516,7 @@ export const NumPredialForm = () => {
             cont++;
           }
         });
+
         if (cont == 0 && !bttchange) {
           setBttload(false);
         } else {

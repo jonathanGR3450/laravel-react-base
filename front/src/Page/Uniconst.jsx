@@ -22,20 +22,24 @@ const UniconstForm = () => {
   useEffect(() => {
     Load_Data();
   }, []);
+
   function CentralForm({ tipo_unidad }) {
+    console.log("tipo unidad", tipo_unidad);
     let dato = "";
     if (tipo_unidad === "Convencional") {
       dato = data.Convencional;
+      console.log("Data Convencional", dato);
     } else {
       dato = data.No_Convencional;
-      console.log(dato);
+      console.log("Data No Convencional", dato);
     }
     variable.caracteristicasunidadconstruccion.tipo_construccion =
       dato.tipo_construccion;
+
     const gen = data["Datos Generales"];
+    console.log("Variable", gen);
     const tplanta = data["Tipo Planta"];
     const desti = dato["Destinacion"];
-
     const [uso, setUso] = useState();
     const [seleuso, setSeleuso] = useState();
     const [sopti, setSopti] = useState();
@@ -55,6 +59,7 @@ const UniconstForm = () => {
     //Manejo Select de destinacion
     function Optionselected(e) {
       const sv = e.target.value;
+      console.log("Dato Destinacion", sv);
       if (e.target.selectedIndex != 0) {
         const selectedOption = e.target.options[e.target.selectedIndex];
         const optionName = selectedOption.getAttribute("name");
@@ -78,10 +83,13 @@ const UniconstForm = () => {
     function Tipo(e) {
       let opt = e.target.options[e.target.selectedIndex];
       let nomsele = opt.getAttribute("name");
-      destino.id = nomsele;
+      destino.tipo_anexo = nomsele;
+      console.log("Destino", destino);
     }
     //Componente para los datos de destinacion
     function Mdesti({ select, nom }) {
+      console.log("Select", select);
+      console.log("nom", nom);
       if (tipo_unidad === "Convencional") {
         return (
           <div className="flex flex-col items-start w-full pb-2">
@@ -92,7 +100,7 @@ const UniconstForm = () => {
           </div>
         );
       } else {
-        console.log(select);
+        console.log("123", select);
         return (
           <div className="flex flex-col items-center text-center w-full pb-2">
             <h3 className="text-3xl mb-4"> {nom}</h3>
@@ -209,12 +217,13 @@ const UniconstForm = () => {
               onChange={Optionselected}
             >
               <option></option>
-              {Object.entries(desti).map((item) => {
+
+              {Object.entries(desti).map((item, index) => {
                 return (
                   <option
                     value={item[0]}
-                    name={item[1].tipo_calificar}
-                    key={item[1].tipo_calificar}
+                    name={item[1].tipo_anexo}
+                    key={item[1].tipo_anexo}
                   >
                     {item[0]}
                   </option>

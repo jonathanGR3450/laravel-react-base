@@ -145,6 +145,7 @@ export const LoadDataConstruccion = () => {
     };
     const openInteresadoForm = () => {
       interesadoFormRef.current.openModal(dataId);
+   
     };*/
     return (
       <div className="w-full flex flex-row border-2 p-2 mt-4 mb-4 rounded-xl">
@@ -168,6 +169,7 @@ export const LoadDataConstruccion = () => {
         <div className="w-1/3 flex flex-col items-center">
           <label className="font-semibold">SELECCIONAR ID</label>
           <div className="flex flex-row items-center justify-center">
+            {" "}
             <input
               name="first"
               type="text"

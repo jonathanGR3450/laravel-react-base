@@ -236,7 +236,9 @@ export const DerechoResumeForm = React.forwardRef((props, ref) => {
 });
 export const PredioResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const datos = props.datos;
+  console.log("datos predio", datos);
   const openModal = (aux) => {
     setIsModalOpen(true);
   };

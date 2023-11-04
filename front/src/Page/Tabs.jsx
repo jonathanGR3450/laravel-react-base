@@ -5,6 +5,7 @@ import { variable, dataobjetoconstruccion, crearobjetos } from "./DataContext";
 const Tabs = ({ tabs }) => {
   //Texto que van a tener las pestañas
   const inicial = Object.keys(tabs);
+  console.log("tabs", tabs);
 
   //Asignar cual es la pestaña principal cuando cargue el componente
   const [activeTab, setActiveTab] = useState(inicial[1]);
@@ -24,18 +25,6 @@ const Tabs = ({ tabs }) => {
   //ID de los campos seleccionados sobre los tipos de objeto de construccion
   const [selecttipo, setSelecttipo] = useState({});
 
-  //Evento de los Select de los objetos de construccion
-  const handleChange = (event) => {
-    let { name, value } = event.target;
-    let opt = event.target.options[event.target.selectedIndex];
-    let nom = opt.dataset.nom;
-    let toc = opt.dataset.toc;
-    //guarda el valor del puntaje que se elije en el select
-    setDjson({ ...djson, [name]: value });
-    //guarda el valor del tipo de objeto de construccion que se elije en el select
-    setTiposel({ ...tipoSel, [name]: toc });
-    setNom({ ...nomb, [name]: nom });
-  };
   useEffect(() => {
     dataobjetoconstruccion.tipo_construccion = tipoSel;
     dataobjetoconstruccion.puntos = djson;
@@ -44,6 +33,7 @@ const Tabs = ({ tabs }) => {
   //Activar Pestaña
   const handleClick = (e, newActiveTab) => {
     e.preventDefault();
+    console.log("Nueva", newActiveTab);
     //Guardar los puntajes de los campos seleccionados
     setSelect({ ...selectSel, [activeTab]: djson });
     //Guardar los tipos de objeto de los campos seleccionados
@@ -51,24 +41,56 @@ const Tabs = ({ tabs }) => {
     //Cambia la pestaña
     setActiveTab(newActiveTab);
   };
+  const initialObjects = [{}, {}, {}, {}];
+  const [newgrupoclasificacion, setNewGrupoClasificacion] =
+    useState(initialObjects); // Declara el arreglo en un ámbito superior
+  //Formulario de las Tabs
+  const Tab = ({ data, index }) => {
+    console.log("Datos tab", data);
+    console.log("Datos index", index - 1);
+    // Contenido Menu de los item Estructura , cocina, etc.
+    // Captura el valor de los select de cada pestaña
+    const handleChange = (event) => {
+      let { name, value } = event.target;
+      let opt = event.target.options[event.target.selectedIndex];
+      let nom = opt.dataset.nom;
+      let toc = opt.dataset.toc;
+      let newobjetoconstruccion = {
+        tipo_objeto_construccion: toc,
+        puntos: parseInt(value),
+      };
 
-  const Tab = ({ data }) => {
-    //Contenido Menu de los item Estructura , cocina etc
-    console.log("COnsole", data[0]);
-    console.log(djson);
+      setNewGrupoClasificacion((prevGrupoclasificacion) => [
+        ...prevGrupoclasificacion,
+        newobjetoconstruccion,
+      ]);
+
+      //nom=nombre de tipo
+      //toc = tipo de objeto de construccion
+      //value=puntaje
+      //guarda el valor del puntaje que se elije en el select
+      //  setDjson({ ...djson, [name]: value });
+      //guarda el valor del tipo de objeto de construccion que se elije en el select
+      //    setTiposel({ ...tipoSel, [name]: toc });
+      //setNom({ ...nomb, [name]: nom });
+    };
+    let aux = data[0];
+    console.log("Actualiza", data);
+    console.log("nuevo objeto", newgrupoclasificacion);
     return (
       <div className="w-full flex flex-row items-center justify-center">
         <div className="flex flex-col pb-2 w-full text-center mr-4">
           <h5 className="w-full "> {data[0]}</h5>
           <select
             name={data[0]}
-            value={nomb[data]}
+            value={nomb[aux]}
             onChange={handleChange}
             className="p-1 w-full text-center border-2 rounded-md overflow-auto"
           >
             <option value="No Cargo"></option>
             {Object.entries(data[1]).map((sel, index) => {
               const sele = sel[1];
+              //console.log("Seleccion", sele);
               //toc=tipo objeto construccion
               //console.log("Datos", sele);
               return (
@@ -86,6 +108,7 @@ const Tabs = ({ tabs }) => {
       </div>
     );
   };
+
   //DESTINACION
   return (
     <div className=" w-full">
@@ -114,12 +137,12 @@ const Tabs = ({ tabs }) => {
           if (index != 0) {
             if (tab[0] === activeTab) {
               const prueba = tab[1];
-
               return (
                 <div className="w-full flex flex-row" key={tab[0]}>
                   {Object.entries(prueba).map((item, index) => {
+                    console.log("tabs  888", item);
                     if (index != 0) {
-                      return <Tab data={item} />;
+                      return <Tab data={item} index={index} />;
                     }
                   })}
                 </div>

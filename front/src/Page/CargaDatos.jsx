@@ -13,6 +13,7 @@ import {
   DerechoResumeForm,
   PredioResumeForm,
 } from "./ResumeData";
+
 export const LoadDataForm = () => {
   const [dataSelect, setDataSelect] = useState(0);
 
@@ -128,35 +129,98 @@ export const LoadDataForm = () => {
   };
 
   const ChangeData = () => {
+    let validNumbers = [];
     const { updateIdArray } = useContext(DataContext);
-    const [dataId, setDataId] = useState({
-      first: "",
-      second: "",
-    });
+    const [dataId, setDataId] = useState("");
+    let [coma, setComa] = useState("");
+    const [inputId, setInputId] = useState("");
     const HandleDataId = (e) => {
       const { name, value } = e.target;
       console.log("nombre", name);
       console.log("aaaaa", value);
       setDataId((prevValues) => ({ ...prevValues, [name]: value }));
     };
+    function NumComa(e) {
+      const input = event.target;
+      let value = input.value;
+      value = value.replace(/[^0-9,-]/g, ""); // Elimina caracteres no numéricos
+      if (value.includes("-")) {
+        setComa(1);
+        if (value.split("-").length <= 2) {
+          //setTamaño(3);
+          let aux = value.split("-");
+          console.log("Datos - ", aux);
+          let numeros = aux.map((item) => {
+            return parseInt(item);
+          });
+          validNumbers = numeros;
+          setDataId(validNumbers);
+        }
+      } else {
+        let aux = "";
+        if (value.length === 0) {
+          console.log("Borrar Todo", value.length);
+          aux = 0;
+        } else {
+          aux = value.split(",");
+        }
+        if (value.includes(",")) {
+          setComa(2);
+          let numeros = aux.map((item) => {
+            return parseInt(item);
+          });
 
+          validNumbers = numeros;
+          console.log(" Contiene comas ", validNumbers);
+          setDataId(validNumbers);
+        } else {
+          setComa(3);
+          validNumbers = [parseInt(value)];
+          console.log(validNumbers);
+          setDataId(validNumbers);
+        }
+      }
+      setInputId(input.value);
+      console.log(coma);
+      /*console.log(input.value);
+      
+      numeroId = input.value;*/
+      //modId(numeroId);
+    }
     function Selectdata(e) {
       setDataSelect(e.target.value);
     }
-
     //
     const openFuenteAdminForm = () => {
-      fuenteFormRef.current.openModal(dataId);
+      console.log("valores id", dataId);
+      fuenteFormRef.current.openModal(dataId, coma);
     };
     const openPredioForm = () => {
-      predioFormRef.current.openModal(dataId);
+      predioFormRef.current.openModal(dataId, coma);
     };
     const openDerechoForm = () => {
-      derechoFormRef.current.openModal(dataId);
+      derechoFormRef.current.openModal(dataId, coma);
     };
     const openInteresadoForm = () => {
-      interesadoFormRef.current.openModal(dataId);
+      interesadoFormRef.current.openModal(dataId, coma);
     };
+    /*  <input
+    name="first"
+    type="text"
+    className="border-2 rounded-lg text-center m-1 w-1/3"
+    onInput={soloNumeros}
+    onChange={HandleDataId}
+    value={dataId.first}
+  ></input>
+  <label> - </label>
+  <input
+    name="second"
+    type="text"
+    className="border-2 rounded-lg text-center m-1 w-1/3"
+    onInput={soloNumeros}
+    onChange={HandleDataId}
+    value={dataId.second}
+  ></input> */
     return (
       <div className="w-full flex flex-row border-2 p-2 mt-4 mb-4 rounded-xl">
         <div className="w-1/3 flex flex-col text-center ">
@@ -181,21 +245,10 @@ export const LoadDataForm = () => {
           <label className="font-semibold">SELECCIONAR ID</label>
           <div className="flex flex-row items-center justify-center">
             <input
-              name="first"
               type="text"
-              className="border-2 rounded-lg text-center m-1 w-1/3"
-              onInput={soloNumeros}
-              onChange={HandleDataId}
-              value={dataId.first}
-            ></input>
-            <label> - </label>
-            <input
-              name="second"
-              type="text"
-              className="border-2 rounded-lg text-center m-1 w-1/3"
-              onInput={soloNumeros}
-              onChange={HandleDataId}
-              value={dataId.second}
+              className="border-2 rounded-lg w-full p-1"
+              onChange={NumComa}
+              value={inputId}
             ></input>
           </div>
         </div>

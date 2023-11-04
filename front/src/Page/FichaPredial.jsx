@@ -45,12 +45,10 @@ const FichaPredial = () => {
     } else {
       if (identi.id != 0) {
         //console.log(loading, identi.id);
-
         cargarobjetos(crearobjetos());
         incrementIdenti();
       } else {
         //console.log("Entra", identi.id);
-
         incrementIdenti();
       }
     }
@@ -65,7 +63,7 @@ const FichaPredial = () => {
           className="p-2 w-1/2 text-center  rounded-md  border-2  text-white bg-teal-500 "
         >
           <FontAwesomeIcon className="mr-4" icon={faPlus} />
-          Cargar Unidad
+          Cargar Caracteristicas
         </button>
         <Link
           to="/Resumen"
