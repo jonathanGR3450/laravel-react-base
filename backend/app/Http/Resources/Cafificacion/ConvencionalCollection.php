@@ -178,14 +178,15 @@ class ConvencionalCollection extends ResourceCollection
         return array_merge($this->pagination->resolve(), [
             "data" => $this->collection->transform(function ($item) {
                 return [
+                    "t_id" => $item->t_id,
                     "identificador" => $item->identificador,
                     "tipo_construccion" => [
                         't_id' => $item->tipoConstruccion->t_id,
                         'dispname' => $item->tipoConstruccion->dispname,
                     ],
                     "tipo_dominio" => [
-                        't_id' => $item->tipoDominio->t_id,
-                        'dispname' => $item->tipoDominio->dispname,
+                        't_id' => $item->tipoDominio?->t_id,
+                        'dispname' => $item->tipoDominio?->dispname,
                     ],
                     "tipo_unidad_construccion" => [
                         't_id' => $item->tipoUnidadConstruccion->t_id,
