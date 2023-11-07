@@ -9,6 +9,10 @@ use App\Http\Controllers\Clasificacion\NoConvencionalShowController;
 use App\Http\Controllers\Clasificacion\NoConvencionalStoreController;
 use App\Http\Controllers\Construccion\StoreDocuments;
 use App\Http\Controllers\Derecho\StoreLocal AS StoreDerechoLocal;
+use App\Http\Controllers\DatosPHCondominio\StoreLocal AS StoreDatosCondominioLocal;
+use App\Http\Controllers\PredioCopropiedad\StoreLocal AS StorePredioCopropiedadLocal;
+use App\Http\Controllers\RicPredio\StoreLocal AS StoreRicPredioLocal;
+use App\Http\Controllers\RicTramiteCatastral\StoreLocal AS StoreRicTramiteCatastralLocal;
 use App\Http\Controllers\FuenteAdministrativa\StoreLocal AS StoreFuenteAdministrativaLocal;
 use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
@@ -58,6 +62,14 @@ Route::prefix('v1')->group(function () {
     Route::post('interesados', StoreColMiembros::class);
 
     Route::post('derecho/local', StoreDerechoLocal::class);
+
+    Route::post('datos-condominio/local', StoreDatosCondominioLocal::class);
+
+    Route::post('predio-copropiedad/local', StorePredioCopropiedadLocal::class);
+
+    Route::post('ric-predio/local', StoreRicPredioLocal::class);
+
+    Route::post('ric-tramite-catastral/local', StoreRicTramiteCatastralLocal::class);
 
     Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
 
