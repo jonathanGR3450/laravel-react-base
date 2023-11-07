@@ -1,29 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { variable, dataobjetoconstruccion, crearobjetos } from "./DataContext";
-
-const Tabs = ({ tabs }) => {
+import { GrupoContext } from "./Context/CaracteristicaContext";
+const Tabs = ({ tabs, arrayClass, updateFunction }) => {
   //Texto que van a tener las pestañas
   const inicial = Object.keys(tabs);
-  console.log("tabs", tabs);
+
+  let { grupocalificacion, updateGrupoCalificacion } = useContext(GrupoContext);
 
   //Asignar cual es la pestaña principal cuando cargue el componente
   const [activeTab, setActiveTab] = useState(inicial[1]);
-
   //tipoSel me guarda los tipos de objeto de construccion de los Select Elegidos
   const [tipoSel, setTiposel] = useState({});
-
   //djson me guarda los Puntajes de los Select Elegidos
   const [djson, setDjson] = useState({});
-
   //djson me guarda los Puntajes de los Select Elegidos
   const [nomb, setNom] = useState({});
-
   //Puntajes de los campos seleccionados
   const [selectSel, setSelect] = useState({});
-
-  //ID de los campos seleccionados sobre los tipos de objeto de construccion
-  const [selecttipo, setSelecttipo] = useState({});
 
   useEffect(() => {
     dataobjetoconstruccion.tipo_construccion = tipoSel;
@@ -32,51 +26,93 @@ const Tabs = ({ tabs }) => {
 
   //Activar Pestaña
   const handleClick = (e, newActiveTab) => {
-    e.preventDefault();
-    console.log("Nueva", newActiveTab);
-    //Guardar los puntajes de los campos seleccionados
-    setSelect({ ...selectSel, [activeTab]: djson });
-    //Guardar los tipos de objeto de los campos seleccionados
-    setSelecttipo({ ...selecttipo, [activeTab]: tipoSel });
-    //Cambia la pestaña
+    let index = inicial.indexOf(activeTab);
+    let indexArray = index - 1;
+    let conservacion = 3;
+    let sum = 0;
+
+    arrayTemp.map((item) => {
+      if (tabs.tipo_calificar == 718) {
+        if (inicial.includes("Baño") || inicial.includes("Cocina")) {
+          switch (parseInt(item.tipo_objeto_construccion)) {
+            case 137:
+              conservacion = 1;
+              break;
+            case 138:
+              conservacion = 2;
+              break;
+            case 139:
+              conservacion = 3;
+              break;
+            case 140:
+              conservacion = 4;
+              break;
+            case 141:
+              conservacion = 4;
+              break;
+            case 152:
+              conservacion = 1;
+              break;
+            case 153:
+              conservacion = 2;
+              break;
+            case 154:
+              conservacion = 3;
+              break;
+            case 155:
+              conservacion = 4;
+              break;
+            case 156:
+              conservacion = 4;
+              break;
+          }
+        }
+      }
+      if (item.tipo_objeto_construccion < 6) {
+        conservacion = parseInt(item.tipo_objeto_construccion);
+        arrayTemp.pop();
+      }
+      sum += item.puntos;
+    });
+
+    //////////////////Creacion de Grupo Calificacion
+    let newgrupo = {
+      clase_calificacion: tabs[activeTab].clase_calificacion,
+      conservacion: conservacion,
+      subtotal: sum,
+      objetoconstruccion: arrayTemp,
+    };
+    let newCalificacion = [...arrayClass];
+    newCalificacion[indexArray] = newgrupo;
+    updateFunction(newCalificacion);
     setActiveTab(newActiveTab);
+    //updateGrupoCalificacion(newgrupo);
   };
-  const initialObjects = [{}, {}, {}, {}];
-  const [newgrupoclasificacion, setNewGrupoClasificacion] =
-    useState(initialObjects); // Declara el arreglo en un ámbito superior
-  //Formulario de las Tabs
+
+  let tamaño = 0;
+  let initialValue = {
+    tipo_objeto_construccion: "",
+    puntos: "",
+  };
+  let arrayTemp = "";
+
+  //////////////////////////Formulario de las Tabs que son Select/////////////////////////
   const Tab = ({ data, index }) => {
-    console.log("Datos tab", data);
-    console.log("Datos index", index - 1);
+    let aux = data[0];
     // Contenido Menu de los item Estructura , cocina, etc.
     // Captura el valor de los select de cada pestaña
+
     const handleChange = (event) => {
       let { name, value } = event.target;
       let opt = event.target.options[event.target.selectedIndex];
-      let nom = opt.dataset.nom;
       let toc = opt.dataset.toc;
+
       let newobjetoconstruccion = {
         tipo_objeto_construccion: toc,
         puntos: parseInt(value),
       };
-
-      setNewGrupoClasificacion((prevGrupoclasificacion) => [
-        ...prevGrupoclasificacion,
-        newobjetoconstruccion,
-      ]);
-
-      //nom=nombre de tipo
-      //toc = tipo de objeto de construccion
-      //value=puntaje
-      //guarda el valor del puntaje que se elije en el select
-      //  setDjson({ ...djson, [name]: value });
-      //guarda el valor del tipo de objeto de construccion que se elije en el select
-      //    setTiposel({ ...tipoSel, [name]: toc });
-      //setNom({ ...nomb, [name]: nom });
+      arrayTemp[index - 1] = newobjetoconstruccion;
     };
-    let aux = data[0];
-    console.log("Actualiza", data);
-    console.log("nuevo objeto", newgrupoclasificacion);
     return (
       <div className="w-full flex flex-row items-center justify-center">
         <div className="flex flex-col pb-2 w-full text-center mr-4">
@@ -90,9 +126,7 @@ const Tabs = ({ tabs }) => {
             <option value="No Cargo"></option>
             {Object.entries(data[1]).map((sel, index) => {
               const sele = sel[1];
-              //console.log("Seleccion", sele);
               //toc=tipo objeto construccion
-              //console.log("Datos", sele);
               return (
                 <option
                   data-nom={sele.Nombre}
@@ -124,7 +158,7 @@ const Tabs = ({ tabs }) => {
                     ? " text-black border-teal-800 border-2"
                     : ""
                 } flex-1   bg-teal-500 text-white  font-medium py-2`}
-                onClick={(e) => handleClick(e, tab[0])}
+                onClick={(e) => handleClick(e, tab[0], index)}
               >
                 {tab[0]}
               </button>
@@ -137,10 +171,12 @@ const Tabs = ({ tabs }) => {
           if (index != 0) {
             if (tab[0] === activeTab) {
               const prueba = tab[1];
+              const iniciales = Object.keys(prueba);
+              tamaño = iniciales.length - 1;
+              arrayTemp = Array(tamaño).fill(initialValue);
               return (
                 <div className="w-full flex flex-row" key={tab[0]}>
                   {Object.entries(prueba).map((item, index) => {
-                    console.log("tabs  888", item);
                     if (index != 0) {
                       return <Tab data={item} index={index} />;
                     }

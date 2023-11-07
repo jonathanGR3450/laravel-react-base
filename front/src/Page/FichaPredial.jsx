@@ -12,27 +12,35 @@ import {
   resetJson,
 } from "./DataContext";
 import { Link, Outlet } from "react-router-dom";
+import UniconstForm from "./Uniconst";
+import { CaracteristicaProvider } from "./Context/CaracteristicaContext";
 const FichaPredial = () => {
   const [loading, setLoading] = useState(true);
+  const [valueBtt, setValueBtt] = useState("");
+  function btt(e) {
+    setLoading(true);
+    setValueBtt(e.target.value);
+  }
+  //<UniconstForm data="Convencional" />
   const Option = () => {
     return (
       <div className="w-2/4 flex flex-col p-4 bg-transparent  bg-white bg-opacity-80 items-center">
         <h1 className="text-3xl mb-4">Tipo de Construccion</h1>
         <div className="w-full flex flex-row">
-          <Link
-            to="/Ficha/Uniconst/Convencional"
-            onClick={() => setLoading(true)}
+          <button
+            onClick={btt}
             className="p-2 w-1/2 text-center   rounded-md  border-2  text-white bg-teal-500 "
+            value={66}
           >
             Convencional
-          </Link>
-          <Link
-            to="/Ficha/Uniconst/No Convencional"
-            onClick={() => setLoading(true)}
+          </button>
+          <button
+            onClick={btt}
             className="p-2 w-1/2 text-center   rounded-md  border-2  text-white bg-teal-500 "
+            value={67}
           >
             No Convencional
-          </Link>
+          </button>
         </div>
       </div>
     );
@@ -44,17 +52,14 @@ const FichaPredial = () => {
     if (loading) {
     } else {
       if (identi.id != 0) {
-        //console.log(loading, identi.id);
         cargarobjetos(crearobjetos());
         incrementIdenti();
       } else {
-        //console.log("Entra", identi.id);
         incrementIdenti();
       }
     }
     //resetJson();
   }, [loading]);
-
   return (
     <div className="p-4 w-3/4 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center ">
       <div className="w-2/4 flex">
@@ -74,7 +79,13 @@ const FichaPredial = () => {
         </Link>
       </div>
       {loading != true && <Option />}
-      <Outlet />
+      <CaracteristicaProvider>
+        {valueBtt == 66 ? (
+          <UniconstForm data={"Convencional"} id={66} />
+        ) : (
+          <UniconstForm data={"No Convencional"} id={67} />
+        )}
+      </CaracteristicaProvider>
     </div>
   );
 };
