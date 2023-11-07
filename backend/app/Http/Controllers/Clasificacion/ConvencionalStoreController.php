@@ -38,6 +38,7 @@ class ConvencionalStoreController extends AppBaseController
     public function __invoke(ValidarConstruccionesFormRequest $request)
     {
         try {
+            $ids = [];
             $construcciones = $request->input('construcciones', []);
             foreach ($construcciones as $construccion) {
                 $caracteristicas = (object) $construccion['caracteristicasunidadconstruccion'];
@@ -63,6 +64,7 @@ class ConvencionalStoreController extends AppBaseController
                     'local_id' => $caracteristicas->local_id,
                     'observaciones' => $caracteristicas->observaciones,
                 ]);
+                $ids[] = $unidadConstruccionModel->t_id;
     
                 foreach ($caracteristicas->calificacionconvencional as $calificacion) {
                     $calificacion = (object) $calificacion;
@@ -90,7 +92,7 @@ class ConvencionalStoreController extends AppBaseController
                 }
             }
             
-            return $this->sendSuccess('Calificacion convencional creada con exito');
+            return $this->sendResponse($ids, 'Calificacion convencional creada con exito');
         } catch (\Exception $e) {
             $this->sendError($e->getMessage());
         }

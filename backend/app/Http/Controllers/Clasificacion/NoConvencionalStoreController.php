@@ -38,6 +38,7 @@ class NoConvencionalStoreController extends AppBaseController
     public function __invoke(ValidarConstruccionesNoConvencionalesFormRequest $request)
     {
         try {
+            $ids = [];
             $construcciones = $request->input('construcciones', []);
             foreach ($construcciones as $construccion) {
                 $caracteristicas = (object) $construccion['caracteristicasunidadconstruccion'];
@@ -63,6 +64,8 @@ class NoConvencionalStoreController extends AppBaseController
                     'local_id' => $caracteristicas->local_id,
                     'observaciones' => $caracteristicas->observaciones,
                 ]);
+
+                $ids[] = $unidadConstruccionModel->t_id;
     
                 foreach ($caracteristicas->calificacionnoconvencional as $calificacion) {
                     $calificacion = (object) $calificacion;
@@ -72,7 +75,7 @@ class NoConvencionalStoreController extends AppBaseController
                 }
             }
 
-            return $this->sendSuccess('Calificacion no convencional creada con exito');
+            return $this->sendResponse($ids, 'Calificacion no convencional creada con exito');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }
