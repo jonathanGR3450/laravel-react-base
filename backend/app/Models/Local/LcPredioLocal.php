@@ -103,4 +103,8 @@ class LcPredioLocal extends Model
     function lcRestricion() : HasMany {
         return $this->hasMany(LcRestriccionLocal::class, 't_id', 'unidad');
     }
+
+    function ricPredio() : HasMany {
+        return $this->hasMany(RicPredioLocal::class, 't_id', 'lc_predio');
+    }
 }
