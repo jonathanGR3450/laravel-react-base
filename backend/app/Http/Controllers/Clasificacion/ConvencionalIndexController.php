@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Clasificacion;
 
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\Convencional\IndexRequest;
 use App\Http\Resources\Cafificacion\ConvencionalCollection;
 use App\Models\Local\LcCaracteristicasUnidadConstruccionLocal;
 use App\Traits\PaginationTrait;
@@ -41,14 +42,49 @@ class ConvencionalIndexController extends AppBaseController
      *     ),
      * )
      */
-    public function __invoke(Request $request)
+    public function __invoke(IndexRequest $request)
     {
         try {
+            // dd($request->input('tipo_construccion'));
+
+            // filters
+            $construccion = $request->input('tipo_construccion');
+            $dominio = $request->input('tipo_dominio');
+            $unidadConstruccion = $request->input('tipo_unidad_construccion');
+            $tipoPlanta = $request->input('tipo_planta');
+            $uso = $request->input('uso');
+
+            $totalHabitaciones = $request->input('total_habitaciones');
+            $totalBanios = $request->input('total_banios');
+            $totalLocales = $request->input('total_locales');
+            $totalPlantas = $request->input('total_plantas');
+
             $query = LcCaracteristicasUnidadConstruccionLocal::whereExists(function ($query) {
                 $query->select(DB::raw(1))
                     ->from('lc_calificacionconvencional')
                     ->whereColumn('lc_calificacionconvencional.lc_unidad_construccion', 'lc_caracteristicasunidadconstruccion.t_id');
+            })
+            ->when($totalHabitaciones, function ($query, $totalHabitaciones) {
+                $query->where('total_habitaciones', $totalHabitaciones);
+            })->when($totalBanios, function ($query, $totalBanios) {
+                $query->where('total_banios', $totalBanios);
+            })->when($totalLocales, function ($query, $totalLocales) {
+                $query->where('total_locales', $totalLocales);
+            })->when($totalPlantas, function ($query, $totalPlantas) {
+                $query->where('total_plantas', $totalPlantas);
+            })->when($construccion, function ($query, $construccion) {
+                $query->where('tipo_construccion', $construccion);
+            })->when($dominio, function ($query, $dominio) {
+                $query->where('tipo_dominio', $dominio);
+            })->when($unidadConstruccion, function ($query, $unidadConstruccion) {
+                $query->where('tipo_unidad_construccion', $unidadConstruccion);
+            })->when($tipoPlanta, function ($query, $tipoPlanta) {
+                $query->where('tipo_planta', $tipoPlanta);
+            })->when($uso, function ($query, $uso) {
+                $query->where('uso', $uso);
             });
+
+            // dd($query->toSql());
             
             /**pagination */
             $sortable = [
