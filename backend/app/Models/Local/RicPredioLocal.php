@@ -55,6 +55,11 @@ class RicPredioLocal extends Model
     //     return $this->belongsTo(RicZonaTipo::class, 'zona', 't_id');
     // }
 
+    public function ricTramiteCatastral()
+    {
+        return $this->hasMany(RicTramiteCatastralLocal::class, 'clasificacion_mutacion', 't_id');
+    }
+
     public function lcPredio()
     {
         return $this->belongsTo(LcPredioLocal::class, 'lc_predio', 't_id');
