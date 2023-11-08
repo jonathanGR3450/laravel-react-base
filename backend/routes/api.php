@@ -14,6 +14,8 @@ use App\Http\Controllers\PredioCopropiedad\StoreLocal AS StorePredioCopropiedadL
 use App\Http\Controllers\RicPredio\StoreLocal AS StoreRicPredioLocal;
 use App\Http\Controllers\RicTramiteCatastral\StoreLocal AS StoreRicTramiteCatastralLocal;
 use App\Http\Controllers\FuenteAdministrativa\StoreLocal AS StoreFuenteAdministrativaLocal;
+use App\Http\Controllers\Datosadicionaleslevantamientocatastral\StoreLocal AS StoreDatosadicionaleslevantamientocatastralLocal;
+use App\Http\Controllers\ContactoVisita\StoreLocal AS StoreContactoVisitaLocal;
 use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
 use App\Http\Controllers\Document\GenerateDocumentPdf;
@@ -74,6 +76,10 @@ Route::prefix('v1')->group(function () {
     Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
 
     Route::post('terreno/local', StoreTerrenoLocal::class);
+
+    Route::post('datos-adicionales/local', StoreDatosadicionaleslevantamientocatastralLocal::class);
+
+    Route::post('contacto-visita/local', StoreContactoVisitaLocal::class);
 
     Route::post('construccion/local', StoreConstruccionLocal::class);
     Route::post('construccion/documentos', StoreDocuments::class);
