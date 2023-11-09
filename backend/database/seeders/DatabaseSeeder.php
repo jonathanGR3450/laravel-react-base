@@ -18,5 +18,10 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $this->call([
+            TabViv60LocalSeeder::class,
+            LcValorTerrenoUrbanaLocalSeeder::class,
+            TabSantaMariaDeLosAngelesLocalSeeder::class
+        ]);
     }
 }

@@ -18,6 +18,7 @@ use App\Http\Controllers\Datosadicionaleslevantamientocatastral\StoreLocal AS St
 use App\Http\Controllers\ContactoVisita\StoreLocal AS StoreContactoVisitaLocal;
 use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
+use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccionLocal;
 use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
@@ -81,6 +82,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('contacto-visita/local', StoreContactoVisitaLocal::class);
 
+    Route::post('unidad/construccion/local', StoreUnidadConstruccionLocal::class);
     Route::post('construccion/local', StoreConstruccionLocal::class);
     Route::post('construccion/documentos', StoreDocuments::class);
 
