@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TabViv60LocalSeeder::class,
             LcValorTerrenoUrbanaLocalSeeder::class,
+            TabSantaMariaDeLosAngelesLocalSeeder::class
         ]);
     }
 }
