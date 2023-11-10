@@ -13,6 +13,8 @@ class LcValorTerrenoUrbanaLocalSeeder extends Seeder
      */
     public function run(): void
     {
+        LcValorTerrenoUrbanaLocal::truncate();
+
         foreach ($this->data() as $valorTerreno) {
             LcValorTerrenoUrbanaLocal::create($valorTerreno);
         }

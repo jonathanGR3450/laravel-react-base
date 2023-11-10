@@ -2,18 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\Local\TabSantaMariaDeLosAngelesLocal;
+use App\Models\Local\TabSantaMariaDeLosAngelesUrbanaLocal;
 use Illuminate\Database\Seeder;
 
-class TabSantaMariaDeLosAngelesLocalSeeder extends Seeder
+class TabSantaMariaDeLosAngelesUrbanaLocalSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        TabSantaMariaDeLosAngelesUrbanaLocal::truncate();
         foreach ($this->data() as $tabSantaMaria) {
-            TabSantaMariaDeLosAngelesLocal::create($tabSantaMaria);
+            TabSantaMariaDeLosAngelesUrbanaLocal::create($tabSantaMaria);
         }
     }
 

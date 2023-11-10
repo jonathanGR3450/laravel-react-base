@@ -1,6 +1,15 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\AvaluoPredial\ListTabAnexosUrbanaRuralLocalController;
+use App\Http\Controllers\AvaluoPredial\ListTabBod60UrbanaRuralLocalController;
+use App\Http\Controllers\AvaluoPredial\ListTabCcF0360UrbanaRuralLocalController;
+use App\Http\Controllers\AvaluoPredial\ListTabCom60UrbanaRuralLocalController;
+use App\Http\Controllers\AvaluoPredial\ListTabHot60UrbanaRuralLocalController;
+use App\Http\Controllers\AvaluoPredial\ListTabSantaMariaDeLosAngelesUrbanaLocalController;
+use App\Http\Controllers\AvaluoPredial\ListTabViv60UrbanaRuralController;
+use App\Http\Controllers\AvaluoPredial\ListValorTerrenoRuralController;
+use App\Http\Controllers\AvaluoPredial\ListValorTerrenoUrbanoController;
 use App\Http\Controllers\Clasificacion\ConvencionalIndexController;
 use App\Http\Controllers\Clasificacion\ConvencionalShowController;
 use App\Http\Controllers\Clasificacion\ConvencionalStoreController;
@@ -97,4 +106,15 @@ Route::prefix('v1')->group(function () {
     Route::post('caracteristicasunidadconstruccion/no-convencional', NoConvencionalStoreController::class);
 
     Route::get('document/generate', GenerateDocumentPdf::class);
+
+    Route::get('avaluo-catastral/urbano/valor-terreno', ListValorTerrenoUrbanoController::class);
+    Route::get('avaluo-catastral/rural/valor-terreno', ListValorTerrenoRuralController::class);
+
+    Route::get('avaluo-catastral/tipo/tab-viv', ListTabViv60UrbanaRuralController::class);
+    Route::get('avaluo-catastral/tipo/santa-maria', ListTabSantaMariaDeLosAngelesUrbanaLocalController::class);
+    Route::get('avaluo-catastral/tipo/tab-com', ListTabCom60UrbanaRuralLocalController::class);
+    Route::get('avaluo-catastral/tipo/tab-bod', ListTabBod60UrbanaRuralLocalController::class);
+    Route::get('avaluo-catastral/tipo/tab-hot', ListTabHot60UrbanaRuralLocalController::class);
+    Route::get('avaluo-catastral/tipo/tab-cc-f03', ListTabCcF0360UrbanaRuralLocalController::class);
+    Route::get('avaluo-catastral/tipo/tab-anexos', ListTabAnexosUrbanaRuralLocalController::class);
 });
