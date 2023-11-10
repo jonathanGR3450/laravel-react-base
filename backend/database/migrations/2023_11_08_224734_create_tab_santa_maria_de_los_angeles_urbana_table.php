@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tab_santa_maria_de_los_angeles', function (Blueprint $table) {
+        Schema::create('tab_santa_maria_de_los_angeles_urbana', function (Blueprint $table) {
             $table->id('t_id');
             $table->integer('puntos');
             $table->float('valor', 10, 10);
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tab_santa_maria_de_los_angeles');
+        Schema::dropIfExists('tab_santa_maria_de_los_angeles_urbana');
     }
 };

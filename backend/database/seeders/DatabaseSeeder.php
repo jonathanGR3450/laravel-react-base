@@ -12,16 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $this->call([
-            TabViv60LocalSeeder::class,
+            TabViv60UrbanaRuralLocalSeeder::class,
             LcValorTerrenoUrbanaLocalSeeder::class,
-            TabSantaMariaDeLosAngelesLocalSeeder::class
+            TabSantaMariaDeLosAngelesUrbanaLocalSeeder::class,
+            TabBod60UrbanaRuralLocalSeeder::class,
+            TabCcF0360UrbanaRuralLocalSeeder::class,
+            TabCom60UrbanaRuralLocalSeeder::class,
+            TabHot60UrbanaRuralLocalSeeder::class,
         ]);
     }
 }

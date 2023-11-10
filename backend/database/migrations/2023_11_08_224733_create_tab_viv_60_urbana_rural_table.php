@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tab_viv_60', function (Blueprint $table) {
+        Schema::create('tab_viv_60_urbana_rural', function (Blueprint $table) {
             $table->id('t_id');
             $table->integer('puntos');
             $table->float('valor', 10, 10);
             $table->integer('vigencia');
+            $table->string('tipo');
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tab_viv_60');
+        Schema::dropIfExists('tab_viv_60_urbana_rural');
     }
 };
