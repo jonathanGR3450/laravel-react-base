@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             TabCcF0360UrbanaRuralLocalSeeder::class,
             TabCom60UrbanaRuralLocalSeeder::class,
             TabHot60UrbanaRuralLocalSeeder::class,
+            TabAnexosUrbanaRuralLocalSeeder::class,
+            LcValorTerrenoRuralLocalSeeder::class,
         ]);
     }
 }
