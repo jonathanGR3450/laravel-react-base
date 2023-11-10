@@ -14,7 +14,6 @@ class TabViv60UrbanaRuralLocal extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'zhg_no',
         'puntos',
         'valor',
         'vigencia',
