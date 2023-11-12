@@ -50,6 +50,7 @@ const UniConstruccionForm = (props, ref) => {
   const [numUnidad, setNumUnidad] = useState();
   const [unidad, setUnidad] = useState([]);
   const [unidadData, setUnidadData] = useState();
+
   const Load_Num = (e) => {
     const newValue = parseInt(e.target.value);
     console.log(newValue);
@@ -87,12 +88,9 @@ const UniConstruccionForm = (props, ref) => {
       etiqueta: "",
       construccion: "",
     });
-    const [tipoConstruccion, setTipoConstruccion] = useState();
     const Load_Data = (e) => {
       const { name, value } = e.target;
       setDataUnidad((prevValues) => ({ ...prevValues, [name]: value }));
-      console.log("name", dataUnidad);
-      console.log("value", value);
     };
     //Modal de Crear y Cargar Caracteristicas
     const LoadCaracRef = useRef();
@@ -106,7 +104,6 @@ const UniConstruccionForm = (props, ref) => {
     useEffect(() => {
       index.onDataChange(index.index, dataUnidad);
       console.log("Actualizacion datos", dataUnidad);
-      console.log("");
     }, [dataUnidad]);
 
     return (
@@ -119,17 +116,8 @@ const UniConstruccionForm = (props, ref) => {
             <label>Relacion Construccion</label>
             <select className="border-2 p-1 rounded-md w-full">
               <option></option>
-              {tableData.map((item, index) => {
-                if (index >= dataId.first - 1 && index <= dataId.second - 1) {
-                  if (item.construccion) {
-                    return item.construccion.map((item, index) => {
-                      return (
-                        <option value={index}>Construccion #{index + 1}</option>
-                      );
-                    });
-                  }
-                }
-              })}
+              <option>Construccion 1</option>
+              <option>Construccion 2</option>
             </select>
           </div>
           <div className="w-1/3 ml-4 flex flex-col">
@@ -231,4 +219,17 @@ const UniConstruccionForm = (props, ref) => {
     </Modal>
   );
 };
+/* {tableData.map((item, index) => {
+                if (index >= dataId.first - 1 && index <= dataId.second - 1) {
+                  console.log("item const", item);
+                  if (item.construccion) {
+                    return item.construccion.map((item, index1) => {});
+                  }
+                }
+              })}
+              
+                 {aux.construccion.map((item, index) => {
+                return <option value={index}>Construccion #{index + 1}</option>;
+              })}*/
+
 export default forwardRef(UniConstruccionForm);

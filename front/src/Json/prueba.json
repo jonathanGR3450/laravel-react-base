@@ -1,27 +1,22 @@
 {
-  "construcciones": [
-    {
-      "caracteristicasunidadconstruccion": {
-        "identificador": "A",
-        "tipo_construccion": 66,
-        "tipo_dominio": "",
-        "tipo_unidad_construccion": "543",
-        "tipo_planta": "680",
-        "total_plantas": "1",
-        "total_habitaciones": "1",
-        "total_banios": "2",
-        "total_locales": "3",
-        "anio_construccion": "1900",
-        "uso": "287",
-        "avaluo_unidad_construccion": "",
-        "area_construida": "",
-        "area_privada_construida": null,
-        "fin_vida_util_version": "",
-        "espacio_de_nombres": "Fusagasuga",
-        "local_id": "ABC",
-        "observaciones": "213123",
-        "calificacionnoconvencional": { "tipo_anexo": "80" }
+  "DataPredial": {
+    "num_predial": "252900100000000860016000000000",
+    "area_terreno": 4219,
+    "tipo_unidad_construccion": [
+      {
+        "id": 539,
+        "dispname": "Residencial"
       }
-    }
-  ]
+    ],
+    "calificacionconvencional": [
+      {
+        "total_calificacion": 68,
+        "area": 269
+      },
+      {
+        "total_calificacion": 45,
+        "area": 189
+      }
+    ]
+  }
 }

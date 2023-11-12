@@ -51,10 +51,7 @@ export const NumPredialForm = () => {
   //Estados
   const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState(true);
-  //0 CAPTURA DE DATA MATRIZ
-  const [dataMatriz, setDataMatriz] = useState("");
-  const [msjCadena, setMsjCadena] = useState("");
-  const [bttCadena, setBttCadena] = useState(true);
+
   //Captura de datos para generar numeros prediales
   // 1 Estado para Cargar el valor de Tamaño0
   const [inputValue, setInputValue] = useState("");
@@ -584,7 +581,11 @@ export const NumPredialForm = () => {
   const DataMatrizForm = () => {
     //0 Cargar data de bd
     //const [allData, setAllData] = useState([]);
-
+    const [msjCadena, setMsjCadena] = useState("");
+    const [estCadena, setEstCadena] = useState(false);
+    //0 CAPTURA DE DATA MATRIZ
+    const [dataMatriz, setDataMatriz] = useState("");
+    const [bttCadena, setBttCadena] = useState(true);
     const datos = async () => {
       const data = await fetchData();
       let dataLength = data.last_page;
@@ -633,17 +634,22 @@ export const NumPredialForm = () => {
       soloNumeros(e);
       let { value } = e.target;
       setDataMatriz(value);
-      if (value.length < 30 && value.length > 0) {
-        setMsjCadena("Digitalizar hasta Componente Manzana (17 Digitos)");
+      if (value.length < 30) {
+        setEstCadena(true);
+        setMsjCadena(
+          "Digitalizar maximo 30 Digitos van " + value.length + " Digitos"
+        );
         setBttCadena(true);
-      } else {
-        if (value.length == 30) {
-          setBttCadena(false);
-        }
-        setMsjCadena("");
       }
+      if (value.length == 30) {
+        e.preventDefault();
+        setBttCadena(false);
+        setEstCadena(false);
+      }
+
       //return cadena.length === 20;
     }
+
     return (
       <div className="w-full flex flex-col mt-2">
         <div className="w-full flex flex-row ">
@@ -668,7 +674,7 @@ export const NumPredialForm = () => {
           </button>
         </div>
         {loading ? <Loader /> : null}
-        <label className="text-red-600">{msjCadena}</label>
+        {estCadena ? <label className="text-red-600">{msjCadena}</label> : null}
       </div>
     );
   };

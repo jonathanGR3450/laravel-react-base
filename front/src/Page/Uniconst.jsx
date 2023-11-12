@@ -21,12 +21,14 @@ const UniconstForm = (dataForm) => {
   //datos del Arreglo
   const [newObjGen, setnewObjGen] = useState({
     tipo_construccion: "",
+    tipo_dominio: "",
     total_plantas: "",
     total_habitaciones: "",
     total_banios: "",
     total_locales: "",
     anio_construccion: "",
     observaciones: "",
+    area_construida: "",
   });
   console.log("Actualiza");
   //Cargar el json Structure
@@ -83,6 +85,7 @@ const UniconstForm = (dataForm) => {
 
     const tplanta = data["Tipo Planta"];
     const desti = dato["Destinacion"];
+    let tipo_uniconst = dato["Tipo Unidad Construccion"];
     const [uso, setUso] = useState();
     const [sopti, setSopti] = useState();
     const [djson, setDjson] = useState({});
@@ -113,8 +116,7 @@ const UniconstForm = (dataForm) => {
         const optionName = selectedOption.getAttribute("name");
         const { name, value } = e.target;
         setSopti(sv);
-        setDjson({ ...djson, [name]: value });
-        destino.id = optionName;
+        console.log(newDataCentral);
         //Guardar Datos al contexto
         updateCaracteristicaData((prevData) => {
           return {
@@ -122,6 +124,7 @@ const UniconstForm = (dataForm) => {
             tipo_planta: newDataCentral.tipo_planta,
             tipo_unidad_construccion: newDataCentral.tipo_unidad_construccion,
             uso: newDataCentral.uso,
+            tipo_dominio: newObjGen.tipo_dominio,
             tipo_construccion: newObjGen.tipo_construccion,
             total_plantas: newObjGen.total_plantas,
             total_habitaciones: newObjGen.total_habitaciones,
@@ -129,6 +132,7 @@ const UniconstForm = (dataForm) => {
             total_locales: newObjGen.total_locales,
             anio_construccion: newObjGen.anio_construccion,
             observaciones: newObjGen.observaciones,
+            area_construida: newObjGen.area_construida,
           };
         });
       }
@@ -309,8 +313,8 @@ const UniconstForm = (dataForm) => {
         ////////Forumlario Convencional
         return (
           <div className="flex flex-col items-start w-full pb-2">
-            <div className="flex flex-col items-start w-full pb-2">
-              <h3 className="text-3xl mb-4"> Destinacion {nom}</h3>
+            <div className="flex flex-col  w-full pb-2 text-center">
+              <h3 className="text-3xl mb-4"> Tipo Calificación {nom}</h3>
               <Tabs
                 tabs={select}
                 arrayClass={arrayClass}
@@ -323,6 +327,10 @@ const UniconstForm = (dataForm) => {
                 className=" p-1 w-1/3 text-center rounded-md text-white bg-teal-500 text-lg ml-2"
               >
                 Guardar
+              </button>
+              <button className="p-2 w-1/2 text-center   rounded-md  border-2  text-white bg-teal-500 ">
+                <FontAwesomeIcon className="mr-4" icon={faEye} />
+                Ver Resumen
               </button>
             </div>
           </div>
@@ -368,37 +376,15 @@ const UniconstForm = (dataForm) => {
     }
 
     //Componente del formulario de Uso
-    function UsoForm({ data }) {
-      return (
-        <div className="flex flex-row items-center text-left pb-2">
-          <label className="w-1/3">Uso</label>
-          <select
-            name="uso"
-            className="p-1 w-2/3 text-center border-2 rounded-md"
-            onChange={handleChange}
-            value={newDataCentral.uso}
-          >
-            <option></option>
-            {Object.entries(data[uso].Uso).map((item) => {
-              return (
-                <option key={item[1].t_id} value={item[1].t_id}>
-                  {item[1].dispname}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-      );
-    }
     //Formulario Completo
     return (
-      <div className="w-1/2 flex flex-col  bg-transparent h-full bg-white bg-opacity-80 items-center">
-        <div className="w-full flex flex-col  text-center">
-          <div className="flex flex-row items-center text-left pb-2">
-            <label className="w-1/3">Tipo Planta</label>
+      <div className="flex flex-col w-10/12">
+        <div className="flex flex-row  w-full pb-2 text-center">
+          <div className="flex flex-col w-1/4 items-center  pb-2">
+            <label className="w-full">Tipo Planta</label>
             <select
               name="tipo_planta"
-              className="p-1 w-2/3 text-center border-2 rounded-md"
+              className="p-1 w-full text-center border-2 rounded-md"
               onChange={handleChange}
             >
               <option></option>
@@ -411,11 +397,11 @@ const UniconstForm = (dataForm) => {
               })}
             </select>
           </div>
-          <div className="flex flex-row items-center text-left pb-2">
-            <label className="w-1/3">Tipo Unidad Construccion</label>
+          <div className="flex flex-col items-center w-1/4 pb-2 ml-4">
+            <label className="w-full">Tipo Unidad Construccion</label>
             <select
               name="tipo_unidad_construccion"
-              className="p-1 w-2/3 text-center border-2 rounded-md"
+              className="p-1 w-full text-center border-2 rounded-md"
               onChange={ChangeUse}
             >
               <option></option>
@@ -428,14 +414,31 @@ const UniconstForm = (dataForm) => {
               })}
             </select>
           </div>
-          {newDataCentral.tipo_unidad_construccion.length != 0 && (
-            <UsoForm data={dato["Tipo Unidad Construccion"]} />
-          )}
-          <div className="flex flex-row items-center text-left pb-2">
-            <label className="w-1/3">Destinacion</label>
+          <div className="flex flex-col w-1/4 items-center  pb-2 ml-4">
+            <label className="w-full">Uso</label>
+            <select
+              name="uso"
+              className="p-1 w-full text-center border-2 rounded-md"
+              onChange={handleChange}
+              value={newDataCentral.uso}
+            >
+              <option></option>
+              {newDataCentral.tipo_unidad_construccion.length != 0
+                ? Object.entries(tipo_uniconst[uso].Uso).map((item) => {
+                    return (
+                      <option key={item[1].t_id} value={item[1].t_id}>
+                        {item[1].dispname}
+                      </option>
+                    );
+                  })
+                : null}
+            </select>
+          </div>
+          <div className="flex flex-col items-center w-1/4  pb-2 ml-4">
+            <label className="w-full">Tipo Calificacion</label>
             <select
               name="destinacion"
-              className="p-1 w-2/3 text-center border-2 rounded-md"
+              className="p-1 w-full text-center border-2 rounded-md"
               id="selectdesti"
               value={sopti}
               onChange={Optionselected}
@@ -465,80 +468,106 @@ const UniconstForm = (dataForm) => {
   } else {
     console.log("dato est", estMsjError);
     return (
-      <div className=" w-full flex flex-col  items-center justify-center bg-transparent h-full bg-white bg-opacity-80">
+      <div className=" w-full flex flex-col  items-center bg-transparent h-full bg-white bg-opacity-80">
         <h1 className="text-3xl">Construccion {dataForm.data}</h1>
         <h1 className="text-3xl">Datos Generales</h1>
-        <div className="flex flex-row items-center w-1/2 pb-2 text-left ">
-          <label className="w-1/3"> Numero Pisos</label>
-          <input
-            name="total_plantas"
-            type="number"
-            onChange={DataGeneral}
-            className="p-1 w-2/3 text-center border-2 rounded-md"
-            value={newObjGen.total_plantas}
-          ></input>
-        </div>
-        <div className="flex flex-row items-center w-1/2 pb-2 text-left">
-          <label className="w-1/3"> Numero Habitaciones</label>
-          <input
-            name="total_habitaciones"
-            type="number"
-            onChange={DataGeneral}
-            className="p-1 w-2/3 text-center border-2 rounded-md"
-            value={newObjGen.total_habitaciones}
-          ></input>
-        </div>
-        <div className="flex flex-row items-center w-1/2 pb-2 text-left">
-          <label className="w-1/3"> Numero Baños</label>
-          <input
-            name="total_banios"
-            type="number"
-            onChange={DataGeneral}
-            className="p-1 w-2/3 text-center border-2 rounded-md"
-            value={newObjGen.total_banios}
-          ></input>
-        </div>
-        <div className="flex flex-row items-center w-1/2 pb-2 text-left">
-          <label className="w-1/3"> Numero Locales</label>
-          <input
-            name="total_locales"
-            type="number"
-            onInput={soloNumeros}
-            onChange={DataGeneral}
-            className="p-1 w-2/3 text-center border-2 rounded-md"
-            value={newObjGen.total_locales}
-          ></input>
-        </div>
-        <div className="flex flex-col items-center w-1/2 pb-2 text-left">
-          <div className="w-full flex flex-row">
-            <label className="w-1/3"> Año Construccion</label>
-            <input
-              name="anio_construccion"
+        <div className="flex flex-row items-center w-10/12 pb-2 text-center ">
+          <div className="flex flex-col items-center w-1/4 pb-2  ">
+            <label className="w-full"> Tipo Dominio</label>
+            <select
+              name="tipo_dominio"
               type="number"
               onChange={DataGeneral}
-              value={newObjGen.anio_construccion}
-              className="p-1 w-2/3 text-center border-2 rounded-md"
+              className="p-1 w-full text-center border-2 rounded-md"
+              value={newObjGen.tipo_dominio}
+            >
+              <option></option>
+              <option value={322}>Común</option>
+              <option value={323}>Privado</option>
+            </select>
+          </div>
+          <div className="flex flex-col items-center w-1/4 pb-2 ml-4 ">
+            <label className="w-full"> Numero Pisos</label>
+            <input
+              name="total_plantas"
+              type="number"
+              onChange={DataGeneral}
+              className="p-1 w-full text-center border-2 rounded-md"
+              value={newObjGen.total_plantas}
             ></input>
           </div>
-          {estMsjError.anio_construccion ? (
-            <div className="w-full flex flex-row items-center justify-center text-center">
-              <label className="text-red-600">
-                {" "}
+          <div className="flex flex-col items-center w-1/4 pb-2 ml-4 ">
+            <label className="w-full"> Numero Habitaciones</label>
+            <input
+              name="total_habitaciones"
+              type="number"
+              onChange={DataGeneral}
+              className="p-1 w-full text-center border-2 rounded-md"
+              value={newObjGen.total_habitaciones}
+            ></input>
+          </div>
+          <div className="flex flex-col items-center w-1/4 pb-2 ml-4 ">
+            <label className="w-full"> Numero Baños</label>
+            <input
+              name="total_banios"
+              type="number"
+              onChange={DataGeneral}
+              className="p-1 w-full text-center border-2 rounded-md"
+              value={newObjGen.total_banios}
+            ></input>
+          </div>
+        </div>
+        <div className="flex flex-row items-center w-10/12 pb-2 text-center ">
+          <div className="flex flex-col items-center w-1/4 pb-2  ">
+            <label className="w-full"> Numero Locales</label>
+            <input
+              name="total_locales"
+              type="number"
+              onInput={soloNumeros}
+              onChange={DataGeneral}
+              className="p-1 w-full text-center border-2 rounded-md"
+              value={newObjGen.total_locales}
+            ></input>
+          </div>
+          <div className="flex flex-col items-center w-1/4 pb-2 ml-4 ">
+            <div className="w-full flex flex-col">
+              <label className="w-full"> Año Construccion</label>
+              <input
+                name="anio_construccion"
+                type="number"
+                onChange={DataGeneral}
+                value={newObjGen.anio_construccion}
+                className="p-1 w-full text-center border-2 rounded-md"
+              ></input>
+            </div>
+            {estMsjError.anio_construccion ? (
+              <label className="text-red-600 w-full">
                 "Año debe ser mayor a 1600"
               </label>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
+          <div className="flex flex-col items-center w-1/4 pb-2  ml-4">
+            <label className="w-full"> Area Construida</label>
+            <input
+              name="area_construida"
+              type="number"
+              onChange={DataGeneral}
+              className="p-1 w-full text-center border-2 rounded-md"
+              value={newObjGen.area_construida}
+            ></input>
+          </div>
+          <div className="flex flex-col items-center w-1/4 pb-2 ml-4">
+            <label className="w-1/3"> Observaciones</label>
+            <input
+              name="observaciones"
+              type="text"
+              onChange={DataGeneral}
+              className="p-1 w-full text-center border-2 rounded-md"
+              value={newObjGen.observaciones}
+            ></input>
+          </div>
         </div>
-        <div className="flex flex-row items-center w-1/2 pb-2 text-left">
-          <label className="w-1/3"> Observaciones</label>
-          <input
-            name="observaciones"
-            type="text"
-            onChange={DataGeneral}
-            className="p-1 w-2/3 text-center border-2 rounded-md"
-            value={newObjGen.observaciones}
-          ></input>
-        </div>
+
         <GrupoProvider>
           {data != undefined && <CentralForm tipo_unidad={dataForm.data} />}
         </GrupoProvider>

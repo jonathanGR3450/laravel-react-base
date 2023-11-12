@@ -136,17 +136,6 @@ export const LoadDataConstruccion = () => {
     const openConstruccionForm = () => {
       construccionRef.current.openModal(dataId);
     };
-    /*
-    const openPredioForm = () => {
-      predioFormRef.current.openModal(dataId);
-    };
-    const openDerechoForm = () => {
-      derechoFormRef.current.openModal(dataId);
-    };
-    const openInteresadoForm = () => {
-      interesadoFormRef.current.openModal(dataId);
-   
-    };*/
     return (
       <div className="w-full flex flex-row border-2 p-2 mt-4 mb-4 rounded-xl">
         <div className="w-1/3 flex flex-col text-center ">

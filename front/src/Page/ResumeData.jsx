@@ -757,3 +757,87 @@ export const UnidadConstruccionResumeForm = React.forwardRef((props, ref) => {
     </Modal>
   );
 });
+export const CaracteristicasResumeForm = React.forwardRef((props, ref) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const datos = props.datos;
+  console.log("carga valores", datos);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+  const mostrar = (data) => {
+    console.log("datos", data);
+    return (
+      <div className="w-full flex flex-col justify-center items-center ">
+        <h2 className="text-4xl font-bold">
+          Caracteristica {data[0].tipo_calificar.dispname}{" "}
+        </h2>
+        <div className="w-full flex flex-row items-center justify-center ">
+          <label className="font-semibold text-3xl">Puntaje Total: </label>
+          <label className="ml-4 text-3xl">{data[0].total_calificacion}</label>
+        </div>
+        <div className="w-full flex flex-col text-left justify-center items-center">
+          {data[0].grupocalificacion.map((item, index) => {
+            console.log(item);
+            return (
+              <div
+                key={item.subtotal}
+                className="flex flex-col w-4/5  border rounded-xl"
+              >
+                <label className="text-3xl font-semibold capitalize text-center">
+                  {item.clase_calificacion.dispname}
+                </label>
+                <div className="flex flex-row text-center">
+                  <div className="flex flex-col w-1/2">
+                    <label className="font-semibold text-1xl">
+                      Sub Total:{" "}
+                    </label>
+                    <label className="ml-4 text-1xl">{item.subtotal}</label>
+                  </div>
+                  <div className="flex flex-col w-1/2 text-center">
+                    <label className="font-semibold text-1xl">
+                      Conservacion:
+                    </label>
+                    <label className="ml-4 text-1xl">
+                      {item.conservacion.dispname}
+                    </label>
+                  </div>
+                </div>
+                <div className="text-center w-full">
+                  <label className="font-semibold text-2xl">
+                    Objeto Construccion
+                  </label>{" "}
+                </div>
+                <div className="flex flex-row">
+                  {item.objetoconstruccion.map((items, index) => {
+                    return (
+                      <div className="flex flex-col w-full text-center">
+                        <label className="text-1xl font-medium">
+                          {items.tipo_objeto_construccion.dispname}
+                        </label>
+                        <label className="text-1xl">
+                          Puntaje: {items.puntos}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      {" "}
+      {mostrar(datos)}
+    </Modal>
+  );
+});

@@ -38,6 +38,9 @@ const Menu = () => {
           <li className="ml-2 text-white">
             <Link to="/LoadConstruccion">Cargar Datos Construccion</Link>
           </li>
+          <li className="ml-2 text-white">
+            <Link to="/Avaluo">Avaluo</Link>
+          </li>
         </ul>
       </nav>
 
