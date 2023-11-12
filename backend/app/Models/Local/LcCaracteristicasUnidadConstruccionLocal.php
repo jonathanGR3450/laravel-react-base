@@ -5,7 +5,7 @@ namespace App\Models\Local;
 use App\Models\LcConstruccionPlantaTipo;
 use App\Models\LcConstruccionTipo;
 use App\Models\LcDominioConstruccionTipo;
-use App\Models\LcUnidadConstruccionTipo;
+use App\Models\UnidadConstruccionTipo;
 use App\Models\LcUsoUconsTipo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
