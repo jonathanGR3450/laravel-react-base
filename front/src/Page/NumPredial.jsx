@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import DataJson from "../Json/numeros.json";
 import Loader from "./Loader";
+import { Modal_Load } from "./Modal_Load";
 import {
   ArrayFinalContext,
   NumPreContext,
   NumPreProvider,
   TableContext,
 } from "./Context/Context";
+import { ModalData } from "./ModalData";
 //Objetos base con los datos que se necesitan
 let PredioMatriz = {
   Dpto: "",
@@ -72,7 +74,8 @@ export const NumPredialForm = () => {
   const [bttchange, setBttChange] = useState();
   // estado Boton terminaro
   const [bttfin, setBttfin] = useState(true);
-  //Estado Boton Actualizar
+  //Data de Numero Predial
+  const [nomNumPredial, setNumPredial] = useState("");
   //const [bact, setBact] = useState(true);
   const { updateTableData } = useContext(TableContext);
   //
@@ -153,7 +156,6 @@ export const NumPredialForm = () => {
         if (i <= 1) {
           sum += item[i];
           ObjectPredio.Dpto = sum;
-          //console.log("DPTO", sum);
           if (cont == 1) {
             cont = 0;
             sum = "";
@@ -586,8 +588,10 @@ export const NumPredialForm = () => {
     //0 CAPTURA DE DATA MATRIZ
     const [dataMatriz, setDataMatriz] = useState("");
     const [bttCadena, setBttCadena] = useState(true);
+
     const datos = async () => {
       const data = await fetchData();
+
       let dataLength = data.last_page;
       let tempData = [];
       for (let currentPage = 1; currentPage <= dataLength; currentPage++) {
@@ -596,9 +600,11 @@ export const NumPredialForm = () => {
           tempData.push(item.numero_predial);
         });
       }
+      ///////////////////////////////////////////Poner la Consulta de Local y agregar Tempdata
       setLoading(false);
       setFormState(false);
       setAllData(tempData);
+      setNumPredial(dataMatriz);
     };
 
     const fetchData = async (currentPage) => {
@@ -739,7 +745,7 @@ export const NumPredialForm = () => {
     //Funcion para mostrar los datos
     /////////////////////////////////////////////////////////////////////
     function NumComa(e) {
-      const input = event.target;
+      const input = e.target;
       let value = input.value;
       value = value.replace(/[^0-9,-]/g, ""); // Elimina caracteres no numéricos
       if (value.includes("-")) {
@@ -747,16 +753,13 @@ export const NumPredialForm = () => {
         if (value.split("-").length <= 2) {
           //setTamaño(3);
           let aux = value.split("-");
-
           iniID = parseInt(aux[0]);
           finID = parseInt(aux[1]);
-          console.log(iniID + " - " + finID);
         }
       } else {
         setTamaño(50);
         let aux = "";
         if (value.length === 0) {
-          console.log("Borrar Todo", value.length);
           aux = 0;
         } else {
           aux = value.split(",");
@@ -768,18 +771,13 @@ export const NumPredialForm = () => {
           });
 
           validNumbers = numeros;
-          console.log(" Contiene comas ", validNumbers);
         } else {
-          validNumbers = [value];
-          console.log(validNumbers);
+          coma = "";
+          let aux = parseInt(value);
+          validNumbers = [aux];
         }
       }
       setInputId(input.value);
-      console.log(coma);
-      /*console.log(input.value);
-      
-      numeroId = input.value;*/
-      //modId(numeroId);
     }
     /*
     <input
@@ -1075,6 +1073,10 @@ export const NumPredialForm = () => {
     //Replicar datos
     function ReplicateData(e) {
       let sum = rdata;
+      console.log("validad Data", validNumbers);
+      console.log("Ini", iniID);
+      console.log("Fin", finID);
+      console.log("Coma", coma);
       cloneArray.map((item, index1) => {
         if (coma) {
           validNumbers.map((items) => {
@@ -1084,9 +1086,16 @@ export const NumPredialForm = () => {
             }
           });
         } else {
-          if (index1 >= iniID - 1 && index1 <= finID - 1) {
-            item.Matricula = sum;
-            sum = parseInt(sum) + 1;
+          if (coma === false) {
+            if (index1 >= iniID - 1 && index1 <= finID - 1) {
+              item.Matricula = sum;
+              sum = parseInt(sum) + 1;
+            }
+          } else {
+            let valor = validNumbers[0] - 1;
+            if (index1 == valor) {
+              item.Matricula = sum;
+            }
           }
         }
       });
@@ -1214,6 +1223,7 @@ export const NumPredialForm = () => {
       lc_unidadconstruccion_ext_direccion_id: null,
       lc_servidumbretransito_ext_direccion_id: null,
     });
+
     //Carga los valores en los elementos de tabla
     function Load_Direction(e) {
       let name = e.target.name;
@@ -1240,8 +1250,16 @@ export const NumPredialForm = () => {
             }
           });
         } else {
-          if (index >= iniID - 1 && index <= finID - 1) {
-            items.Direccion = direction;
+          if (coma === false) {
+            if (index >= iniID - 1 && index <= finID - 1) {
+              items.Direccion = direction;
+            }
+          } else {
+            let valor = validNumbers[0] - 1;
+            if (index == valor) {
+              items.Direccion = direction;
+              console.log("valor " + valor + "Index" + index);
+            }
           }
         }
       });
@@ -1472,9 +1490,18 @@ export const NumPredialForm = () => {
             }
           });
         } else {
-          if (index >= iniID - 1 && index <= finID - 1) {
-            directData.nombre_predio = datanom;
-            items.Direccion = directData;
+          if (coma === false) {
+            if (index >= iniID - 1 && index <= finID - 1) {
+              directData.nombre_predio = datanom;
+              items.Direccion = directData;
+            }
+          } else {
+            let valor = validNumbers[0] - 1;
+            if (index == valor) {
+              directData.nombre_predio = datanom;
+              items.Direccion = directData;
+              console.log("valor " + valor + "Index" + index);
+            }
           }
         }
       });
@@ -1512,11 +1539,7 @@ export const NumPredialForm = () => {
       function validadData() {
         const datosArray = Object.values(tableData);
         datosArray.map((item, index) => {
-          if (
-            item.Matricula &&
-            item.Direccion &&
-            item.Direccion.nombre_predio
-          ) {
+          if (item.Matricula && item.Direccion.length != 0) {
             cont = 0;
           } else {
             cont++;
@@ -1655,46 +1678,45 @@ export const NumPredialForm = () => {
   };
 
   //Form Boton Inferior de Agregar y Terminar
+
   const ChangeForm = () => {
     const { ArrayFinal, updateArrayFinal } = useContext(ArrayFinalContext);
     const [dataRel, setDataRel] = useState({
       numeros_relacion: [],
     });
-    function addData() {
-      let ArrayTemp = [];
-      ArrayTemp = ArrayFinal;
-      ArrayPredial.map((item, index) => {
-        ArrayTemp.push(item);
-      });
-      updateArrayFinal(ArrayTemp);
-      updateTableData(ArrayFinal);
-      setBttChange(true);
-      setBttfin(false);
+    const [estLoading, setEstLoading] = useState(false);
+    const [msjLoading, setMsjLoading] = useState("");
+
+    const [dataReturn, setDataReturn] = useState(50);
+    const modalLoadRef = useRef();
+    let ArrayTemp = [];
+    function updateDataReturn(newData) {
+      setDataReturn(newData);
     }
-    //Llenar primero Store Numero Predial
-
-    async function addDataHomo() {
-      try {
-        const url =
-          import.meta.env.VITE_API_URL_FIRST +
-          "predio/numeros-homologados?limit=" +
-          ArrayFinal.length;
-        var requestOptions = {
-          method: "GET",
-          redirect: "follow",
-        };
-
-        const response = await fetch(url, requestOptions);
-        if (response.ok) {
-          const result = await response.json();
-          const data = result.data;
+    const openModalLoad = () => {
+      modalLoadRef.current.openModal();
+    };
+    const closeModalLoad = () => {
+      modalLoadRef.current.closeModal();
+    };
+    useEffect(() => {
+      if (dataReturn === 1) {
+        updateArrayFinal(ArrayTemp);
+        updateTableData(ArrayFinal);
+        setBttChange(true);
+        setBttfin(false);
+        setInputValue("");
+        setTpredio("A");
+        setSelect(false);
+      } else {
+        if (dataReturn === 0) {
+          setEstLoading(true);
           console.log(ArrayFinal);
-          console.log(result.data);
-          const dataArray = [];
+          let Json = {
+            numeros_prediales: [],
+          };
           ArrayFinal.map((item, index) => {
-            console.log("carga datos", item);
-            item.codigo_homologado = data[index].numeros_homologados;
-            const newData = {
+            let newobj = {
               numero_predial:
                 item.Dpto +
                 item.Mpio +
@@ -1708,53 +1730,162 @@ export const NumPredialForm = () => {
                 item.Edificio +
                 item.Piso +
                 item.Unidad,
-              numero_homologado: item.codigo_homologado,
+              matricula_inmobiliaria: item.Matricula,
+              extdireccion: item.Direccion,
             };
-            dataArray.push(newData);
+            Json.numeros_prediales.push(newobj);
           });
-          dataRel.numeros_relacion = dataArray;
-          reDataHomoPredial(JSON.stringify(dataRel));
-          console.log(JSON.stringify(dataRel));
-          updateTableData(ArrayFinal);
+          console.log();
+          sendNumPredial(JSON.stringify(Json));
+        }
+      }
+    }, [dataReturn]);
+    async function sendNumPredial(json) {
+      ///////Crear Predios
+      setMsjLoading("Creando Predios");
+      const response = await addPredio(json);
+      console.log("Respuesta de agregar Predio", response);
+      if (response.success) {
+        ArrayFinal.map((item, index) => {
+          item.idNumPredial = response.data[index];
+        });
+        console.log("Array Final", ArrayFinal);
+        ///////Crear Pedir Numeros Homologados
+        setMsjLoading("Cargando Datos Homologados");
+        const responseHom = await addDataHomo();
+        if (responseHom.success) {
+          const data = responseHom.data;
+          ArrayFinal.map((item, index) => {
+            console.log("carga datos", item);
+            item.codigo_homologado = data[index].numeros_homologados;
+          });
+
+          ///////Relacionar Predios y Numeros Homologados
+          setMsjLoading(
+            " Cargando -> Relacionando Numero Predial - Datos Homologados"
+          );
+          const responseRel = await reDataHomoPredial();
+          if (responseRel.success) {
+            setEstLoading(false);
+            Navigate("/LoadData");
+          } else {
+            setMsjLoading("Error");
+          }
+        } else {
+          setMsjLoading("Error");
+        }
+
+        updateTableData(ArrayFinal);
+      } else {
+        setMsjLoading("Error");
+      }
+
+      /////Redirigir Pagina
+    }
+
+    function addData() {
+      openModalLoad();
+      ArrayTemp = ArrayFinal;
+      ArrayPredial.map((item, index) => {
+        ArrayTemp.push(item);
+      });
+    }
+
+    //Llenar primero Store Numero Predial
+    async function addPredio(json) {
+      let myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      let raw = json;
+      let url = import.meta.env.VITE_API_URL_FIRST + "predio/numeros-prediales";
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      try {
+        const response = await fetch(url, requestOptions);
+        if (response.ok) {
+          const result = await response.json();
+          return result;
+          console.log(result);
+        } else {
+          throw new Error("Error en la solicitud");
+          return "Error en la Solicitud";
+        }
+      } catch (error) {
+        console.log("Error:", error);
+        return "Error en la Solicitud" + error;
+      }
+    }
+    //Llamar Datos Homologados
+    async function addDataHomo() {
+      try {
+        const url =
+          import.meta.env.VITE_API_URL_FIRST +
+          "predio/numeros-homologados?limit=" +
+          ArrayFinal.length;
+        var requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+        const response = await fetch(url, requestOptions);
+        if (response.ok) {
+          const result = await response.json();
+          return result;
         } else {
           const error = await response.json();
           console.log("Error en la solicitud:", error);
+          return error;
         }
         console.log("Tamaño", url);
       } catch (error) {
         console.log("Error en la solicitud:", error);
+        return error;
       }
     }
-    async function reDataHomoPredial(data) {
+
+    async function reDataHomoPredial() {
+      const json = {
+        numeros_relacion: [],
+      };
+      ArrayFinal.map((item, index) => {
+        let newObj = {
+          numero_predial: item.idNumPredial,
+          numero_homologado: parseInt(item.codigo_homologado),
+        };
+        json.numeros_relacion.push(newObj);
+      });
       try {
         const url =
           import.meta.env.VITE_API_URL_FIRST +
           "predio/numeros-prediales/numeros-homologados";
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        let raw = data;
+        let raw = JSON.stringify(json);
         var requestOptions = {
           method: "POST",
           headers: myHeaders,
           body: raw,
           redirect: "follow",
         };
-
         const response = await fetch(url, requestOptions);
         if (response.ok) {
           const result = await response.json();
+          return result;
           console.log(result);
         } else {
           const error = await response.json();
           console.log("error", error);
+          return error;
         }
       } catch (error) {
+        return error;
         console.log("Error en la solicitud:", error);
       }
     }
-    return (
-      <div className="flex flex-row-reverse mt-2 w-full p-2">
-        <Link to="/LoadData">
+    /*      <Link to="/LoadData">
           <button
             className={`${
               bttfin ? "opacity-50 cursor-not-allowed" : "opacity-100"
@@ -1764,7 +1895,10 @@ export const NumPredialForm = () => {
           >
             Siguiente
           </button>
-        </Link>
+        </Link> 
+        */
+    return (
+      <div className="flex flex-row justify-center mt-2 w-full p-2">
         <button
           className={`${
             bttload ? "opacity-50 cursor-not-allowed" : "opacity-100"
@@ -1772,8 +1906,14 @@ export const NumPredialForm = () => {
           onClick={addData}
           disabled={bttload}
         >
-          Agregar
+          Agregar Predios
         </button>
+        {estLoading ? (
+          <label class="text-3xl text-indigo-600 font-bold transform inline-block animate-bounce">
+            {msjLoading}
+          </label>
+        ) : null}
+        <ModalData ref={modalLoadRef} onChange={updateDataReturn} />
       </div>
     );
   };
@@ -1792,8 +1932,13 @@ export const NumPredialForm = () => {
     <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
       <h1 className="text-4xl">Iniciar Desenglobe</h1>
       <DataMatrizForm />
+
       {!formState ? (
         <div className="w-full">
+          <div className="w-full flex flex-row items-center justify-center">
+            <label className="font-semibold text-2xl">Numero Manzana : </label>
+            <label className="text-2xl ml-4"> {nomNumPredial}</label>
+          </div>
           <div className="w-full flex flex-row">
             <div
               id="Pregunta"
@@ -1806,6 +1951,7 @@ export const NumPredialForm = () => {
                   type="text"
                   onChange={inputLength}
                   onInput={soloNumeros}
+                  value={inputValue}
                 ></input>
               </div>
             </div>
@@ -1817,6 +1963,7 @@ export const NumPredialForm = () => {
               <select
                 className="w-full p-2 border-2 rounded-md"
                 onChange={ItemSelect}
+                value={tpredio}
               >
                 <option value="A"></option>
                 <option value="0" className="text-center">
@@ -1858,7 +2005,7 @@ export const NumPredialForm = () => {
               </button>
             </div>
           </div>
-          {select && <ChangeDataForm />}
+          {select ? <ChangeDataForm /> : null}
           <TableForm />
           {table && <ChangeForm />}
         </div>

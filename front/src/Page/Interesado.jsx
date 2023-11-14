@@ -10,20 +10,14 @@ import { InteresadoContext } from "./Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
 
 const InteresadoForm = (props, ref) => {
-  //const [groupInterest, setGroupInterest] = useState(false);
-
+  //const [groupInterest, setGroupInterest] = useState(false);  const { updateInteresadoData, updateDataFinal } =useContext(InteresadoContext);
   const { tableData, updateTableData } = useContext(TableContext);
+  const [estBtt, setEstBtt] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { updateInteresadoData, updateDataFinal } =
-    useContext(InteresadoContext);
 
-  let [dataId, setDataId] = useState({
-    first: "",
-    second: "",
-  });
+  let [dataId, setDataId] = useState();
+
   const openModal = (aux) => {
-    aux.first = parseInt(aux.first);
-    aux.second = parseInt(aux.second);
     setDataId(aux);
     setIsModalOpen(true);
   };
@@ -45,6 +39,7 @@ const InteresadoForm = (props, ref) => {
     const input = event.target;
     input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
   }
+
   const [numInteresados, setNumInteresados] = useState();
   const [interesados, setInteresados] = useState([]);
   const [interesadosData, setInteresadosData] = useState();
@@ -94,6 +89,7 @@ const InteresadoForm = (props, ref) => {
       return newDataArray;
     });
   };
+
   useEffect(() => {
     console.log("datos Array Completo actualizado", interesadosData);
   }, [interesadosData]);
@@ -433,6 +429,9 @@ const InteresadoForm = (props, ref) => {
           </button>
         </div>
         <div className="w-full">{interesados}</div>
+        <div className="w-full">
+          <button>Guardar</button>
+        </div>
       </div>
     </Modal>
   );

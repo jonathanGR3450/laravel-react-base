@@ -11,14 +11,12 @@ import { TableContext } from "./Context/Context";
 const PredioForm = (props, ref) => {
   const { updateDataAll } = useContext(DataContext);
   const { tableData, updateTableData } = useContext(TableContext);
+  const [estBtt, setEstBtt] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  let [dataId, setDataId] = useState({});
-  let [coma, setComa] = useState("");
-  const openModal = (aux, coma) => {
-    console.log("datos predio", aux);
-    console.log("datos predio", coma);
+  let [dataId, setDataId] = useState();
+
+  const openModal = (aux) => {
     setDataId(aux);
-    setComa(coma);
     setIsModalOpen(true);
   };
   const closeModal = () => {
@@ -57,7 +55,6 @@ const PredioForm = (props, ref) => {
   });
   function Load_Data(e) {
     let { name, value } = e.target;
-
     if (e.target.type == "checkbox") {
       console.log("valor", e.target.checked);
       if (e.target.checked) {
@@ -77,71 +74,30 @@ const PredioForm = (props, ref) => {
     setDataForm({ ...dataForm, nupre: codigo_homologado });
   };
   const sendData = () => {
-    tableData.map((items, index) => {
-      switch (coma) {
-        case 1:
-          console.log("Tamaño 121212 ", dataId);
-          if (index >= dataId[0] - 1 && index <= dataId[1] - 1) {
-            dataForm.matricula_inmobiliaria = items.Matricula;
-            dataForm.numero_predial =
-              items.Dpto +
-              items.Mpio +
-              items.Zona +
-              items.Sector +
-              items.Comuna +
-              items.Barrio +
-              items.Manzana +
-              items.Terreno +
-              items.Condicion +
-              items.Edificio +
-              items.Piso +
-              items.Unidad;
-            items.predio = dataForm;
-            console.log(item);
-          }
-          break;
-        case 2:
-          dataId.map((item) => {
-            if (index === item - 1) {
-              dataForm.matricula_inmobiliaria = items.Matricula;
-              dataForm.numero_predial =
-                items.Dpto +
-                items.Mpio +
-                items.Zona +
-                items.Sector +
-                items.Comuna +
-                items.Barrio +
-                items.Manzana +
-                items.Terreno +
-                items.Condicion +
-                items.Edificio +
-                items.Piso +
-                items.Unidad;
-              items.predio = dataForm;
-            }
-          });
-          break;
-        case 3:
-          if (dataId[0] - 1 === index) {
-            console.log("Tamaño 2 ", items);
-            dataForm.matricula_inmobiliaria = items.Matricula;
-            dataForm.numero_predial =
-              items.Dpto +
-              items.Mpio +
-              items.Zona +
-              items.Sector +
-              items.Comuna +
-              items.Barrio +
-              items.Manzana +
-              items.Terreno +
-              items.Condicion +
-              items.Edificio +
-              items.Piso +
-              items.Unidad;
-            items.predio = dataForm;
-          }
-          break;
-      }
+    tableData.map((item, index) => {
+      console.log("Tamaño 121212 ", dataId);
+      dataId.map((items) => {
+        if (items - 1 == index) {
+          dataForm.matricula_inmobiliaria = item.Matricula;
+          dataForm.codigo_homologado = item.codigo_homologado;
+          dataForm.local_id = item.codigo_homologado;
+          dataForm.numero_predial =
+            item.Dpto +
+            item.Mpio +
+            item.Zona +
+            item.Sector +
+            item.Comuna +
+            item.Barrio +
+            item.Manzana +
+            item.Terreno +
+            item.Condicion +
+            item.Edificio +
+            item.Piso +
+            item.Unidad;
+          item.predio = dataForm;
+          console.log(item);
+        }
+      });
     });
     console.log("datos de tabla", tableData);
     updateTableData(tableData);

@@ -10,7 +10,11 @@ import { DataContext } from "./Context/DataContext";
 import { TableContext } from "./Context/Context";
 const DerechoForm = (props, ref) => {
   const { tableData, updateTableData } = useContext(TableContext);
-  // const { updateDataAll } = useContext(DataContext);
+
+  const [estBtt, setEstBtt] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  let [dataId, setDataId] = useState();
+
   const [objDerecho, setobjDerecho] = useState({
     tipo_derecho: "",
     tipo_restriccion: "",
@@ -18,18 +22,13 @@ const DerechoForm = (props, ref) => {
     fraccion_derecho: "",
     descripcion: "",
   });
-  let [dataId, setDataId] = useState({
-    first: "",
-    second: "",
-  });
+
   function Load_Data(e) {
     const { name, value } = e.target;
     setobjDerecho((prevValues) => ({ ...prevValues, [name]: value }));
   }
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const openModal = (aux) => {
-    aux.first = parseInt(aux.first);
-    aux.second = parseInt(aux.second);
     setDataId(aux);
     setIsModalOpen(true);
   };
@@ -38,10 +37,12 @@ const DerechoForm = (props, ref) => {
   };
   const sendData = () => {
     tableData.map((item, index) => {
-      if (index >= dataId.first - 1 && index <= dataId.second - 1) {
-        item.derecho = objDerecho;
-        console.log(item);
-      }
+      dataId.map((items) => {
+        if (items - 1 == index) {
+          item.derecho = objDerecho;
+          console.log(item);
+        }
+      });
     });
     updateTableData(tableData);
   };

@@ -1,12 +1,6 @@
 import React from "react";
 import { Modal } from "./Modal";
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-  useContext,
-} from "react";
+import { useImperativeHandle, useState } from "react";
 export const FuenteResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataShow, setDataShow] = useState();

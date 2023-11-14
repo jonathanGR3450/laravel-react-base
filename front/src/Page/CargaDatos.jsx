@@ -15,8 +15,6 @@ import {
 } from "./ResumeData";
 
 export const LoadDataForm = () => {
-  const [dataSelect, setDataSelect] = useState(0);
-
   const fuenteFormRef = useRef();
   const predioFormRef = useRef();
   const interesadoFormRef = useRef();
@@ -52,11 +50,8 @@ export const LoadDataForm = () => {
     const openpredioResumeForm = () => {
       predioResumeForm.current.openModal();
     };
-    console.log("datos tabla", tableData);
     const filas = Object.entries(tableData).map((items, index) => {
       let item = items[1];
-      console.log("itemss", item);
-      // console.log("Prueba", item);
       return (
         <tr key={index}>
           <td className="border-2 rounded-xl p-2">{index + 1}</td>
@@ -131,25 +126,34 @@ export const LoadDataForm = () => {
   const ChangeData = () => {
     let validNumbers = [];
     const { updateIdArray } = useContext(DataContext);
+    ///Guarda los valores que tiene los ID
     const [dataId, setDataId] = useState("");
-    let [coma, setComa] = useState("");
+    //Seleccion de Datos Para Agregar
+    const [dataSelect, setDataSelect] = useState(0);
     const [inputId, setInputId] = useState("");
-    const HandleDataId = (e) => {
-      const { name, value } = e.target;
-      console.log("nombre", name);
-      console.log("aaaaa", value);
-      setDataId((prevValues) => ({ ...prevValues, [name]: value }));
-    };
+    const [estBtt, setEstBtt] = useState(true);
+    //SI el ID tiene  1= guion, 2=Coma o 3= esta solo
+    let [coma, setComa] = useState("");
+    function validarid() {
+      if (isNaN(dataId[0])) {
+        setEstBtt(true);
+      } else {
+        setEstBtt(false);
+      }
+    }
+    useEffect(() => {
+      validarid();
+    }, [dataId]);
+
     function NumComa(e) {
-      const input = event.target;
-      let value = input.value;
-      value = value.replace(/[^0-9,-]/g, ""); // Elimina caracteres no numéricos
+      let { value } = e.target;
+      value = value.replace(/[^0-9,-]/g, "");
+      // Elimina caracteres no numéricos
       if (value.includes("-")) {
         setComa(1);
         if (value.split("-").length <= 2) {
           //setTamaño(3);
           let aux = value.split("-");
-          console.log("Datos - ", aux);
           let numeros = aux.map((item) => {
             return parseInt(item);
           });
@@ -159,7 +163,6 @@ export const LoadDataForm = () => {
       } else {
         let aux = "";
         if (value.length === 0) {
-          console.log("Borrar Todo", value.length);
           aux = 0;
         } else {
           aux = value.split(",");
@@ -171,28 +174,20 @@ export const LoadDataForm = () => {
           });
 
           validNumbers = numeros;
-          console.log(" Contiene comas ", validNumbers);
           setDataId(validNumbers);
         } else {
           setComa(3);
           validNumbers = [parseInt(value)];
-          console.log(validNumbers);
           setDataId(validNumbers);
         }
       }
-      setInputId(input.value);
-      console.log(coma);
-      /*console.log(input.value);
-      
-      numeroId = input.value;*/
-      //modId(numeroId);
+      setInputId(value);
     }
     function Selectdata(e) {
       setDataSelect(e.target.value);
     }
     //
     const openFuenteAdminForm = () => {
-      console.log("valores id", dataId);
       fuenteFormRef.current.openModal(dataId, coma);
     };
     const openPredioForm = () => {
@@ -233,7 +228,7 @@ export const LoadDataForm = () => {
               onChange={Selectdata}
               value={dataSelect}
             >
-              <option></option>
+              <option value={0}></option>
               <option value={1}>Predio</option>
               <option value={2}>Interesado</option>
               <option value={3}>Derecho</option>
@@ -257,7 +252,10 @@ export const LoadDataForm = () => {
           {dataSelect == 1 ? (
             <div className="w-full flex flex-col items-center">
               <button
-                className="p-2 w-1/2 text-center  rounded-md  border-2  text-white bg-teal-500 "
+                disabled={estBtt}
+                className={`${
+                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
                 onClick={openPredioForm}
               >
                 Carga
@@ -268,7 +266,10 @@ export const LoadDataForm = () => {
           {dataSelect == 2 ? (
             <div className="w-full flex flex-col items-center">
               <button
-                className="p-2 w-1/2 text-center  rounded-md  border-2  text-white bg-teal-500 "
+                disabled={estBtt}
+                className={`${
+                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
                 onClick={openInteresadoForm}
               >
                 Carga
@@ -279,7 +280,10 @@ export const LoadDataForm = () => {
           {dataSelect == 3 ? (
             <div className="w-full flex flex-col items-center">
               <button
-                className="p-2 w-1/2 text-center  rounded-md  border-2  text-white bg-teal-500 "
+                disabled={estBtt}
+                className={`${
+                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
                 onClick={openDerechoForm}
               >
                 Carga
@@ -290,7 +294,10 @@ export const LoadDataForm = () => {
           {dataSelect == 4 ? (
             <div className="w-full flex flex-col items-center">
               <button
-                className="p-2 w-1/2 text-center  rounded-md  border-2  text-white bg-teal-500 "
+                disabled={estBtt}
+                className={`${
+                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
                 onClick={openFuenteAdminForm}
               >
                 Carga

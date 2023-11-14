@@ -1,22 +1,187 @@
 {
-  "DataPredial": {
-    "num_predial": "252900100000000860016000000000",
-    "area_terreno": 4219,
-    "tipo_unidad_construccion": [
-      {
-        "id": 539,
-        "dispname": "Residencial"
-      }
-    ],
-    "calificacionconvencional": [
-      {
-        "total_calificacion": 68,
-        "area": 269
-      },
-      {
-        "total_calificacion": 45,
-        "area": 189
-      }
-    ]
-  }
+  "predio": [
+    {
+      "num_predial": "252900000000000100070000000000",
+      "area_terreno": 3050,
+      "SantaMaria": false,
+      "unidad_construccion": [
+        {
+          "area_construida": 28.3,
+          "lc_caracteristicasunidadconstruccion": {
+            "tipo_construccion": {
+              "id": 66,
+              "dispname": "Convencional"
+            },
+            "tipo_unidad_construccion": {
+              "id": 539,
+              "dispname": "Residencial"
+            },
+            "tipo_planta": {
+              "id": 680,
+              "dispname": "Piso"
+            },
+            "uso": {
+              "id": 232,
+              "dispname": "Vivienda hasta 3 pisos"
+            },
+            "calificacionconvencional": {
+              "total_calificacion": 62
+            }
+          }
+        },
+        {
+          "area_construida": 50,
+          "lc_caracteristicasunidadconstruccion": {
+            "tipo_construccion": {
+              "id": 66,
+              "dispname": "Convencional"
+            },
+            "tipo_unidad_construccion": {
+              "id": 540,
+              "dispname": "Comercial"
+            },
+            "tipo_planta": {
+              "id": 680,
+              "dispname": "Piso"
+            },
+            "uso": {
+              "id": 244,
+              "dispname": "Hoteles"
+            },
+            "calificacionconvencional": {
+              "total_calificacion": 15
+            }
+          }
+        },
+        {
+          "area_construida": 100,
+          "lc_caracteristicasunidadconstruccion": {
+            "tipo_construccion": {
+              "id": 66,
+              "dispname": "Convencional"
+            },
+            "tipo_unidad_construccion": {
+              "id": 540,
+              "dispname": "Comercial"
+            },
+            "tipo_planta": {
+              "id": 680,
+              "dispname": "Piso"
+            },
+            "uso": {
+              "id": 259,
+              "dispname": "Bodega Casa Bomba"
+            },
+            "calificacionconvencional": {
+              "total_calificacion": 35
+            }
+          }
+        }
+      ]
+    },
+    {
+      "num_predial": "252900100000000860016000000000",
+      "area_terreno": 3124,
+      "SantaMaria": false,
+      "unidad_construccion": [
+        {
+          "area_construida": 35,
+          "lc_caracteristicasunidadconstruccion": {
+            "tipo_construccion": {
+              "id": 66,
+              "dispname": "Convencional"
+            },
+            "tipo_unidad_construccion": {
+              "id": 539,
+              "dispname": "Residencial"
+            },
+            "tipo_planta": {
+              "id": 680,
+              "dispname": "Piso"
+            },
+            "uso": {
+              "id": 232,
+              "dispname": "Vivienda hasta 3 pisos"
+            },
+            "calificacionconvencional": {
+              "total_calificacion": 43
+            }
+          }
+        },
+        {
+          "area_construida": 50,
+          "lc_caracteristicasunidadconstruccion": {
+            "tipo_construccion": {
+              "id": 67,
+              "dispname": "No Convencional"
+            },
+            "tipo_unidad_construccion": {
+              "id": 543,
+              "dispname": "Anexo"
+            },
+            "tipo_planta": {
+              "id": 680,
+              "dispname": "Piso"
+            },
+            "uso": {
+              "id": 304,
+              "dispname": "Kioskos"
+            },
+            "calificacionnoconvencional": {
+              "tipo_anexo": 455,
+              "puntaje": 40
+            }
+          }
+        },
+        {
+          "area_construida": 100,
+          "lc_caracteristicasunidadconstruccion": {
+            "tipo_construccion": {
+              "id": 66,
+              "dispname": "Convencional"
+            },
+            "tipo_unidad_construccion": {
+              "id": 540,
+              "dispname": "Comercial"
+            },
+            "tipo_planta": {
+              "id": 680,
+              "dispname": "Piso"
+            },
+            "uso": {
+              "id": 259,
+              "dispname": "Bodega Casa Bomba"
+            },
+            "calificacionconvencional": {
+              "total_calificacion": 15
+            }
+          }
+        },
+        {
+          "area_construida": 1000,
+          "lc_caracteristicasunidadconstruccion": {
+            "tipo_construccion": {
+              "id": 66,
+              "dispname": "Convencional"
+            },
+            "tipo_unidad_construccion": {
+              "id": 540,
+              "dispname": "Comercial"
+            },
+            "tipo_planta": {
+              "id": 680,
+              "dispname": "Piso"
+            },
+            "uso": {
+              "id": 237,
+              "dispname": "Centros Comerciales"
+            },
+            "calificacionconvencional": {
+              "total_calificacion": 50
+            }
+          }
+        }
+      ]
+    }
+  ]
 }

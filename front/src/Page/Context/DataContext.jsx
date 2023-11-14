@@ -20,7 +20,6 @@ export const DataProvider = ({ children }) => {
     setIdArray(newData);
   };
   const updateDataAll = (newData) => {
-    console.log("datos entrantes", dataAll);
     setDataAll(newData);
   };
   return (

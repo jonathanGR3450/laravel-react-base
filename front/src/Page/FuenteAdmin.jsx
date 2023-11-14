@@ -11,22 +11,20 @@ import { TableContext } from "./Context/Context";
 const FuenteAdminForm = (props, ref) => {
   //const { updateDataAll } = useContext(DataContext);
   const { tableData, updateTableData } = useContext(TableContext);
+  const [estBtt, setEstBtt] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  let [dataId, setDataId] = useState();
   const [objFuente, setObjFuente] = useState({
-    tipo_fuente: "",
+    tipo: "",
     ente_emisor: "",
     numero_fuente: "",
     estado_disponibilidad: "",
     tipo_principal: "",
     fecha_documento_fuente: "",
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  let [dataId, setDataId] = useState({
-    first: "",
-    second: "",
-  });
+
   const openModal = (aux) => {
-    aux.first = parseInt(aux.first);
-    aux.second = parseInt(aux.second);
+    console.log("datos ID", coma);
     setDataId(aux);
     setIsModalOpen(true);
   };
@@ -36,23 +34,35 @@ const FuenteAdminForm = (props, ref) => {
     input.value = input.value.replace(/[^0-9.,]/g, "");
   }
   //Se Aceptan solo Letras
-  function soloLetras(event) {
-    const input = event.target;
-    input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
-  }
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
   const sendData = () => {
-    console.log("entra", dataId);
+    console.log("entra", objFuente);
     tableData.map((item, index) => {
-      if (index >= dataId.first - 1 && index <= dataId.second - 1) {
-        item.fuente_administrativa = objFuente;
-        console.log(item);
-      }
+      dataId.map((items) => {
+        if (items - 1 == index) {
+          item.fuente_administrativa = objFuente;
+        }
+      });
     });
+    console.log(tableData);
     updateTableData(tableData);
   };
+
+  function validar() {
+    let val = Object.values(objFuente).some((value) => value === "");
+    console.log(val);
+    if (val) {
+      setEstBtt(true);
+    } else {
+      setEstBtt(false);
+    }
+  }
+  useEffect(() => {
+    validar();
+  }, [objFuente]);
   useImperativeHandle(ref, () => ({
     openModal,
   }));
@@ -77,7 +87,7 @@ const FuenteAdminForm = (props, ref) => {
               <select
                 onChange={Load_Data}
                 value={objFuente.tipo_fuente}
-                name="tipo_fuente"
+                name="tipo"
                 className="border-2 p-2 rounded-md w-full"
               >
                 <option></option>
@@ -159,7 +169,10 @@ const FuenteAdminForm = (props, ref) => {
           <div id="Button" className="w-full flex flex-row">
             <button
               onClick={sendData}
-              className="p-2 text-center rounded-md text-white bg-teal-500 text-lg m-4"
+              disabled={estBtt}
+              className={`${
+                estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+              }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
             >
               Guardar
             </button>
