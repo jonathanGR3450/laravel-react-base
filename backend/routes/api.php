@@ -32,6 +32,7 @@ use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
 use App\Http\Controllers\Interesado\StoreColMiembros;
+use App\Http\Controllers\Predio\GetPredioNumeroPredialController;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
 use App\Http\Controllers\Predio\IndexNumerosHomologadosController;
 use App\Http\Controllers\Predio\IndexNumerosPredialesController;
@@ -61,6 +62,9 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::prefix('v1')->group(function () {
+
+    Route::get('predio/numero-predial', GetPredioNumeroPredialController::class);
+
     Route::post('predio', StoreLcPredio::class);
     Route::post('predio/numeros-prediales/numeros-homologados', StoreNumeroPredialHomologadoController::class);
     Route::post('predio/numeros-prediales', StoreNumeroPredialController::class);
