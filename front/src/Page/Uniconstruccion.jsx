@@ -11,18 +11,30 @@ import {
   LoadCaracteristicasForm,
   CreateCaracteristicasForm,
 } from "./Caracteristicas";
-import { InteresadoContext } from "./Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
+
 const UniConstruccionForm = (props, ref) => {
   const { tableData, updateTableData } = useContext(TableContext);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  let [dataId, setDataId] = useState({
-    first: "",
-    second: "",
-  });
+  let [dataId, setDataId] = useState();
+  let [construcciones, setConstrucciones] = useState();
+
   const openModal = (aux) => {
-    aux.first = parseInt(aux.first);
-    aux.second = parseInt(aux.second);
+    let newobj = [];
+
+    Object.entries(tableData).map((itemd, index) => {
+      let item = itemd[1];
+      aux.map((items) => {
+        if (items - 1 == index) {
+          if (item.construccion) {
+            newobj = item.construccion;
+          }
+        }
+      });
+    });
+    console.log("nuevo Objeto", newobj);
+    setConstrucciones(newobj);
     setDataId(aux);
     setIsModalOpen(true);
   };
@@ -37,23 +49,16 @@ const UniConstruccionForm = (props, ref) => {
     input.value = input.value.replace(/[^0-9.,]/g, "");
   }
 
-  const sendData = () => {
-    tableData.map((item, index) => {
-      if (index >= dataId.first - 1 && index <= dataId.second - 1) {
-        item.unidad_construccion = unidadData;
-        console.log(item);
-      }
-    });
-    updateTableData(tableData);
-  };
-
+  //Cuantas Unidades Se Crean
   const [numUnidad, setNumUnidad] = useState();
+  //Componentes Unidad
   const [unidad, setUnidad] = useState([]);
+  //Datos de Unidades
   const [unidadData, setUnidadData] = useState();
 
+  //cargo el numero de unidades y los Arreglos
   const Load_Num = (e) => {
     const newValue = parseInt(e.target.value);
-    console.log(newValue);
     setNumUnidad(newValue);
     const newUnidadData = Array.from({ length: newValue }, () => ({
       planta_ubicacion: "",
@@ -95,15 +100,19 @@ const UniConstruccionForm = (props, ref) => {
     //Modal de Crear y Cargar Caracteristicas
     const LoadCaracRef = useRef();
     const CreateCaracRef = useRef();
+    const updateCaracteristicas = (newData) => {
+      console.log("nuevos Dats", newData);
+    };
+    //Abrir Modal de cargar
     const openLoadCaractForm = () => {
       LoadCaracRef.current.openModal();
     };
+    //Abrir Modal Crear
     const openCreateCaracRef = () => {
       CreateCaracRef.current.openModal();
     };
     useEffect(() => {
       index.onDataChange(index.index, dataUnidad);
-      console.log("Actualizacion datos", dataUnidad);
     }, [dataUnidad]);
 
     return (
@@ -116,8 +125,9 @@ const UniConstruccionForm = (props, ref) => {
             <label>Relacion Construccion</label>
             <select className="border-2 p-1 rounded-md w-full">
               <option></option>
-              <option>Construccion 1</option>
-              <option>Construccion 2</option>
+              {Object.entries(construcciones).map((item, index) => {
+                return <option>Construccion {index + 1} </option>;
+              })}
             </select>
           </div>
           <div className="w-1/3 ml-4 flex flex-col">
@@ -127,7 +137,10 @@ const UniConstruccionForm = (props, ref) => {
             >
               Carga Caracteristicas
             </button>
-            <LoadCaracteristicasForm ref={LoadCaracRef} />
+            <LoadCaracteristicasForm
+              ref={LoadCaracRef}
+              onchangeData={updateCaracteristicas}
+            />
           </div>
           <div className="w-1/3 ml-4 flex flex-col">
             <button
@@ -188,6 +201,19 @@ const UniConstruccionForm = (props, ref) => {
     );
   };
 
+  const sendData = () => {
+    Object.entries(tableData).map((itemd, index) => {
+      let item = itemd[1];
+      dataId.map((items) => {
+        if (items - 1 == index) {
+          item.unidad_construccion = unidadData;
+        }
+      });
+    });
+    console.log("datos de tabla", tableData);
+    updateTableData(tableData);
+  };
+
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <h1 className="text-2xl">Datos Generales de Unidad de Construccion</h1>
@@ -219,17 +245,5 @@ const UniConstruccionForm = (props, ref) => {
     </Modal>
   );
 };
-/* {tableData.map((item, index) => {
-                if (index >= dataId.first - 1 && index <= dataId.second - 1) {
-                  console.log("item const", item);
-                  if (item.construccion) {
-                    return item.construccion.map((item, index1) => {});
-                  }
-                }
-              })}
-              
-                 {aux.construccion.map((item, index) => {
-                return <option value={index}>Construccion #{index + 1}</option>;
-              })}*/
 
 export default forwardRef(UniConstruccionForm);

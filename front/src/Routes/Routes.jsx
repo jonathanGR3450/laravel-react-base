@@ -4,6 +4,7 @@ import Menu from "../Page/Menu";
 import Consulta from "../Page/Consulta";
 import FichaPredial from "../Page/FichaPredial";
 import UniconstForm from "../Page/Uniconst";
+import IncrementoForm from "../Page/Incremento";
 import { ResumenForm } from "../Page/Resume";
 import { NumPredialForm } from "../Page/NumPredial";
 import { LoadCodHom } from "../Page/LoadCodHom";
@@ -16,6 +17,9 @@ import { DataProvider } from "../Page/Context/DataContext";
 import { LoadDataForm } from "../Page/CargaDatos";
 import { LoadDataConstruccion } from "../Page/CargaConstruccion";
 import AvaluoForm from "../Page/Avaluo";
+
+
+
 const Ruta = () => {
   return (
     <Routes>
@@ -62,6 +66,8 @@ const Ruta = () => {
         ></Route>
         <Route path="/DataHom" element={<LoadCodHom />}></Route>
         <Route path="/Avaluo" element={<AvaluoForm />}></Route>
+        <Route path="/Incremento" element={<IncrementoForm />}></Route>
+        
       </Route>
     </Routes>
   );

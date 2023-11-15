@@ -1909,7 +1909,7 @@ export const NumPredialForm = () => {
           Agregar Predios
         </button>
         {estLoading ? (
-          <label class="text-3xl text-indigo-600 font-bold transform inline-block animate-bounce">
+          <label className="text-3xl text-indigo-600 font-bold transform inline-block animate-bounce">
             {msjLoading}
           </label>
         ) : null}

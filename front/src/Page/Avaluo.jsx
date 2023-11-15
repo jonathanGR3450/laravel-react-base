@@ -13,14 +13,17 @@ const AvaluoForm = () => {
   const [estBttAvaluo, setEstBttAvaluo] = useState(true);
   const [estNumPredial, setEstNumPredial] = useState(true);
   const [areaTerreno, setAreaTerreno] = useState();
-  const [numZonas, setNumZonas] = useState();
-  const [zonas, setZonas] = useState([]);
-  const [zonasData, setZonasData] = useState();
+
   const [dataResponse, setDataResponse] = useState();
   const [dataTotal, setDataTotal] = useState({
     terreno: [],
     unidad: [],
   });
+
+  const [numZonas, setNumZonas] = useState();
+  const [zonas, setZonas] = useState([]);
+  const [zonasData, setZonasData] = useState();
+
   const [msjAvaluo, setMsjAvaluo] = useState("");
   const dataTablaCatastral = TablaCatastral.predio;
   function handleNum(e) {
@@ -288,12 +291,12 @@ const AvaluoForm = () => {
       if (index >= 5 && index <= 6) {
         zona += item;
       }
+      ///Ph Condominio si es 8-9 true sino false
     });
     //Arreglo de Terreno
     let arrayResponse = [];
     //Arreglo de Unidades
     let uni = [];
-
     async function TerrenoCalculate() {
       setMsjAvaluo("Calculando Terreno");
       let aux = "";
