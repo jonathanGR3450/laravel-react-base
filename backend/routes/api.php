@@ -61,6 +61,9 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::prefix('v1')->group(function () {
+
+    Route::get('predio/numero-predial', GetPredioController::class);
+
     Route::post('predio', StoreLcPredio::class);
     Route::post('predio/numeros-prediales/numeros-homologados', StoreNumeroPredialHomologadoController::class);
     Route::post('predio/numeros-prediales', StoreNumeroPredialController::class);
