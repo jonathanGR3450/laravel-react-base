@@ -597,6 +597,7 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
     </Modal>
   );
 });
+
 export const CreateCaracteristicasForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
@@ -608,7 +609,9 @@ export const CreateCaracteristicasForm = React.forwardRef((props, ref) => {
   };
   useImperativeHandle(ref, () => ({
     openModal,
+    closeModal,
   }));
+  const Fpref = useRef();
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <h2 className="text-4xl">Crear Caracteristicas </h2>

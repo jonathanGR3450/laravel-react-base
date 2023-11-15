@@ -232,7 +232,6 @@ export const PredioResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const datos = props.datos;
-  console.log("datos predio", datos);
   const openModal = (aux) => {
     setIsModalOpen(true);
   };
@@ -245,7 +244,6 @@ export const PredioResumeForm = React.forwardRef((props, ref) => {
   const mostrar = (data) => {
     const aux = data;
     let aux1 = aux.predio;
-    console.log("valores aux10", aux1);
     let tipo_predio = "";
     let condicion = "";
     let destinacion_economica = "";
@@ -572,7 +570,6 @@ export const TerrenoResumeForm = React.forwardRef((props, ref) => {
   const mostrar = (data) => {
     const aux = data;
     let aux1 = aux.terreno;
-    console.log(aux1);
     return (
       <div className="w-full">
         <h2 className="text-3xl">Datos de Terreno</h2>
@@ -602,7 +599,6 @@ export const TerrenoResumeForm = React.forwardRef((props, ref) => {
 export const ConstruccionResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const datos = props.datos;
-  console.log("carga valores", datos);
   const openModal = (aux) => {
     setIsModalOpen(true);
   };
@@ -616,7 +612,6 @@ export const ConstruccionResumeForm = React.forwardRef((props, ref) => {
     const aux = data;
     let aux1 = aux.construccion;
 
-    console.log(aux1);
     return aux1.map((item, index) => {
       let tipo_con = "";
       let tipo_dom = "";
@@ -705,7 +700,6 @@ export const ConstruccionResumeForm = React.forwardRef((props, ref) => {
 export const UnidadConstruccionResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const datos = props.datos;
-  console.log("carga valores", datos);
   const openModal = (aux) => {
     setIsModalOpen(true);
   };
@@ -718,9 +712,7 @@ export const UnidadConstruccionResumeForm = React.forwardRef((props, ref) => {
   const mostrar = (data) => {
     const aux = data;
     let aux1 = aux.unidad_construccion;
-    console.log("Data aux", aux1);
     return aux1.map((item, index) => {
-      console.log(item);
       return (
         <div key={index} className="w-full">
           <h2 className="text-3xl">
@@ -754,7 +746,6 @@ export const UnidadConstruccionResumeForm = React.forwardRef((props, ref) => {
 export const CaracteristicasResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const datos = props.datos;
-  console.log("carga valores", datos);
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -765,7 +756,6 @@ export const CaracteristicasResumeForm = React.forwardRef((props, ref) => {
     openModal,
   }));
   const mostrar = (data) => {
-    console.log("datos", data);
     return (
       <div className="w-full flex flex-col justify-center items-center ">
         <h2 className="text-4xl font-bold">
@@ -777,7 +767,6 @@ export const CaracteristicasResumeForm = React.forwardRef((props, ref) => {
         </div>
         <div className="w-full flex flex-col text-left justify-center items-center">
           {data[0].grupocalificacion.map((item, index) => {
-            console.log(item);
             return (
               <div
                 key={item.subtotal}

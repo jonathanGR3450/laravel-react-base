@@ -10,6 +10,7 @@ import {
   CaracteristicaContext,
   GrupoProvider,
 } from "./Context/CaracteristicaContext";
+import { CaraContext } from "./Uniconstruccion";
 const UniconstForm = (dataForm) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
@@ -89,7 +90,7 @@ const UniconstForm = (dataForm) => {
     const [uso, setUso] = useState();
     const [sopti, setSopti] = useState();
     const [djson, setDjson] = useState({});
-
+    const { updateCaracteristicas } = useContext(CaraContext);
     const [newDataCentral, setNewDataCentral] = useState({
       tipo_planta: "",
       tipo_unidad_construccion: "",
@@ -219,6 +220,8 @@ const UniconstForm = (dataForm) => {
         };
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+
+        updateCaracteristicas(Json);
         var raw = JSON.stringify(Json);
         var requestOptions = {
           method: "POST",
@@ -236,7 +239,7 @@ const UniconstForm = (dataForm) => {
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response}`);
           }
-          const result = await response.text();
+          const result = await response.json();
           console.log(result);
         } catch (error) {
           console.error("Error:", error);
@@ -279,6 +282,7 @@ const UniconstForm = (dataForm) => {
         };
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+        updateCaracteristicas(Json);
         var raw = JSON.stringify(Json);
         var requestOptions = {
           method: "POST",

@@ -6,12 +6,15 @@ import {
   useState,
   useContext,
   useRef,
+  createContext,
 } from "react";
 import {
   LoadCaracteristicasForm,
   CreateCaracteristicasForm,
 } from "./Caracteristicas";
 import { TableContext } from "./Context/Context";
+
+export const CaraContext = createContext();
 
 const UniConstruccionForm = (props, ref) => {
   const { tableData, updateTableData } = useContext(TableContext);
@@ -92,6 +95,7 @@ const UniConstruccionForm = (props, ref) => {
       area_construida: "",
       etiqueta: "",
       construccion: "",
+      caracteristicas: "",
     });
     const Load_Data = (e) => {
       const { name, value } = e.target;
@@ -100,9 +104,14 @@ const UniConstruccionForm = (props, ref) => {
     //Modal de Crear y Cargar Caracteristicas
     const LoadCaracRef = useRef();
     const CreateCaracRef = useRef();
+
     const updateCaracteristicas = (newData) => {
       console.log("nuevos Dats", newData);
+      let carac = newData.construcciones[0].caracteristicasunidadconstruccion;
+      setDataUnidad({ ...dataUnidad, caracteristicas: carac });
+      closeCreateCaaracRef();
     };
+
     //Abrir Modal de cargar
     const openLoadCaractForm = () => {
       LoadCaracRef.current.openModal();
@@ -111,93 +120,98 @@ const UniConstruccionForm = (props, ref) => {
     const openCreateCaracRef = () => {
       CreateCaracRef.current.openModal();
     };
+    const closeCreateCaaracRef = () => {
+      CreateCaracRef.current.closeModal();
+    };
     useEffect(() => {
       index.onDataChange(index.index, dataUnidad);
     }, [dataUnidad]);
 
     return (
-      <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
-        <h1 className="text-3xl">
-          Caracteristicas de Unidad de Construccion #{index.index + 1}
-        </h1>
-        <div className="w-full flex flex-row mt-4">
-          <div className="w-1/3 flex flex-col">
-            <label>Relacion Construccion</label>
-            <select className="border-2 p-1 rounded-md w-full">
-              <option></option>
-              {Object.entries(construcciones).map((item, index) => {
-                return <option>Construccion {index + 1} </option>;
-              })}
-            </select>
+      <CaraContext.Provider value={{ updateCaracteristicas }}>
+        <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
+          <h1 className="text-3xl">
+            Caracteristicas de Unidad de Construccion #{index.index + 1}
+          </h1>
+          <div className="w-full flex flex-row mt-4">
+            <div className="w-1/3 flex flex-col">
+              <label>Relacion Construccion</label>
+              <select className="border-2 p-1 rounded-md w-full">
+                <option></option>
+                {Object.entries(construcciones).map((item, index) => {
+                  return <option>Construccion {index + 1} </option>;
+                })}
+              </select>
+            </div>
+            <div className="w-1/3 ml-4 flex flex-col">
+              <button
+                onClick={openLoadCaractForm}
+                className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
+              >
+                Carga Caracteristicas
+              </button>
+              <LoadCaracteristicasForm
+                ref={LoadCaracRef}
+                onchangeData={updateCaracteristicas}
+              />
+            </div>
+            <div className="w-1/3 ml-4 flex flex-col">
+              <button
+                onClick={openCreateCaracRef}
+                className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
+              >
+                Crear Caracteristica
+              </button>
+              <CreateCaracteristicasForm ref={CreateCaracRef} />
+            </div>
           </div>
-          <div className="w-1/3 ml-4 flex flex-col">
-            <button
-              onClick={openLoadCaractForm}
-              className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
-            >
-              Carga Caracteristicas
-            </button>
-            <LoadCaracteristicasForm
-              ref={LoadCaracRef}
-              onchangeData={updateCaracteristicas}
-            />
-          </div>
-          <div className="w-1/3 ml-4 flex flex-col">
-            <button
-              onClick={openCreateCaracRef}
-              className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
-            >
-              Crear Caracteristica
-            </button>
-            <CreateCaracteristicasForm ref={CreateCaracRef} />
+          <div className="w-full flex flex-row items-center justify-center">
+            <div className="w-1/4 flex flex-col">
+              <label>Planta Ubicacion</label>
+              <input
+                name="planta_ubicacion"
+                type="text"
+                className="border-2 p-1 rounded-md w-full"
+                value={dataUnidad.planta_ubicacion}
+                onChange={Load_Data}
+                onInput={soloNumeros}
+              ></input>
+            </div>
+            <div className="w-1/4 flex flex-col ml-4">
+              <label>Altura</label>
+              <input
+                name="altura"
+                type="text"
+                className="border-2 p-1 rounded-md w-full"
+                value={dataUnidad.altura}
+                onChange={Load_Data}
+                onInput={soloNumeros}
+              ></input>
+            </div>
+            <div className="w-1/4 ml-4 flex flex-col">
+              <label>Area Construida</label>
+              <input
+                name="area_construida"
+                type="text"
+                className="border-2 p-1 rounded-md w-full"
+                value={dataUnidad.area_construida}
+                onChange={Load_Data}
+                onInput={soloNumeros}
+              ></input>
+            </div>
+            <div className="w-1/4 ml-4 flex flex-col">
+              <label>Etiqueta</label>
+              <input
+                name="etiqueta"
+                type="text"
+                className="border-2 p-1 rounded-md w-full"
+                value={dataUnidad.etiqueta}
+                onChange={Load_Data}
+              ></input>
+            </div>
           </div>
         </div>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/4 flex flex-col">
-            <label>Planta Ubicacion</label>
-            <input
-              name="planta_ubicacion"
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-              value={dataUnidad.planta_ubicacion}
-              onChange={Load_Data}
-              onInput={soloNumeros}
-            ></input>
-          </div>
-          <div className="w-1/4 flex flex-col ml-4">
-            <label>Altura</label>
-            <input
-              name="altura"
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-              value={dataUnidad.altura}
-              onChange={Load_Data}
-              onInput={soloNumeros}
-            ></input>
-          </div>
-          <div className="w-1/4 ml-4 flex flex-col">
-            <label>Area Construida</label>
-            <input
-              name="area_construida"
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-              value={dataUnidad.area_construida}
-              onChange={Load_Data}
-              onInput={soloNumeros}
-            ></input>
-          </div>
-          <div className="w-1/4 ml-4 flex flex-col">
-            <label>Etiqueta</label>
-            <input
-              name="etiqueta"
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-              value={dataUnidad.etiqueta}
-              onChange={Load_Data}
-            ></input>
-          </div>
-        </div>
-      </div>
+      </CaraContext.Provider>
     );
   };
 
@@ -212,6 +226,7 @@ const UniConstruccionForm = (props, ref) => {
     });
     console.log("datos de tabla", tableData);
     updateTableData(tableData);
+    closeModal();
   };
 
   return (
