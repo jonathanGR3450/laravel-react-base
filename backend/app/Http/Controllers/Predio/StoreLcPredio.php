@@ -18,7 +18,7 @@ class StoreLcPredio extends AppBaseController
         try {
             $predio = LcPredioLocal::create($request->validated());
             
-            return $this->sendResponse($predio, "col predio creado correctamente");
+            return $this->sendResponse($predio, "col predio creado correctamente", 201);
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }

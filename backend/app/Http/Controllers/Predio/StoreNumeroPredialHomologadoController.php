@@ -45,8 +45,8 @@ class StoreNumeroPredialHomologadoController extends AppBaseController
             foreach ($numerosRelacion as $numero) {
                 $numero = (object) $numero;
                 // dd($numero);
-                $numeroPredial = LcNumerosPredialLocal::where('numero_predial', $numero->numero_predial)->get()->first();
-                $numeroHomologado = LcNumerosHomologadosLocal::where('numeros_homologados', $numero->numero_homologado)->get()->first();
+                $numeroPredial = LcNumerosPredialLocal::find($numero->numero_predial);
+                $numeroHomologado = LcNumerosHomologadosLocal::find($numero->numero_homologado);
                 
                 $numeroHomologado->lc_numeros_prediales_id = $numeroPredial->t_id;
                 $numeroHomologado->save();

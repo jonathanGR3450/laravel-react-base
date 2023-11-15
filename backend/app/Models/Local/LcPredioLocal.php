@@ -4,6 +4,7 @@ namespace App\Models\Local;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LcPredioLocal extends Model
 {
@@ -98,4 +99,12 @@ class LcPredioLocal extends Model
     // {
     //     return $this->hasMany(ExtDireccion::class, 'lc_predio_direccion', 't_id');
     // }
+
+    function lcRestricion() : HasMany {
+        return $this->hasMany(LcRestriccionLocal::class, 't_id', 'unidad');
+    }
+
+    function ricPredio() : HasMany {
+        return $this->hasMany(RicPredioLocal::class, 't_id', 'lc_predio');
+    }
 }

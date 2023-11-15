@@ -4,6 +4,7 @@ namespace App\Models\Local;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LcDerechoLocal extends Model
 {
@@ -48,5 +49,9 @@ class LcDerechoLocal extends Model
     public function predio()
     {
         return $this->belongsTo(LcPredioLocal::class, 'unidad');
+    }
+
+    function colRrrFuente() : HasMany {
+        return $this->hasMany(ColRrrfuenteLocal::class, 't_id', 'rrr_lc_derecho');
     }
 }

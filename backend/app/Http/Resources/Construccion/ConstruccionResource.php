@@ -126,6 +126,7 @@ class ConstruccionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'identificador' => $this->identificador,
             'tipo_construccion' => $this->tipo_construccion,
             'tipo_dominio' => $this->tipo_dominio,

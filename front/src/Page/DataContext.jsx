@@ -60,8 +60,10 @@ export function incrementIdenti() {
 }
 //Captura el valor del id de Destinacion
 export let destino = {
-  id: 0,
+  tipo_calificar: "",
+  tipo_anexo: 0,
 };
+
 //Cambiar numero a letra
 function numlet() {
   variable.caracteristicasunidadconstruccion.identificador =
@@ -153,7 +155,7 @@ export function crearobjetos() {
       cloneVariable.caracteristicasunidadconstruccion.tipo_construccion == 67
     ) {
       const calificacionnoconvencional = {
-        tipo_calificar: destino.id,
+        tipo_anexo: destino.anexo,
       };
       cloneVariable.caracteristicasunidadconstruccion.calificacionnoconvencional.push(
         calificacionnoconvencional

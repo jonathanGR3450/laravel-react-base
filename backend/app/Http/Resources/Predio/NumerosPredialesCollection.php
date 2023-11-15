@@ -27,6 +27,7 @@ class NumerosPredialesCollection extends ResourceCollection
         return array_merge($this->pagination->resolve(), [
             "data" => $this->collection->transform(function ($item) {
                 return [
+                    "t_id" => $item->t_id,
                     "numero_predial" => $item->numero_predial
                 ];
             })

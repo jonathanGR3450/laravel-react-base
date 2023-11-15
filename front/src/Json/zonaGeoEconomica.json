@@ -1,0 +1,22 @@
+{
+  "ZonasGeoceonomicas": [
+    { "codigo": 1, "valor": 1260000 },
+    { "codigo": 2, "valor": 1170000 },
+    { "codigo": 3, "valor": 1020000 },
+    { "codigo": 4, "valor": 750000 },
+    { "codigo": 5, "valor": 660000 },
+    { "codigo": 6, "valor": 600000 },
+    { "codigo": 7, "valor": 540000 },
+    { "codigo": 8, "valor": 480000 },
+    { "codigo": 9, "valor": 450000 },
+    { "codigo": 10, "valor": 330000 },
+    { "codigo": 11, "valor": 270000 },
+    { "codigo": 12, "valor": 216000 },
+    { "codigo": 13, "valor": 132000 },
+    { "codigo": 14, "valor": 99000 },
+    { "codigo": 15, "valor": 78000 },
+    { "codigo": 16, "valor": 60000 },
+    { "codigo": 17, "valor": 30000 },
+    { "codigo": 18, "valor": 7200 }
+  ]
+}

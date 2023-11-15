@@ -39,4 +39,8 @@ class LcAgrupacionInteresadosLocal extends Model
     // {
     //     return $this->belongsTo(GrupointeresadoTipo::class, 'tipo');
     // }
+
+    function lcRestricion() : HasMany {
+        return $this->hasMany(LcRestriccionLocal::class, 't_id', 'interesado_lc_agrupacioninteresados');
+    }
 }
