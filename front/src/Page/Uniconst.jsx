@@ -349,11 +349,11 @@ const UniconstForm = (dataForm) => {
                 value={tipoanexo}
               >
                 <option></option>
-                {Object.entries(select).map((tipo) => {
+                {Object.entries(select).map((tipo, index) => {
                   return (
                     <option
                       value={tipo[1].tipo_anexo}
-                      key={tipo[1].tipo_anexo}
+                      key={index}
                       name={tipo[1].tipo_anexo}
                     >
                       {tipo[1].Tipo}

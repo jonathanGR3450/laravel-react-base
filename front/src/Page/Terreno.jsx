@@ -12,13 +12,34 @@ const TerrenoForm = (props, ref) => {
   const { tableData, updateTableData } = useContext(TableContext);
   console.log("Datos Tabla", tableData);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  let [dataId, setDataId] = useState();
   const [terrenoData, setTerrenoData] = useState({
     area_terreno: "",
     codigo_manzana: "",
     avaluo_terreno: "",
-    ZHG: "",
+    ZHG: [],
     SantaMaria: "",
   });
+
+  const openModal = (aux) => {
+    let newData = {
+      area_terreno: "",
+      codigo_manzana: "",
+      avaluo_terreno: "",
+      ZHG: [],
+      SantaMaria: "",
+    };
+    setTerrenoData(newData);
+    setDataId(aux);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+
   const isAnyValueEmpty = () => {
     if (terrenoData.area_terreno !== "" && terrenoData.ZHG !== "") {
       setEstBtt(false);
@@ -26,61 +47,44 @@ const TerrenoForm = (props, ref) => {
       setEstBtt(true);
     }
   };
+
   useEffect(() => {
     isAnyValueEmpty();
   }, [terrenoData]);
 
   const [estBtt, setEstBtt] = useState(true);
+
   function soloNumeros(event) {
     const input = event.target;
     input.value = input.value.replace(/[^0-9.,]/g, "");
   }
   //     item.Dpto +  item.Mpio +  item.Zona +  item.Sector +  item.Comuna +  item.Barrio +  item.Manzana
-  let [dataId, setDataId] = useState({
-    first: "",
-    second: "",
-  });
-  const openModal = (aux) => {
-    let newData = {
-      area_terreno: "",
-      codigo_manzana: "",
-      avaluo_terreno: "",
-      ZHG: "",
-      SantaMaria: "",
-    };
-    setTerrenoData(newData);
-    aux.first = parseInt(aux.first);
-    aux.second = parseInt(aux.second);
-    setDataId(aux);
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+
   const sendData = () => {
     if (terrenoData.SantaMaria == "") {
       terrenoData.SantaMaria = false;
     }
-    console.log(terrenoData);
-    let response = createTerreno();
-    console.log(response);
+    console.log("Terreno Data", terrenoData);
+
+    let response = true;
+    //createTerreno();
+
     if (response) {
-      tableData.map((item, index) => {
-        if (index >= dataId.first - 1 && index <= dataId.second - 1) {
-          terrenoData.codigo_manzana =
-            item.Dpto +
-            item.Mpio +
-            item.Zona +
-            item.Sector +
-            item.Comuna +
-            item.Barrio +
-            item.Manzana;
-          item.terreno = terrenoData;
-        }
+      Object.entries(tableData).map((itemd, index) => {
+        let item = itemd[1];
+        console.log("Data Index", item);
+        dataId.map((items) => {
+          if (items - 1 == index) {
+            item.terreno = terrenoData;
+          }
+        });
       });
+      console.log("Tabla Data", tableData);
+      closeModal();
       updateTableData(tableData);
     }
   };
+  ////ENDPOINT
   async function createTerreno() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -126,19 +130,156 @@ const TerrenoForm = (props, ref) => {
       console.log("Error:", error);
     }
   }
+  //Datos de Zona
+  const [numZonas, setNumZonas] = useState("");
+  const [zonas, setZonas] = useState([]);
+  const [zonasData, setZonasData] = useState();
+  //Cargar Tamaño de Zonas
+  function load_tamaño(e) {
+    let newValue = parseInt(e.target.value);
+    if (isNaN(newValue)) {
+      newValue = 0;
+    }
+    setNumZonas(newValue);
+    const newZonasData = Array.from({ length: newValue }, () => ({
+      area: "",
+      ZHG: "",
+    }));
+    setZonasData(newZonasData);
+  }
+  const agregarZonas = () => {
+    //  setEstForm(true);
+    const nuevasZonas = [];
+    for (let i = 0; i < numZonas; i++) {
+      nuevasZonas.push(
+        <CreateZonaGeo key={i} index={i} onDataChange={actualizarDatosZona} />
+      );
+    }
+    setZonas(nuevasZonas);
+  };
+  function validarArea() {
+    let sum = 0;
+    let sumZHG = 0;
+    if (zonasData != undefined) {
+      zonasData.map((item, index) => {
+        sum += parseInt(item.area);
+        if (isNaN(item.ZHG) || item.ZHG === "") {
+          sumZHG++;
+        }
+      });
+    }
+    if (sum === parseFloat(terrenoData.area_terreno) && sumZHG === 0) {
+      let manzana = "";
+      if (typeof tableData !== "undefined") {
+        let item = tableData[0];
+        manzana =
+          item.Dpto +
+          item.Mpio +
+          item.Zona +
+          item.Sector +
+          item.Comuna +
+          item.Barrio +
+          item.Manzana;
+      }
+      setEstBtt(false);
+      setTerrenoData({
+        ...terrenoData,
+        ZHG: zonasData,
+        codigo_manzana: manzana,
+      });
+    } else {
+      setEstBtt(true);
+    }
+  }
+  useEffect(() => {
+    console.log("aasas", zonasData);
+    validarArea();
+  }, [zonasData]);
 
-  useImperativeHandle(ref, () => ({
-    openModal,
-  }));
+  const actualizarDatosZona = (index, newData) => {
+    setZonasData((prevData) => {
+      const newDataArray = [...prevData];
+      newDataArray[index] = newData;
+      return newDataArray;
+    });
+  };
+  const CreateZonaGeo = (index) => {
+    const [dataZonaGeo, setDataZonaGeo] = useState({
+      area: "",
+      ZHG: "",
+    });
+    useEffect(() => {
+      index.onDataChange(index.index, dataZonaGeo);
+    }, [dataZonaGeo]);
 
+    function handleZona(e) {
+      let { name, value } = e.target;
+
+      setDataZonaGeo((prevValues) => ({
+        ...prevValues,
+        [name]: parseInt(value),
+      }));
+    }
+    return (
+      <div className="w-full flex flex-col border  justify-center items-center text-center rounded-xl">
+        <label className="w-full font-semibold text-2xl bg-teal-500 text-white p-2 rounded-xl">
+          Zona GeoEconomica #{index.index + 1}
+        </label>
+        <div className="w-full flex flex-row p-2">
+          <div className="w-1/2 flex flex-col  ml-4">
+            <label className="w-full font-semibold">Area (mt2) : </label>
+            <input
+              onChange={handleZona}
+              type="number"
+              className="border-2 p-2 rounded-lg text-center w-full"
+              name="area"
+              value={dataZonaGeo.area}
+            ></input>
+          </div>
+          <div className="w-1/2 flex flex-col ml-4">
+            <label className="w-full  font-semibold">
+              Zona GeoEconomica *:{" "}
+            </label>
+            <select
+              onChange={handleZona}
+              type="number"
+              className="border-2 p-2 w-full rounded-lg text-center "
+              name="ZHG"
+              value={dataZonaGeo.ZHG}
+            >
+              <option></option>
+              <option value="1">01</option>
+              <option value="2">02</option>
+              <option value="3">03</option>
+              <option value="4">04</option>
+              <option value="5">05</option>
+              <option value="6">06</option>
+              <option value="7">07</option>
+              <option value="8">08</option>
+              <option value="9">09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    );
+  };
   const Load_Data = (e) => {
     let { name, value } = e.target;
     if (name == "SantaMaria") {
       value = e.target.checked;
     }
     setTerrenoData((prevValues) => ({ ...prevValues, [name]: value }));
-    console.log("value", value);
   };
+
   console.log(terrenoData);
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -147,7 +288,7 @@ const TerrenoForm = (props, ref) => {
         <div className="w-full flex flex-row mt-4 mb-4">
           <label
             htmlFor="terreno-checkbox"
-            className="flex items-center text-xl"
+            className="flex items-center text-xl w-2/3"
           >
             <input
               name="SantaMaria"
@@ -158,18 +299,55 @@ const TerrenoForm = (props, ref) => {
             />
             El terreno pertenece a Santa Maria de los Angeles
           </label>
-        </div>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/3flex flex-col">
-            <label>Area Terreno</label>
+          <div className="w-1/3 flex flex-col ml-4">
+            <label>Area Total Terreno (mt2)</label>
             <input
               name="area_terreno"
-              type="text"
+              type="number"
               className="border-2 p-1 rounded-md w-full"
               value={terrenoData.area_terreno}
               onChange={Load_Data}
             ></input>
           </div>
+        </div>
+        <div className="w-full flex flex-row items-center justify-center">
+          <div className="w-full ml-4 flex flex-row items-center ">
+            <label className="w-2/4">
+              Cuantas Zonas Geoeconomicas tiene este Terreno
+            </label>
+            <input
+              name="avaluo_terreno"
+              type="text"
+              className="border-2 p-1 rounded-md w-1/4"
+              value={numZonas}
+              onChange={load_tamaño}
+            ></input>
+            <button
+              onClick={agregarZonas}
+              className="p-2 text-center rounded-md text-white bg-teal-500 text-lg ml-4 mr-2"
+            >
+              Cargar Zonas
+            </button>
+          </div>
+        </div>
+        {zonas}
+        <div className="w-full flex flex-row mt-4 justify-center items-center">
+          <button
+            onClick={sendData}
+            className={`${
+              estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+            } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
+            disabled={estBtt}
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
+};
+/*<Modal isOpen={isModalOpen} onClose={closeModal}></Modal>
+<div className="w-full flex flex-row items-center justify-center">
           <div className="w-1/3 flex flex-col ml-4">
             <label>Zona GeoEconomica</label>
             <select
@@ -212,23 +390,6 @@ const TerrenoForm = (props, ref) => {
             ></input>
           </div>
         </div>
-        <div className="w-full flex flex-row mt-4 justify-center items-center">
-          <button
-            onClick={sendData}
-            className={`${
-              estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
-            } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
-            disabled={estBtt}
-          >
-            Guardar
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-/*<Modal isOpen={isModalOpen} onClose={closeModal}></Modal>
-
 
     <div className="w-1/3 ml-4 flex flex-col">
             <label>Codigo Manzana</label>

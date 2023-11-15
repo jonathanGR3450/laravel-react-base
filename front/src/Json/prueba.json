@@ -16,10 +16,6 @@
               "id": 539,
               "dispname": "Residencial"
             },
-            "tipo_planta": {
-              "id": 680,
-              "dispname": "Piso"
-            },
             "uso": {
               "id": 232,
               "dispname": "Vivienda hasta 3 pisos"

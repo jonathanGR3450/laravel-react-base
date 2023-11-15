@@ -126,9 +126,7 @@ export const LoadDataForm = () => {
   const ChangeData = () => {
     let validNumbers = [];
     const { updateIdArray } = useContext(DataContext);
-    ///Guarda los valores que tiene los ID
     const [dataId, setDataId] = useState("");
-    //Seleccion de Datos Para Agregar
     const [dataSelect, setDataSelect] = useState(0);
     const [inputId, setInputId] = useState("");
     const [estBtt, setEstBtt] = useState(true);
@@ -188,34 +186,18 @@ export const LoadDataForm = () => {
     }
     //
     const openFuenteAdminForm = () => {
-      fuenteFormRef.current.openModal(dataId, coma);
+      fuenteFormRef.current.openModal(dataId);
     };
     const openPredioForm = () => {
-      predioFormRef.current.openModal(dataId, coma);
+      predioFormRef.current.openModal(dataId);
     };
     const openDerechoForm = () => {
-      derechoFormRef.current.openModal(dataId, coma);
+      derechoFormRef.current.openModal(dataId);
     };
     const openInteresadoForm = () => {
-      interesadoFormRef.current.openModal(dataId, coma);
+      interesadoFormRef.current.openModal(dataId);
     };
-    /*  <input
-    name="first"
-    type="text"
-    className="border-2 rounded-lg text-center m-1 w-1/3"
-    onInput={soloNumeros}
-    onChange={HandleDataId}
-    value={dataId.first}
-  ></input>
-  <label> - </label>
-  <input
-    name="second"
-    type="text"
-    className="border-2 rounded-lg text-center m-1 w-1/3"
-    onInput={soloNumeros}
-    onChange={HandleDataId}
-    value={dataId.second}
-  ></input> */
+
     return (
       <div className="w-full flex flex-row border-2 p-2 mt-4 mb-4 rounded-xl">
         <div className="w-1/3 flex flex-col text-center ">

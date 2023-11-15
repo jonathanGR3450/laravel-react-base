@@ -13,21 +13,23 @@ import {
   ConstruccionResumeForm,
 } from "./ResumeData";
 export const LoadDataConstruccion = () => {
+  const uniConstruccionRef = useRef();
+  const terrenoRef = useRef();
+  const construccionRef = useRef();
+
   const { tableData } = useContext(TableContext);
   const [dataSelect, setDataSelect] = useState(0);
+
   function soloNumeros(event) {
     const input = event.target;
     input.value = input.value.replace(/[^0-9.,]/g, "");
   }
 
-  const uniConstruccionRef = useRef();
-  const terrenoRef = useRef();
-  const construccionRef = useRef();
-
   const TableForm = () => {
     const terrenoResumeForm = useRef();
     const unidadConstruccionResumeForm = useRef();
     const construccionResumeForm = useRef();
+    //Aperturas
     const openterrenoResumeForm = () => {
       terrenoResumeForm.current.openModal();
     };
@@ -110,19 +112,63 @@ export const LoadDataConstruccion = () => {
       </div>
     );
   };
-  const ChangeData = () => {
-    const { updateIdArray } = useContext(DataContext);
-    const [dataId, setDataId] = useState({
-      first: "",
-      second: "",
-    });
-    const HandleDataId = (e) => {
-      const { name, value } = e.target;
-      console.log("nombre", name);
-      console.log("aaaaa", value);
-      setDataId((prevValues) => ({ ...prevValues, [name]: value }));
-    };
 
+  const ChangeData = () => {
+    let validNumbers = [];
+    const { updateIdArray } = useContext(DataContext);
+    const [dataId, setDataId] = useState("");
+    const [inputId, setInputId] = useState("");
+    const [estBtt, setEstBtt] = useState(true);
+    let [coma, setComa] = useState("");
+    function validarid() {
+      if (isNaN(dataId[0])) {
+        setEstBtt(true);
+      } else {
+        setEstBtt(false);
+      }
+    }
+    useEffect(() => {
+      validarid();
+    }, [dataId]);
+
+    function NumComa(e) {
+      let { value } = e.target;
+      value = value.replace(/[^0-9,-]/g, "");
+      // Elimina caracteres no numéricos
+      if (value.includes("-")) {
+        setComa(1);
+        if (value.split("-").length <= 2) {
+          //setTamaño(3);
+          let aux = value.split("-");
+          let numeros = aux.map((item) => {
+            return parseInt(item);
+          });
+          validNumbers = numeros;
+          setDataId(validNumbers);
+        }
+      } else {
+        let aux = "";
+        if (value.length === 0) {
+          aux = 0;
+        } else {
+          aux = value.split(",");
+        }
+        if (value.includes(",")) {
+          setComa(2);
+          let numeros = aux.map((item) => {
+            return parseInt(item);
+          });
+
+          validNumbers = numeros;
+          setDataId(validNumbers);
+        } else {
+          setComa(3);
+          validNumbers = [parseInt(value)];
+          setDataId(validNumbers);
+        }
+      }
+      setInputId(value);
+    }
     function Selectdata(e) {
       setDataSelect(e.target.value);
     }
@@ -148,7 +194,7 @@ export const LoadDataConstruccion = () => {
               onChange={Selectdata}
               value={dataSelect}
             >
-              <option></option>
+              <option value={0}></option>
               <option value={1}>Terreno</option>
               <option value={2}>Construccion</option>
               <option value={3}>Unidad de Construccion</option>
@@ -158,23 +204,11 @@ export const LoadDataConstruccion = () => {
         <div className="w-1/3 flex flex-col items-center">
           <label className="font-semibold">SELECCIONAR ID</label>
           <div className="flex flex-row items-center justify-center">
-            {" "}
             <input
-              name="first"
               type="text"
-              className="border-2 rounded-lg text-center m-1 w-1/3"
-              onInput={soloNumeros}
-              onChange={HandleDataId}
-              value={dataId.first}
-            ></input>
-            <label> - </label>
-            <input
-              name="second"
-              type="text"
-              className="border-2 rounded-lg text-center m-1 w-1/3"
-              onInput={soloNumeros}
-              onChange={HandleDataId}
-              value={dataId.second}
+              className="border-2 rounded-lg w-full p-1"
+              onChange={NumComa}
+              value={inputId}
             ></input>
           </div>
         </div>
@@ -183,7 +217,9 @@ export const LoadDataConstruccion = () => {
           {dataSelect == 1 ? (
             <div className="w-full flex flex-col items-center">
               <button
-                className="p-2 w-1/2 text-center  rounded-md  border-2  text-white bg-teal-500 "
+                className={`${
+                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
                 onClick={openTerrenoForm}
               >
                 Carga
@@ -194,7 +230,9 @@ export const LoadDataConstruccion = () => {
           {dataSelect == 2 ? (
             <div className="w-full flex flex-col items-center">
               <button
-                className="p-2 w-1/2 text-center  rounded-md  border-2  text-white bg-teal-500 "
+                className={`${
+                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
                 onClick={openConstruccionForm}
               >
                 Carga
@@ -205,7 +243,9 @@ export const LoadDataConstruccion = () => {
           {dataSelect == 3 ? (
             <div className="w-full flex flex-col items-center">
               <button
-                className="p-2 w-1/2 text-center  rounded-md  border-2  text-white bg-teal-500 "
+                className={`${
+                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
                 onClick={openUniConstruccionForm}
               >
                 Carga

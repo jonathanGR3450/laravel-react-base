@@ -17,6 +17,10 @@ import { CaracteristicasResumeForm } from "./ResumeData";
 /////////////////////////////////////////////
 export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
   ///Datos del Modal
+  function updateData(aux) {
+    props.onchangeData(aux);
+  }
+  console.log("Props", props);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
@@ -226,6 +230,7 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
     }
     function CaptureId() {
       console.log(selectedId);
+      updateData(selectedId);
       closeModal();
     }
     return (

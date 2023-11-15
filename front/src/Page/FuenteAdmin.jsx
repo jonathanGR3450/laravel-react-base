@@ -24,7 +24,6 @@ const FuenteAdminForm = (props, ref) => {
   });
 
   const openModal = (aux) => {
-    console.log("datos ID", coma);
     setDataId(aux);
     setIsModalOpen(true);
   };
