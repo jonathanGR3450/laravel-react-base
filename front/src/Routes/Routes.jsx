@@ -13,6 +13,7 @@ import { AddInteresadoForm } from "../Page/AddInteresado";
 import { InteresadoProvider } from "../Page/Context/InteresadoContext";
 import { DerechoForm } from "../Page/Derecho";
 import { NewPredioForm } from "../Page/Predio";
+import { PredioForms } from "../Page/AddPredio";
 const Ruta = () => {
   return (
     <Routes>
@@ -45,6 +46,7 @@ const Ruta = () => {
         ></Route>
         <Route path="/DataHom" element={<LoadCodHom />}></Route>
         <Route path="/FuenteAdmin" element={<FuenteAdminForm />}></Route>
+        <Route path="/AddPredio" element={<PredioForms />}></Route>
 
         <Route
           path="/AddInteresado"
@@ -62,4 +64,3 @@ const Ruta = () => {
 
 export default Ruta;
 //<Route path="/Dash"  Component = {LoginForm} />
-//<Route path="/AddPredio" element={<PredioForm />}></Route>
