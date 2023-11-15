@@ -128,6 +128,7 @@ class PredioResource extends JsonResource
         return [
             "Predio" => [
                 [
+                    "t_id" => $this->t_id,
                     "Departamento" => $this->departamento,
                     "Municipio" => $this->municipio,
                     "Id_Operacion" => $this->id_Operacion,
@@ -135,6 +136,7 @@ class PredioResource extends JsonResource
                     "Codigo_ORIP" => $this->codigo_orip,
                     "Matricula_Inmobiliaria" => $this->matricula_inmobiliaria,
                     "Referencia_Registral_Sistema_Antiguo" => [
+                        "t_id" => $this->referenciasSistemaAntiguo?->t_id,
                         "Tipo_Refencia" => $this->referenciasSistemaAntiguo?->tipo_referencia,
                         "Oficina" => $this->referenciasSistemaAntiguo?->oficina,
                         "Libro" => $this->referenciasSistemaAntiguo?->libro,
@@ -218,6 +220,7 @@ class PredioResource extends JsonResource
             ],
             "Datos_Adicionales_Levantamiento_Catastral" => [
                 [
+                    "t_id" => $this->datosAdicionalesLevantamientoCatastral?->t_id,
                     "Tiene_Area_Registral" => $this->datosAdicionalesLevantamientoCatastral?->tiene_area_registral,
                     "Area_Registral_M2" => $this->datosAdicionalesLevantamientoCatastral?->area_registral_m2,
                     "Procedimiento_Catastral_Registral" => [

@@ -126,6 +126,7 @@ class DatosadicionaleslevantamientocatastralResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'tiene_area_registral' => $this->tiene_area_registral,
             'area_registral_m2' => $this->area_registral_m2,
             'procedimiento_catastral_registral' => $this->procedimiento_catastral_registral,

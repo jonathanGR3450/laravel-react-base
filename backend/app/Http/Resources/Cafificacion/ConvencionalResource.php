@@ -87,6 +87,7 @@ class ConvencionalResource extends JsonResource
     public function toArray(Request $request)
     {
         return [
+            "t_id" => $this->t_id,
             "identificador" => $this->identificador,
             "tipo_construccion" => [
                 't_id' => $this->tipoConstruccion->t_id,

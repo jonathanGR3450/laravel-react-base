@@ -126,6 +126,7 @@ class DatosPHCondominioResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'area_total_terreno' => $this->area_total_terreno,
             'area_total_terreno_privada' => $this->area_total_terreno_privada,
             'area_total_terreno_comun' => $this->area_total_terreno_comun,

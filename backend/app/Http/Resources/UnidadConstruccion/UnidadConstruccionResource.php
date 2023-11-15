@@ -126,6 +126,7 @@ class UnidadConstruccionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'planta_ubicacion' => $this->planta_ubicacion,
             'area_construida' => $this->area_construida,
             'altura' => $this->altura,
