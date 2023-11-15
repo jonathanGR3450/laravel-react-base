@@ -16,6 +16,7 @@ import { DataProvider } from "../Page/Context/DataContext";
 import { LoadDataForm } from "../Page/CargaDatos";
 import { LoadDataConstruccion } from "../Page/CargaConstruccion";
 import AvaluoForm from "../Page/Avaluo";
+import Resolucion from "../Page/Resolucion";
 const Ruta = () => {
   return (
     <Routes>
@@ -62,6 +63,7 @@ const Ruta = () => {
         ></Route>
         <Route path="/DataHom" element={<LoadCodHom />}></Route>
         <Route path="/Avaluo" element={<AvaluoForm />}></Route>
+        <Route path="/Resolucion" element={<Resolucion />}></Route>
       </Route>
     </Routes>
   );
