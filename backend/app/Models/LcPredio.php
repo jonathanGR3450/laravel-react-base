@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LcPredio extends Model
 {
@@ -99,5 +100,18 @@ class LcPredio extends Model
     public function extDireccion()
     {
         return $this->hasMany(ExtDireccion::class, 'lc_predio_direccion', 't_id');
+    }
+
+    public function uebaunit()
+    {
+        return $this->hasMany(ColUebaunit::class, 'baunit', 't_id');
+    }
+
+    function matrizCopropiedad(): HasOne {
+        return $this->hasOne(LcPredioCopropiedad::class, 'matriz', 't_id');
+    }
+
+    function unidadPredialCopropiedad(): HasOne {
+        return $this->hasOne(LcPredioCopropiedad::class, 'unidad_predial', 't_id');
     }
 }

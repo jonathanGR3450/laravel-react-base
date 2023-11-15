@@ -56,4 +56,9 @@ class LcUnidadconstruccion extends Model
     // {
     //     return $this->belongsTo('App\ColRelacionsuperficietipo', 'relacion_superficie');
     // }
+
+    public function uebaunit()
+    {
+        return $this->hasMany(ColUebaunit::class, 'ue_lc_unidadconstruccion', 't_id');
+    }
 }

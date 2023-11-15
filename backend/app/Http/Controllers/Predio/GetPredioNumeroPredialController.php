@@ -7,7 +7,7 @@ use App\Http\Requests\Predio\ShowPredioFormRequest;
 use App\Http\Resources\Predio\PredioNumeroPredialResource;
 use App\Models\LcPredio;
 
-class GetPredioController extends AppBaseController
+class GetPredioNumeroPredialController extends AppBaseController
 {
     /**
      * @OA\Get(
