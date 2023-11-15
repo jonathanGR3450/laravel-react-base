@@ -109,7 +109,7 @@ Route::prefix('v1')->group(function () {
     Route::get('caracteristicasunidadconstruccion/no-convencional/{id}', NoConvencionalShowController::class);
     Route::post('caracteristicasunidadconstruccion/no-convencional', NoConvencionalStoreController::class);
 
-    Route::get('document/generate', GenerateDocumentPdf::class);
+    Route::post('document/generate', GenerateDocumentPdf::class);
 
     Route::get('avaluo-catastral/urbano/valor-terreno', ListValorTerrenoUrbanoController::class);
     Route::get('avaluo-catastral/rural/valor-terreno', ListValorTerrenoRuralController::class);
