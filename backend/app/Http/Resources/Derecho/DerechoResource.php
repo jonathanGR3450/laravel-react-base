@@ -126,6 +126,7 @@ class DerechoResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'tipo' => $this->tipo,
             'fraccion_derecho' => $this->fraccion_derecho,
             'fecha_inicio_tenencia' => $this->fecha_inicio_tenencia,

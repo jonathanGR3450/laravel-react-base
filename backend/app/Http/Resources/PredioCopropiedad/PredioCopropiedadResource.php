@@ -126,6 +126,7 @@ class PredioCopropiedadResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'unidad_predial' => $this->unidad_predial,
             'matriz' => $this->matriz,
             'coeficiente' => $this->coeficiente,

@@ -128,6 +128,7 @@ class InteresadoResource extends JsonResource
         return [
             "interesado" => [
                 "interesado_lc_interesado" => [
+                    "t_id" => $this->interesado?->t_id ?? null,
                     "tipo" => $this->interesado?->tipo ?? null,
                     "tipo_documento" => $this->interesado?->tipo_documento ?? null,
                     "documento_identidad" => $this->interesado?->documento_identidad ?? null,

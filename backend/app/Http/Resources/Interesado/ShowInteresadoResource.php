@@ -127,6 +127,7 @@ class ShowInteresadoResource extends JsonResource
     {
         return [
             "interesado" => [
+                "t_id" => $this->t_id ?? null,
                 "tipo" => $this->tipo ?? null,
                 "tipo_documento" => $this->tipo_documento ?? null,
                 "documento_identidad" => $this->documento_identidad ?? null,

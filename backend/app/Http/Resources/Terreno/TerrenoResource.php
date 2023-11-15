@@ -126,6 +126,7 @@ class TerrenoResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'area_terreno' => $this->area_terreno,
             'avaluo_terreno' => $this->avaluo_terreno,
             'manzana_vereda_codigo' => $this->manzana_vereda_codigo,

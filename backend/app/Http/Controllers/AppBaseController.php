@@ -6,7 +6,7 @@ use Response;
 
 class AppBaseController extends Controller
 {
-    public function sendResponse($result, $message, $role = null)
+    public function sendResponse($result, $message, $role = null, $code = 200)
     {
         $res = [];
         if ($role)
@@ -16,7 +16,7 @@ class AppBaseController extends Controller
         $res['data'] = $result;
         $res['message'] = $message;
 
-        return Response::json($res);
+        return Response::json($res, $code);
     }
 
     public function sendError($error, $code = 404, $role = null)

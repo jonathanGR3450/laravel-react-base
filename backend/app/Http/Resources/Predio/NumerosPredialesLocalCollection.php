@@ -27,9 +27,11 @@ class NumerosPredialesLocalCollection extends ResourceCollection
         return array_merge($this->pagination->resolve(), [
             "data" => $this->collection->transform(function ($item) {
                 return [
+                    "t_id" => $item->t_id,
                     "numero_predial" => $item->numero_predial,
                     "matricula_inmobiliaria" => $item->matricula_inmobiliaria,
                     "direccion" => [
+                        't_id' => $item->direccion->t_id,
                         't_seq' => $item->direccion->t_seq,
                         'tipo_direccion' => $item->direccion->tipo_direccion,
                         'es_direccion_principal' => $item->direccion->es_direccion_principal,
@@ -56,6 +58,7 @@ class NumerosPredialesLocalCollection extends ResourceCollection
                         'lc_numeros_prediales_id' => $item->direccion->lc_numeros_prediales_id,
                     ],
                     "numero_homologado" => [
+                        't_id' => $item->numeroHomologado->t_id,
                         'numeros_homologados' => $item->numeroHomologado->numeros_homologados,
                         'taken' => $item->numeroHomologado->taken,
                     ],
