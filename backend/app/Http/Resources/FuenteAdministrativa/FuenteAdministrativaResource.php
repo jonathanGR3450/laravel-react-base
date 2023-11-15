@@ -126,6 +126,7 @@ class FuenteAdministrativaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'tipo' => $this->tipo,
             'ente_emisor' => $this->ente_emisor,
             'observacion' => $this->observacion,

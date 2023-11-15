@@ -126,6 +126,7 @@ class ContactoVisitaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'tipo_documento_quien_atendio' => $this->tipo_documento_quien_atendio,
             'numero_documento_quien_atendio' => $this->numero_documento_quien_atendio,
             'primer_nombre_quien_atendio' => $this->primer_nombre_quien_atendio,

@@ -18,6 +18,7 @@ class NumeroHomologadosLocalCollection extends ResourceCollection
     {
         return $this->collection->transform(function ($item) {
             return [
+                "t_id" => $item->t_id,
                 "numeros_homologados" => $item->numeros_homologados,
                 "tomado" => $item->taken,
             ];

@@ -126,10 +126,10 @@ class RicTramiteCatastralResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            't_id' => $this->t_id,
             'fecha_inscripcion_catastral' => $this->fecha_inscripcion_catastral,
             'zona' => $this->zona,
             'vigencia_actualizacion_catastral' => $this->vigencia_actualizacion_catastral,
-
             'estado' => $this->estado,
             'catastro' => $this->catastro,
             'ric_gestorcatastral' => $this->ric_gestorcatastral,
