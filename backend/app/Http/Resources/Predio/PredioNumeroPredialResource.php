@@ -127,6 +127,33 @@ class PredioNumeroPredialResource extends JsonResource
     {
         return [
             "numero_predial" => $this->numero_predial,
+            "coeficiente" => $this->unidadPredialCopropiedad?->coeficiente,
+            "area_terreno" => $this->uebaunit()->get()->first()->terreno?->area_terreno,
+            "unidad_construccion" => $this->uebaunit->transform(function ($item) {
+                return [
+                    "area_construida" => $item->unidadConstruccion?->area_construida,
+                    "lc_caracteristicasunidadconstruccion" => [
+                        "tipo_construccion" => [
+                            "id" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->t_id,
+                            "dispname" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->dispname,
+                        ],
+                        "tipo_unidad_construccion" => [
+                            "id" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoUnidadConstruccion->t_id,
+                            "dispname" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoUnidadConstruccion->dispname,
+                        ],
+                        "uso" => [
+                            "id" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->usoConstruccion->t_id,
+                            "dispname" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->usoConstruccion->dispname,
+                        ],
+                        "calificacionconvencional" => [
+                            "total_calificacion" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionConvencional()->get()->first()?->total_calificacion,
+                        ],
+                        "calificacionnoconvencional" => [
+                            "total_calificacion" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionNoConvencional()->get()->first()?->total_calificacion,
+                        ],
+                    ]
+                ];
+            })
         ];
     }
 }

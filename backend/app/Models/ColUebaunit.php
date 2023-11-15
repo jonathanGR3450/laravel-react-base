@@ -25,38 +25,38 @@ class ColUebaunit extends Model
         'baunit',
     ];
 
-    public function lcPredio()
+    public function predio()
     {
         return $this->belongsTo(LcPredio::class, 'baunit');
     }
 
-    public function lcConstruccion()
+    public function construccion()
     {
         return $this->belongsTo(LcConstruccion::class, 'ue_lc_construccion');
     }
 
-    // public function lcEspJuridicoRedServicios()
+    // public function espJuridicoRedServicios()
     // {
     //     return $this->belongsTo(LcEspacioJuridicoRedServicios::class, 'ue_lc_nu_espaciojuridicoredservicios');
     // }
 
-    // public function lcEspJuridicoUnidadEdificacion()
+    // public function espJuridicoUnidadEdificacion()
     // {
     //     return $this->belongsTo(LcEspacioJuridicoUnidadEdificacion::class, 'ue_lc_nu_espaciojuridicounidadedificacion');
     // }
 
-    // public function lcServidumbreTransito()
+    // public function servidumbreTransito()
     // {
     //     return $this->belongsTo(LcServidumbreTransito::class, 'ue_lc_servidumbretransito');
     // }
 
-    public function lcTerreno()
+    public function terreno()
     {
-        return $this->belongsTo(LcTerreno::class, 'ue_lc_terreno');
+        return $this->belongsTo(LcTerreno::class, 'ue_lc_terreno', 't_id');
     }
 
-    public function lcUnidadConstruccion()
+    public function unidadConstruccion()
     {
-        return $this->belongsTo(LcUnidadConstruccion::class, 'ue_lc_unidadconstruccion');
+        return $this->belongsTo(LcUnidadconstruccion::class, 'ue_lc_unidadconstruccion', 't_id');
     }
 }
