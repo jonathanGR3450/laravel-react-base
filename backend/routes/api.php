@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\AvaluoPredial\CalcularIncrementoAvaluoController;
 use App\Http\Controllers\AvaluoPredial\ListTabAnexosUrbanaRuralLocalController;
 use App\Http\Controllers\AvaluoPredial\ListTabBod60UrbanaRuralLocalController;
 use App\Http\Controllers\AvaluoPredial\ListTabCcF0360UrbanaRuralLocalController;
@@ -121,4 +122,5 @@ Route::prefix('v1')->group(function () {
     Route::get('avaluo-catastral/tipo/tab-hot', ListTabHot60UrbanaRuralLocalController::class);
     Route::get('avaluo-catastral/tipo/tab-cc-f03', ListTabCcF0360UrbanaRuralLocalController::class);
     Route::get('avaluo-catastral/tipo/tab-anexos', ListTabAnexosUrbanaRuralLocalController::class);
+    Route::post('avaluo-catastral/calcular/incremento', CalcularIncrementoAvaluoController::class);
 });
