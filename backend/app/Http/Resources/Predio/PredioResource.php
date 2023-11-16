@@ -129,6 +129,7 @@ class PredioResource extends JsonResource
             "Predio" => [
                 [
                     "t_id" => $this->t_id,
+                    "coeficiente" => $this->unidadPredialCopropiedad?->coeficiente,
                     "Departamento" => $this->departamento,
                     "Municipio" => $this->municipio,
                     "Id_Operacion" => $this->id_Operacion,
