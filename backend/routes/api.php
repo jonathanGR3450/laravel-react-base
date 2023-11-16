@@ -62,6 +62,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
+// ->middleware(['auth:api'])
 Route::prefix('v1')->group(function () {
 
     Route::prefix('predio')->group(function () {
