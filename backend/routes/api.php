@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\AvaluoPredial\CalcularIncrementoAvaluoController;
 use App\Http\Controllers\AvaluoPredial\ListTabAnexosUrbanaRuralLocalController;
 use App\Http\Controllers\AvaluoPredial\ListTabBod60UrbanaRuralLocalController;
 use App\Http\Controllers\AvaluoPredial\ListTabCcF0360UrbanaRuralLocalController;
@@ -61,21 +62,47 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
+// ->middleware(['auth:api'])
 Route::prefix('v1')->group(function () {
 
-    Route::get('predio/numero-predial', GetPredioNumeroPredialController::class);
+    Route::prefix('predio')->group(function () {
+        Route::post('', StoreLcPredio::class);
+        Route::get('numero-predial', GetPredioNumeroPredialController::class);
+        Route::post('numeros-prediales/numeros-homologados', StoreNumeroPredialHomologadoController::class);
+        Route::post('numeros-prediales', StoreNumeroPredialController::class);
+        Route::get('numeros-homologados', IndexNumerosHomologadosController::class);
+        Route::post('numeros-homologados', StoreNumeroHomologadosController::class);
+        Route::get('list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
+        Route::get('list/local/numeros-prediales', IndexNumerosPredialesController::class);
+        Route::get('{id}', GetPredioController::class);
+    });
 
-    Route::post('predio', StoreLcPredio::class);
-    Route::post('predio/numeros-prediales/numeros-homologados', StoreNumeroPredialHomologadoController::class);
-    Route::post('predio/numeros-prediales', StoreNumeroPredialController::class);
-    Route::get('predio/numeros-homologados', IndexNumerosHomologadosController::class);
-    Route::post('predio/numeros-homologados', StoreNumeroHomologadosController::class);
-    Route::get('predio/list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
-    Route::get('predio/list/local/numeros-prediales', IndexNumerosPredialesController::class);
-    Route::get('predio/{id}', GetPredioController::class);
+    Route::prefix('caracteristicasunidadconstruccion')->group(function () {
+        Route::get('convencional', ConvencionalIndexController::class);
+        Route::get('convencional/{id}', ConvencionalShowController::class);
+        Route::post('convencional', ConvencionalStoreController::class);
+        Route::get('no-convencional', NoConvencionalIndexController::class);
+        Route::get('no-convencional/{id}', NoConvencionalShowController::class);
+        Route::post('no-convencional', NoConvencionalStoreController::class);
+    });
 
-    Route::get('interesados/{nit}', Show::class);
-    Route::post('interesados', StoreColMiembros::class);
+    Route::prefix('avaluo-catastral')->group(function () {
+        Route::get('urbano/valor-terreno', ListValorTerrenoUrbanoController::class);
+        Route::get('rural/valor-terreno', ListValorTerrenoRuralController::class);
+        Route::get('tipo/tab-viv', ListTabViv60UrbanaRuralController::class);
+        Route::get('tipo/santa-maria', ListTabSantaMariaDeLosAngelesUrbanaLocalController::class);
+        Route::get('tipo/tab-com', ListTabCom60UrbanaRuralLocalController::class);
+        Route::get('tipo/tab-bod', ListTabBod60UrbanaRuralLocalController::class);
+        Route::get('tipo/tab-hot', ListTabHot60UrbanaRuralLocalController::class);
+        Route::get('tipo/tab-cc-f03', ListTabCcF0360UrbanaRuralLocalController::class);
+        Route::get('tipo/tab-anexos', ListTabAnexosUrbanaRuralLocalController::class);
+        Route::post('calcular/incremento', CalcularIncrementoAvaluoController::class);
+    });
+
+    Route::prefix('interesados')->group(function () {
+        Route::post('', StoreColMiembros::class);
+        Route::get('{nit}', Show::class);
+    });
 
     Route::post('derecho/local', StoreDerechoLocal::class);
 
@@ -101,24 +128,6 @@ Route::prefix('v1')->group(function () {
 
     Route::post('rrrfuente/fuente-administrativa/derecho', StoreFuenteAdministrativaDerechoController::class);
 
-    Route::get('caracteristicasunidadconstruccion/convencional', ConvencionalIndexController::class);
-    Route::get('caracteristicasunidadconstruccion/convencional/{id}', ConvencionalShowController::class);
-    Route::post('caracteristicasunidadconstruccion/convencional', ConvencionalStoreController::class);
-    
-    Route::get('caracteristicasunidadconstruccion/no-convencional', NoConvencionalIndexController::class);
-    Route::get('caracteristicasunidadconstruccion/no-convencional/{id}', NoConvencionalShowController::class);
-    Route::post('caracteristicasunidadconstruccion/no-convencional', NoConvencionalStoreController::class);
+    Route::post('document/generate', GenerateDocumentPdf::class);
 
-    Route::get('document/generate', GenerateDocumentPdf::class);
-
-    Route::get('avaluo-catastral/urbano/valor-terreno', ListValorTerrenoUrbanoController::class);
-    Route::get('avaluo-catastral/rural/valor-terreno', ListValorTerrenoRuralController::class);
-
-    Route::get('avaluo-catastral/tipo/tab-viv', ListTabViv60UrbanaRuralController::class);
-    Route::get('avaluo-catastral/tipo/santa-maria', ListTabSantaMariaDeLosAngelesUrbanaLocalController::class);
-    Route::get('avaluo-catastral/tipo/tab-com', ListTabCom60UrbanaRuralLocalController::class);
-    Route::get('avaluo-catastral/tipo/tab-bod', ListTabBod60UrbanaRuralLocalController::class);
-    Route::get('avaluo-catastral/tipo/tab-hot', ListTabHot60UrbanaRuralLocalController::class);
-    Route::get('avaluo-catastral/tipo/tab-cc-f03', ListTabCcF0360UrbanaRuralLocalController::class);
-    Route::get('avaluo-catastral/tipo/tab-anexos', ListTabAnexosUrbanaRuralLocalController::class);
 });

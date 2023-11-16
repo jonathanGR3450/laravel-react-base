@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Document;
 
 use App\Http\Controllers\AppBaseController;
 use App\Services\Document;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Http\Request;
 
 class GenerateDocumentPdf extends AppBaseController
 {
@@ -16,18 +15,21 @@ class GenerateDocumentPdf extends AppBaseController
     {
         try {
             $path = "templates";
+            $pathOutput = "documents";
             $nameTemplate = "template.docx";
-            $data = [
-                'variable1' => 'Valor 1',
-                'variable2' => 'Valor 2',
-            ];
-            $document = new Document($path, $nameTemplate, $data);
+            $data = $request->all();
+            $document = new Document($path, $nameTemplate, $data, $pathOutput);
     
             $document->generateNameFileOutput();
             $pathTemplate = $document->generateWordDocument();
             $pathOutputPdf = $document->convertToPdf($pathTemplate);
 
-            return Response::download($pathOutputPdf, "{$document->getNameFileOutput()}.pdf");
+            $urlNameFile = "{$document->getPathOutput()}/{$document->getNameFileOutput()}.pdf";
+            $url = asset("storage/$urlNameFile");
+
+            // return Response::download($pathOutputPdf, "{$document->getNameFileOutput()}.pdf");
+
+            return $this->sendResponse(["url" => $url], 'documento generado correctamente');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }
