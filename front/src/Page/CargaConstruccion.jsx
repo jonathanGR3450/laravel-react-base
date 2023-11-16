@@ -337,7 +337,609 @@ export const LoadDataConstruccion = () => {
             let dataCorrect = [];
             //Rural
             if (currentItem.Zona == "00") {
-              console.log("Rural");
+              for (const item of currentItem.unidad_construccion) {
+                console.log("item Numero Predial", item);
+                let destinacion = item.caracteristicas.tipo_construccion;
+                let tipo_unidad = item.caracteristicas.tipo_unidad_construccion;
+                //Data Convencional
+                if (destinacion == 66) {
+                  switch (parseInt(tipo_unidad)) {
+                    //Residencial
+                    case 539:
+                      console.log("ENTRA RESIDENCIAL");
+                      //Usar Endpoint Residencial o Vivienda
+                      async function ResidenciaCalculate() {
+                        let aux = "";
+
+                        let puntos =
+                          item.caracteristicas.calificacionconvencional[0]
+                            .total_calificacion;
+                        var requestOptions = {
+                          method: "GET",
+                          redirect: "follow",
+                        };
+                        let url = "";
+                        if (currentItem.terreno.SantaMaria) {
+                          url =
+                            import.meta.env.VITE_API_URL_FIRST +
+                            "avaluo-catastral/urbano/santa-maria?puntos=" +
+                            puntos +
+                            "&vigencia=" +
+                            año;
+                        } else {
+                          url =
+                            import.meta.env.VITE_API_URL_FIRST +
+                            "avaluo-catastral/tipo/tab-viv?puntos=" +
+                            puntos +
+                            "&vigencia=" +
+                            año +
+                            "&tipo=RURAL";
+                        }
+
+                        try {
+                          const response = await fetch(url, requestOptions);
+                          if (response.ok) {
+                            aux = true;
+                            const result = await response.json();
+                            let newobj = {
+                              destinacion: parseInt(item.caracteristicas.uso),
+                              puntaje: parseFloat(result.data[0].puntos),
+                              area: item.area_construida,
+                              total: "",
+                            };
+                            newobj.total =
+                              parseFloat(newobj.area) *
+                              parseFloat(result.data[0].valor);
+                            ArrayUnidad.push(newobj);
+                            console.log("resultado Residencia", result);
+                          } else {
+                            aux = false;
+                            throw new Error("Error en la solicitud");
+                          }
+                        } catch (error) {
+                          aux = false;
+                          console.log("Error:", error);
+                        }
+                        return aux;
+                      }
+                      let est = await ResidenciaCalculate();
+
+                      if (!est) {
+                        console.log("Error en Residencial Urbana");
+                      } else {
+                        console.log("ese", est);
+                      }
+                      dataCorrect.push(est);
+                      console.log("Data Correct", dataCorrect);
+
+                      break;
+                    //Comercial
+                    case 540:
+                      var uso = parseInt(item.caracteristicas.uso);
+
+                      console.log("ENTRA COMERCIAL");
+
+                      async function ComercialCalculate() {
+                        console.log("Calculando");
+                        let aux = "";
+                        let puntos =
+                          item.caracteristicas.calificacionconvencional[0]
+                            .total_calificacion;
+
+                        var requestOptions = {
+                          method: "GET",
+                          redirect: "follow",
+                        };
+                        //Rangos para que sean Comercial Gneral
+                        async function ComGeneral(valor) {
+                          let rangos = [
+                            { inicio: 235, fin: 236 },
+                            { inicio: 237, fin: 243 },
+                            { inicio: 245, fin: 237 },
+                            { inicio: 238, fin: 238 },
+                          ];
+
+                          let sum = 0;
+                          for (const rango of rangos) {
+                            if (valor >= rango.inicio && valor <= rango.fin) {
+                              sum++;
+                            }
+                          }
+                          console.log("sum", sum);
+                          if (sum != 0) {
+                            return true;
+                          } else {
+                            return false;
+                          }
+                        }
+                        let url = "";
+                        //Varia URL para cada Condicional
+                        console.log("Carga Url COmercial", url);
+                        if (await ComGeneral(uso)) {
+                          url =
+                            import.meta.env.VITE_API_URL_FIRST +
+                            "avaluo-catastral/tipo/tab-com?puntos=" +
+                            puntos +
+                            "&vigencia=" +
+                            año +
+                            "&tipo=RURAL";
+                        } else {
+                          if (uso >= 235 && uso <= 236) {
+                            //bodega
+                            url =
+                              import.meta.env.VITE_API_URL_FIRST +
+                              "avaluo-catastral/tipo/tab-bod?puntos=" +
+                              puntos +
+                              "&vigencia=" +
+                              año +
+                              "&tipo=RURAL";
+                          } else {
+                            if (uso >= 244 && uso <= 245) {
+                              //Hotel
+                              url =
+                                import.meta.env.VITE_API_URL_FIRST +
+                                "avaluo-catastral/tipo/tab-hot?puntos=" +
+                                puntos +
+                                "&vigencia=" +
+                                año +
+                                "&tipo=RURAL";
+                            } else {
+                              console.log("Tabla sin Valores");
+                            }
+                          }
+                        }
+
+                        try {
+                          const response = await fetch(url, requestOptions);
+                          if (response.ok) {
+                            aux = true;
+                            const result = await response.json();
+                            let newobj = {
+                              destinacion: uso,
+                              puntaje: parseFloat(result.data[0].puntos),
+                              area: item.area_construida,
+                              total: "",
+                            };
+                            newobj.total =
+                              parseFloat(newobj.area) *
+                              parseFloat(result.data[0].valor);
+
+                            //newobj.area * puntaje total2023 - total2023 * 0.0431
+                            ArrayUnidad.push(newobj);
+                          } else {
+                            aux = false;
+                            throw new Error("Error en la solicitud");
+                          }
+                        } catch (error) {
+                          aux = false;
+                          console.log("Error:", error);
+                        }
+                        console.log("Carga Comercial", aux);
+                        return aux;
+                      }
+                      let esta = await ComercialCalculate();
+                      console.log("ese", esta);
+                      dataCorrect.push(esta);
+                      if (!esta) {
+                        console.log("Error en Comercial General Urbana");
+                      }
+                      break;
+                    //Industrial
+                    case 541:
+                      console.log("INDUSTRIAL");
+                      let esti = await IndustrialCalculate();
+                      async function IndustrialCalculate() {
+                        let aux = "";
+                        let puntos =
+                          item.caracteristicas.calificacionconvencional[0]
+                            .total_calificacion;
+
+                        var requestOptions = {
+                          method: "GET",
+                          redirect: "follow",
+                        };
+                        let url = "";
+                        //Varia URL para cada Condicional
+                        if (uso >= 259 && uso <= 260) {
+                          url =
+                            import.meta.env.VITE_API_URL_FIRST +
+                            "avaluo-catastral/tipo/tab-bod?puntos=" +
+                            puntos +
+                            "&vigencia=" +
+                            año +
+                            "&tipo=RURAL";
+                        } else {
+                        }
+                        console.log("Carga Url Industrial", url);
+                        try {
+                          const response = await fetch(url, requestOptions);
+                          if (response.ok) {
+                            aux = true;
+                            const result = await response.json();
+                            let newobj = {
+                              destinacion: uso,
+                              puntaje: parseFloat(result.data[0].puntos),
+                              area: item.area_construida,
+                              total: "",
+                            };
+                            newobj.total =
+                              parseFloat(newobj.area) *
+                              parseFloat(result.data[0].valor);
+
+                            //newobj.area * puntaje total2023 - total2023 * 0.0431
+                            ArrayUnidad.push(newobj);
+                          } else {
+                            aux = false;
+                            throw new Error("Error en la solicitud");
+                          }
+                        } catch (error) {
+                          aux = false;
+                          console.log("Error:", error);
+                        }
+                        return aux;
+                      }
+                      dataCorrect.push(esti);
+                      if (!esti) {
+                        console.log("Error en Comercial General Urbana");
+                      }
+                      break;
+                    default:
+                      console.log("Valor no Calculable");
+                      break;
+                  }
+                } else {
+                  //Anexos
+                  if (destinacion == 67) {
+                    console.log("eNTRA aNEXO", item);
+                    let est = await asignarDestino(item);
+                    async function asignarDestino(item) {
+                      console.log("eNTRA asignar", item);
+                      let aux =
+                        item.caracteristicas.calificacionnoconvencional
+                          .tipo_anexo;
+                      console.log("Entra Asignar", aux);
+                      let destino = await obtenerDestino(aux);
+
+                      if (destino != null) {
+                        console.log("Destino", destino);
+                        let puntos =
+                          item.caracteristicas.calificacionnoconvencional[0]
+                            .tipo_anexo;
+                        switch (puntos) {
+                          case 452:
+                            puntos = 90;
+                            break;
+                          case 453:
+                            puntos = 80;
+                            break;
+                          case 454:
+                            puntos = 60;
+                            break;
+                          case 455:
+                            puntos = 40;
+                            break;
+                          case 456:
+                            puntos = 80;
+                            break;
+                          case 457:
+                            puntos = 60;
+                            break;
+                          case 458:
+                            puntos = 40;
+                            break;
+                          case 459:
+                            puntos = 20;
+                            break;
+                          case 460:
+                            puntos = 80;
+                            break;
+                          case 461:
+                            puntos = 60;
+                            break;
+                          case 462:
+                            puntos = 40;
+                            break;
+                          case 463:
+                            puntos = 20;
+                            break;
+                          case 464:
+                            puntos = 80;
+                            break;
+                          case 465:
+                            puntos = 60;
+                            break;
+                          case 466:
+                            puntos = 40;
+                            break;
+                          case 467:
+                            puntos = 20;
+                            break;
+                          case 468:
+                            puntos = 80;
+                            break;
+                          case 469:
+                            puntos = 60;
+                            break;
+                          case 470:
+                            puntos = 80;
+                            break;
+                          case 471:
+                            puntos = 60;
+                            break;
+                          case 472:
+                            puntos = 50;
+                            break;
+                          case 473:
+                            puntos = 40;
+                            break;
+                          case 474:
+                            puntos = 80;
+                            break;
+                          case 475:
+                            puntos = 60;
+                            break;
+                          case 476:
+                            puntos = 50;
+                            break;
+                          case 477:
+                            puntos = 40;
+                            break;
+                          case 478:
+                            puntos = 80;
+                            break;
+                          case 479:
+                            puntos = 60;
+                            break;
+                          case 480:
+                            puntos = 40;
+                            break;
+                          case 481:
+                            puntos = 80;
+                            break;
+                          case 482:
+                            puntos = 60;
+                            break;
+                          case 483:
+                            puntos = 40;
+                            break;
+                          case 484:
+                            puntos = 80;
+                            break;
+                          case 485:
+                            puntos = 60;
+                            break;
+                          case 486:
+                            puntos = 40;
+                            break;
+                          case 487:
+                            puntos = 20;
+                            break;
+                          case 488:
+                            puntos = 80;
+                            break;
+                          case 489:
+                            puntos = 60;
+                            break;
+                          case 490:
+                            puntos = 40;
+                            break;
+                          case 491:
+                            puntos = 80;
+                            break;
+                          case 492:
+                            puntos = 60;
+                            break;
+                          case 493:
+                            puntos = 40;
+                            break;
+                          case 494:
+                            puntos = 20;
+                            break;
+                          case 495:
+                            puntos = 80;
+                            break;
+                          case 496:
+                            puntos = 60;
+                            break;
+                          case 497:
+                            puntos = 40;
+                            break;
+                          case 498:
+                            puntos = 47; // No proporcionaste el valor para el caso 498
+                            break;
+                          case 499:
+                            puntos = 80;
+                            break;
+                          case 500:
+                            puntos = 60;
+                            break;
+                          case 501:
+                            puntos = 40;
+                            break;
+                          case 502:
+                            puntos = 20;
+                            break;
+                          case 503:
+                            puntos = 10;
+                            break;
+                          case 504:
+                            puntos = 80;
+                            break;
+                          case 505:
+                            puntos = 60;
+                            break;
+                          case 506:
+                            puntos = 50;
+                            break;
+                          case 507:
+                            puntos = 40;
+                            break;
+                          case 508:
+                            puntos = 80;
+                            break;
+                          case 509:
+                            puntos = 60;
+                            break;
+                          case 510:
+                            puntos = 40;
+                            break;
+                          case 511:
+                            puntos = 20;
+                            break;
+                          case 512:
+                            puntos = 80;
+                            break;
+                          case 513:
+                            puntos = 60;
+                            break;
+                          case 514:
+                            puntos = 40;
+                            break;
+                          case 515:
+                            puntos = 80;
+                            break;
+                          case 516:
+                            puntos = 20;
+                            break;
+                          case 517:
+                            puntos = 80;
+                            break;
+                          case 518:
+                            puntos = 60;
+                            break;
+                          case 519:
+                            puntos = 60;
+                            break;
+                          case 520:
+                            puntos = 40;
+                            break;
+                          case 521:
+                            puntos = 80;
+                            break;
+                          case 522:
+                            puntos = 60;
+                            break;
+                          case 523:
+                            puntos = 40;
+                            break;
+                          case 524:
+                            puntos = 20;
+                            break;
+                          case 525:
+                            puntos = 80;
+                            break;
+                          case 526:
+                            puntos = 60;
+                            break;
+                          case 527:
+                            puntos = 40;
+                            break;
+                          case 528:
+                            puntos = 20;
+                            break;
+                          default:
+                            puntos = 0;
+                        }
+
+                        let resultado = await AnexoCalculate(
+                          destino,
+                          puntos,
+                          item
+                        );
+                        console.log("resultado de calcular anexo", resultado);
+                        return resultado;
+                      } else {
+                        console.log("Destino no hay");
+                      }
+                    }
+                    async function obtenerDestino(aux) {
+                      console.log("Entra Obtener Destino");
+                      let prueba = "";
+                      console.log("Entra METODO DESTINO Destino", rangos);
+                      const rangos = [
+                        { inicio: 452, fin: 455, valor: 2 },
+                        { inicio: 456, fin: 459, valor: 3 },
+                        { inicio: 460, fin: 463, valor: 4 },
+                        { inicio: 464, fin: 467, valor: 5 },
+                        { inicio: 468, fin: 469, valor: 8 },
+                        { inicio: 470, fin: 473, valor: 9 },
+                        { inicio: 474, fin: 477, valor: 10 },
+                        { inicio: 478, fin: 480, valor: 11 },
+                        { inicio: 481, fin: 483, valor: 18 },
+                        { inicio: 484, fin: 487, valor: 21 },
+                        { inicio: 488, fin: 490, valor: 23 },
+                        { inicio: 491, fin: 494, valor: 26 },
+                        { inicio: 495, fin: 497, valor: 20 },
+                        { inicio: 502, fin: 503, valor: 60 },
+                        { inicio: 504, fin: 507, valor: 62 },
+                        { inicio: 508, fin: 511, valor: 82 },
+                        { inicio: 521, fin: 524, valor: 99 },
+                      ];
+                      console.log("Entra METODO DESTINO Destino");
+                      for (let i = 0; i < rangos.length; i++) {
+                        if (aux >= rangos[i].inicio && aux <= rangos[i].fin) {
+                          prueba = rangos[i].valor;
+                        }
+                      }
+                      console.log("Slir DESTINO", item);
+                      return prueba;
+                    }
+                    //Usar Tabla Anexo
+                    async function AnexoCalculate(destino, puntos, item) {
+                      console.log("datos 1", destino);
+                      console.log("datos 2", puntos);
+                      console.log("datos 2", item);
+                      let aux = "";
+                      var requestOptions = {
+                        method: "GET",
+                        redirect: "follow",
+                      };
+                      let url =
+                        import.meta.env.VITE_API_URL_FIRST +
+                        "avaluo-catastral/tipo/tab-anexos?puntos=" +
+                        puntos +
+                        "&vigencia=" +
+                        año +
+                        "&tipo=RURAL&destino=" +
+                        destino;
+
+                      try {
+                        const response = await fetch(url, requestOptions);
+                        if (response.ok) {
+                          aux = true;
+                          const result = await response.json();
+                          let newobj = {
+                            destinacion: item.caracteristicas.tipo_construccion,
+                            puntaje: result.data[0].puntos,
+                            area: item.area_construida,
+                            total: "",
+                          };
+                          newobj.total =
+                            parseFloat(newobj.area) *
+                            parseFloat(result.data[0].valor);
+                          console.log("resultado Anexo", result);
+                        } else {
+                          aux = false;
+                          throw new Error("Error en la solicitud");
+                        }
+                      } catch (error) {
+                        aux = false;
+                        console.log("Error:", error);
+                      }
+                      return aux;
+                    }
+
+                    console.log("23232 ", est);
+                    dataCorrect.push(est);
+                    if (!est) {
+                      console.log("Error en Anexos Urbanos");
+                    } else {
+                      console.log("sale aNEXO");
+                    }
+                    //Algoritmo de Destino
+                  }
+                }
+              }
             } else {
               //Resto Urbano
               for (const item of currentItem.unidad_construccion) {
