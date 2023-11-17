@@ -14,7 +14,9 @@ const AvaluoForm = () => {
   const [estNumPredial, setEstNumPredial] = useState(true);
   const [areaTerreno, setAreaTerreno] = useState();
 
-  const [dataResponse, setDataResponse] = useState();
+  const [dataResponse, setDataResponse] = useState({
+    SantaMaria: false,
+  });
   const [dataTotal, setDataTotal] = useState({
     terreno: [],
     unidad: [],
@@ -25,7 +27,9 @@ const AvaluoForm = () => {
   const [zonasData, setZonasData] = useState();
 
   const [msjAvaluo, setMsjAvaluo] = useState("");
-  const dataTablaCatastral = TablaCatastral.predio;
+
+  const [dataNumPredial, setDataNumPredial] = useState("");
+
   function handleNum(e) {
     let { value } = e.target;
     setNumPredial(value);
@@ -96,6 +100,7 @@ const AvaluoForm = () => {
         [name]: parseInt(value),
       }));
     }
+    //parseFloat(cadenaConComa.replace(',', '.'))
     return (
       <div className="w-full flex flex-col border  justify-center items-center text-center rounded-xl">
         <label className="w-full font-semibold text-2xl bg-teal-500 text-white p-2 rounded-xl">
@@ -158,10 +163,7 @@ const AvaluoForm = () => {
             <td className="border-2">{item.destinacion}</td>
             <td className="border-2">{item.puntaje}</td>
             <td className="border-2">{item.area}</td>
-            <td className="border-2">$ {item.total2022.toLocaleString()}</td>
-            <td className="text-right pr-4 border-2">
-              $ {item.total2023.toLocaleString()}
-            </td>
+            <td className="border-2">$ {item.total.toLocaleString()}</td>
           </tr>
         );
       });
@@ -173,10 +175,7 @@ const AvaluoForm = () => {
             <td className="border-2">{index + 1}</td>
             <td className="border-2">{item.zhg}</td>
             <td className="border-2">{item.area}</td>
-            <td className="border-2">$ {item.total2022.toLocaleString()}</td>
-            <td className="text-right pr-4 border-2">
-              $ {item.total2023.toLocaleString()}
-            </td>
+            <td className="border-2">$ {item.total.toLocaleString()}</td>
           </tr>
         );
       });
@@ -186,12 +185,12 @@ const AvaluoForm = () => {
     let sum = 0;
     function calcular() {
       dataTotal.terreno.map((item, index) => {
-        sum += item.total2023;
-        sumTerreno += item.total2023;
+        sum += item.total;
+        sumTerreno += item.total;
       });
       dataTotal.unidad.map((item, index) => {
-        sum += item.total2023;
-        sumUnidad += item.total2023;
+        sum += item.total;
+        sumUnidad += item.total;
       });
     }
     calcular();
@@ -208,14 +207,12 @@ const AvaluoForm = () => {
               <th className="border-2  rounded-s-xl p-2">ID</th>
               <th className="border-2   p-2">Zona ZHG</th>
               <th className="border-2  p-2">Area</th>
-              <th className="border-2  p-2">Avaluo 2022</th>
               <th className="border-2 rounded-e-xl p-2">Avaluo 2023</th>
             </tr>
           </thead>
           <tbody>
             {generarFilasTerreno()}
             <tr>
-              <td></td>
               <td></td>
               <td></td>
               <td className="font-semibold bg-teal-500 rounded-s-lg text-white ">
@@ -239,7 +236,6 @@ const AvaluoForm = () => {
               <th className="border-2  p-2">Uso Unidad</th>
               <th className="border-2  p-2">Puntaje</th>
               <th className="border-2  p-2">Area</th>
-              <th className="border-2  p-2">Avaluo 2022</th>
               <th className="border-2 rounded-e-xl p-2">Avaluo 2023</th>
             </tr>
           </thead>
@@ -250,11 +246,10 @@ const AvaluoForm = () => {
               <td></td>
               <td></td>
               <td></td>
-              <td></td>
               <td className="font-semibold bg-teal-500 rounded-s-lg text-white ">
                 Total Unidad:{" "}
               </td>
-              <td className="text-right pr-4 border-2 border-black bg-gray-300">
+              <td className="text-right pr-4 border-2 border-black  bg-gray-300">
                 $ {sumUnidad.toLocaleString()}
               </td>
             </tr>
@@ -274,8 +269,9 @@ const AvaluoForm = () => {
       </div>
     );
   };
-  ////////////////////////////////////////Calcular
 
+  ////////////////////////////////////////CalcularAvaluo
+  ///252900002000000040803800000881
   async function Load_Data() {
     setLoading(true);
     setEstTable(false);
@@ -297,93 +293,97 @@ const AvaluoForm = () => {
     let arrayResponse = [];
     //Arreglo de Unidades
     let uni = [];
-    async function TerrenoCalculate() {
-      setMsjAvaluo("Calculando Terreno");
-      let aux = "";
-      let requestOptions = {
-        method: "GET",
-        redirect: "follow",
-      };
-
-      for (const item of zonasData) {
-        if (item.ZHG <= 9 && item.ZHG.toLocaleString().length < 2) {
-          console.log("Resul", item.ZHG);
-          item.ZHG = "0" + item.ZHG;
-        }
-        let newobj = {
-          area: item.area,
-          zhg: item.ZHG,
-          total2022: "",
-          total2023: "",
-        };
-        let url = "";
-        if (zona == "00") {
-          url =
-            import.meta.env.VITE_API_URL_FIRST +
-            "avaluo-catastral/rural/valor-terreno?zona_economica=" +
-            newobj.zhg +
-            "&vigencia=2023";
-        } else {
-          if (zona == "01") {
-            url =
-              import.meta.env.VITE_API_URL_FIRST +
-              "avaluo-catastral/urbano/valor-terreno?zhg_no=" +
-              item.ZHG +
-              "&vigencia=2022";
-          }
-        }
-
-        try {
-          const response = await fetch(url, requestOptions);
-          if (response.ok) {
-            const result = await response.json();
-            if (zona == "00") {
-              newobj.total2023 =
-                newobj.area * parseFloat(result.data[0].valor_m2);
-              newobj.total2022 = newobj.total2023 - newobj.total2023 * 0.0431;
-            } else {
-              if (zona == "01") {
-                newobj.total2022 =
-                  newobj.area * parseFloat(result.data[0].valor);
-                newobj.total2023 = newobj.total2022 + newobj.total2022 * 0.0431;
-              }
-            }
-
-            arrayResponse.push(newobj);
-            aux = true;
-          } else {
-            aux = false;
-            throw new Error("Error en la solicitud");
-          }
-        } catch (error) {
-          aux = false;
-          console.log("Error:", error);
-        }
-        //setDataTotal({ ...dataTotal, terreno: arrayResponse });
-      }
-      return aux;
-    }
 
     async function calcularAvaluo() {
+      let año = 2023;
       //Calcular Valores de Terreno
       try {
         let boolterreno = await TerrenoCalculate();
+        async function TerrenoCalculate() {
+          setMsjAvaluo("Calculando Terreno");
+          let aux = "";
+          let requestOptions = {
+            method: "GET",
+            redirect: "follow",
+          };
+
+          for (const item of zonasData) {
+            if (item.ZHG <= 9 && item.ZHG.toLocaleString().length < 2) {
+              console.log("Resul", item.ZHG);
+              item.ZHG = "0" + item.ZHG;
+            }
+            let newobj = {
+              area: item.area,
+              zhg: item.ZHG,
+              total: "",
+            };
+            let url = "";
+            if (zona == "00") {
+              url =
+                import.meta.env.VITE_API_URL_FIRST +
+                "avaluo-catastral/rural/valor-terreno?zona_economica=" +
+                newobj.zhg +
+                "&vigencia=" +
+                año;
+            } else {
+              if (zona == "01") {
+                url =
+                  import.meta.env.VITE_API_URL_FIRST +
+                  "avaluo-catastral/urbano/valor-terreno?zhg_no=" +
+                  item.ZHG +
+                  "&vigencia=2022";
+              }
+            }
+
+            try {
+              const response = await fetch(url, requestOptions);
+              if (response.ok) {
+                const result = await response.json();
+                if (zona == "00") {
+                  newobj.total =
+                    parseFloat(newobj.area) *
+                    parseFloat(result.data[0].valor_m2);
+                } else {
+                  if (zona == "01") {
+                    newobj.total =
+                      parseFloat(newobj.area) *
+                      parseFloat(result.data[0].valor);
+                  }
+                }
+
+                arrayResponse.push(newobj);
+                aux = true;
+              } else {
+                aux = false;
+                throw new Error("Error en la solicitud");
+              }
+            } catch (error) {
+              aux = false;
+              console.log("Error:", error);
+            }
+            //setDataTotal({ ...dataTotal, terreno: arrayResponse });
+          }
+          return aux;
+        }
+        console.log("Datos de Result", dataNumPredial);
+
         if (boolterreno) {
           console.log("Sigue Adelante");
           setMsjAvaluo("Calculando Unidades");
-          ///Tablas Rurales
           let dataCorrect = [];
+          ///Tablas Rurales
           if (zona == "00") {
+            console.log("Datos Rurales");
             ///Preguntar Unidades de Construccion
-            for (const item of dataResponse.unidad_construccion) {
-              if (
-                item.lc_caracteristicasunidadconstruccion.tipo_construccion
-                  .id === 66
-              ) {
-                switch (
-                  item.lc_caracteristicasunidadconstruccion
-                    .tipo_unidad_construccion.id
-                ) {
+            for (const item of dataNumPredial.unidad_construccion) {
+              let destinacion =
+                item.lc_caracteristicasunidadconstruccion.tipo_construccion.id;
+              let tipo_unidad =
+                item.lc_caracteristicasunidadconstruccion
+                  .tipo_unidad_construccion.id;
+              let uso = item.lc_caracteristicasunidadconstruccion.uso.id;
+              if (destinacion === 66) {
+                switch (tipo_unidad) {
                   //Residencial
                   case 539:
                     //Usar Endpoint Residencial o Vivienda
@@ -400,7 +400,9 @@ const AvaluoForm = () => {
                         import.meta.env.VITE_API_URL_FIRST +
                         "avaluo-catastral/tipo/tab-viv?puntos=" +
                         puntos +
-                        "&vigencia=2023&tipo=RURAL";
+                        "&vigencia=" +
+                        año +
+                        "&tipo=RURAL";
 
                       try {
                         const response = await fetch(url, requestOptions);
@@ -412,14 +414,12 @@ const AvaluoForm = () => {
                               item.lc_caracteristicasunidadconstruccion.uso
                                 .dispname,
                             puntaje: parseFloat(result.data[0].puntos),
-                            area: item.area_construida,
-                            total2023: "",
-                            total2022: "",
+                            area: parseFloat(item.area_construida),
+                            total: "",
                           };
-                          newobj.total2023 =
+                          newobj.total =
                             newobj.area * parseFloat(result.data[0].valor);
-                          newobj.total2022 =
-                            newobj.total2023 - newobj.total2023 * 0.0431;
+
                           //newobj.area * puntaje total2023 - total2023 * 0.0431
                           uni.push(newobj);
                           console.log("resultado Residencia", result);
@@ -441,200 +441,137 @@ const AvaluoForm = () => {
                     break;
                   //Comercial
                   case 540:
-                    if (
-                      item.lc_caracteristicasunidadconstruccion.uso.id < 235 &&
-                      item.lc_caracteristicasunidadconstruccion.uso.id > 236 &&
-                      item.lc_caracteristicasunidadconstruccion.uso.id < 243 &&
-                      item.lc_caracteristicasunidadconstruccion.uso.id > 245 &&
-                      item.lc_caracteristicasunidadconstruccion.uso.id < 259 &&
-                      item.lc_caracteristicasunidadconstruccion.uso.id > 260
-                    ) {
-                      ///Usar Tabla Comercial
-                      async function ComercialCalculate() {
-                        let aux = "";
-                        let puntos =
-                          item.lc_caracteristicasunidadconstruccion
-                            .calificacionconvencional.total_calificacion;
+                    async function ComercialCalculate() {
+                      let aux = "";
+                      let puntos =
+                        item.lc_caracteristicasunidadconstruccion
+                          .calificacionconvencional.total_calificacion;
 
-                        var requestOptions = {
-                          method: "GET",
-                          redirect: "follow",
-                        };
-                        let url =
+                      var requestOptions = {
+                        method: "GET",
+                        redirect: "follow",
+                      };
+                      let url = "";
+                      if (uso >= 235 && uso <= 236) {
+                        //Bodega
+                        url =
                           import.meta.env.VITE_API_URL_FIRST +
-                          "avaluo-catastral/tipo/tab-com?puntos=" +
+                          "avaluo-catastral/tipo/tab-bod?puntos=" +
                           puntos +
-                          "&vigencia=2023&tipo=RURAL";
-
-                        try {
-                          const response = await fetch(url, requestOptions);
-                          if (response.ok) {
-                            const result = await response.json();
-                            aux = true;
-                            let newobj = {
-                              destinacion:
-                                item.lc_caracteristicasunidadconstruccion.uso
-                                  .dispname,
-                              puntaje: parseFloat(result.data[0].puntos),
-                              area: item.area_construida,
-                              total2023: "",
-                              total2022: "",
-                            };
-                            newobj.total2023 =
-                              newobj.area * parseFloat(result.data[0].valor);
-                            newobj.total2022 =
-                              newobj.total2023 - newobj.total2023 * 0.0431;
-                            //newobj.area * puntaje total2023 - total2023 * 0.0431
-                            uni.push(newobj);
-                            console.log("resultado Comercial", result);
-                          } else {
-                            aux = false;
-                            throw new Error("Error en la solicitud");
-                          }
-                        } catch (error) {
-                          aux = false;
-                          console.log("Error:", error);
-                        }
-                        return aux;
-                      }
-                      let est = await ComercialCalculate();
-                      dataCorrect.push(est);
-                      if (!est) {
-                        console.log("Error en Comercial General Rural");
-                      }
-                      break;
-                    } else {
-                      if (
-                        (item.lc_caracteristicasunidadconstruccion.uso.id >=
-                          259 &&
-                          item.lc_caracteristicasunidadconstruccion.uso.id <=
-                            260) ||
-                        (item.lc_caracteristicasunidadconstruccion.uso.id >=
-                          235 &&
-                          item.lc_caracteristicasunidadconstruccion.uso.id <=
-                            236)
-                      ) {
-                        //Tablas de Bodega
-                        async function BodegaCalculate() {
-                          let aux = "";
-                          let puntos =
-                            item.lc_caracteristicasunidadconstruccion
-                              .calificacionconvencional.total_calificacion;
-
-                          var requestOptions = {
-                            method: "GET",
-                            redirect: "follow",
-                          };
-                          let url =
-                            import.meta.env.VITE_API_URL_FIRST +
-                            "avaluo-catastral/tipo/tab-bod?puntos=" +
-                            puntos +
-                            "&vigencia=2023&tipo=RURAL";
-
-                          try {
-                            const response = await fetch(url, requestOptions);
-                            if (response.ok) {
-                              const result = await response.json();
-
-                              aux = true;
-                              let newobj = {
-                                destinacion:
-                                  item.lc_caracteristicasunidadconstruccion.uso
-                                    .dispname,
-                                puntaje: parseFloat(result.data[0].puntos),
-                                area: item.area_construida,
-                                total2023: "",
-                                total2022: "",
-                              };
-                              newobj.total2023 =
-                                newobj.area * parseFloat(result.data[0].valor);
-                              newobj.total2022 =
-                                newobj.total2023 - newobj.total2023 * 0.0431;
-                              uni.push(newobj);
-                              console.log("resultado Bodega", result);
-                            } else {
-                              aux = false;
-                              throw new Error("Error en la solicitud");
-                            }
-                          } catch (error) {
-                            aux = false;
-                            console.log("Error:", error);
-                          }
-                          return aux;
-                        }
-                        let est = await BodegaCalculate();
-                        dataCorrect.push(est);
-                        if (!est) {
-                          console.log("Error en Comercial Bodega Rural");
-                        }
-                        break;
+                          "&vigencia=" +
+                          año +
+                          "&tipo=RURAL";
                       } else {
-                        if (
-                          item.lc_caracteristicasunidadconstruccion.uso.id >=
-                            243 &&
-                          item.lc_caracteristicasunidadconstruccion.uso.id <=
-                            245
-                        ) {
-                          //Tabla Hotel
-                          async function HotelCalculate() {
-                            let aux = "";
-                            let puntos =
-                              item.lc_caracteristicasunidadconstruccion
-                                .calificacionconvencional.total_calificacion;
-
-                            var requestOptions = {
-                              method: "GET",
-                              redirect: "follow",
-                            };
-                            let url =
-                              import.meta.env.VITE_API_URL_FIRST +
-                              "avaluo-catastral/tipo/tab-hot?puntos=" +
-                              puntos +
-                              "&vigencia=2023&tipo=RURAL";
-
-                            try {
-                              const response = await fetch(url, requestOptions);
-                              if (response.ok) {
-                                aux = true;
-                                const result = await response.json();
-                                let newobj = {
-                                  destinacion:
-                                    item.lc_caracteristicasunidadconstruccion
-                                      .uso.dispname,
-                                  puntaje: parseFloat(result.data[0].puntos),
-                                  area: item.area_construida,
-                                  total2023: "",
-                                  total2022: "",
-                                };
-                                newobj.total2023 =
-                                  newobj.area *
-                                  parseFloat(result.data[0].valor);
-                                newobj.total2022 =
-                                  newobj.total2023 - newobj.total2023 * 0.0431;
-                                uni.push(newobj);
-                                console.log("resultado Hotel", result);
-                              } else {
-                                aux = false;
-                                throw new Error("Error en la solicitud");
-                              }
-                            } catch (error) {
-                              aux = false;
-                              console.log("Error:", error);
-                            }
-                            return aux;
-                          }
-                          let est = await HotelCalculate();
-                          dataCorrect.push(est);
-                          if (!est) {
-                            console.log("Error en Comercial Hotel Rural");
-                          }
-                          break;
+                        if (uso >= 244 && uso <= 245) {
+                          //Hotel
+                          url =
+                            import.meta.env.VITE_API_URL_FIRST +
+                            "avaluo-catastral/tipo/tab-hot?puntos=" +
+                            puntos +
+                            "&vigencia=" +
+                            año +
+                            "&tipo=RURAL";
+                        } else {
+                          //Comercial
+                          url =
+                            import.meta.env.VITE_API_URL_FIRST +
+                            "avaluo-catastral/tipo/tab-com?puntos=" +
+                            puntos +
+                            "&vigencia=" +
+                            año +
+                            "&tipo=RURAL";
                         }
                       }
+
+                      try {
+                        const response = await fetch(url, requestOptions);
+                        if (response.ok) {
+                          const result = await response.json();
+                          aux = true;
+                          let newobj = {
+                            destinacion:
+                              item.lc_caracteristicasunidadconstruccion.uso
+                                .dispname,
+                            puntaje: parseFloat(result.data[0].puntos),
+                            area: parseFloat(item.area_construida),
+                            total: "",
+                          };
+                          newobj.total =
+                            newobj.area * parseFloat(result.data[0].valor);
+
+                          //newobj.area * puntaje total2023 - total2023 * 0.0431
+                          uni.push(newobj);
+                          console.log("resultado Comercial", result);
+                        } else {
+                          aux = false;
+                          throw new Error("Error en la solicitud");
+                        }
+                      } catch (error) {
+                        aux = false;
+                        console.log("Error:", error);
+                      }
+                      return aux;
+                    }
+                    let estc = await ComercialCalculate();
+                    dataCorrect.push(estc);
+                    if (!estc) {
+                      console.log("Error en Comercial General Rural");
                     }
                     break;
                   //Industrial
                   case 541:
+                    let esti = await IndustrialCalculate();
+                    async function IndustrialCalculate() {
+                      let aux = "";
+                      let puntos =
+                        item.lc_caracteristicasunidadconstruccion
+                          .calificacionconvencional.total_calificacion;
+                      var requestOptions = {
+                        method: "GET",
+                        redirect: "follow",
+                      };
+                      let url = "";
+                      if (uso >= 259 && uso <= 260) {
+                        url =
+                          import.meta.env.VITE_API_URL_FIRST +
+                          "avaluo-catastral/tipo/tab-bod?puntos=" +
+                          puntos +
+                          "&vigencia=" +
+                          año +
+                          "&tipo=RURAL";
+                      }
+                      try {
+                        const response = await fetch(url, requestOptions);
+                        if (response.ok) {
+                          aux = true;
+                          const result = await response.json();
+                          let newobj = {
+                            destinacion:
+                              item.lc_caracteristicasunidadconstruccion.uso
+                                .dispname,
+                            puntaje: parseFloat(result.data[0].puntos),
+                            area: parseFloat(item.area_construida),
+                            total: "",
+                          };
+                          newobj.total =
+                            newobj.area * parseFloat(result.data[0].valor);
+
+                          //newobj.area * puntaje total2023 - total2023 * 0.0431
+                          ArrayUnidad.push(newobj);
+                        } else {
+                          aux = false;
+                          throw new Error("Error en la solicitud");
+                        }
+                      } catch (error) {
+                        aux = false;
+                        console.log("Error:", error);
+                      }
+                      return aux;
+                    }
+                    dataCorrect.push(esti);
+                    if (!esti) {
+                      console.log("Error en Industrial Rural");
+                    }
                     break;
                   default:
                     console.log("Valor no Calculable");
@@ -646,6 +583,31 @@ const AvaluoForm = () => {
                   item.lc_caracteristicasunidadconstruccion.tipo_construccion
                     .id === 67
                 ) {
+                  let est = await asignarDestino(item);
+
+                  async function asignarDestino(item) {
+                    console.log("iteeeeee", item);
+                    let aux =
+                      item.lc_caracteristicasunidadconstruccion
+                        .calificacionnoconvencional.tipo_anexo;
+                    console.log("tipo anexo", aux);
+
+                    let destino = await obtenerDestino(aux);
+
+                    if (destino != null) {
+                      console.log("Destino", destino);
+                      let puntos =
+                        item.lc_caracteristicasunidadconstruccion
+                          .calificacionnoconvencional.puntaje;
+                      console.log("Puntos ANexos", puntos);
+                      let resultado = await AnexoCalculate(
+                        destino,
+                        puntos,
+                        item
+                      );
+                      return resultado;
+                    }
+                  }
                   async function obtenerDestino(aux) {
                     console.log("auxsss", aux);
                     let prueba = "";
@@ -687,7 +649,9 @@ const AvaluoForm = () => {
                       import.meta.env.VITE_API_URL_FIRST +
                       "avaluo-catastral/tipo/tab-anexos?puntos=" +
                       puntos +
-                      "&vigencia=2022&tipo=RURAL&destino=" +
+                      "&vigencia=" +
+                      año +
+                      "&tipo=RURAL&destino=" +
                       destino;
 
                     try {
@@ -701,14 +665,11 @@ const AvaluoForm = () => {
                             item.lc_caracteristicasunidadconstruccion.uso
                               .dispname,
                           puntaje: result.data[0].puntos,
-                          area: item.area_construida,
-                          total2023: "",
-                          total2022: "",
+                          area: parseFloat(item.area_construida),
+                          total: "",
                         };
-                        newobj.total2023 =
+                        newobj.total =
                           newobj.area * parseFloat(result.data[0].valor);
-                        newobj.total2022 =
-                          newobj.total2023 - newobj.total2023 * 0.0431;
                         uni.push(newobj);
                         console.log("resultado Anexo", result);
                       } else {
@@ -722,36 +683,11 @@ const AvaluoForm = () => {
                     return aux;
                   }
 
-                  async function asignarDestino(item) {
-                    console.log("iteeeeee", item);
-
-                    let aux =
-                      item.lc_caracteristicasunidadconstruccion
-                        .calificacionnoconvencional.tipo_anexo;
-
-                    let destino = await obtenerDestino(aux);
-
-                    if (destino != null) {
-                      console.log("Destino", destino);
-                      let puntos =
-                        item.lc_caracteristicasunidadconstruccion
-                          .calificacionnoconvencional.puntaje;
-                      let resultado = await AnexoCalculate(
-                        destino,
-                        puntos,
-                        item
-                      );
-                      return resultado;
-                    }
-                  }
-
-                  let est = await asignarDestino(item);
                   console.log("Resultaddddooo", est);
                   dataCorrect.push(est);
                   if (!est) {
                     console.log("Error en Anexos Rurales");
                   }
-                  //Algoritmo de Destino
                 }
               }
             }
@@ -772,6 +708,7 @@ const AvaluoForm = () => {
             return est;
           } else {
             ///Tablas Urbanas
+            console.log("Datos Urbano");
             if (zona == "01") {
               if (dataResponse.SantaMaria) {
                 //Usar Tabla de Santa Maria cada Unidad de Construccion
@@ -779,16 +716,17 @@ const AvaluoForm = () => {
                 console.log(true);
               } else {
                 ///Preguntar Unidades de Construccion
-                console.log("Nuevo Ojbeto", dataResponse);
-                for (const item of dataResponse.unidad_construccion) {
-                  if (
+                console.log("No Santamaria");
+                for (const item of dataNumPredial.unidad_construccion) {
+                  let destinacion =
                     item.lc_caracteristicasunidadconstruccion.tipo_construccion
-                      .id === 66
-                  ) {
-                    switch (
-                      item.lc_caracteristicasunidadconstruccion
-                        .tipo_unidad_construccion.id
-                    ) {
+                      .id;
+                  let tipo_unidad =
+                    item.lc_caracteristicasunidadconstruccion
+                      .tipo_unidad_construccion.id;
+                  let uso = item.lc_caracteristicasunidadconstruccion.uso.id;
+                  if (destinacion === 66) {
+                    switch (tipo_unidad) {
                       //Residencial
                       case 539:
                         //Usar Endpoint Residencial o Vivienda
@@ -805,7 +743,9 @@ const AvaluoForm = () => {
                             import.meta.env.VITE_API_URL_FIRST +
                             "avaluo-catastral/tipo/tab-viv?puntos=" +
                             puntos +
-                            "&vigencia=2023&tipo=URBANA";
+                            "&vigencia=" +
+                            año +
+                            "&tipo=URBANA";
 
                           try {
                             const response = await fetch(url, requestOptions);
@@ -817,14 +757,12 @@ const AvaluoForm = () => {
                                   item.lc_caracteristicasunidadconstruccion.uso
                                     .dispname,
                                 puntaje: parseFloat(result.data[0].puntos),
-                                area: item.area_construida,
-                                total2023: "",
-                                total2022: "",
+                                area: parseFloat(item.area_construida),
+                                total: "",
                               };
-                              newobj.total2023 =
+                              newobj.total =
                                 newobj.area * parseFloat(result.data[0].valor);
-                              newobj.total2022 =
-                                newobj.total2023 - newobj.total2023 * 0.0431;
+
                               //newobj.area * puntaje total2023 - total2023 * 0.0431
                               uni.push(newobj);
                               console.log("resultado Residencia", result);
@@ -841,294 +779,142 @@ const AvaluoForm = () => {
                         let est = await ResidenciaCalculate();
                         dataCorrect.push(est);
                         if (!est) {
-                          console.log("Error en Residencial Urbana");
+                          console.log("Error en Residencial Rural");
                         }
                         break;
                       //Comercial
                       case 540:
-                        if (
-                          item.lc_caracteristicasunidadconstruccion.uso.id <
-                            235 &&
-                          item.lc_caracteristicasunidadconstruccion.uso.id >
-                            236 &&
-                          item.lc_caracteristicasunidadconstruccion.uso.id <
-                            243 &&
-                          item.lc_caracteristicasunidadconstruccion.uso.id >
-                            245 &&
-                          item.lc_caracteristicasunidadconstruccion.uso.id <
-                            259 &&
-                          item.lc_caracteristicasunidadconstruccion.uso.id > 260
-                        ) {
-                          ///Usar Tabla Comercial
-                          async function ComercialCalculate() {
-                            let aux = "";
-                            let puntos =
-                              item.lc_caracteristicasunidadconstruccion
-                                .calificacionconvencional.total_calificacion;
+                        async function ComercialCalculate() {
+                          let aux = "";
+                          let puntos =
+                            item.lc_caracteristicasunidadconstruccion
+                              .calificacionconvencional.total_calificacion;
 
-                            var requestOptions = {
-                              method: "GET",
-                              redirect: "follow",
-                            };
-                            let url =
+                          var requestOptions = {
+                            method: "GET",
+                            redirect: "follow",
+                          };
+                          let url = "";
+                          if (uso >= 235 && uso <= 236) {
+                            //Bodega
+                            url =
                               import.meta.env.VITE_API_URL_FIRST +
-                              "avaluo-catastral/tipo/tab-com?puntos=" +
+                              "avaluo-catastral/tipo/tab-bod?puntos=" +
                               puntos +
-                              "&vigencia=2023&tipo=URBANA";
-
-                            try {
-                              const response = await fetch(url, requestOptions);
-                              if (response.ok) {
-                                aux = true;
-                                const result = await response.json();
-                                let newobj = {
-                                  destinacion:
-                                    item.lc_caracteristicasunidadconstruccion
-                                      .uso.dispname,
-                                  puntaje: parseFloat(result.data[0].puntos),
-                                  area: item.area_construida,
-                                  total2023: "",
-                                  total2022: "",
-                                };
-                                newobj.total2023 =
-                                  newobj.area *
-                                  parseFloat(result.data[0].valor);
-                                newobj.total2022 =
-                                  newobj.total2023 - newobj.total2023 * 0.0431;
-                                //newobj.area * puntaje total2023 - total2023 * 0.0431
-                                uni.push(newobj);
-                              } else {
-                                aux = false;
-                                throw new Error("Error en la solicitud");
-                              }
-                            } catch (error) {
-                              aux = false;
-                              console.log("Error:", error);
-                            }
-                            return aux;
-                          }
-                          let est = await ComercialCalculate();
-                          dataCorrect.push(est);
-                          if (!est) {
-                            console.log("Error en Comercial General Urbana");
-                          }
-                        } else {
-                          if (
-                            (item.lc_caracteristicasunidadconstruccion.uso.id >=
-                              259 &&
-                              item.lc_caracteristicasunidadconstruccion.uso
-                                .id <= 260) ||
-                            (item.lc_caracteristicasunidadconstruccion.uso.id >=
-                              235 &&
-                              item.lc_caracteristicasunidadconstruccion.uso
-                                .id <= 236)
-                          ) {
-                            //Tablas de Bodega
-                            async function BodegaCalculate() {
-                              let aux = "";
-                              let puntos =
-                                item.lc_caracteristicasunidadconstruccion
-                                  .calificacionconvencional.total_calificacion;
-
-                              var requestOptions = {
-                                method: "GET",
-                                redirect: "follow",
-                              };
-                              let url =
-                                import.meta.env.VITE_API_URL_FIRST +
-                                "avaluo-catastral/tipo/tab-bod?puntos=" +
-                                puntos +
-                                "&vigencia=2023&tipo=URBANA";
-
-                              try {
-                                const response = await fetch(
-                                  url,
-                                  requestOptions
-                                );
-                                if (response.ok) {
-                                  aux = true;
-                                  const result = await response.json();
-                                  let newobj = {
-                                    destinacion:
-                                      item.lc_caracteristicasunidadconstruccion
-                                        .uso.dispname,
-                                    puntaje: parseFloat(result.data[0].puntos),
-                                    area: item.area_construida,
-                                    total2023: "",
-                                    total2022: "",
-                                  };
-                                  newobj.total2023 =
-                                    newobj.area *
-                                    parseFloat(result.data[0].valor);
-                                  newobj.total2022 =
-                                    newobj.total2023 -
-                                    newobj.total2023 * 0.0431;
-                                  uni.push(newobj);
-                                  console.log("resultado Bodega", result);
-                                } else {
-                                  aux = false;
-                                  throw new Error("Error en la solicitud");
-                                }
-                              } catch (error) {
-                                aux = false;
-                                console.log("Error:", error);
-                              }
-                              return aux;
-                            }
-                            let est = await BodegaCalculate();
-                            dataCorrect.push(est);
-                            if (!est) {
-                              console.log("Error en Comercial Bodega Urbana");
-                            }
+                              "&vigencia=" +
+                              año +
+                              "&tipo=URBANA";
                           } else {
-                            if (
-                              item.lc_caracteristicasunidadconstruccion.uso
-                                .id >= 243 &&
-                              item.lc_caracteristicasunidadconstruccion.uso
-                                .id <= 245
-                            ) {
-                              //Tabla Hotel
-                              async function HotelCalculate() {
-                                let aux = "";
-                                let puntos =
-                                  item.lc_caracteristicasunidadconstruccion
-                                    .calificacionconvencional
-                                    .total_calificacion;
-
-                                var requestOptions = {
-                                  method: "GET",
-                                  redirect: "follow",
-                                };
-                                let url =
-                                  import.meta.env.VITE_API_URL_FIRST +
-                                  "avaluo-catastral/tipo/tab-hot?puntos=" +
-                                  puntos +
-                                  "&vigencia=2023&tipo=URBANA";
-
-                                try {
-                                  const response = await fetch(
-                                    url,
-                                    requestOptions
-                                  );
-                                  if (response.ok) {
-                                    const result = await response.json();
-                                    aux = true;
-                                    let newobj = {
-                                      destinacion:
-                                        item
-                                          .lc_caracteristicasunidadconstruccion
-                                          .uso.dispname,
-                                      puntaje: parseFloat(
-                                        result.data[0].puntos
-                                      ),
-                                      area: item.area_construida,
-                                      total2023: "",
-                                      total2022: "",
-                                    };
-                                    newobj.total2023 =
-                                      newobj.area *
-                                      parseFloat(result.data[0].valor);
-                                    newobj.total2022 =
-                                      newobj.total2023 -
-                                      newobj.total2023 * 0.0431;
-                                    uni.push(newobj);
-                                    console.log("resultado Hotel", result);
-                                  } else {
-                                    aux = false;
-                                    throw new Error("Error en la solicitud");
-                                  }
-                                } catch (error) {
-                                  aux = false;
-                                  console.log("Error:", error);
-                                }
-                                return aux;
-                              }
-                              let est = await HotelCalculate();
-                              dataCorrect.push(est);
-                              if (!est) {
-                                console.log("Error en Comercial Hotel Rural");
-                              }
+                            if (uso >= 244 && uso <= 245) {
+                              //Hotel
+                              url =
+                                import.meta.env.VITE_API_URL_FIRST +
+                                "avaluo-catastral/tipo/tab-hot?puntos=" +
+                                puntos +
+                                "&vigencia=" +
+                                año +
+                                "&tipo=RURAL";
                             } else {
-                              if (
-                                item.lc_caracteristicasunidadconstruccion.uso
-                                  .id >= 237 &&
-                                item.lc_caracteristicasunidadconstruccion.uso
-                                  .id <= 238
-                              ) {
-                                //Tabla Centro Comercial
-                                async function CentroComercialCalculate() {
-                                  let aux = "";
-                                  let puntos =
-                                    item.lc_caracteristicasunidadconstruccion
-                                      .calificacionconvencional
-                                      .total_calificacion;
-
-                                  var requestOptions = {
-                                    method: "GET",
-                                    redirect: "follow",
-                                  };
-                                  let url =
-                                    import.meta.env.VITE_API_URL_FIRST +
-                                    "avaluo-catastral/tipo/tab-cc-f03?puntos=" +
-                                    puntos +
-                                    "&vigencia=2022&tipo=URBANA";
-
-                                  try {
-                                    const response = await fetch(
-                                      url,
-                                      requestOptions
-                                    );
-                                    if (response.ok) {
-                                      aux = true;
-                                      const result = await response.json();
-                                      let newobj = {
-                                        destinacion:
-                                          item
-                                            .lc_caracteristicasunidadconstruccion
-                                            .uso.dispname,
-                                        puntaje: parseFloat(
-                                          result.data[0].puntos
-                                        ),
-                                        area: item.area_construida,
-                                        total2023: "",
-                                        total2022: "",
-                                      };
-                                      newobj.total2023 =
-                                        newobj.area *
-                                        parseFloat(result.data[0].valor);
-                                      newobj.total2022 =
-                                        newobj.total2023 -
-                                        newobj.total2023 * 0.0431;
-                                      uni.push(newobj);
-                                      console.log(
-                                        "resultado Centro Comercial",
-                                        result
-                                      );
-                                    } else {
-                                      aux = false;
-                                      throw new Error("Error en la solicitud");
-                                    }
-                                  } catch (error) {
-                                    aux = false;
-                                    console.log("Error:", error);
-                                  }
-                                  return aux;
-                                }
-                                let est = await CentroComercialCalculate();
-                                dataCorrect.push(est);
-                                if (!est) {
-                                  console.log(
-                                    "Error en Comercial Centro Comercial Urbano"
-                                  );
-                                }
-                                break;
-                              }
+                              //Comercial
+                              url =
+                                import.meta.env.VITE_API_URL_FIRST +
+                                "avaluo-catastral/tipo/tab-com?puntos=" +
+                                puntos +
+                                "&vigencia=" +
+                                año +
+                                "&tipo=RURAL";
                             }
                           }
+
+                          try {
+                            const response = await fetch(url, requestOptions);
+                            if (response.ok) {
+                              const result = await response.json();
+                              aux = true;
+                              let newobj = {
+                                destinacion:
+                                  item.lc_caracteristicasunidadconstruccion.uso
+                                    .dispname,
+                                puntaje: parseFloat(result.data[0].puntos),
+                                area: parseFloat(item.area_construida),
+                                total: "",
+                              };
+                              newobj.total =
+                                newobj.area * parseFloat(result.data[0].valor);
+
+                              //newobj.area * puntaje total2023 - total2023 * 0.0431
+                              uni.push(newobj);
+                              console.log("resultado Comercial", result);
+                            } else {
+                              aux = false;
+                              throw new Error("Error en la solicitud");
+                            }
+                          } catch (error) {
+                            aux = false;
+                            console.log("Error:", error);
+                          }
+                          return aux;
+                        }
+                        let estc = await ComercialCalculate();
+                        dataCorrect.push(estc);
+                        if (!estc) {
+                          console.log("Error en Comercial General Rural");
                         }
                         break;
                       //Industrial
                       case 541:
+                        let esti = await IndustrialCalculate();
+                        async function IndustrialCalculate() {
+                          let aux = "";
+                          let puntos =
+                            item.lc_caracteristicasunidadconstruccion
+                              .calificacionconvencional.total_calificacion;
+                          var requestOptions = {
+                            method: "GET",
+                            redirect: "follow",
+                          };
+                          let url = "";
+                          if (uso >= 259 && uso <= 260) {
+                            url =
+                              import.meta.env.VITE_API_URL_FIRST +
+                              "avaluo-catastral/tipo/tab-bod?puntos=" +
+                              puntos +
+                              "&vigencia=" +
+                              año +
+                              "&tipo=URBANA";
+                          }
+                          try {
+                            const response = await fetch(url, requestOptions);
+                            if (response.ok) {
+                              aux = true;
+                              const result = await response.json();
+                              let newobj = {
+                                destinacion:
+                                  item.lc_caracteristicasunidadconstruccion.uso
+                                    .dispname,
+                                puntaje: parseFloat(result.data[0].puntos),
+                                area: parseFloat(item.area_construida),
+                                total: "",
+                              };
+                              newobj.total =
+                                newobj.area * parseFloat(result.data[0].valor);
+
+                              //newobj.area * puntaje total2023 - total2023 * 0.0431
+                              ArrayUnidad.push(newobj);
+                            } else {
+                              aux = false;
+                              throw new Error("Error en la solicitud");
+                            }
+                          } catch (error) {
+                            aux = false;
+                            console.log("Error:", error);
+                          }
+                          return aux;
+                        }
+                        dataCorrect.push(esti);
+                        if (!esti) {
+                          console.log("Error en Industrial Rural");
+                        }
                         break;
                       default:
                         console.log("Valor no Calculable");
@@ -1140,7 +926,38 @@ const AvaluoForm = () => {
                       item.lc_caracteristicasunidadconstruccion
                         .tipo_construccion.id === 67
                     ) {
+                      let est = await asignarDestino(item);
+                      console.log("Resultaddddooo", est);
+
+                      async function asignarDestino(item) {
+                        console.log("iteeeeee", item);
+                        let aux =
+                          item.lc_caracteristicasunidadconstruccion
+                            .calificacionnoconvencional.total_calificacion;
+                        if (aux == null) {
+                          aux = 0;
+                        }
+                        console.log("Puntaje Anexo", aux);
+                        let destino = await obtenerDestino(aux);
+
+                        if (destino != null) {
+                          console.log("Destino", destino);
+                          let puntos =
+                            item.lc_caracteristicasunidadconstruccion
+                              .calificacionnoconvencional.total_calificacion;
+                          if (puntos == null) puntos = 0;
+                          console.log("Puntos Urbano", puntos);
+                          let resultado = await AnexoCalculate(
+                            destino,
+                            puntos,
+                            item
+                          );
+                          return resultado;
+                        }
+                      }
+
                       async function obtenerDestino(aux) {
+                        console.log("auxsss", aux);
                         let prueba = "";
                         const rangos = [
                           { inicio: 452, fin: 455, valor: 2 },
@@ -1166,8 +983,13 @@ const AvaluoForm = () => {
                             prueba = rangos[i].valor;
                           }
                         }
+                        if (prueba == "") {
+                          prueba = 0;
+                        }
+                        console.log("Prueba", prueba);
                         return prueba;
                       }
+
                       //Usar Tabla Anexo
                       async function AnexoCalculate(destino, puntos, item) {
                         let aux = "";
@@ -1179,7 +1001,9 @@ const AvaluoForm = () => {
                           import.meta.env.VITE_API_URL_FIRST +
                           "avaluo-catastral/tipo/tab-anexos?puntos=" +
                           puntos +
-                          "&vigencia=2022&tipo=URBANA&destino=" +
+                          "&vigencia=" +
+                          año +
+                          "&tipo=URBANA&destino=" +
                           destino;
 
                         try {
@@ -1187,19 +1011,17 @@ const AvaluoForm = () => {
                           if (response.ok) {
                             aux = true;
                             const result = await response.json();
+                            console.log("resuto", result);
                             let newobj = {
                               destinacion:
-                                item.lc_caracteristicasunidadconstruccion
-                                  .tipo_unidad_construccion.dispname,
+                                item.lc_caracteristicasunidadconstruccion.uso
+                                  .dispname,
                               puntaje: result.data[0].puntos,
-                              area: item.area_construida,
-                              total2023: "",
-                              total2022: "",
+                              area: parseFloat(item.area_construida),
+                              total: "",
                             };
-                            newobj.total2023 =
+                            newobj.total =
                               newobj.area * parseFloat(result.data[0].valor);
-                            newobj.total2022 =
-                              newobj.total2023 - newobj.total2023 * 0.0431;
                             uni.push(newobj);
                             console.log("resultado Anexo", result);
                           } else {
@@ -1207,41 +1029,20 @@ const AvaluoForm = () => {
                             throw new Error("Error en la solicitud");
                           }
                         } catch (error) {
-                          aux = false;
+                          aux = true;
                           console.log("Error:", error);
                         }
                         return aux;
                       }
 
-                      async function asignarDestino(item) {
-                        let aux =
-                          item.lc_caracteristicasunidadconstruccion
-                            .calificacionnoconvencional.tipo_anexo;
-
-                        let destino = await obtenerDestino(aux);
-
-                        if (destino != null) {
-                          let puntos =
-                            item.lc_caracteristicasunidadconstruccion
-                              .calificacionnoconvencional.puntaje;
-                          let resultado = await AnexoCalculate(
-                            destino,
-                            puntos,
-                            item
-                          );
-                          return resultado;
-                        }
-                      }
-
-                      let est = await asignarDestino(item);
                       dataCorrect.push(est);
                       if (!est) {
-                        console.log("Error en Anexos Urbanos");
+                        console.log("Error en Anexos Rurales");
                       }
-                      //Algoritmo de Destino
                     }
                   }
                 }
+
                 function validar() {
                   let cont = 0;
                   for (const item of dataCorrect) {
@@ -1297,7 +1098,8 @@ const AvaluoForm = () => {
       setEstBtt(false);
     }
   }
-  function load_numPredial() {
+
+  async function load_numPredial() {
     setEstNumPredial(true);
     setEstTable(false);
     setEstForm(false);
@@ -1305,22 +1107,36 @@ const AvaluoForm = () => {
     setNumZonas("");
     setEstBttAvaluo(true);
 
-    //Buscar Numero Predial
-    dataTablaCatastral.map((item, index) => {
-      if (numpredial === item.num_predial) {
-        setDataResponse(item);
-        setAreaTerreno(item.area_terreno);
-      } else {
-        console.log("error num predial");
-      }
-    });
-    //Capturar valor de Area Terreno
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    let url =
+      import.meta.env.VITE_API_URL_FIRST +
+      "predio/numero-predial?numero_predial=" +
+      numpredial;
 
-    setTimeout(() => {
-      // This block will execute after 5 seconds
-      setEstNumPredial(false);
-    }, 5000);
+    //Buscar Numero Predial
+    try {
+      const response = await fetch(url, requestOptions);
+      const result = await response.json();
+      setDataNumPredial(result.data);
+      let num = result.data.area_terreno;
+
+      if (num == null) {
+        num = 0;
+      }
+      console.log("Valor Numero", num);
+      //252900100000000020901900000064
+      setAreaTerreno(parseFloat(num));
+      console.log(result);
+    } catch (error) {
+      console.log("error", error);
+    }
+    setEstNumPredial(false);
+    //Capturar valor de Area Terreno
   }
+
   useEffect(() => {
     validateData();
   }, [numZonas, numpredial]);

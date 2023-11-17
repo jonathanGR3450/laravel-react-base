@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from "react";
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import DataJson from "../Json/numeros.json";
+import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 import { Modal_Load } from "./Modal_Load";
 import {
@@ -53,7 +53,7 @@ export const NumPredialForm = () => {
   //Estados
   const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState(true);
-
+  const navigate = useNavigate();
   //Captura de datos para generar numeros prediales
   // 1 Estado para Cargar el valor de Tamaño0
   const [inputValue, setInputValue] = useState("");
@@ -1731,7 +1731,7 @@ export const NumPredialForm = () => {
                 item.Edificio +
                 item.Piso +
                 item.Unidad,
-              matricula_inmobiliaria: item.Matricula,
+              matricula_inmobiliaria: parseInt(item.Matricula),
               extdireccion: item.Direccion,
             };
             Json.numeros_prediales.push(newobj);
@@ -1741,11 +1741,13 @@ export const NumPredialForm = () => {
         }
       }
     }, [dataReturn]);
+
     async function sendNumPredial(json) {
       ///////Crear Predios
+
       setMsjLoading("Creando Predios");
       const response = await addPredio(json);
-      console.log("Respuesta de agregar Predio", response);
+      console.log("Respuesta de agregar Predio ", response);
       if (response.success) {
         ArrayFinal.map((item, index) => {
           item.idNumPredial = response.data[index];
@@ -1759,16 +1761,15 @@ export const NumPredialForm = () => {
           ArrayFinal.map((item, index) => {
             console.log("carga datos", item);
             item.codigo_homologado = data[index].numeros_homologados;
+            item.id_codigo_homologado = data[index].t_id;
           });
 
           ///////Relacionar Predios y Numeros Homologados
-          setMsjLoading(
-            " Cargando -> Relacionando Numero Predial - Datos Homologados"
-          );
+          setMsjLoading("Relacionando Numero Predial - Datos Homologados");
           const responseRel = await reDataHomoPredial();
           if (responseRel.success) {
             setEstLoading(false);
-            Navigate("/LoadData");
+            navigate("/LoadData");
           } else {
             setMsjLoading("Error");
           }
@@ -1797,6 +1798,7 @@ export const NumPredialForm = () => {
       let myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       let raw = json;
+      console.log("Predio Agregar", json);
       let url = import.meta.env.VITE_API_URL_FIRST + "predio/numeros-prediales";
       var requestOptions = {
         method: "POST",
@@ -1809,8 +1811,8 @@ export const NumPredialForm = () => {
         const response = await fetch(url, requestOptions);
         if (response.ok) {
           const result = await response.json();
+          console.log("Resultado Predio", result);
           return result;
-          console.log(result);
         } else {
           throw new Error("Error en la solicitud");
           return "Error en la Solicitud";
@@ -1854,10 +1856,11 @@ export const NumPredialForm = () => {
       ArrayFinal.map((item, index) => {
         let newObj = {
           numero_predial: item.idNumPredial,
-          numero_homologado: parseInt(item.codigo_homologado),
+          numero_homologado: parseInt(item.id_codigo_homologado),
         };
         json.numeros_relacion.push(newObj);
       });
+      console.log("Json de Relacion", json);
       try {
         const url =
           import.meta.env.VITE_API_URL_FIRST +

@@ -68,15 +68,11 @@ const PredioForm = (props, ref) => {
     }));
   }
 
-  const updateNom = () => {
-    const { codigo_homologado } = dataForm;
-    setDataForm({ ...dataForm, nupre: codigo_homologado });
-  };
-  const sendData = () => {
-    tableData.map((item, index) => {
+  const sendData = async () => {
+    for (const [index, item] of tableData.entries()) {
       console.log("Tamaño 121212 ", dataId);
-      dataId.map((items) => {
-        if (items - 1 == index) {
+      for (const items of dataId) {
+        if (items - 1 === index) {
           dataForm.matricula_inmobiliaria = item.Matricula;
           dataForm.codigo_homologado = item.codigo_homologado;
           dataForm.local_id = item.codigo_homologado;
@@ -93,17 +89,38 @@ const PredioForm = (props, ref) => {
             item.Edificio +
             item.Piso +
             item.Unidad;
-          item.predio = dataForm;
-          console.log(item);
+          dataForm.id_operacion = dataForm.numero_predial;
+          if (dataForm.interrelacionado) {
+            dataForm.nupre = item.codigo_homologado;
+          }
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          let url = import.meta.env.VITE_API_URL_FIRST + "predio";
+          let raw = JSON.stringify(dataForm);
+          var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+          };
+          try {
+            const response = await fetch(url, requestOptions);
+            const result = await response.json();
+            item.id_predio = result.data.t_id;
+            item.predio = dataForm;
+            console.log(result);
+          } catch (error) {
+            console.log("error", error);
+          }
         }
-      });
-    });
+      }
+    }
+
+    console.log("Datos Form predio", dataForm);
     console.log("datos de tabla", tableData);
     updateTableData(tableData);
   };
-  useEffect(() => {
-    updateNom();
-  }, [dataForm.codigo_homologado]);
+
   const handleOnChange = () => {
     setCodFMI(!codFMI);
   };
@@ -159,13 +176,14 @@ const PredioForm = (props, ref) => {
                   type="text"
                   disabled
                   className="border-2 p-1 rounded-md w-full"
+                  value={dataForm.codigo_homologado}
                 ></input>
               </div>
             ) : null}
           </div>
           <div className="w-full flex flex-row">
             <div className="w-1/3 flex flex-col">
-              <label className="font-semibold">Avaluo Catastral* :</label>
+              <label className="font-semibold">Avaluo Catastral :</label>
               <input
                 onChange={Load_Data}
                 name="avaluo_catastral"

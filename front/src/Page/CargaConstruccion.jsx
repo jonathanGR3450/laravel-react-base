@@ -350,7 +350,6 @@ export const LoadDataConstruccion = () => {
                       //Usar Endpoint Residencial o Vivienda
                       async function ResidenciaCalculate() {
                         let aux = "";
-
                         let puntos =
                           item.caracteristicas.calificacionconvencional[0]
                             .total_calificacion;
