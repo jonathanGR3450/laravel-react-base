@@ -24,10 +24,21 @@ class CalcularIncrementoAvaluoFormRequest extends FormRequest
      */
     public function rules(): array
     {
+        $tables = [
+            'lc_valor_terreno_rural',
+            'tab_anexos_urbana_rural',
+            'tab_cc_f03_60_urbana_rural',
+            'tab_hot_60_urbana_rural',
+            'tab_bod_60_urbana_rural',
+            'tab_santa_maria_de_los_angeles_urbana',
+            'tab_viv_60_urbana_rural',
+            'lc_valor_terreno_urbana',
+        ];
         return [
             'vigencia'          => ['required', 'integer'],
             'incremento'       => ['required', 'numeric'],
-            'tabla'       => ['required', 'string'],
+            'tablas'       => ['required', 'array', "min:1"],
+            'tablas.*'       => ['required', 'string', "in:" . implode(",", $tables)],
         ];
     }
 }
