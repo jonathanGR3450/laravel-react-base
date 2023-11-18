@@ -149,7 +149,10 @@ class PredioNumeroPredialResource extends JsonResource
                             "total_calificacion" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionConvencional()->get()->first()?->total_calificacion,
                         ],
                         "calificacionnoconvencional" => [
-                            "total_calificacion" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionNoConvencional()->get()->first()?->total_calificacion,
+                            "tipo_anexo" => [
+                                "t_id" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionNoConvencional()->get()->first()?->tipo_anexo->t_id,
+                                "dispname" => $item->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionNoConvencional()->get()->first()?->tipo_anexo->dispname,
+                            ],
                         ],
                     ]
                 ];
