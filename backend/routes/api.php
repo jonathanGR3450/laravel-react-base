@@ -68,7 +68,6 @@ Route::controller(AuthController::class)->group(function () {
 Route::prefix('v1')->group(function () {
 
     Route::prefix('predio')->group(function () {
-        Route::get('{id}', GetPredioController::class);
         Route::post('', StoreLcPredio::class);
         Route::post('uebaunit', StoreColUebaunitLocal::class);
         Route::post('unidadfuente', StoreColUnidadfuenteLocal::class);
@@ -79,6 +78,7 @@ Route::prefix('v1')->group(function () {
         Route::post('numeros-homologados', StoreNumeroHomologadosController::class);
         Route::get('list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
         Route::get('list/local/numeros-prediales', IndexNumerosPredialesController::class);
+        Route::get('{id}', GetPredioController::class);
     });
 
     Route::prefix('caracteristicasunidadconstruccion')->group(function () {
