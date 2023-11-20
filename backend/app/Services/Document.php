@@ -10,14 +10,16 @@ use PhpOffice\PhpWord\TemplateProcessor;
 class Document
 {
     private string $path;
+    private string $pathOutput;
     private string $nameFile;
     private array $data;
     private string $nameFileOutput;
 
-    public function __construct(string $path, string $nameFile, array $data) {
+    public function __construct(string $path, string $nameFile, array $data, string $pathOutput) {
         $this->path = $path;
         $this->nameFile = $nameFile;
         $this->data = $data;
+        $this->pathOutput = $pathOutput;
     }
 
     public function generateNameFileOutput(): void {
@@ -31,6 +33,10 @@ class Document
         return $this->nameFileOutput;
     }
 
+    public function getPathOutput() : string {
+        return $this->pathOutput;
+    }
+
     function generateWordDocument(): string {
         $templatePath = public_path("{$this->path}/{$this->nameFile}");
 
@@ -38,7 +44,7 @@ class Document
         $templateProcessor->setValues($this->data);
 
         $nameFileOutput = "{$this->nameFileOutput}.docx";
-        $outputPath = storage_path("app/public/documents/$nameFileOutput");
+        $outputPath = storage_path("app/public/{$this->pathOutput}/$nameFileOutput");
         $templateProcessor->saveAs($outputPath);
 
         return $outputPath;
