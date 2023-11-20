@@ -583,6 +583,7 @@ const AvaluoForm = () => {
                   item.lc_caracteristicasunidadconstruccion.tipo_construccion
                     .id === 67
                 ) {
+                  console.log("Entra Anexo");
                   let est = await asignarDestino(item);
 
                   async function asignarDestino(item) {
@@ -1120,6 +1121,7 @@ const AvaluoForm = () => {
     try {
       const response = await fetch(url, requestOptions);
       const result = await response.json();
+      console.log("Reusltado Numero Predial", result);
       setDataNumPredial(result.data);
       let num = result.data.area_terreno;
 

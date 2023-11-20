@@ -147,7 +147,7 @@ const ConstruccionForm = (props, ref) => {
               name="num_pisos"
               value={construccionData.num_pisos}
               onChange={Load_Data}
-              type="text"
+              type="number"
               className="border-2 p-1 rounded-md w-full"
             ></input>
           </div>
@@ -157,7 +157,7 @@ const ConstruccionForm = (props, ref) => {
               name="num_semisotanos"
               value={construccionData.num_semisotanos}
               onChange={Load_Data}
-              type="text"
+              type="number"
               className="border-2 p-1 rounded-md w-full"
             ></input>
           </div>
@@ -167,7 +167,7 @@ const ConstruccionForm = (props, ref) => {
               name="num_mezanines"
               value={construccionData.num_mezanines}
               onChange={Load_Data}
-              type="text"
+              type="number"
               className="border-2 p-1 rounded-md w-full"
             ></input>
           </div>
@@ -188,6 +188,7 @@ const ConstruccionForm = (props, ref) => {
             <input
               name="area"
               value={construccionData.area}
+              onInput={soloNumeros}
               onChange={Load_Data}
               type="text"
               className="border-2 p-1 rounded-md w-full"
@@ -220,6 +221,7 @@ const ConstruccionForm = (props, ref) => {
             <input
               name="altura"
               value={construccionData.altura}
+              onInput={soloNumeros}
               onChange={Load_Data}
               type="text"
               className="border-2 p-1 rounded-md w-full"
@@ -243,7 +245,7 @@ const ConstruccionForm = (props, ref) => {
   //Se Aceptan solo  Numeros
   function soloNumeros(event) {
     const input = event.target;
-    input.value = input.value.replace(/[^0-9.,]/g, "");
+    input.value = input.value.replace(/[^0-9.]/g, "");
   }
   //Se Aceptan solo Letras
   function soloLetras(event) {

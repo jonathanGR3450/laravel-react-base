@@ -30,7 +30,7 @@ const FuenteAdminForm = (props, ref) => {
   //Se Aceptan solo  Numeros
   function soloNumeros(event) {
     const input = event.target;
-    input.value = input.value.replace(/[^0-9.,]/g, "");
+    input.value = input.value.replace(/[^0-9.]/g, "");
   }
   //Se Aceptan solo Letras
 

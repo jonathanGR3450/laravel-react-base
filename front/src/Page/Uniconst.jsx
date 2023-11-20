@@ -15,7 +15,6 @@ const UniconstForm = (dataForm) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [tipo_const, setTipo_Const] = useState("");
-
   const [estMsjError, setEstMsjError] = useState({
     anio_construccion: false,
   });
@@ -91,6 +90,7 @@ const UniconstForm = (dataForm) => {
     const [sopti, setSopti] = useState();
     const [djson, setDjson] = useState({});
     const { updateCaracteristicas } = useContext(CaraContext);
+
     const [newDataCentral, setNewDataCentral] = useState({
       tipo_planta: "",
       tipo_unidad_construccion: "",

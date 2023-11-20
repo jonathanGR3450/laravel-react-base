@@ -56,7 +56,9 @@ const TerrenoForm = (props, ref) => {
 
   function soloNumeros(event) {
     const input = event.target;
-    input.value = input.value.replace(/[^0-9.,]/g, "");
+    console.log("evento", input);
+    console.log("Entra", input.value);
+    input.value = input.value.replace(/[^0-9.]/g, "");
   }
   //     item.Dpto +  item.Mpio +  item.Zona +  item.Sector +  item.Comuna +  item.Barrio +  item.Manzana
 
@@ -65,10 +67,12 @@ const TerrenoForm = (props, ref) => {
       terrenoData.SantaMaria = false;
     }
     console.log("Terreno Data", terrenoData);
-
     let response = true;
     //createTerreno();
-
+    terrenoData.area_terreno = parseFloat(
+      terrenoData.area_terreno.replace(",", ".")
+    );
+    console.log("terreno Data", terrenoData);
     if (response) {
       Object.entries(tableData).map((itemd, index) => {
         let item = itemd[1];
@@ -162,13 +166,17 @@ const TerrenoForm = (props, ref) => {
     let sumZHG = 0;
     if (zonasData != undefined) {
       zonasData.map((item, index) => {
-        sum += parseInt(item.area);
+        console.log("Sumatoria", sum);
+        sum += parseFloat(item.area.replace(",", "."));
         if (isNaN(item.ZHG) || item.ZHG === "") {
           sumZHG++;
         }
       });
     }
-    if (sum === parseFloat(terrenoData.area_terreno) && sumZHG === 0) {
+    if (
+      sum === parseFloat(terrenoData.area_terreno.replace(",", ".")) &&
+      sumZHG === 0
+    ) {
       let manzana = "";
       if (typeof tableData !== "undefined") {
         let item = tableData[0];
@@ -214,10 +222,9 @@ const TerrenoForm = (props, ref) => {
 
     function handleZona(e) {
       let { name, value } = e.target;
-
       setDataZonaGeo((prevValues) => ({
         ...prevValues,
-        [name]: parseInt(value),
+        [name]: value,
       }));
     }
     return (
@@ -230,9 +237,10 @@ const TerrenoForm = (props, ref) => {
             <label className="w-full font-semibold">Area (mt2) : </label>
             <input
               onChange={handleZona}
-              type="number"
+              type="text"
               className="border-2 p-2 rounded-lg text-center w-full"
               name="area"
+              onInput={soloNumeros}
               value={dataZonaGeo.area}
             ></input>
           </div>
@@ -277,6 +285,10 @@ const TerrenoForm = (props, ref) => {
     if (name == "SantaMaria") {
       value = e.target.checked;
     }
+    if (name == "area_terreno") {
+      console.log("Carga", value);
+      // value = parseFloat(value.replace(",", "."));
+    }
     setTerrenoData((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
@@ -303,9 +315,10 @@ const TerrenoForm = (props, ref) => {
             <label>Area Total Terreno (mt2)</label>
             <input
               name="area_terreno"
-              type="number"
+              type="text"
               className="border-2 p-1 rounded-md w-full"
               value={terrenoData.area_terreno}
+              onInput={soloNumeros}
               onChange={Load_Data}
             ></input>
           </div>
@@ -317,7 +330,7 @@ const TerrenoForm = (props, ref) => {
             </label>
             <input
               name="avaluo_terreno"
-              type="text"
+              type="number"
               className="border-2 p-1 rounded-md w-1/4"
               value={numZonas}
               onChange={load_tamaño}
@@ -346,59 +359,5 @@ const TerrenoForm = (props, ref) => {
     </Modal>
   );
 };
-/*<Modal isOpen={isModalOpen} onClose={closeModal}></Modal>
-<div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/3 flex flex-col ml-4">
-            <label>Zona GeoEconomica</label>
-            <select
-              name="ZHG"
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-              value={terrenoData.ZHG}
-              onChange={Load_Data}
-            >
-              <option></option>
-              <option value="1">01</option>
-              <option value="2">02</option>
-              <option value="3">03</option>
-              <option value="4">04</option>
-              <option value="5">05</option>
-              <option value="6">06</option>
-              <option value="7">07</option>
-              <option value="8">08</option>
-              <option value="9">09</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
-              <option value="18">18</option>
-            </select>
-          </div>
-          <div className="w-1/3 ml-4 flex flex-col">
-            <label>Avaluo Terreno</label>
-            <input
-              disabled
-              name="avaluo_terreno"
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-              value={terrenoData.avaluo_terreno}
-              onChange={Load_Data}
-            ></input>
-          </div>
-        </div>
 
-    <div className="w-1/3 ml-4 flex flex-col">
-            <label>Codigo Manzana</label>
-            <input
-              name="codigo_manzana"
-              disabled
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-              value={terrenoData.codigo_manzana}
-            ></input>
-          </div>*/
 export default forwardRef(TerrenoForm);

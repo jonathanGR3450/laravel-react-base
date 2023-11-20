@@ -36,7 +36,6 @@ const UniConstruccionForm = (props, ref) => {
         }
       });
     });
-    console.log("nuevo Objeto", newobj);
     setConstrucciones(newobj);
     setDataId(aux);
     setIsModalOpen(true);
@@ -49,7 +48,7 @@ const UniConstruccionForm = (props, ref) => {
   }));
   function soloNumeros(event) {
     const input = event.target;
-    input.value = input.value.replace(/[^0-9.,]/g, "");
+    input.value = input.value.replace(/[^0-9.]/g, "");
   }
 
   //Cuantas Unidades Se Crean
@@ -81,6 +80,7 @@ const UniConstruccionForm = (props, ref) => {
   };
   const actualizarDatosUnidad = (index, newData) => {
     // Aquí puedes manejar los datos del Interesado individualmente
+    console.log("Nuevos Datos" + index, newData);
     setUnidadData((prevData) => {
       const newDataArray = [...prevData];
       newDataArray[index] = newData;
@@ -107,11 +107,95 @@ const UniConstruccionForm = (props, ref) => {
 
     const updateCaracteristicas = (newData) => {
       console.log("nuevos Dats", newData);
-      let carac = newData.construcciones[0].caracteristicasunidadconstruccion;
+      let carac = "";
+      if (!newData.construcciones) {
+        let newobj = convertirFormato(newData);
+        carac = newobj.construcciones[0].caracteristicasunidadconstruccion;
+      } else {
+        console.log("Creo CONstruccion");
+        carac = newData.construcciones[0].caracteristicasunidadconstruccion;
+      }
+      console.log("Caracteristicas", carac);
+
       setDataUnidad({ ...dataUnidad, caracteristicas: carac });
       closeCreateCaaracRef();
     };
+    function convertirFormato(jsonOriginal) {
+      console.log("Json Original", jsonOriginal);
+      const {
+        t_id,
+        identificador,
+        tipo_construccion,
+        tipo_dominio,
+        tipo_unidad_construccion,
+        tipo_planta,
+        total_plantas,
+        total_habitaciones,
+        total_banios,
+        total_locales,
+        anio_construccion,
+        uso,
+        avaluo_unidad_construccion,
+        area_construida,
+        area_privada_construida,
+        comienzo_vida_util_version,
+        fin_vida_util_version,
+        espacio_de_nombres,
+        local_id,
+        observaciones,
+        sync,
+        calificacionconvencional,
+      } = jsonOriginal;
 
+      const construcciones = [
+        {
+          caracteristicasunidadconstruccion: {
+            identificador,
+            tipo_construccion: tipo_construccion.t_id,
+            tipo_dominio: tipo_dominio.t_id,
+            tipo_unidad_construccion: tipo_unidad_construccion.t_id,
+            tipo_planta: tipo_planta.t_id,
+            total_plantas,
+            total_habitaciones,
+            total_banios,
+            total_locales,
+            anio_construccion,
+            uso: uso.t_id,
+            avaluo_unidad_construccion: avaluo_unidad_construccion || "",
+            area_construida: parseFloat(area_construida.replace(",", ".")),
+            area_privada_construida: parseFloat(area_privada_construida),
+            fin_vida_util_version: fin_vida_util_version || "",
+            espacio_de_nombres,
+            local_id,
+            observaciones: observaciones || "",
+            calificacionconvencional: calificacionconvencional.map((cc) => {
+              return {
+                tipo_calificar: cc.tipo_calificar.t_id,
+                total_calificacion: cc.total_calificacion,
+                grupocalificacion: cc.grupocalificacion.map((gc) => {
+                  return {
+                    clase_calificacion: gc.clase_calificacion.t_id,
+                    conservacion: gc.conservacion.t_id,
+                    subtotal: gc.subtotal,
+                    objetoconstruccion: gc.objetoconstruccion.map((oc) => {
+                      return {
+                        tipo_objeto_construccion:
+                          oc.tipo_objeto_construccion.t_id,
+                        puntos: oc.puntos,
+                      };
+                    }),
+                  };
+                }),
+              };
+            }),
+          },
+        },
+      ];
+
+      return {
+        construcciones,
+      };
+    }
     //Abrir Modal de cargar
     const openLoadCaractForm = () => {
       LoadCaracRef.current.openModal();
@@ -170,11 +254,10 @@ const UniConstruccionForm = (props, ref) => {
               <label>Planta Ubicacion</label>
               <input
                 name="planta_ubicacion"
-                type="text"
+                type="number"
                 className="border-2 p-1 rounded-md w-full"
                 value={dataUnidad.planta_ubicacion}
                 onChange={Load_Data}
-                onInput={soloNumeros}
               ></input>
             </div>
             <div className="w-1/4 flex flex-col ml-4">
@@ -239,7 +322,6 @@ const UniConstruccionForm = (props, ref) => {
           className="border-2 p-1 rounded-md w-full"
           value={numUnidad}
           onChange={Load_Num}
-          onInput={soloNumeros}
         />
         <button
           className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"

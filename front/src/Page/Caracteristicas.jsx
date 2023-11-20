@@ -14,17 +14,12 @@ import Consulta from "../Json/prueba.json";
 import FichaPredial from "./FichaPredial";
 import Loader from "./Loader";
 import { CaracteristicasResumeForm } from "./ResumeData";
-/////////////////////////////////////////////
+/////////////////////////////////////////////Modal de Cargar y Crear Caracteristicas
 export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
   ///Datos del Modal
-  function updateData(aux) {
-    props.onchangeData(aux);
-  }
-  console.log("Props", props);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
-    console.log("Abre Modal");
   };
   const closeModal = () => {
     setIsModalOpen(false);
@@ -44,6 +39,8 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
       total_banios: "",
       total_locales: "",
       uso: "",
+      calificacionconvencional: "",
+      calificacionnoconvencional: "",
     });
     const [selectedId, setSelectedId] = useState(null);
     const [response, setResponse] = useState();
@@ -66,7 +63,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
       }, [response]);
       function generarFilas() {
         if (response != undefined) {
-          console.log("response", response);
           dataResponse = response.data.data;
           const dataCheck = (e) => {
             let { value } = e.target;
@@ -179,8 +175,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
           tipo_planta: 680,
         });
       } else {
-        console.log("value", value);
-        console.log("value", name);
         setDataSearch({ ...dataSearch, [name]: parseInt(value) });
       }
     }
@@ -191,7 +185,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
       var params = new URLSearchParams(
         Object.entries(dataSearch).map(([key, value]) => [key, value])
       );
-      console.log(params.toString());
       const url =
         "http://localhost/api/v1/caracteristicasunidadconstruccion/convencional?" +
         params.toString();
@@ -205,7 +198,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
         const response = await fetch(url, requestOptions);
         if (response.ok) {
           const result = await response.json();
-          console.log(result);
           if (result.data.total == 0) {
             setMsjAll("No se Encontraron Datos");
             setEstDataTable(true);
@@ -229,8 +221,14 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
       }
     }
     function CaptureId() {
-      console.log(selectedId);
-      updateData(selectedId);
+      let newdata = response.data.data;
+      let newobj = [];
+      newdata.map((item, index) => {
+        if (selectedId == item.t_id) {
+          newobj = item;
+        }
+      });
+      props.onchangeData(newobj);
       closeModal();
     }
     return (
@@ -602,7 +600,6 @@ export const CreateCaracteristicasForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
-    console.log("Abre Modal");
   };
   const closeModal = () => {
     setIsModalOpen(false);
@@ -611,7 +608,7 @@ export const CreateCaracteristicasForm = React.forwardRef((props, ref) => {
     openModal,
     closeModal,
   }));
-  const Fpref = useRef();
+
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <h2 className="text-4xl">Crear Caracteristicas </h2>

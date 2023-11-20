@@ -18,7 +18,6 @@ import { CaracteristicasResumeForm } from "./ResumeData";
 const FichaPredial = () => {
   const [loading, setLoading] = useState(true);
   const [valueBtt, setValueBtt] = useState("");
-  const caracteristicaRef = useRef(null);
   function btt(e) {
     setLoading(true);
     setValueBtt(e.target.value);

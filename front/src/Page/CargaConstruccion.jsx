@@ -24,7 +24,7 @@ export const LoadDataConstruccion = () => {
 
   function soloNumeros(event) {
     const input = event.target;
-    input.value = input.value.replace(/[^0-9.,]/g, "");
+    input.value = input.value.replace(/[^0-9.]/g, "");
   }
 
   const TableForm = () => {
@@ -262,6 +262,7 @@ export const LoadDataConstruccion = () => {
   async function Avaluo() {
     let año = 2023;
     let array = JSON.stringify(tableData);
+
     let keys = Object.keys(tableData);
     //Recorrer Numeros Prediales
     let ArrayTotal = [];
@@ -316,6 +317,22 @@ export const LoadDataConstruccion = () => {
                 newobj.total =
                   parseFloat(newobj.area) * parseFloat(result.data[0].valor);
               }
+              console.log(
+                "data Area " +
+                  parseFloat(newobj.area) +
+                  " dataValor " +
+                  parseFloat(result.data[0].valor) +
+                  " total " +
+                  newobj.total
+              );
+              console.log(
+                "data Area " +
+                  parseFloat(newobj.area) +
+                  " dataValor " +
+                  parseFloat(result.data[0].valor_m2) +
+                  " total " +
+                  newobj.total
+              );
               ArrayTerreno.push(newobj);
             } else {
               aux = false;
@@ -331,12 +348,14 @@ export const LoadDataConstruccion = () => {
       }
 
       async function calcularAvaluo() {
+        console.log("Inicia Avaluo");
         try {
           let boolterreno = await TerrenoCalculate();
           if (boolterreno) {
             let dataCorrect = [];
             //Rural
             if (currentItem.Zona == "00") {
+              console.log("uNIDADES", currentItem.unidad_construccion);
               for (const item of currentItem.unidad_construccion) {
                 console.log("item Numero Predial", item);
                 let destinacion = item.caracteristicas.tipo_construccion;
@@ -390,6 +409,14 @@ export const LoadDataConstruccion = () => {
                               parseFloat(newobj.area) *
                               parseFloat(result.data[0].valor);
                             ArrayUnidad.push(newobj);
+                            console.log(
+                              "data Area " +
+                                parseFloat(newobj.area) +
+                                " dataValor " +
+                                parseFloat(result.data[0].valor) +
+                                " total " +
+                                newobj.total
+                            );
                             console.log("resultado Residencia", result);
                           } else {
                             aux = false;
@@ -502,7 +529,14 @@ export const LoadDataConstruccion = () => {
                             newobj.total =
                               parseFloat(newobj.area) *
                               parseFloat(result.data[0].valor);
-
+                            console.log(
+                              "data Area " +
+                                parseFloat(newobj.area) +
+                                " dataValor " +
+                                parseFloat(result.data[0].valor) +
+                                " total " +
+                                newobj.total
+                            );
                             //newobj.area * puntaje total2023 - total2023 * 0.0431
                             ArrayUnidad.push(newobj);
                           } else {
@@ -564,7 +598,14 @@ export const LoadDataConstruccion = () => {
                             newobj.total =
                               parseFloat(newobj.area) *
                               parseFloat(result.data[0].valor);
-
+                            console.log(
+                              "data Area " +
+                                parseFloat(newobj.area) +
+                                " dataValor " +
+                                parseFloat(result.data[0].valor) +
+                                " total " +
+                                newobj.total
+                            );
                             //newobj.area * puntaje total2023 - total2023 * 0.0431
                             ArrayUnidad.push(newobj);
                           } else {
@@ -581,6 +622,7 @@ export const LoadDataConstruccion = () => {
                       if (!esti) {
                         console.log("Error en Comercial General Urbana");
                       }
+
                       break;
                     default:
                       console.log("Valor no Calculable");
@@ -594,7 +636,7 @@ export const LoadDataConstruccion = () => {
                     async function asignarDestino(item) {
                       console.log("eNTRA asignar", item);
                       let aux =
-                        item.caracteristicas.calificacionnoconvencional
+                        item.caracteristicas.calificacionnoconvencional[0]
                           .tipo_anexo;
                       console.log("Entra Asignar", aux);
                       let destino = await obtenerDestino(aux);
@@ -852,9 +894,9 @@ export const LoadDataConstruccion = () => {
                       }
                     }
                     async function obtenerDestino(aux) {
-                      console.log("Entra Obtener Destino");
+                      console.log("Entra Obtener Destino 2");
+
                       let prueba = "";
-                      console.log("Entra METODO DESTINO Destino", rangos);
                       const rangos = [
                         { inicio: 452, fin: 455, valor: 2 },
                         { inicio: 456, fin: 459, valor: 3 },
@@ -880,14 +922,14 @@ export const LoadDataConstruccion = () => {
                           prueba = rangos[i].valor;
                         }
                       }
-                      console.log("Slir DESTINO", item);
+                      console.log("Slir DESTINO", prueba);
                       return prueba;
                     }
                     //Usar Tabla Anexo
                     async function AnexoCalculate(destino, puntos, item) {
                       console.log("datos 1", destino);
                       console.log("datos 2", puntos);
-                      console.log("datos 2", item);
+                      console.log("datos 3", item);
                       let aux = "";
                       var requestOptions = {
                         method: "GET",
@@ -917,6 +959,15 @@ export const LoadDataConstruccion = () => {
                             parseFloat(newobj.area) *
                             parseFloat(result.data[0].valor);
                           console.log("resultado Anexo", result);
+                          console.log(
+                            "data Area " +
+                              parseFloat(newobj.area) +
+                              " dataValor " +
+                              parseFloat(result.data[0].valor) +
+                              " total " +
+                              newobj.total
+                          );
+                          ArrayUnidad.push(newobj);
                         } else {
                           aux = false;
                           throw new Error("Error en la solicitud");
@@ -996,6 +1047,14 @@ export const LoadDataConstruccion = () => {
                               parseFloat(result.data[0].valor);
                             ArrayUnidad.push(newobj);
                             console.log("resultado Residencia", result);
+                            console.log(
+                              "data Area " +
+                                parseFloat(newobj.area) +
+                                " dataValor " +
+                                parseFloat(result.data[0].valor) +
+                                " total " +
+                                newobj.total
+                            );
                           } else {
                             aux = false;
                             throw new Error("Error en la solicitud");
@@ -1118,7 +1177,14 @@ export const LoadDataConstruccion = () => {
                             newobj.total =
                               parseFloat(newobj.area) *
                               parseFloat(result.data[0].valor);
-
+                            console.log(
+                              "data Area " +
+                                parseFloat(newobj.area) +
+                                " dataValor " +
+                                parseFloat(result.data[0].valor) +
+                                " total " +
+                                newobj.total
+                            );
                             //newobj.area * puntaje total2023 - total2023 * 0.0431
                             ArrayUnidad.push(newobj);
                           } else {
@@ -1180,7 +1246,14 @@ export const LoadDataConstruccion = () => {
                             newobj.total =
                               parseFloat(newobj.area) *
                               parseFloat(result.data[0].valor);
-
+                            console.log(
+                              "data Area " +
+                                parseFloat(newobj.area) +
+                                " dataValor " +
+                                parseFloat(result.data[0].valor) +
+                                " total " +
+                                newobj.total
+                            );
                             //newobj.area * puntaje total2023 - total2023 * 0.0431
                             ArrayUnidad.push(newobj);
                           } else {
@@ -1208,8 +1281,9 @@ export const LoadDataConstruccion = () => {
                     console.log("eNTRA aNEXO");
                     let est = await asignarDestino(item);
                     async function asignarDestino(item) {
+                      console.log("Entra Asignar Destino", item);
                       let aux =
-                        item.caracteristicas.calificacionnoconvencional
+                        item.caracteristicas.calificacionnoconvencional[0]
                           .tipo_anexo;
                       console.log("Entra Asignar", aux);
 
@@ -1529,6 +1603,15 @@ export const LoadDataConstruccion = () => {
                           newobj.total =
                             parseFloat(newobj.area) *
                             parseFloat(result.data[0].valor);
+                          console.log(
+                            "data Area " +
+                              parseFloat(newobj.area) +
+                              " dataValor " +
+                              parseFloat(result.data[0].valor) +
+                              " total " +
+                              newobj.total
+                          );
+                          ArrayUnidad.push(newobj);
                           console.log("resultado Anexo", result);
                         } else {
                           aux = false;
@@ -1607,6 +1690,7 @@ export const LoadDataConstruccion = () => {
         function calculateConstruida() {
           let sum = 0;
           ArrayUnidad.map((item, index) => {
+            console.log("item construido", item);
             sum += parseFloat(item.area);
           });
           return sum;
@@ -1705,12 +1789,13 @@ export const LoadDataConstruccion = () => {
           return direccion;
         }
         function calculateAvaluo() {
+          console.log("Arreglo Unidad", ArrayUnidad);
           let sum = 0;
           ArrayTerreno.map((item, index) => {
-            sum += parseFloat(item.total);
+            sum += item.total;
           });
           ArrayUnidad.map((item, index) => {
-            sum += parseFloat(item.total);
+            sum += item.total;
           });
           return sum;
         }
@@ -1751,9 +1836,16 @@ export const LoadDataConstruccion = () => {
   }
   const AllTableForm = () => {
     console.log("Datos Totales", dataTotal);
+
+    function redondearAvaluoTotal(data) {
+      return Math.ceil(data / 1000) * 1000;
+    }
     const Allfilas = Object.entries(dataTotal).map((items, index) => {
       console.log("items", items);
       let item = items[1];
+      ////////////////////////////////////////////////////FUncion de Redondear Valor Final Avaluo
+      console.log("Valor Avaluo redondeado");
+      //redondearAvaluoTotal(item.avaluo)
       return (
         <tr key={index}>
           <td className="border-2 rounded-xl p-2">{index + 1}</td>
@@ -1764,7 +1856,7 @@ export const LoadDataConstruccion = () => {
           <td className="border-2 rounded-xl p-2">{item.area_terreno}</td>
           <td className="border-2 rounded-xl p-2">{item.area_construida}</td>
           <td className="border-2 rounded-xl p-2">
-            $ {item.avaluo.toLocaleString()}
+            $ {redondearAvaluoTotal(item.avaluo).toLocaleString()}
           </td>
           <td className="border-2 rounded-xl p-2">{item.vigencia}</td>
         </tr>
