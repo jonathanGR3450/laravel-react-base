@@ -29,7 +29,7 @@ const FormularioResolucion = () => {
 
   const { mostrarAlerta, alerta, submitInfoResolucion } = useInfo();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -61,7 +61,7 @@ const FormularioResolucion = () => {
       });
       return;
     }
-    submitInfoResolucion({
+    await submitInfoResolucion({
       no_resolucion: serialResolucion,
       dia: dia,
       mes: mes,
@@ -96,6 +96,26 @@ const FormularioResolucion = () => {
       reviso_aprobo_nombre: "Oscar Rivera Aguilar",
       reviso_aprobo_cargo: "Aux. Administrativo",
     });
+    setSerialResolucion ("");
+    setDia ("");
+    setMes ("");
+    setAnio ("");
+    setNombre ("");
+    setCedula ("");
+    setCiudadCedula ("");
+    setNumeroRadicado ("");
+    setIdAasociado ("");   
+    setZona ("");
+    setNumeroEscritura ("");
+    setFechaEscritutra ("");
+    setNotaria ("");
+    setCiudadNotaria ("");    
+    setDiaNotificacionLetra ("");
+    setDiaNotificacion ("");
+    setMesNotificacionLetra ("");
+    setAnioNotificacionLetra ("");
+    setAnioNotificacion ("");
+    setnombreDirector ("");
   };
 
   const { msg } = alerta;
