@@ -20,6 +20,7 @@ import { LoadDataForm } from "../Page/CargaDatos";
 import { LoadDataConstruccion } from "../Page/CargaConstruccion";
 import AvaluoForm from "../Page/Avaluo";
 import Resolucion from "../Page/Resolucion";
+import Resoluciones from "../Page/Resoluciones";
 const Ruta = () => {
   return (
     <InfoProvider>
@@ -68,6 +69,7 @@ const Ruta = () => {
           <Route path="/DataHom" element={<LoadCodHom />}></Route>
           <Route path="/Avaluo" element={<AvaluoForm />}></Route>
           <Route path="/Resolucion" element={<Resolucion />}></Route>
+          <Route path="/Resoluciones" element={<Resoluciones />}></Route>
         </Route>
       </Routes>
     </InfoProvider>
