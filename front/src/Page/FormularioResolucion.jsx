@@ -1,4 +1,6 @@
 import { useState } from "react";
+import useInfo from "../hooks/useInfo";
+import Alerta from "../components/Alerta";
 const FormularioResolucion = () => {
   const [serialResolucion, setSerialResolucion] = useState("");
   const [dia, setDia] = useState("");
@@ -25,15 +27,105 @@ const FormularioResolucion = () => {
   const [anioNotificacion, setAnioNotificacion] = useState("");
   const [nombreDirector, setnombreDirector] = useState("");
 
-  const handleSubmit = (e) => {
+  const { mostrarAlerta, alerta, submitInfoResolucion } = useInfo();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (
+      [
+        serialResolucion,
+        dia,
+        mes,
+        anio,
+        nombre,
+        cedula,
+        ciudadCedula,
+        numeroRadicado,
+        idAasociado,
+        numeroEscritura,
+        fechaEscritutra,
+        notaria,
+        ciudadNotaria,
+        diaNotificacionLetra,
+        diaNotificacion,
+        mesNotificacionLetra,
+        anioNotificacionLetra,
+        anioNotificacion,
+        nombreDirector,
+      ].includes("")
+    ) {
+      mostrarAlerta({
+        msg: "Todos los Campos son Obligatorios",
+        error: true,
+      });
+      return;
+    }
+    await submitInfoResolucion({
+      no_resolucion: serialResolucion,
+      dia: dia,
+      mes: mes,
+      vigencia: anio,
+      nombre_gestor: nombre,
+      cedula_numero_gestor: cedula,
+      cedula_cuidad_gestor: ciudadCedula,
+      calidad_gestor: "PROPIETARIO",
+      no_radicado: numeroRadicado,
+      asociado_id: idAasociado,
+      numero_predial: "252900001000000010007000000000",
+      matricula_inmobiliaria: "1212212112",
+      zona_ubicacion: "Rural",
+      escritura_publica: numeroEscritura,
+      fecha_now: fechaEscritutra,
+      no_notaria: notaria,
+      ciudad: ciudadNotaria,
+      extension_desde: "157-00000",
+      extension_hasta: "157-99999",
+      dejar_ver: "DEJAR SOLO LOS DOCUMENTOS ADJUNTOS Y ELIMINAR LOS DEMÁS",
+      ingrese_imagen: "INGRESAR IMÁGEN LEGIBLE Y CENTRADA",
+      dia_now_letra: diaNotificacionLetra,
+      dia_now_numero: diaNotificacion,
+      mes_now_letra: mesNotificacionLetra,
+      annio_letra: anioNotificacionLetra,
+      annio_numero: anioNotificacion,
+      nombre_director_ordenamiento: nombreDirector,
+      cargo_director_ordenamiento:
+        "Directora de Ordenamiento Territorial y Gestión Catastral",
+      nombre_proyecto_abogado: "Luis Carlos",
+      nombre_reviso_contratista: "Diego",
+      reviso_aprobo_nombre: "Oscar Rivera Aguilar",
+      reviso_aprobo_cargo: "Aux. Administrativo",
+    });
+    setSerialResolucion ("");
+    setDia ("");
+    setMes ("");
+    setAnio ("");
+    setNombre ("");
+    setCedula ("");
+    setCiudadCedula ("");
+    setNumeroRadicado ("");
+    setIdAasociado ("");   
+    setZona ("");
+    setNumeroEscritura ("");
+    setFechaEscritutra ("");
+    setNotaria ("");
+    setCiudadNotaria ("");    
+    setDiaNotificacionLetra ("");
+    setDiaNotificacion ("");
+    setMesNotificacionLetra ("");
+    setAnioNotificacionLetra ("");
+    setAnioNotificacion ("");
+    setnombreDirector ("");
   };
+
+  const { msg } = alerta;
 
   return (
     <form
       className="flex flex-col  py-10 px-5 md:w-1/2 rounded-lg shadow"
       onSubmit={handleSubmit}
     >
+      {msg && <Alerta alerta={alerta} />}
       <div className="  mb-3">
         <label className="font-semibold m-2" htmlFor="serialResolucion">
           Serial Resolución
@@ -186,7 +278,7 @@ const FormularioResolucion = () => {
           className=" w-full border-2 rounded-lg text-center "
           placeholder="Primera"
           value={notaria}
-          onChange={(e) => setFechaEscritutra(e.target.value)}
+          onChange={(e) => setNotaria(e.target.value)}
         />
       </div>
       <div className="  mb-3">
@@ -280,12 +372,13 @@ const FormularioResolucion = () => {
           onChange={(e) => setnombreDirector(e.target.value)}
         />
       </div>
+      {msg && <Alerta alerta={alerta} />}
       <input
         type="submit"
         value="Crear Resolucion"
         className="
-      p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2 cursor-pointer
-      hover:bg-teal-700 transition-colors "
+      p-2 text-center rounded text-white bg-teal-500 text-lg mr-2 cursor-pointer
+      hover:bg-teal-700 transition-colors uppercase "
       />
     </form>
   );
