@@ -10,6 +10,9 @@ import { NumPredialForm } from "../Page/NumPredial";
 import { LoadCodHom } from "../Page/LoadCodHom";
 import { ArrayFinalProvider, TableProvider } from "../Page/Context/Context";
 import { DataProvider } from "../Page/Context/DataContext";
+
+import { InfoProvider } from "../Page/Context/InfoProvider";
+
 //import FuenteAdminForm from "../Page/FuenteAdmin";
 //import { AddInteresadoForm } from "../Page/AddInteresado";
 
@@ -20,56 +23,62 @@ import AvaluoForm from "../Page/Avaluo";
 
 
 
+import Resolucion from "../Page/Resolucion";
+import Resoluciones from "../Page/Resoluciones";
 const Ruta = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Menu />}>
-        <Route path="/Tablero" element={<Tablero />}></Route>
-        <Route path="/Consulta/:data" element={<Consulta />} />
-        <Route path="/Ficha" element={<FichaPredial />}>
-          <Route path="Uniconst/:info" element={<UniconstForm />}></Route>
-        </Route>
-        <Route path="/Resumen" element={<ResumenForm />}></Route>
-        <Route
-          path="/NumPredial"
-          element={
-            <ArrayFinalProvider>
-              <TableProvider>
-                <NumPredialForm />{" "}
-              </TableProvider>
-            </ArrayFinalProvider>
-          }
-        ></Route>
-        <Route
-          path="/LoadData"
-          element={
-            <ArrayFinalProvider>
-              <TableProvider>
-                <DataProvider>
-                  <LoadDataForm />
-                </DataProvider>
-              </TableProvider>
-            </ArrayFinalProvider>
-          }
-        ></Route>
-        <Route
-          path="/LoadConstruccion"
-          element={
-            <ArrayFinalProvider>
-              <TableProvider>
-                <DataProvider>
-                  <LoadDataConstruccion />
-                </DataProvider>
-              </TableProvider>
-            </ArrayFinalProvider>
-          }
-        ></Route>
-        <Route path="/DataHom" element={<LoadCodHom />}></Route>
-        <Route path="/Avaluo" element={<AvaluoForm />}></Route>
+    <InfoProvider>
+      <Routes>
+        <Route path="/" element={<Menu />}>
+          <Route path="/Tablero" element={<Tablero />}></Route>
+          <Route path="/Consulta/:data" element={<Consulta />} />
+          <Route path="/Ficha" element={<FichaPredial />}>
+            <Route path="Uniconst/:info" element={<UniconstForm />}></Route>
+          </Route>
+          <Route path="/Resumen" element={<ResumenForm />}></Route>
+          <Route
+            path="/NumPredial"
+            element={
+              <ArrayFinalProvider>
+                <TableProvider>
+                  <NumPredialForm />{" "}
+                </TableProvider>
+              </ArrayFinalProvider>
+            }
+          ></Route>
+          <Route
+            path="/LoadData"
+            element={
+              <ArrayFinalProvider>
+                <TableProvider>
+                  <DataProvider>
+                    <LoadDataForm />
+                  </DataProvider>
+                </TableProvider>
+              </ArrayFinalProvider>
+            }
+          ></Route>
+          <Route
+            path="/LoadConstruccion"
+            element={
+              <ArrayFinalProvider>
+                <TableProvider>
+                  <DataProvider>
+                    <LoadDataConstruccion />
+                  </DataProvider>
+                </TableProvider>
+              </ArrayFinalProvider>
+            }
+          ></Route>
+          <Route path="/DataHom" element={<LoadCodHom />}></Route>
+          <Route path="/Avaluo" element={<AvaluoForm />}></Route>
         <Route path="/Incremento" element={<IncrementoForm />}></Route>
         
-      </Route>
-    </Routes>
+          <Route path="/Resolucion" element={<Resolucion />}></Route>
+          <Route path="/Resoluciones" element={<Resoluciones />}></Route>
+        </Route>
+      </Routes>
+    </InfoProvider>
   );
 };
 
