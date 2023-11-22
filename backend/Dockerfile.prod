@@ -20,6 +20,12 @@ RUN apt-get update && apt-get install -y  --no-install-recommends \
     libpq-dev \
     build-essential \
     libpng-dev \
+    libreoffice \
+    libreoffice-writer \
+    ure \
+    libreoffice-java-common \
+    libreoffice-core \
+    libreoffice-common \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     locales \
@@ -28,7 +34,9 @@ RUN apt-get update && apt-get install -y  --no-install-recommends \
     vim \
     unzip \
     git \
-    curl
+    curl \
+    && apt-get -y -q remove libreoffice-gnome && \
+	apt -y autoremove
 
 # clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*

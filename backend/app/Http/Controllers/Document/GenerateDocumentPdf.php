@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Document;
 
 use App\Http\Controllers\AppBaseController;
+use App\Models\Local\RadicadosLocal;
 use App\Services\Document;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,7 @@ class GenerateDocumentPdf extends AppBaseController
             $pathOutput = "documents";
             $nameTemplate = "template.docx";
             $data = $request->all();
+            
             $document = new Document($path, $nameTemplate, $data, $pathOutput);
     
             $document->generateNameFileOutput();
@@ -27,9 +29,15 @@ class GenerateDocumentPdf extends AppBaseController
             $urlNameFile = "{$document->getPathOutput()}/{$document->getNameFileOutput()}.pdf";
             $url = asset("storage/$urlNameFile");
 
+            $radicado = RadicadosLocal::create([
+                "url" => $url,
+                "no_radicado" => $request->input('no_radicado'),
+                "tramite_id" => $request->input('tramite_id'),
+            ]);
+
             // return Response::download($pathOutputPdf, "{$document->getNameFileOutput()}.pdf");
 
-            return $this->sendResponse(["url" => $url], 'documento generado correctamente');
+            return $this->sendResponse(["url" => $url, "radicado" => $radicado], 'documento generado correctamente');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }
