@@ -33,6 +33,7 @@ class CalcularIncrementoAvaluoFormRequest extends FormRequest
             'tab_santa_maria_de_los_angeles_urbana',
             'tab_viv_60_urbana_rural',
             'lc_valor_terreno_urbana',
+            "tab_com_60_urbana_rural",
         ];
         return [
             'vigencia'          => ['required', 'integer'],
