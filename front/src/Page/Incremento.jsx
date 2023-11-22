@@ -7,27 +7,70 @@ const IncrementoForm = () => {
   
 
     
-    const [decretoTipo, setDecretoTipo] = useState(["2023", "2024", "2025"])
+    const [vigenciaTipo, setVigenciaTipo] = useState(["2023", "2024", "2025"])
+    const [jsonValues,setJsonValues] = useState(  
+      {
+        incremento:0,
+        decreto:"Na",
+        vigencia:"2023"
+      }
+    )
     
-    const Decreto = decretoTipo.map(Decreto => Decreto )
     
-    const handleDecretoTipoChange = (e) => console.log((decretoTipo[e.target.value]))
+    
+    const Vigencia = vigenciaTipo.map(Vigencia => Vigencia )
+    
+    async function postJSON(data) {
+      try {
+        const response = await fetch("http://localhost/api/v1/avaluo-catastral/calcular/incremento", {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+          
+        });
+    
+        const result = await response.json();
+        console.log("Success:", result);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+    
+
+    function handleVigenciaTipoChange(e) { 
+      console.log((vigenciaTipo[e.target.value]))
+      jsonValues.vigencia=(vigenciaTipo[e.target.value])
+    }
     function handleEnviar(e) {    
       console.log("Enviando ...");
+      const jsonEnviar={"vigencia":jsonValues.vigencia,"incremento":jsonValues.incremento,"tablas": ["tab_anexos_urbana_rural"]}
+      console.log(jsonEnviar)
+      console.log(jsonValues)
+      postJSON(jsonEnviar);
     }
     function handleInput(e) {    
       
       const {name, value} = e.target;
+      jsonValues.incremento=value
       console.log(value);
       
     }
+    function handleInput2(e) {    
+      
+      const {name, value} = e.target;
+      jsonValues.decreto=value
+      console.log(value);
+      
+    }    
     const sel=(
       <>
         < select
-        onChange={e => handleDecretoTipoChange(e)}
+        onChange={e => handleVigenciaTipoChange(e)}
         className="border-2 p-2 w-mid rounded-lg text-center " >
         {
-          Decreto.map((address, key) => <option value={key}>{address}</option>)
+          Vigencia.map((address, key) => <option value={key}>{address}</option>)
         }
         </select >
         <input type="submit" value="Submit" />
@@ -51,7 +94,7 @@ const IncrementoForm = () => {
         <div className="w-1/4 flex flex-col  ml-4">
             <label className="w-mid font-semibold">Decreto : </label>
             <input
-              onChange={handleInput}
+              onChange={handleInput2}
               type="text"
               className="border-2 p-2 rounded-lg text-center w-full"
               name="area"
@@ -61,10 +104,11 @@ const IncrementoForm = () => {
         <br/>
         <label className="w-mid font-semibold">Vigencia : </label>
         < select
-        onChange={e => handleDecretoTipoChange(e)}
+        onChange={e => handleVigenciaTipoChange(e)}
+        defaultValue="2023"
         className="border-2 p-2 w-mid rounded-lg text-center " >
         {
-          Decreto.map((address, key) => <option value={key}>{address}</option>)
+          Vigencia.map((address, key) => <option value={key}>{address}</option>)
         }
         </select >
         <br/>
