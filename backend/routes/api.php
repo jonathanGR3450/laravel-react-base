@@ -27,7 +27,9 @@ use App\Http\Controllers\FuenteAdministrativa\StoreLocal AS StoreFuenteAdministr
 use App\Http\Controllers\Datosadicionaleslevantamientocatastral\StoreLocal AS StoreDatosadicionaleslevantamientocatastralLocal;
 use App\Http\Controllers\ContactoVisita\StoreLocal AS StoreContactoVisitaLocal;
 use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
+use App\Http\Controllers\Terreno\UpdateLocal AS UpdateTerrenoLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
+use App\Http\Controllers\Construccion\UpdateLocal AS UpdateConstruccionLocal;
 use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccionLocal;
 use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\GetPredioController;
@@ -44,6 +46,7 @@ use App\Http\Controllers\Predio\StoreLcPredio;
 use App\Http\Controllers\Predio\StoreNumeroHomologadosController;
 use App\Http\Controllers\Predio\StoreNumeroPredialController;
 use App\Http\Controllers\Predio\StoreNumeroPredialHomologadoController;
+use App\Http\Controllers\Predio\UpdateLcPredio;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -69,6 +72,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('predio')->group(function () {
         Route::post('', StoreLcPredio::class);
+        Route::put('{id}', UpdateLcPredio::class);
         Route::post('uebaunit', StoreColUebaunitLocal::class);
         Route::post('unidadfuente', StoreColUnidadfuenteLocal::class);
         Route::get('numero-predial', GetPredioNumeroPredialController::class);
@@ -121,6 +125,7 @@ Route::prefix('v1')->group(function () {
     Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
 
     Route::post('terreno/local', StoreTerrenoLocal::class);
+    Route::put('terreno/local/{id}', UpdateTerrenoLocal::class);
 
     Route::post('datos-adicionales/local', StoreDatosadicionaleslevantamientocatastralLocal::class);
 
@@ -128,6 +133,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('unidad/construccion/local', StoreUnidadConstruccionLocal::class);
     Route::post('construccion/local', StoreConstruccionLocal::class);
+    Route::put('construccion/local/{id}', UpdateConstruccionLocal::class);
     Route::post('construccion/documentos', StoreDocuments::class);
 
     Route::post('rrrfuente/fuente-administrativa/derecho', StoreFuenteAdministrativaDerechoController::class);
