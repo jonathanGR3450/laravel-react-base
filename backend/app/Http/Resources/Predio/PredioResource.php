@@ -125,6 +125,9 @@ class PredioResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $terreno = $this->uebaunit()->get()->first()?->terreno;
+        $uebaunit =  clone $this->uebaunit;
+        // dd($terreno->dimension);
         return [
             "Predio" => [
                 [
@@ -136,6 +139,150 @@ class PredioResource extends JsonResource
                     "Tiene_FMI" => $this->tiene_fmi,
                     "Codigo_ORIP" => $this->codigo_orip,
                     "Matricula_Inmobiliaria" => $this->matricula_inmobiliaria,
+                    "derechos" => $this->lcDerechos->transform(function ($item) {
+                        return [
+                            't_id' => $item->t_id,
+                            'tipo' => $item->tipo,
+                            'fraccion_derecho' => $item->fraccion_derecho,
+                            'fecha_inicio_tenencia' => $item->fecha_inicio_tenencia,
+                            'descripcion' => $item->descripcion,
+                            "fuenteadministrativa" => $item->colRrrFuente->transform(function ($item) {
+                                return [
+                                    't_id' => $item->fuenteAdministrativa?->t_id,
+                                    'tipo' => $item->fuenteAdministrativa?->tipo,
+                                    'ente_emisor' => $item->fuenteAdministrativa?->ente_emisor,
+                                    'observacion' => $item->fuenteAdministrativa?->observacion,
+                                    'numero_fuente' => $item->fuenteAdministrativa?->numero_fuente,
+                                    'estado_disponibilidad' => $item->fuenteAdministrativa?->estado_disponibilidad,
+                                    'tipo_principal' => $item->fuenteAdministrativa?->tipo_principal,
+                                    'fecha_documento_fuente' => $item->fuenteAdministrativa?->fecha_documento_fuente,
+                                    'espacio_de_nombres' => $item->fuenteAdministrativa?->espacio_de_nombres,
+                                ];
+                            }),
+                            'interesado_lc_interesado' => [
+                                "t_id" => $item->interesado?->t_id ?? null,
+                                "tipo" => $item->interesado?->tipo ?? null,
+                                "tipo_documento" => $item->interesado?->tipo_documento ?? null,
+                                "documento_identidad" => $item->interesado?->documento_identidad ?? null,
+                                "primer_nombre" => $item->interesado?->primer_nombre ?? null,
+                                "segundo_nombre" => $item->interesado?->segundo_nombre ?? null,
+                                "primer_apellido" => $item->interesado?->primer_apellido ?? null,
+                                "segundo_apellido" => $item->interesado?->segundo_apellido ?? null,
+                                "sexo" => $item->interesado?->sexo ?? null,
+                                "grupo_etnico" => $item->interesado?->grupo_etnico ?? null,
+                                "razon_social" => $item->interesado?->razon_social ?? null,
+                                "estado_civil" => $item->interesado?->estado_civil ?? null,
+                                "nombre" => $item->interesado?->nombre ?? null,
+                                "comienzo_vida_util_version" => $item->interesado?->comienzo_vida_util_version ?? null,
+                                "fin_vida_util_version" => $item->interesado?->fin_vida_util_version ?? null,
+                                "espacio_de_nombres" => $item->interesado?->espacio_de_nombres ?? null,
+                                "local_id" => $item->interesado?->local_id ?? null,
+                            ],
+                            "interesado_lc_agrupacioninteresados" => [
+                                "tipo" => $item->lcAgrupacionInteresados?->tipo ?? null,
+                                "nombre" => $item->lcAgrupacionInteresados?->nombre ?? null,
+                                "comienzo_vida_util_version" => $item->lcAgrupacionInteresados?->comienzo_vida_util_version ?? null,
+                                "fin_vida_util_version" => $item->lcAgrupacionInteresados?->fin_vida_util_version ?? null,
+                                "espacio_de_nombres" => $item->lcAgrupacionInteresados?->espacio_de_nombres ?? null,
+                                "local_id" => $item->lcAgrupacionInteresados?->local_id ?? null,
+                            ],
+                            'unidad' => $item->unidad,
+                            'comienzo_vida_util_version' => $item->comienzo_vida_util_version,
+                            'fin_vida_util_version' => $item->fin_vida_util_version,
+                            'espacio_de_nombres' => $item->espacio_de_nombres,
+                        ];
+                    }),
+
+                    "construccion" => $this->uebaunit->transform(function ($item) {
+                        return [
+                            't_id' => $item?->construccion?->t_id,
+                            'identificador' => $item?->construccion?->identificador,
+                            'tipo_construccion' => [
+                                't_id' => $item?->construccion?->tipoConstruccion?->t_id,
+                                'dispname' => $item?->construccion?->tipoConstruccion?->dispname
+                            ],
+                            'tipo_dominio' => [
+                                't_id' => $item?->construccion?->tipoDominio?->t_id,
+                                'dispname' => $item?->construccion?->tipoDominio?->dispname
+                            ],
+                            'numero_pisos' => $item?->construccion?->numero_pisos,
+                            'numero_sotanos' => $item?->construccion?->numero_sotanos,
+                            'numero_mezanines' => $item?->construccion?->numero_mezanines,
+                            'numero_semisotanos' => $item?->construccion?->numero_semisotanos,
+                            'anio_construccion' => $item?->construccion?->anio_construccion,
+                            'avaluo_construccion' => $item?->construccion?->avaluo_construccion,
+                            'valor_referencia_construccion' => $item?->construccion?->valor_referencia_construccion,
+                            'area_construccion' => $item?->construccion?->area_construccion,
+                            'altura' => $item?->construccion?->altura,
+                            'observaciones' => $item?->construccion?->observaciones,
+                            'dimension' => [
+                                't_id' => $item?->construccion?->lcdimension?->t_id,
+                                'dispname' => $item?->construccion?->lcdimension?->dispname
+                            ],
+                            'etiqueta' => $item?->construccion?->etiqueta,
+                            'relacion_superficie' => [
+                                't_id' => $item?->construccion?->relacionSuperficie?->t_id,
+                                'dispname' => $item?->construccion?->relacionSuperficie?->dispname
+                            ],
+                            'nivel' => [
+                                't_id' => $item?->construccion?->lcnivel?->t_id,
+                                'dispname' => $item?->construccion?->lcnivel?->dispname
+                            ],
+                            'comienzo_vida_util_version' => $item?->construccion?->comienzo_vida_util_version,
+                            'fin_vida_util_version' => $item?->construccion?->fin_vida_util_version,
+                            'espacio_de_nombres' => $item?->construccion?->espacio_de_nombres,
+                        ];
+                    }),
+                    "unidad_construccion" => $uebaunit->transform(function ($item) {
+                        return [
+                            "area_construida" => $item?->unidadConstruccion?->area_construida,
+                            "lc_caracteristicasunidadconstruccion" => [
+                                "tipo_construccion" => [
+                                    "id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->t_id,
+                                    "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->dispname,
+                                ],
+                                "tipo_unidad_construccion" => [
+                                    "id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoUnidadConstruccion->t_id,
+                                    "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoUnidadConstruccion->dispname,
+                                ],
+                                "uso" => [
+                                    "id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->usoConstruccion->t_id,
+                                    "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->usoConstruccion->dispname,
+                                ],
+                                "calificacionconvencional" => [
+                                    "total_calificacion" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionConvencional()->get()->first()?->total_calificacion,
+                                ],
+                                "calificacionnoconvencional" => [
+                                    "tipo_anexo" => [
+                                        "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionNoConvencional()->get()->first()?->tipo_anexo->t_id,
+                                        "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionNoConvencional()->get()->first()?->tipo_anexo->dispname,
+                                    ],
+                                ],
+                            ]
+                        ];
+                    }),
+                    "terreno" => [
+                        't_id' => $terreno?->t_id,
+                        'area_terreno' => $terreno?->area_terreno,
+                        'avaluo_terreno' => $terreno?->avaluo_terreno,
+                        'manzana_vereda_codigo' => $terreno?->manzana_vereda_codigo,
+                        'dimension' => [
+                            't_id' => $terreno?->lcdimension?->t_id,
+                            'dispname' => $terreno?->lcdimension?->dispname
+                        ],
+                        'etiqueta' => $terreno?->etiqueta,
+                        'relacion_superficie' =>  [
+                            't_id' => $terreno?->relacionSuperficie?->t_id,
+                            'dispname' => $terreno?->relacionSuperficie?->dispname
+                        ],
+                        'nivel' => [
+                            't_id' => $terreno?->lcnivel?->t_id,
+                            'dispname' => $terreno?->lcnivel?->dispname
+                        ],
+                        'comienzo_vida_util_version' => $terreno?->comienzo_vida_util_version,
+                        'fin_vida_util_version' => $terreno?->fin_vida_util_version,
+                        'espacio_de_nombres' => $terreno?->espacio_de_nombres,
+                    ],
                     "Referencia_Registral_Sistema_Antiguo" => [
                         "t_id" => $this->referenciasSistemaAntiguo?->t_id,
                         "Tipo_Refencia" => $this->referenciasSistemaAntiguo?->tipo_referencia,

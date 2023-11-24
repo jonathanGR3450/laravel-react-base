@@ -32,8 +32,6 @@ class StoreLocalFormRequest extends FormRequest
             'interesado_lc_interesado' => 'required|exists:lc_interesado,t_id',
             'interesado_lc_agrupacioninteresados' => 'nullable|exists:lc_agrupacioninteresados,t_id',
             'unidad' => 'nullable|exists:lc_predio,t_id',
-            'comienzo_vida_util_version' => 'required|date',
-            'fin_vida_util_version' => 'nullable|date|after:comienzo_vida_util_version',
             'espacio_de_nombres' => 'required|string|max:255',
         ];
     }

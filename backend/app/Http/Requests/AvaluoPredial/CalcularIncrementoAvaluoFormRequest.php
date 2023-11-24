@@ -38,8 +38,7 @@ class CalcularIncrementoAvaluoFormRequest extends FormRequest
         return [
             'vigencia'          => ['required', 'integer'],
             'incremento'       => ['required', 'numeric'],
-            'tablas'       => ['required', 'array', "min:1"],
-            'tablas.*'       => ['required', 'string', "in:" . implode(",", $tables)],
+            'concepto'       => ['required', 'string'],
         ];
     }
 }

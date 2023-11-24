@@ -90,10 +90,6 @@ class StoreColMiembrosFormRequest extends FormRequest
                 'string',
                 'max:255',
             ],
-            'interesado_lc_interesado.comienzo_vida_util_version' => [
-                'required',
-                'date_format:Y-m-d H:i:s.u',
-            ],
             'interesado_lc_interesado.fin_vida_util_version' => [
                 'nullable',
                 'date_format:Y-m-d H:i:s.u',
@@ -123,10 +119,6 @@ class StoreColMiembrosFormRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-            ],
-            'interesado_lc_agrupacioninteresados.comienzo_vida_util_version' => [
-                'required',
-                'date_format:Y-m-d H:i:s.u',
             ],
             'interesado_lc_agrupacioninteresados.fin_vida_util_version' => [
                 'nullable',

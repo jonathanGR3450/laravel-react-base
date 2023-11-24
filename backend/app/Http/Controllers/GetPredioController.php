@@ -45,10 +45,10 @@ class GetPredioController extends Controller
      *     ),
      * )
      */
-    public function __invoke(int $id)
+    public function __invoke(string $predial)
     {
-        try {
-            $predio = LcPredio::findOrFail($id);
+        // try {
+            $predio = LcPredio::where('numero_predial', $predial)->get()->first();
 
             $predioResource = new PredioResource($predio);
             return response()->json([
@@ -56,12 +56,12 @@ class GetPredioController extends Controller
                 "message" => "Predio get successfull",
                 "data" => $predioResource
             ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                "status" => "error",
-                "message" => $e->getMessage()
-            ], 400, []);
-        }
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         "status" => "error",
+        //         "message" => $e->getMessage()
+        //     ], 400, []);
+        // }
         
     }
 }

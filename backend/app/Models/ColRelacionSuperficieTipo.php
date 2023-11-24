@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class LcDominioConstruccionTipo extends Model
+class ColRelacionSuperficieTipo extends Model
 {
     use HasFactory;
 
     protected $connection = 'pgsqlcatastro';
 
-    protected $table = 'lc_dominioconstrucciontipo';
+    protected $table = 'col_relacionsuperficietipo';
     protected $primaryKey = 't_id';
     public $timestamps = false;
 
@@ -27,11 +27,11 @@ class LcDominioConstruccionTipo extends Model
         'description',
     ];
 
-    function unidadConstrucciones() : HasMany {
-        return $this->hasMany(LcCaracteristicasUnidadConstruccion::class, 'tipo_construccion', 't_id');
+    function terreno() : HasMany {
+        return $this->hasMany(LcTerreno::class, 'relacion_superficie');
     }
-
+    
     function construccion() : HasMany {
-        return $this->hasMany(LcConstruccion::class, 'tipo_dominio', 't_id');
+        return $this->hasMany(LcConstruccion::class, 'relacion_superficie');
     }
 }
