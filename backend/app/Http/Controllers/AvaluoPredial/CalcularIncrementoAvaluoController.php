@@ -59,7 +59,17 @@ class CalcularIncrementoAvaluoController extends AppBaseController
             $vigencia = $request->input('vigencia');
             $vigenciaAnterior = $vigencia - 1;
             $incremento = $request->input('incremento');
-            $tablas = $request->input('tablas');
+            $tablas = [
+                'lc_valor_terreno_rural',
+                'tab_anexos_urbana_rural',
+                'tab_cc_f03_60_urbana_rural',
+                'tab_hot_60_urbana_rural',
+                'tab_bod_60_urbana_rural',
+                'tab_santa_maria_de_los_angeles_urbana',
+                'tab_viv_60_urbana_rural',
+                'lc_valor_terreno_urbana',
+                "tab_com_60_urbana_rural",
+            ];
 
             foreach ($tablas as $tabla) {
                 switch ($tabla) {
@@ -69,7 +79,7 @@ class CalcularIncrementoAvaluoController extends AppBaseController
                             $newModel = $model->replicate();
                             $newModel->vigencia = $vigencia;
                             $newModel->valor_ha = $model->valor_ha * $incremento;
-                            $newModel->valor_m2 = $model->valor_m2;
+                            $newModel->valor_m2 = $model->valor_m2 * $incremento;
                             $newModel->save();
                         }
                         break;

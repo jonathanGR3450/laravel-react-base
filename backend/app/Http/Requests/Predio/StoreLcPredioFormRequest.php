@@ -45,8 +45,6 @@ class StoreLcPredioFormRequest extends FormRequest
             'clase_suelo' => 'required|exists:pgsqlcatastro.lc_clasesuelotipo,t_id',
             'categoria_suelo' => 'nullable|exists:pgsqlcatastro.lc_categoriasuelotipo,t_id',
             'nombre' => 'max:255',
-            'comienzo_vida_util_version' => 'required|date',
-            'fin_vida_util_version' => 'nullable|date|after:comienzo_vida_util_version',
             'espacio_de_nombres' => 'required|max:255',
             'local_id' => 'required|max:255',
         ];

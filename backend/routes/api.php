@@ -82,7 +82,7 @@ Route::prefix('v1')->group(function () {
         Route::post('numeros-homologados', StoreNumeroHomologadosController::class);
         Route::get('list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
         Route::get('list/local/numeros-prediales', IndexNumerosPredialesController::class);
-        Route::get('{id}', GetPredioController::class);
+        Route::get('{predial}', GetPredioController::class);
     });
 
     Route::prefix('caracteristicasunidadconstruccion')->group(function () {
