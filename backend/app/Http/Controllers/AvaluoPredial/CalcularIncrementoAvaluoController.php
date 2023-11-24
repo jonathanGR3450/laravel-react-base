@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AvaluoPredial;
 
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\AvaluoPredial\CalcularIncrementoAvaluoFormRequest;
+use App\Models\Local\LcIncrementoAvaluoLocal;
 use App\Models\Local\LcValorTerrenoRuralLocal;
 use App\Models\Local\LcValorTerrenoUrbanaLocal;
 use App\Models\Local\TabAnexosUrbanaRuralLocal;
@@ -59,6 +60,10 @@ class CalcularIncrementoAvaluoController extends AppBaseController
             $vigencia = $request->input('vigencia');
             $vigenciaAnterior = $vigencia - 1;
             $incremento = $request->input('incremento');
+
+            // insert model
+            LcIncrementoAvaluoLocal::updateOrCreate(['vigencia' => $vigencia], $request->validated());
+
             $tablas = [
                 'lc_valor_terreno_rural',
                 'tab_anexos_urbana_rural',
@@ -74,14 +79,22 @@ class CalcularIncrementoAvaluoController extends AppBaseController
             foreach ($tablas as $tabla) {
                 switch ($tabla) {
                     case 'lc_valor_terreno_rural':
-                        $result = LcValorTerrenoRuralLocal::where('vigencia', $vigenciaAnterior)->get();
+                        $query = LcValorTerrenoRuralLocal::query();
+                        
+                        $vigenciaAnterior = $vigencia - 1;
+                        $queryDelete = clone $query;
+                        $queryInsert = clone $query;
+                        $queryDelete->where('vigencia', $vigencia)->delete();
+
+                        $result = $query->where('vigencia', $vigenciaAnterior)->get()->makeHidden(['t_id'])->toArray();
+                        $resultUpdate = [];
                         foreach ($result as $model) {
-                            $newModel = $model->replicate();
-                            $newModel->vigencia = $vigencia;
-                            $newModel->valor_ha = $model->valor_ha * $incremento;
-                            $newModel->valor_m2 = $model->valor_m2 * $incremento;
-                            $newModel->save();
+                            $model['vigencia'] = $vigencia;
+                            $model['valor_ha'] *= $incremento;
+                            $model['valor_m2'] *= $incremento;
+                            $resultUpdate[] = $model;
                         }
+                        $queryInsert->insert($resultUpdate);
                         break;
                     case 'tab_anexos_urbana_rural':
                         $query = TabAnexosUrbanaRuralLocal::query();
@@ -133,14 +146,16 @@ class CalcularIncrementoAvaluoController extends AppBaseController
         $vigenciaAnterior = $vigencia - 1;
         
         $queryDelete = clone $query;
+        $queryInsert = clone $query;
         $queryDelete->where('vigencia', $vigencia)->delete();
 
-        $result = $query->where('vigencia', $vigenciaAnterior)->get();
+        $result = $query->where('vigencia', $vigenciaAnterior)->get()->makeHidden(['t_id'])->toArray();
+        $resultUpdate = [];
         foreach ($result as $model) {
-            $newModel = $model->replicate();
-            $newModel->vigencia = $vigencia;
-            $newModel->valor = $model->valor * $incremento;
-            $newModel->save();
+            $model['vigencia'] = $vigencia;
+            $model['valor'] *= $incremento;
+            $resultUpdate[] = $model;
         }
+        $queryInsert->insert($resultUpdate);
     }
 }
