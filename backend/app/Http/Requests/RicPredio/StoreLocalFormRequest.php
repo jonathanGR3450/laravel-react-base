@@ -33,7 +33,6 @@ class StoreLocalFormRequest extends FormRequest
             'ric_gestorcatastral' => 'nullable|integer|exists:pgsqlauxiliar.ric_gestorcatastral,t_id',
             'ric_operadorcatastral' => 'nullable|integer|exists:pgsqlauxiliar.ric_operadorcatastral,t_id',
             'nombre' => 'nullable|string|max:255',
-            'comienzo_vida_util_version' => 'nullable|date',
             'fin_vida_util_version' => 'nullable|date',
             'espacio_de_nombres' => 'nullable|string|max:255',
             'local_id' => 'nullable|string|max:255',

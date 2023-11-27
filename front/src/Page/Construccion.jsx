@@ -8,13 +8,17 @@ import {
 } from "react";
 import { InteresadoContext } from "./Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
-
 const ConstruccionForm = (props, ref) => {
   const { tableData, updateTableData } = useContext(TableContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  let [dataId, setDataId] = useState();
+  let [dataId, setDataId] = useState({
+    first: "",
+    second: "",
+  });
 
   const openModal = (aux) => {
+    aux.first = parseInt(aux.first);
+    aux.second = parseInt(aux.second);
     setDataId(aux);
     setIsModalOpen(true);
   };
@@ -24,14 +28,11 @@ const ConstruccionForm = (props, ref) => {
   useImperativeHandle(ref, () => ({
     openModal,
   }));
-  ///Cuantas Construcciones se Crean
+  /**/
   const [numConstruccion, setNumConstruccion] = useState();
-  //Componentes de Construccion
   const [construccion, setConstruccion] = useState([]);
-  //Datos de las construcciones
   const [construccionData, setConstruccionData] = useState();
 
-  //cargo el numero de Construcciones y los Arreglos
   const Load_Num = (e) => {
     const newValue = parseInt(e.target.value);
     console.log(newValue);
@@ -52,7 +53,6 @@ const ConstruccionForm = (props, ref) => {
     setConstruccionData(newConstruccionData);
   };
 
-  //Crear los Cmponentes
   const agregarConstruccion = () => {
     console.log(numConstruccion);
     const nuevaConstruccion = [];
@@ -67,7 +67,6 @@ const ConstruccionForm = (props, ref) => {
     }
     setConstruccion(nuevaConstruccion);
   };
-  //Metodo de Actualizar el construccion data
   const actualizarDatosConstruccion = (index, newData) => {
     console.log("caergadasdasd");
     // Aquí puedes manejar los datos del Interesado individualmente
@@ -77,7 +76,6 @@ const ConstruccionForm = (props, ref) => {
       return newDataArray;
     });
   };
-  //Componente
   const CreateConstruction = (index) => {
     console.log(index);
     const [construccionData, setConstruccionData] = useState({
@@ -93,14 +91,12 @@ const ConstruccionForm = (props, ref) => {
       altura: "",
       observacion: "",
     });
-
     const Load_Data = (e) => {
       const { name, value } = e.target;
       setConstruccionData((prevValues) => ({ ...prevValues, [name]: value }));
       console.log("name", construccionData);
       console.log("value", value);
     };
-
     useEffect(() => {
       index.onDataChange(index.index, construccionData);
       console.log("Actualizacion datos", construccionData);

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Requests\AvaluoPredial;
+namespace App\Http\Requests\Predio;
 
 use App\Traits\ValidationErrorResponseTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CalcularIncrementoAvaluoFormRequest extends FormRequest
+class UpdateLcPredioFormRequest extends FormRequest
 {
     use ValidationErrorResponseTrait;
-
+    
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -25,9 +25,7 @@ class CalcularIncrementoAvaluoFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'vigencia'          => ['required', 'integer'],
-            'incremento'       => ['required', 'numeric'],
-            'concepto'       => ['required', 'string'],
+            'avaluo_catastral' => 'required|numeric|between:0,999999999999999',
         ];
     }
 }

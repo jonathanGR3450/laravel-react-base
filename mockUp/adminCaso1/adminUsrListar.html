@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Administrador</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Administrador</a>
+    </div>
+    <ul class="nav navbar-nav">
+      
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Administrar Usuarios <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="adminUsrListar.html">Editar (Incluye Rol)</a></li>
+          <li><a href="registroForm.html">Crear Usuario</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Consultas <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="registroListar.html">Listar Registros</a></li>
+        </ul>
+      </li>	  
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Reporte <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Trámites</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>	  
+      
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="loginMsg.html"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
+    </ul>
+  </div>
+</nav>
+  
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4">
+			<input type="text" class="form-control" id="email" placeholder="Ingrese su usuario" name="email">
+		</div>
+		<div class="col-sm-4">
+			<a href="#">
+				<span class="glyphicon glyphicon-search" onclick=usrResult(); style="font-size: 30px;"></span>
+			</a>
+		</div>
+	</div>
+	<div class="row" id="usrTabla">
+		<div class="col-sm-12">
+			<table class="table table-striped">
+			<thead>
+			  <tr>
+				<th>Nombre</th>
+				<th>Apellido</th>
+				<th>Correo</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr>
+				<td>John</td>
+				<td>Doe</td>
+				<td>john@example.com</td>
+				<td><form><button type="submit" formaction="adminUsrEditar.html" class="btn btn-primary">Editar</button></form></td>
+			  </tr>
+			  <tr>
+				<td>Mary</td>
+				<td>Moe</td>
+				<td>mary@example.com</td>
+				<td><form><button type="submit" formaction="adminUsrEditar.html" class="btn btn-primary">Editar</button></form></td>
+			  </tr>
+			  <tr>
+				<td>July</td>
+				<td>Dooley</td>
+				<td>july@example.com</td>
+				<td><form><button type="submit" formaction="adminUsrEditar.html" class="btn btn-primary">Editar</button></form></td>
+			  </tr>
+			</tbody>
+			</table>
+			
+		</div>
+	</div>	
+</div>
+
+<script>
+function usrResult(){
+	document.getElementById("usrTabla").innerHTML = `
+		<div class="col-sm-12">
+			<table class="table table-striped">
+			<thead>
+			  <tr>
+				<th>Nombre</th>
+				<th>Apellido</th>
+				<th>Correo</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr>
+				<td>John</td>
+				<td>Doe</td>
+				<td>john@example.com</td>
+				<td><form><button type="submit" formaction="adminUsrEditar.html" class="btn btn-primary">Editar</button></form></td>
+			  </tr>
+			</tbody>
+			</table>
+			
+		</div>`;
+		}
+</script>
+
+</body>
+</html>

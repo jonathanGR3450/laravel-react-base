@@ -28,18 +28,18 @@ class LcTerreno extends Model
         'espacio_de_nombres',
     ];
 
-    // public function dimension()
-    // {
-    //     return $this->belongsTo(ColDimensionTipo::class, 'dimension', 'id');
-    // }
+    public function lcdimension()
+    {
+        return $this->belongsTo(ColDimensionTipo::class, 'dimension');
+    }
 
-    // public function relacionSuperficie()
-    // {
-    //     return $this->belongsTo(ColRelacionSuperficieTipo::class, 'relacion_superficie', 'id');
-    // }
+    public function relacionSuperficie()
+    {
+        return $this->belongsTo(ColRelacionSuperficieTipo::class, 'relacion_superficie', 't_id');
+    }
 
-    // public function nivel()
-    // {
-    //     return $this->belongsTo(LcNuNivel::class, 'nivel', 'id');
-    // }
+    public function lcnivel()
+    {
+        return $this->belongsTo(LcNuNivel::class, 'nivel', 't_id');
+    }
 }

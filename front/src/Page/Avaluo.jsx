@@ -17,6 +17,7 @@ const AvaluoForm = () => {
   const [dataResponse, setDataResponse] = useState({
     SantaMaria: false,
   });
+
   const [dataTotal, setDataTotal] = useState({
     zona: "",
     terreno: [],
@@ -346,6 +347,73 @@ const AvaluoForm = () => {
     let arrayResponse = [];
     //Arreglo de Unidades
     let uni = [];
+
+    async function TerrenoCalculate() {
+      setMsjAvaluo("Calculando Terreno");
+      let aux = "";
+      let requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+
+      for (const item of zonasData) {
+        if (item.ZHG <= 9 && item.ZHG.toLocaleString().length < 2) {
+          console.log("Resul", item.ZHG);
+          item.ZHG = "0" + item.ZHG;
+        }
+        let newobj = {
+          area: item.area,
+          zhg: item.ZHG,
+          total2022: "",
+          total2023: "",
+        };
+        let url = "";
+        if (zona == "00") {
+          url =
+            import.meta.env.VITE_API_URL_FIRST +
+            "avaluo-catastral/rural/valor-terreno?zona_economica=" +
+            newobj.zhg +
+            "&vigencia=2023";
+        } else {
+          if (zona == "01") {
+            url =
+              import.meta.env.VITE_API_URL_FIRST +
+              "avaluo-catastral/urbano/valor-terreno?zhg_no=" +
+              item.ZHG +
+              "&vigencia=2022";
+          }
+        }
+
+        try {
+          const response = await fetch(url, requestOptions);
+          if (response.ok) {
+            const result = await response.json();
+            if (zona == "00") {
+              newobj.total2023 =
+                newobj.area * parseFloat(result.data[0].valor_m2);
+              newobj.total2022 = newobj.total2023 - newobj.total2023 * 0.0431;
+            } else {
+              if (zona == "01") {
+                newobj.total2022 =
+                  newobj.area * parseFloat(result.data[0].valor);
+                newobj.total2023 = newobj.total2022 + newobj.total2022 * 0.0431;
+              }
+            }
+
+            arrayResponse.push(newobj);
+            aux = true;
+          } else {
+            aux = false;
+            throw new Error("Error en la solicitud");
+          }
+        } catch (error) {
+          aux = false;
+          console.log("Error:", error);
+        }
+        //setDataTotal({ ...dataTotal, terreno: arrayResponse });
+      }
+      return aux;
+    }
 
     async function calcularAvaluo() {
       let año = 2023;

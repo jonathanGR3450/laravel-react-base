@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Administrador</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+    <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <title>Bootstrap Datepicker</title>
+    <style>
+      label{margin-left: 20px;}
+      #datepicker{width:180px;}
+      #datepicker > span:hover{cursor: pointer;}
+    </style>
+  
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Administrador</a>
+    </div>
+    <ul class="nav navbar-nav">
+      
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Administrar Usuarios <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="adminUsrListar.html">Editar (Incluye Rol)</a></li>
+          <li><a href="registroForm.html">Crear Usuario</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Consultas <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="registroListar.html">Listar Registros</a></li>
+        </ul>
+      </li>	  
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Reporte <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Trámites</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>	  
+      
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="loginMsg.html"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
+    </ul>
+  </div>
+</nav>
+  
+<div class="container">
+  <h2>Datos de Registro</h2>
+  <h3>Por favor completar los campos obligatorios *</h3>
+  <form action="admin.html">
+	<div class="row">
+	  <div class="col-sm-4">
+			<div class="form-group">
+			  <label for="sel1">Tipo de Documento *:</label>
+			  <select class="form-control" id="sel1">
+				<option>CC</option>
+				<option>TI</option>
+				<option>TE</option>
+			  </select>
+			</div>
+		<div class="form-group">
+		  <label for="email">Número de Documento *:</label>
+		  <input type="text" class="form-control" id="email" placeholder="Ingrese su usuario" name="email">
+		</div>
+		<div class="form-group">
+		  <label for="email">Razón Social *:</label>
+		  <input type="text" class="form-control" id="email" placeholder="Ingrese Razón Social" name="email">
+		</div>
+		<div class="form-group">
+		  <label for="email">Primer Nombre *:</label>
+		  <input type="text" class="form-control" id="email" placeholder="Ingrese Primer Nombre" name="email">
+		</div>
+		<div class="form-group">
+		  <label for="email">Segundo Nombre *:</label>
+		  <input type="text" class="form-control" id="email" placeholder="Ingrese segundo nombre" name="email">
+		</div>
+		<div class="form-group">
+		  <label for="email">Primer Apellido *:</label>
+		  <input type="text" class="form-control" id="email" placeholder="Ingrese primer apellido" name="email">
+		</div>
+		<div class="form-group">
+		  <label for="email">Segundo Apellido *:</label>
+		  <input type="text" class="form-control" id="email" placeholder="Ingrese segundo apellido" name="email">
+		</div>
+		<div class="form-group">
+		  <label for="email">Contraseña *:</label>
+		  <input type="password" class="form-control" id="email" placeholder="Ingrese su contraseña" name="email">
+		</div>
+		<div class="form-group">
+		  <label for="email">Repetir Contraseña *:</label>
+		  <input type="password" class="form-control" id="email" placeholder="Ingrese su contraseña de nuevo" name="email">
+		</div>
+		<div class="form-group">
+		  
+		  <input type="text"  style="visibility: hidden;" name="msg" id="msg" value = "Se han actualizado correctamente los datos del usuario" class="form-control"  placeholder="Ingrese su contraseña de nuevo" name="email">
+		</div>		
+	  </div>
+	  <div class="col-sm-4">
+	  
+		<div class="form-group">
+			<label>Fecha de Nacimiento: </label>
+			<div id="datepicker" 
+				 class="input-group date" 
+				 data-date-format="mm-dd-yyyy">
+				<input class="form-control" 
+					   type="text" readonly />
+				<span class="input-group-addon">
+					<i class="glyphicon glyphicon-calendar"></i>
+				</span>
+			</div>
+		</div>
+	  
+		<div class="form-group">
+		  <label for="pwd">Dirección *:</label>
+		  <input type="text" class="form-control" id="pwd" placeholder="Ingrese Direccion" name="pwd">
+		</div>
+		<div class="form-group">
+		  <label for="pwd">Teléfono *:</label>
+		  <input type="text" class="form-control" id="pwd" placeholder="Ingrese Teléfono" name="pwd">
+		</div>		
+		<div class="form-group">
+		  <label for="pwd">Correo *:</label>
+		  <input type="email" class="form-control" id="pwd" placeholder="Ingrese Correo" name="pwd">
+		</div>
+		<div class="form-group">
+		  <label for="pwd">Género *:</label>
+		  <input type="text" class="form-control" id="pwd" placeholder="Ingrese Género" name="pwd">
+		</div>
+		<div class="form-group">
+		  <label for="pwd">Registrado Por *:</label>
+		  <input type="text" value="Gelberth Amarillo" class="form-control" id="pwd" placeholder="" name="pwd">
+		</div>
+		<div class="form-group">
+		  <label for="pwd">Fecha de Cambio *:</label>
+		  <input type="text" value= "2023-08-01 14:00" class="form-control" id="pwd" placeholder="Ingrese Contraseña" name="pwd">
+		</div>
+		<div class="form-group">
+		  <label for="pwd">Rol *:</label>
+			  <select class="form-control" id="sel1">
+				<option>Usuario</option>
+				<option>Admin</option>
+				<option>Legal</option>
+				<option>Coordinador</option>
+			  </select>
+		</div>
+		<div class="form-group">
+		  <label for="pwd">Estado *:</label>
+			  <select class="form-control" id="sel1">
+				<option>Habilitado</option>
+				<option>Deshabilitado</option>
+			  </select>
+		</div>
+
+	  </div>
+	</div>
+
+    <button type="submit" class="btn btn-default">Guardar Registro</button>
+  </form>
+
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" 
+        integrity=
+    "sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" 
+        crossorigin="anonymous">
+    </script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true,
+            }).datepicker('update', new Date());
+        });
+    </script>
+    <script src=
+"https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
+        integrity=
+"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+        crossorigin="anonymous">
+    </script>
+    <script src=
+"https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" 
+        integrity=
+"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+        crossorigin="anonymous">
+    </script>
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    </script>
+</body>
+</html>
