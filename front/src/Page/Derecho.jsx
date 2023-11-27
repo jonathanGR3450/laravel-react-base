@@ -52,10 +52,12 @@ const DerechoForm = (props, ref) => {
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-        <h1 className="font-semibold text-3xl">Caracteristicas del predio</h1>
-        <p>A Continuación se muestran las caracteristicas del predio:</p>
+        <h1 className="font-semibold text-3xl">Caracteristicas del Derecho</h1>
+        <p>A Continuación se muestran las caracteristicas del Derecho:</p>
         <div className="flex flex-col w-full">
-          <h2 className="font-semibold text-2xl">Datos Generales del Predio</h2>
+          <h2 className="font-semibold text-2xl">
+            Datos Generales del Derecho
+          </h2>
           <div className="flex flex-row w-full">
             <div className="flex flex-col w-1/3">
               <label className="font-semibold">Tipo Derecho*:</label>

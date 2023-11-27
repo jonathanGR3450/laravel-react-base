@@ -56,7 +56,7 @@ const UniconstForm = (dataForm) => {
 
   function soloNumeros(event) {
     const input = event.target;
-    input.value = input.value.replace(/[^0-9.]/g, "");
+    input.value = input.value.replace(/[^0-9.,]/g, "");
   }
 
   const [data, setData] = useState();
@@ -64,7 +64,6 @@ const UniconstForm = (dataForm) => {
     Load_Data();
     setEstForm(true);
   }, []);
-
   function Load_Data() {
     //let url = import.meta.env.VITE_API_URL;
     setData(Estructura.general);
@@ -279,8 +278,10 @@ const UniconstForm = (dataForm) => {
         let url =
           import.meta.env.VITE_API_URL_FIRST +
           "caracteristicasunidadconstruccion/convencional";
+        console.log("Url");
         try {
           const response = await fetch(url, requestOptions);
+          console.log("Url", response);
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response}`);
           }

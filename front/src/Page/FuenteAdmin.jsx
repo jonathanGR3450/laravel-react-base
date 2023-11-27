@@ -101,9 +101,12 @@ const FuenteAdminForm = (props, ref) => {
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
         <h1 className="text-2xl">Fuente Administrativa</h1>
-        <p>A continuación se muestran las caracteristicas del predio:</p>
+        <p>
+          A continuación se muestran las caracteristicas de Fuente
+          Administrativa:
+        </p>
         <div className="w-full pt-4 flex flex-col">
-          <h2 className="text-xl">Datos Generales del Predio</h2>
+          <h2 className="text-xl">Datos Generales de Fuente Administrativa</h2>
           <div id="Clase" className="w-full flex flex-row">
             <div className="w-1/2 flex flex-col m-4">
               <h3 className="font-semibold">

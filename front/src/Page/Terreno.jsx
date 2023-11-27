@@ -128,7 +128,6 @@ const TerrenoForm = (props, ref) => {
         throw new Error("Error en la solicitud");
       }
     } catch (error) {
-      console.log("Dataaaaa222", response);
       return false;
       console.log("Error:", error);
     }

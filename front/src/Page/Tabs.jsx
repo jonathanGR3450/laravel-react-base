@@ -130,34 +130,34 @@ const Tabs = ({ tabs, arrayClass, updateFunction }) => {
           if (inicial.includes("Baño") || inicial.includes("Cocina")) {
             switch (parseInt(item.tipo_objeto_construccion)) {
               case 137:
-                conservacion = 1;
+                conservacion = 0;
                 break;
               case 138:
                 conservacion = 2;
                 break;
               case 139:
-                conservacion = 3;
+                conservacion = 4;
                 break;
               case 140:
-                conservacion = 4;
+                conservacion = 5;
                 break;
               case 141:
-                conservacion = 4;
+                conservacion = 5;
                 break;
               case 152:
-                conservacion = 1;
+                conservacion = 0;
                 break;
               case 153:
                 conservacion = 2;
                 break;
               case 154:
-                conservacion = 3;
+                conservacion = 4;
                 break;
               case 155:
-                conservacion = 4;
+                conservacion = 5;
                 break;
               case 156:
-                conservacion = 4;
+                conservacion = 5;
                 break;
             }
           }

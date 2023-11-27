@@ -305,11 +305,13 @@ export const LoadDataConstruccion = () => {
               "&vigencia=" +
               año;
           }
+          console.log("Urla", url);
           try {
             const response = await fetch(url, requestOptions);
             if (response.ok) {
               aux = true;
               const result = await response.json();
+              console.log(result);
               if (currentItem.Zona == "00") {
                 newobj.total =
                   parseFloat(newobj.area) * parseFloat(result.data[0].valor_m2);

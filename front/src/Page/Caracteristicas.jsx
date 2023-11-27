@@ -544,7 +544,7 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
                     <option value="311">(Anexo) Pista aeropuerto</option>
                     <option value="312">(Anexo) Pozos</option>
                     <option value="313">
-                      (Anexo) Ramadas - Cobertizos - Caneyes
+                      (Anexo) Enramadas - Cobertizos - Caneyes
                     </option>
                     <option value="314">(Anexo) Secaderos</option>
                     <option value="315">(Anexo) Silos</option>

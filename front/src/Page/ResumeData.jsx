@@ -837,7 +837,8 @@ export const PuntajeResumeForm = React.forwardRef((props, ref) => {
     openModal,
   }));
   function mostrar(datos) {
-    console.log(datos);
+    console.log("Datos", datos);
+
     let sum = 0;
     function nombreclase(valor) {
       let categoria = 0;
