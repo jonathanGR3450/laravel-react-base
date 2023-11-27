@@ -31,6 +31,7 @@ export const LoadDataConstruccion = () => {
     const terrenoResumeForm = useRef();
     const unidadConstruccionResumeForm = useRef();
     const construccionResumeForm = useRef();
+    //Aperturas
     const openterrenoResumeForm = () => {
       terrenoResumeForm.current.openModal();
     };
@@ -204,23 +205,11 @@ export const LoadDataConstruccion = () => {
         <div className="w-1/3 flex flex-col items-center">
           <label className="font-semibold">SELECCIONAR ID</label>
           <div className="flex flex-row items-center justify-center">
-            {" "}
             <input
-              name="first"
               type="text"
-              className="border-2 rounded-lg text-center m-1 w-1/3"
-              onInput={soloNumeros}
-              onChange={HandleDataId}
-              value={dataId.first}
-            ></input>
-            <label> - </label>
-            <input
-              name="second"
-              type="text"
-              className="border-2 rounded-lg text-center m-1 w-1/3"
-              onInput={soloNumeros}
-              onChange={HandleDataId}
-              value={dataId.second}
+              className="border-2 rounded-lg w-full p-1"
+              onChange={NumComa}
+              value={inputId}
             ></input>
           </div>
         </div>
@@ -1028,6 +1017,7 @@ export const LoadDataConstruccion = () => {
                         };
                         let url = "";
                         if (currentItem.terreno.SantaMaria) {
+                          console.log("Usa URL santamaria");
                           url =
                             import.meta.env.VITE_API_URL_FIRST +
                             "avaluo-catastral/urbano/santa-maria?puntos=" +

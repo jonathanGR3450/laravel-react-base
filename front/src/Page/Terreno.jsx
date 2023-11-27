@@ -12,13 +12,34 @@ const TerrenoForm = (props, ref) => {
   const { tableData, updateTableData } = useContext(TableContext);
   console.log("Datos Tabla", tableData);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  let [dataId, setDataId] = useState();
   const [terrenoData, setTerrenoData] = useState({
     area_terreno: "",
     codigo_manzana: "",
     avaluo_terreno: "",
-    ZHG: "",
+    ZHG: [],
     SantaMaria: "",
   });
+
+  const openModal = (aux) => {
+    let newData = {
+      area_terreno: "",
+      codigo_manzana: "",
+      avaluo_terreno: "",
+      ZHG: [],
+      SantaMaria: "",
+    };
+    setTerrenoData(newData);
+    setDataId(aux);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+
   const isAnyValueEmpty = () => {
     if (terrenoData.area_terreno !== "" && terrenoData.ZHG !== "") {
       setEstBtt(false);
@@ -26,11 +47,13 @@ const TerrenoForm = (props, ref) => {
       setEstBtt(true);
     }
   };
+
   useEffect(() => {
     isAnyValueEmpty();
   }, [terrenoData]);
 
   const [estBtt, setEstBtt] = useState(true);
+
   function soloNumeros(event) {
     const input = event.target;
     console.log("evento", input);
@@ -45,24 +68,20 @@ const TerrenoForm = (props, ref) => {
     }
     console.log("Terreno Data", terrenoData);
     let response = await createTerreno();
-    terrenoData.area_terreno = parseFloat(
-      terrenoData.area_terreno.replace(",", ".")
-    );
+
     console.log("terreno Data", terrenoData);
     if (response) {
-      tableData.map((item, index) => {
-        if (index >= dataId.first - 1 && index <= dataId.second - 1) {
-          terrenoData.codigo_manzana =
-            item.Dpto +
-            item.Mpio +
-            item.Zona +
-            item.Sector +
-            item.Comuna +
-            item.Barrio +
-            item.Manzana;
-          item.terreno = terrenoData;
-        }
+      Object.entries(tableData).map((itemd, index) => {
+        let item = itemd[1];
+        console.log("Data Index", item);
+        dataId.map((items) => {
+          if (items - 1 == index) {
+            item.terreno = terrenoData;
+          }
+        });
       });
+      console.log("Tabla Data", tableData);
+      closeModal();
       updateTableData(tableData);
     }
   };
@@ -87,11 +106,12 @@ const TerrenoForm = (props, ref) => {
       dimension: 685,
       etiqueta: "Terreno",
       relacion_superficie: 663,
-      nivel: null,
+      nivel: "",
       comienzo_vida_util_version: "2023-08-29 12:00:00",
       fin_vida_util_version: null,
       espacio_de_nombres: "Mi Espacio",
     };
+    console.log("Nuevo Ojbeto", JSON.stringify(newobj));
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -102,12 +122,13 @@ const TerrenoForm = (props, ref) => {
       const response = await fetch(url, requestOptions);
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
+        console.log("Dataaaaa", result);
         return "id", response;
       } else {
         throw new Error("Error en la solicitud");
       }
     } catch (error) {
+      console.log("Dataaaaa222", response);
       return false;
       console.log("Error:", error);
     }

@@ -56,7 +56,7 @@ const UniconstForm = (dataForm) => {
 
   function soloNumeros(event) {
     const input = event.target;
-    input.value = input.value.replace(/[^0-9.,]/g, "");
+    input.value = input.value.replace(/[^0-9.]/g, "");
   }
 
   const [data, setData] = useState();
@@ -64,6 +64,7 @@ const UniconstForm = (dataForm) => {
     Load_Data();
     setEstForm(true);
   }, []);
+
   function Load_Data() {
     //let url = import.meta.env.VITE_API_URL;
     setData(Estructura.general);

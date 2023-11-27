@@ -23,9 +23,6 @@ const UniConstruccionForm = (props, ref) => {
   let [dataId, setDataId] = useState();
   let [construcciones, setConstrucciones] = useState();
 
-  let [dataId, setDataId] = useState();
-  let [construcciones, setConstrucciones] = useState();
-
   const openModal = (aux) => {
     let newobj = [];
 
@@ -313,19 +310,6 @@ const UniConstruccionForm = (props, ref) => {
     console.log("datos de tabla", tableData);
     updateTableData(tableData);
     closeModal();
-  };
-
-  const sendData = () => {
-    Object.entries(tableData).map((itemd, index) => {
-      let item = itemd[1];
-      dataId.map((items) => {
-        if (items - 1 == index) {
-          item.unidad_construccion = unidadData;
-        }
-      });
-    });
-    console.log("datos de tabla", tableData);
-    updateTableData(tableData);
   };
 
   return (
