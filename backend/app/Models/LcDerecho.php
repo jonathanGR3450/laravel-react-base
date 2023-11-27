@@ -52,4 +52,9 @@ class LcDerecho extends Model
     {
         return $this->belongsTo(LcPredio::class, 'unidad');
     }
+
+    public function colRrrFuente()
+    {
+        return $this->hasMany(ColRrrfuente::class, 'rrr_lc_derecho');
+    }
 }

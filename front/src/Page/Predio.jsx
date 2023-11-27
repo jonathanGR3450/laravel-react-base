@@ -9,7 +9,6 @@ import {
 import { DataContext } from "./Context/DataContext";
 import { TableContext } from "./Context/Context";
 const PredioForm = (props, ref) => {
-  const { updateDataAll } = useContext(DataContext);
   const { tableData, updateTableData } = useContext(TableContext);
   const [estBtt, setEstBtt] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);

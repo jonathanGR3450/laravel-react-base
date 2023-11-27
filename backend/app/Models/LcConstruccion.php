@@ -39,28 +39,28 @@ class LcConstruccion extends Model
         'espacio_de_nombres',
     ];
 
-    // public function dimension()
-    // {
-    //     return $this->belongsTo(ColDimensionTipo::class, 'dimension', 't_id');
-    // }
+    public function lcdimension()
+    {
+        return $this->belongsTo(ColDimensionTipo::class, 'dimension', 't_id');
+    }
 
-    // public function nivel()
-    // {
-    //     return $this->belongsTo(LcNuNivel::class, 'nivel', 't_id');
-    // }
+    public function lcnivel()
+    {
+        return $this->belongsTo(LcNuNivel::class, 'nivel', 't_id');
+    }
 
-    // public function relacionSuperficie()
-    // {
-    //     return $this->belongsTo(ColRelacionSuperficieTipo::class, 'relacion_superficie', 't_id');
-    // }
+    public function relacionSuperficie()
+    {
+        return $this->belongsTo(ColRelacionSuperficieTipo::class, 'relacion_superficie', 't_id');
+    }
 
-    // public function tipoConstruccion()
-    // {
-    //     return $this->belongsTo(LcConstruccionTipo::class, 'tipo_construccion', 't_id');
-    // }
+    public function tipoConstruccion()
+    {
+        return $this->belongsTo(LcConstruccionTipo::class, 'tipo_construccion', 't_id');
+    }
 
-    // public function tipoDominio()
-    // {
-    //     return $this->belongsTo(LcDominioConstruccionTipo::class, 'tipo_dominio', 't_id');
-    // }
+    public function tipoDominio()
+    {
+        return $this->belongsTo(LcDominioConstruccionTipo::class, 'tipo_dominio', 't_id');
+    }
 }

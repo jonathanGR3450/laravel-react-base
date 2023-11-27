@@ -28,6 +28,10 @@ class LcDominioConstruccionTipo extends Model
     ];
 
     function unidadConstrucciones() : HasMany {
-        return $this->hasMany(LcCaracteristicasUnidadConstruccion::class, 'tipo_construccion');
+        return $this->hasMany(LcCaracteristicasUnidadConstruccion::class, 'tipo_construccion', 't_id');
+    }
+
+    function construccion() : HasMany {
+        return $this->hasMany(LcConstruccion::class, 'tipo_dominio', 't_id');
     }
 }

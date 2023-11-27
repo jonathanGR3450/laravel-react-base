@@ -42,6 +42,9 @@ const Menu = () => {
             <Link to="/Avaluo">Avaluo</Link>
           </li>
           <li className="ml-2 text-white">
+            <Link to="/Incremento">Incremento</Link>
+          </li> 
+          <li className="ml-2 text-white">
             <Link to="/Resolucion">Generar Resolucion</Link>
           </li>
         </ul>

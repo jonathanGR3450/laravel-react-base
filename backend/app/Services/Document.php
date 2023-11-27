@@ -41,7 +41,25 @@ class Document
         $templatePath = public_path("{$this->path}/{$this->nameFile}");
 
         $templateProcessor = new TemplateProcessor($templatePath);
-        $templateProcessor->setValues($this->data);
+        $templateVariable    = $templateProcessor->getVariables();
+        foreach ($this->data as $variable => $value) {
+            if (in_array($variable, $templateVariable)) {
+                if (is_array($value)) {
+                    $templateProcessor->cloneRow($variable, sizeof($value));  // Clonar.
+                    // dd($value, $variable);
+                    $i = 1;
+                    foreach ($value as $k => $v) {
+                        foreach ($v as $llave => $valor) {
+                            // obtener el tipo de variable
+                            $templateProcessor->setValue($llave . '#' . $i, $valor);
+                        }
+                        $i++;
+                    }
+                } else {
+                    $templateProcessor->setValue($variable, $value);
+                }
+            }
+        }
 
         $nameFileOutput = "{$this->nameFileOutput}.docx";
         $outputPath = storage_path("app/public/{$this->pathOutput}/$nameFileOutput");
@@ -51,14 +69,9 @@ class Document
     }
 
     public function convertToPdf(string $filePath): string {
-        $domPdfPath = base_path('vendor/dompdf/dompdf');
-        Settings::setPdfRendererPath($domPdfPath);
-        Settings::setPdfRendererName('DomPDF'); 
-        $Content = IOFactory::load($filePath); 
-        $PDFWriter = IOFactory::createWriter($Content,'PDF');
-
         $nameFileOutput = str_replace('.docx', '.pdf', $filePath);
-        $PDFWriter->save($nameFileOutput);
+        $outputPath = storage_path("app/public/{$this->pathOutput}");
+        exec("libreoffice --invisible --convert-to pdf '$filePath' --outdir $outputPath", $aux, $return);
         return $nameFileOutput;
     }
 }

@@ -32,7 +32,6 @@ class StoreLocalFormRequest extends FormRequest
             'etiqueta' => 'nullable|string|max:255',
             'relacion_superficie' => 'nullable|exists:pgsqlcatastro.col_relacionsuperficietipo,t_id',
             'nivel' => 'nullable|exists:pgsqlcatastro.lc_nu_nivel,t_id',
-            'comienzo_vida_util_version' => 'required|date',
             'fin_vida_util_version' => 'nullable|date',
             'espacio_de_nombres' => 'required|string|max:255',
         ];

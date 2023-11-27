@@ -2,7 +2,6 @@ import React, { createContext, useState } from "react";
 
 //Datos Tabla
 export const TableContext = createContext();
-
 export const TableProvider = ({ children }) => {
   const [tableData, setTableData] = useState([]);
 
