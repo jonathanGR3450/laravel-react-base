@@ -1,10 +1,15 @@
 const TablaResoluciones = () => {
   const data = [
-    { radicado: 'R-2022-1234', idAsociado: "ID-12345", resolucion: ' 03-001-000', url: "http://localhost/storage/documents/2023-11-20-1973e4fa-18fc-4d57-817a-371f9cd80337-document.pdf" }
+    {
+      radicado: "R-2022-1234",
+      idAsociado: "ID-12345",
+      resolucion: " 03-001-000",
+      url: "http://localhost/storage/documents/2023-11-20-d6ba40b9-9464-4f47-b979-f1572e430abe-document.pdf",
+    },
   ];
 
   const openPdfInNewTab = (url) => {
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
   return (
     <table className="min-w-full bg-white border border-gray-300">

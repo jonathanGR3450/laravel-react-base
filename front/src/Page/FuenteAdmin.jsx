@@ -37,8 +37,34 @@ const FuenteAdminForm = (props, ref) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const sendData = () => {
+  const sendData = async () => {
     console.log("entra", objFuente);
+    try {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      let json = "";
+      let raw = 0;
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      let url =
+        import.meta.env.VITE_API_URL_FIRST + "fuente-administrativa/local";
+
+      const response = await fetch(url, requestOptions);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.text();
+      console.log(result);
+    } catch (error) {
+      console.log("error", error);
+    }
+
     tableData.map((item, index) => {
       dataId.map((items) => {
         if (items - 1 == index) {

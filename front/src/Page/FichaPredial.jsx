@@ -17,10 +17,13 @@ import { CaracteristicaProvider } from "./Context/CaracteristicaContext";
 import { CaracteristicasResumeForm } from "./ResumeData";
 const FichaPredial = () => {
   const [loading, setLoading] = useState(true);
+  const [estForm, setEstForm] = useState(false);
   const [valueBtt, setValueBtt] = useState("");
+
   function btt(e) {
     setLoading(true);
     setValueBtt(e.target.value);
+    setEstForm(true);
   }
   //<UniconstForm data="Convencional" />
   const Option = () => {
@@ -47,6 +50,7 @@ const FichaPredial = () => {
     );
   };
   function LoadOptions() {
+    setEstForm(false);
     setLoading(false);
   }
   useEffect(() => {
@@ -73,13 +77,16 @@ const FichaPredial = () => {
         </button>
       </div>
       {loading != true && <Option />}
-      <CaracteristicaProvider>
-        {valueBtt == 66 ? (
-          <UniconstForm data={"Convencional"} id={66} />
-        ) : (
-          <UniconstForm data={"No Convencional"} id={67} />
-        )}
-      </CaracteristicaProvider>
+
+      {estForm ? (
+        <CaracteristicaProvider>
+          {valueBtt == 66 ? (
+            <UniconstForm data={"Convencional"} id={66} />
+          ) : (
+            <UniconstForm data={"No Convencional"} id={67} />
+          )}
+        </CaracteristicaProvider>
+      ) : null}
     </div>
   );
 };

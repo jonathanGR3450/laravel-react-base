@@ -253,7 +253,59 @@ const ConstruccionForm = (props, ref) => {
     input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
   }
 
-  const sendData = () => {
+  const sendData = async () => {
+    console.log("Construccion Data", construccionData);
+    try {
+      let json = [];
+      construccionData.map((item, index) => {
+        let newobj = {
+          identificador: "CSTR1234", // You can generate a unique identifier as needed
+          tipo_construccion: parseInt(item.tipo_construccion),
+          tipo_dominio: null,
+          numero_pisos: parseInt(item.num_pisos),
+          numero_sotanos: null,
+          numero_mezanines: parseInt(item.num_mezanines),
+          numero_semisotanos: null,
+          anio_construccion: parseInt(item.anio_cons),
+          avaluo_construccion: item.avaluo ? parseFloat(item.avaluo) : null,
+          valor_referencia_construccion: item.valor_referencia
+            ? parseFloat(item.valor_referencia)
+            : null,
+          area_construccion: parseFloat(item.area),
+          altura: parseFloat(item.altura),
+          observaciones: item.observacion,
+          dimension: null, // You need to provide the appropriate value for dimension
+          etiqueta: null, // You need to provide the appropriate value for etiqueta
+          relacion_superficie: null,
+          nivel: null,
+          comienzo_vida_util_version: "2023-08-29",
+          fin_vida_util_version: null,
+          espacio_de_nombres: "Ejemplo",
+        };
+        json.push(newobj);
+      });
+      let myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      let raw = JSON.stringify(json);
+      console.log(raw);
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      let url = import.meta.env.VITE_API_URL_FIRST + "construccion/local";
+      const response = await fetch(url, requestOptions);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.log("error", error);
+    }
     Object.entries(tableData).map((itemd, index) => {
       let item = itemd[1];
       dataId.map((items) => {

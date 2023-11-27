@@ -318,7 +318,7 @@ export const LoadDataConstruccion = () => {
                   parseFloat(newobj.area) * parseFloat(result.data[0].valor);
               }
               console.log(
-                "data Area " +
+                "data Area rural " +
                   parseFloat(newobj.area) +
                   " dataValor " +
                   parseFloat(result.data[0].valor) +
@@ -326,7 +326,7 @@ export const LoadDataConstruccion = () => {
                   newobj.total
               );
               console.log(
-                "data Area " +
+                "data Area urbano " +
                   parseFloat(newobj.area) +
                   " dataValor " +
                   parseFloat(result.data[0].valor_m2) +
@@ -943,12 +943,14 @@ export const LoadDataConstruccion = () => {
                         año +
                         "&tipo=RURAL&destino=" +
                         destino;
-
+                      console.log("url rural", url);
                       try {
                         const response = await fetch(url, requestOptions);
+
                         if (response.ok) {
                           aux = true;
                           const result = await response.json();
+                          console.log("Anexos Rurales", result);
                           let newobj = {
                             destinacion: item.caracteristicas.tipo_construccion,
                             puntaje: result.data[0].puntos,
@@ -982,7 +984,7 @@ export const LoadDataConstruccion = () => {
                     console.log("23232 ", est);
                     dataCorrect.push(est);
                     if (!est) {
-                      console.log("Error en Anexos Urbanos");
+                      console.log("Error en Anexos Rurales");
                     } else {
                       console.log("sale aNEXO");
                     }
@@ -1588,12 +1590,13 @@ export const LoadDataConstruccion = () => {
                         año +
                         "&tipo=URBANA&destino=" +
                         destino;
-
+                      console.log("Anexos Rurales", url);
                       try {
                         const response = await fetch(url, requestOptions);
                         if (response.ok) {
                           aux = true;
                           const result = await response.json();
+
                           let newobj = {
                             destinacion: item.caracteristicas.tipo_construccion,
                             puntaje: result.data[0].puntos,
@@ -1636,6 +1639,7 @@ export const LoadDataConstruccion = () => {
                 }
               }
             }
+
             console.log("datos Correctos", dataCorrect);
             if (dataCorrect[0]) {
               return true;
@@ -1825,6 +1829,169 @@ export const LoadDataConstruccion = () => {
         };
         ArrayTotal.push(newobj);
       } else {
+        console.log("terreno Error Unidades", ArrayTerreno);
+        console.log("Unidad 1 1", ArrayUnidad);
+
+        function calculateAreatotal() {
+          let sum = 0;
+          ArrayTerreno.map((item, index) => {
+            sum += parseFloat(item.area);
+          });
+          return sum;
+        }
+        function calculateDireccion() {
+          let direccion = "";
+          if (currentItem.Direccion.tipo_direccion == 219) {
+            direccion = currentItem.Direccion.nombre_predio;
+          } else {
+            if (currentItem.Direccion.tipo_direccion == 218) {
+              let previa = currentItem.Direccion;
+              let clase = "";
+              let sectorciudad = "";
+              let sectorpredio = "";
+              switch (previa.clase_via_principal) {
+                case "688":
+                  clase = "Avenida calle";
+                  break;
+                case "689":
+                  clase = "Avenida carrera";
+                  break;
+                case "690":
+                  clase = "Avenida";
+                  break;
+                case "691":
+                  clase = "Autopista";
+                  break;
+                case "692":
+                  clase = "Circunvalar";
+                  break;
+                case "693":
+                  clase = "Calle";
+                  break;
+                case "694":
+                  clase = "Carrera";
+                  break;
+                case "695":
+                  clase = "Diagonal";
+                  break;
+                case "696":
+                  clase = "Transversal";
+                  break;
+                case "697":
+                  clase = "Circular";
+                  break;
+              }
+              switch (previa.sector_ciudad) {
+                case "881":
+                  sectorciudad = "Norte";
+                  break;
+                case "882":
+                  sectorciudad = "Sur";
+                  break;
+                case "883":
+                  sectorciudad = "Este";
+                  break;
+                case "884":
+                  sectorciudad = "Oeste";
+                  break;
+              }
+              switch (previa.sector_predio) {
+                case "752":
+                  sectorpredio = "Norte";
+                  break;
+                case "753":
+                  sectorpredio = "Sur";
+                  break;
+                case "754":
+                  sectorpredio = "Este";
+                  break;
+                case "755":
+                  sectorpredio = "Oeste";
+                  break;
+              }
+              direccion =
+                clase +
+                " " +
+                previa.valor_via_principal +
+                " " +
+                previa.letra_via_principal +
+                " " +
+                sectorciudad +
+                " " +
+                previa.valor_via_generadora +
+                " " +
+                previa.letra_via_generadora +
+                " " +
+                previa.numero_predio +
+                " " +
+                sectorpredio +
+                " " +
+                previa.complemento;
+            }
+            console.log("Direccion", currentItem.Direccion);
+          }
+          return direccion;
+        }
+        function calculateDestino() {
+          let destino = "";
+          ArrayUnidad.map((item, index) => {
+            if (item.destinacion >= 220 && item.destinacion <= 234) {
+              destino = "A";
+            } else {
+              if (item.destinacion >= 235 && item.destinacion <= 258) {
+                destino = "C";
+              } else {
+                if (item.destinacion >= 259 && item.destinacion <= 263) {
+                  destino = "B";
+                } else {
+                  if (
+                    (item.destinacion >= 287 && item.destinacion <= 321) ||
+                    item.destinacion == 273
+                  ) {
+                    destino = "";
+                  }
+                }
+              }
+            }
+          });
+          return destino;
+        }
+        function calculateAvaluo() {
+          console.log("Arreglo Unidad", ArrayUnidad);
+          let sum = 0;
+          ArrayTerreno.map((item, index) => {
+            sum += item.total;
+          });
+          ArrayUnidad.map((item, index) => {
+            sum += item.total;
+          });
+          return sum;
+        }
+        let num =
+          currentItem.Dpto +
+          currentItem.Mpio +
+          currentItem.Zona +
+          currentItem.Sector +
+          currentItem.Comuna +
+          currentItem.Barrio +
+          currentItem.Manzana +
+          currentItem.Terreno +
+          currentItem.Condicion +
+          currentItem.Edificio +
+          currentItem.Piso +
+          currentItem.Unidad;
+
+        let newobj = {
+          num_predial: num,
+          matricula: 157 + " - " + currentItem.Matricula,
+          direccion: calculateDireccion(),
+          destinacion: calculateDestino(),
+          area_terreno: calculateAreatotal(),
+          area_construida: 0,
+          avaluo: calculateAvaluo(),
+          vigencia: "01/01/2023",
+        };
+        ArrayTotal.push(newobj);
       }
 
       //Recorrer Numeros Prediales DATA
@@ -1839,6 +2006,11 @@ export const LoadDataConstruccion = () => {
 
     function redondearAvaluoTotal(data) {
       return Math.ceil(data / 1000) * 1000;
+    }
+    function redondear(numero) {
+      const resto = numero % 1000;
+      const redondeo = resto >= 500 ? 1000 - resto : -resto;
+      return numero + redondeo;
     }
     const Allfilas = Object.entries(dataTotal).map((items, index) => {
       console.log("items", items);
@@ -1856,7 +2028,7 @@ export const LoadDataConstruccion = () => {
           <td className="border-2 rounded-xl p-2">{item.area_terreno}</td>
           <td className="border-2 rounded-xl p-2">{item.area_construida}</td>
           <td className="border-2 rounded-xl p-2">
-            $ {redondearAvaluoTotal(item.avaluo).toLocaleString()}
+            $ {redondear(item.avaluo).toLocaleString()}
           </td>
           <td className="border-2 rounded-xl p-2">{item.vigencia}</td>
         </tr>

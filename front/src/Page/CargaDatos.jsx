@@ -156,6 +156,7 @@ export const LoadDataForm = () => {
             return parseInt(item);
           });
           validNumbers = numeros;
+          console.log(validNumbers);
           setDataId(validNumbers);
         }
       } else {

@@ -1,5 +1,5 @@
 //Seccion Unidad Construccion Convencional y no Convencional
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Loader from "./Loader";
@@ -10,11 +10,13 @@ import {
   CaracteristicaContext,
   GrupoProvider,
 } from "./Context/CaracteristicaContext";
+import { PuntajeResumeForm } from "./ResumeData";
+
 import { CaraContext } from "./Uniconstruccion";
 const UniconstForm = (dataForm) => {
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [tipo_const, setTipo_Const] = useState("");
+  const [estForm, setEstForm] = useState(false);
   const [estMsjError, setEstMsjError] = useState({
     anio_construccion: false,
   });
@@ -30,23 +32,13 @@ const UniconstForm = (dataForm) => {
     observaciones: "",
     area_construida: "",
   });
-  console.log("Actualiza");
-  //Cargar el json Structure
-  function Load_Data() {
-    //let url = import.meta.env.VITE_API_URL;
-    setData(Estructura.general);
-    setLoading(false);
-  } /*
-  useEffect(() => {
-    
-  }, [msjError]);*/
+
   function DataGeneral(e) {
     let { name, value } = e.target;
     if (name === "anio_construccion") {
       let num = parseInt(value);
       let est = false;
       if (num <= 1600) {
-        console.log("nu", num);
         est = true;
         setEstMsjError({ ...estMsjError, anio_construccion: est });
       } else {
@@ -61,26 +53,38 @@ const UniconstForm = (dataForm) => {
       tipo_construccion: tipo_const,
     }));
   }
-  useEffect(() => {
-    Load_Data();
-  }, []);
+
   function soloNumeros(event) {
     const input = event.target;
     input.value = input.value.replace(/[^0-9.,]/g, "");
   }
-  function CentralForm({ tipo_unidad }) {
+
+  const [data, setData] = useState();
+  useEffect(() => {
+    Load_Data();
+    setEstForm(true);
+  }, []);
+  function Load_Data() {
+    //let url = import.meta.env.VITE_API_URL;
+    setData(Estructura.general);
+    setLoading(false);
+  }
+
+  function CentralForm(tipo_unidad) {
+    //Cargar el json Structure
+
     ////////////////////////////////////////////////////Contexto ///////////////////////////
     const { dataCaracteristica, updateCaracteristicaData } = useContext(
       CaracteristicaContext
     );
+
     //Captura de datos segun si es Convencional o no Convencional
     let dato = "";
-    if (tipo_unidad === "Convencional") {
+    if (tipo_unidad.tipo_unidad == "Convencional") {
       dato = data.Convencional;
     } else {
       dato = data.No_Convencional;
     }
-
     //variable.caracteristicasunidadconstruccion.tipo_construccion =      dato.tipo_construccion;
 
     const tplanta = data["Tipo Planta"];
@@ -88,8 +92,14 @@ const UniconstForm = (dataForm) => {
     let tipo_uniconst = dato["Tipo Unidad Construccion"];
     const [uso, setUso] = useState();
     const [sopti, setSopti] = useState();
-    const [djson, setDjson] = useState({});
-    const { updateCaracteristicas } = useContext(CaraContext);
+    const contextoCaracteristicas = useContext(CaraContext);
+    function iscontext(context) {
+      if (!context) {
+        return false;
+      } else {
+        return true;
+      }
+    }
 
     const [newDataCentral, setNewDataCentral] = useState({
       tipo_planta: "",
@@ -117,7 +127,6 @@ const UniconstForm = (dataForm) => {
         const optionName = selectedOption.getAttribute("name");
         const { name, value } = e.target;
         setSopti(sv);
-        console.log(newDataCentral);
         //Guardar Datos al contexto
         updateCaracteristicaData((prevData) => {
           return {
@@ -155,24 +164,58 @@ const UniconstForm = (dataForm) => {
     //Metodo para el Manejo de Tipo del menu No Convencional
 
     /////////////////////////////////////Componente para los datos de destinacion
-    function Mdesti({ select, nom }) {
+
+    function Mdesti({ select, nom, tipo }) {
       //Variables
+      console.log("tipo ", tipo);
       const { dataCaracteristica } = useContext(CaracteristicaContext);
       const [tipoanexo, setTipoAnexo] = useState("");
+      const [estButton, setEstButton] = useState(false);
       const inicial = Object.keys(select);
+      console.log("select ", select);
+      let tamaño_Grupo = 0;
       ////////////////////////////////Arreglo de Calificaciones////////////////////////////
-      let tamaño_Grupo = inicial.length - 1;
-      let values_Grupo = {
-        clase_calificacion: "",
-        conservacion: "",
-        subtotal: "",
-        objetoconstruccion: [],
-      };
+      let values_Grupo = [];
+      if (tipo === "No Convencional") {
+      } else {
+        if (tipo === "Convencional") {
+          values_Grupo = {
+            clase_calificacion: "",
+            conservacion: "",
+            subtotal: "",
+            objetoconstruccion: [],
+          };
+          tamaño_Grupo = inicial.length - 1;
+        }
+      }
+
       const [arrayClass, setArrayClass] = useState(
         Array(tamaño_Grupo).fill(values_Grupo)
       );
+
+      const puntajeResumeForm = useRef();
+      const openPuntajeResumeForm = () => {
+        puntajeResumeForm.current.openModal();
+      };
+      function validar() {
+        // Verificar si hay algún valor "" en arrayClass
+        const hayCamposVacios = arrayClass.some((objeto) =>
+          Object.values(objeto).some((valor) => valor === "")
+        );
+
+        if (hayCamposVacios) {
+          console.log('Hay al menos un campo con valor "" en arrayClass');
+          setEstButton(false);
+        } else {
+          console.log('No hay campos con valor "" en arrayClass');
+          setEstButton(true);
+        }
+      }
+      useEffect(() => {
+        console.log("Data Caracteristica", arrayClass);
+        validar();
+      }, [arrayClass]);
       const UpdateArrayClass = (nuevoArray) => {
-        //console.log("nuevos Datos", nuevoArray);
         setArrayClass(nuevoArray);
       };
       ///////////////////////////////////////////////
@@ -181,7 +224,6 @@ const UniconstForm = (dataForm) => {
         arrayClass.map((item, index) => {
           sum += item.subtotal;
         });
-        console.log("Sumatoria", sum);
         let objCalificacion = {
           tipo_calificar: select.tipo_calificar,
           total_calificacion: sum,
@@ -221,7 +263,11 @@ const UniconstForm = (dataForm) => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        updateCaracteristicas(Json);
+        if (iscontext(contextoCaracteristicas)) {
+          const { updateCaracteristicas } = contextoCaracteristicas;
+          updateCaracteristicas(Json);
+        }
+
         var raw = JSON.stringify(Json);
         var requestOptions = {
           method: "POST",
@@ -232,8 +278,6 @@ const UniconstForm = (dataForm) => {
         let url =
           import.meta.env.VITE_API_URL_FIRST +
           "caracteristicasunidadconstruccion/convencional";
-        console.log("url", url);
-        console.log("dadadad", raw);
         try {
           const response = await fetch(url, requestOptions);
           if (!response.ok) {
@@ -280,9 +324,14 @@ const UniconstForm = (dataForm) => {
             },
           ],
         };
+        //http://localhost/api/v1/avaluo-catastral/tipo/tab-anexos?puntos=60&vigencia=2023&tipo=RURAL&destino=2
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        updateCaracteristicas(Json);
+        if (iscontext(contextoCaracteristicas)) {
+          const { updateCaracteristicas } = contextoCaracteristicas;
+          updateCaracteristicas(Json);
+        }
+
         var raw = JSON.stringify(Json);
         var requestOptions = {
           method: "POST",
@@ -293,13 +342,12 @@ const UniconstForm = (dataForm) => {
         let url =
           import.meta.env.VITE_API_URL_FIRST +
           "caracteristicasunidadconstruccion/no-convencional";
-        console.log("Json No Conve", raw);
         try {
           const response = await fetch(url, requestOptions);
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response}`);
           }
-          const result = await response.text();
+          const result = await response.json();
           console.log(result);
         } catch (error) {
           console.error("Error:", error);
@@ -311,9 +359,9 @@ const UniconstForm = (dataForm) => {
         let { name, value } = e.target;
         setTipoAnexo(parseInt(value));
       }
-
+      console.log("estado boton ", estButton);
       /////////////////////////////////////////////Formularios segun la destinacion
-      if (tipo_unidad === "Convencional") {
+      if (tipo_unidad.tipo_unidad === "Convencional") {
         ////////Forumlario Convencional
         return (
           <div className="flex flex-col items-start w-full pb-2">
@@ -325,22 +373,29 @@ const UniconstForm = (dataForm) => {
                 updateFunction={UpdateArrayClass}
               />
             </div>
-            <div className="flex flex-row w-full items-center justify-center pb-2 text-left ">
-              <button
-                onClick={createJsonConve}
-                className=" p-1 w-1/3 text-center rounded-md text-white bg-teal-500 text-lg ml-2"
-              >
-                Guardar
-              </button>
-              <button className="p-2 w-1/2 text-center   rounded-md  border-2  text-white bg-teal-500 ">
-                <FontAwesomeIcon className="mr-4" icon={faEye} />
-                Ver Resumen
-              </button>
-            </div>
+            {estButton ? (
+              <div className="flex flex-row w-full items-center justify-center pb-2 text-left ">
+                <button
+                  onClick={createJsonConve}
+                  className="w-1/5 p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2"
+                >
+                  Guardar
+                </button>
+                <button
+                  onClick={openPuntajeResumeForm}
+                  className="p-2 w-1/2 text-center   rounded-md  border-2  text-white bg-teal-500 "
+                >
+                  <FontAwesomeIcon className="mr-4" icon={faEye} />
+                  Ver Resumen
+                </button>
+                <PuntajeResumeForm ref={puntajeResumeForm} datos={arrayClass} />
+              </div>
+            ) : null}
           </div>
         );
       } else {
         ////////Forumlario No Convencional
+        console.log("No Convencional");
         return (
           <div className="flex flex-col items-center text-center w-full pb-2">
             <h3 className="text-3xl mb-4"> {nom}</h3>
@@ -378,7 +433,6 @@ const UniconstForm = (dataForm) => {
         );
       }
     }
-
     //Componente del formulario de Uso
     //Formulario Completo
     return (
@@ -448,7 +502,6 @@ const UniconstForm = (dataForm) => {
               onChange={Optionselected}
             >
               <option></option>
-
               {Object.entries(desti).map((item, index) => {
                 return (
                   <option
@@ -463,14 +516,19 @@ const UniconstForm = (dataForm) => {
             </select>
           </div>
         </div>
-        {sopti != undefined && <Mdesti select={desti[sopti]} nom={sopti} />}
+        {sopti != undefined && (
+          <Mdesti
+            select={desti[sopti]}
+            nom={sopti}
+            tipo={tipo_unidad.tipo_unidad}
+          />
+        )}
       </div>
     );
   }
   if (loading) {
     <h1 className="text-9xl">Cargando</h1>;
   } else {
-    console.log("dato est", estMsjError);
     return (
       <div className=" w-full flex flex-col  items-center bg-transparent h-full bg-white bg-opacity-80">
         <h1 className="text-3xl">Construccion {dataForm.data}</h1>
@@ -571,9 +629,8 @@ const UniconstForm = (dataForm) => {
             ></input>
           </div>
         </div>
-
         <GrupoProvider>
-          {data != undefined && <CentralForm tipo_unidad={dataForm.data} />}
+          {estForm ? <CentralForm tipo_unidad={dataForm.data} /> : null}
         </GrupoProvider>
       </div>
     );

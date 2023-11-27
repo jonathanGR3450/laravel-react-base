@@ -18,6 +18,7 @@ const AvaluoForm = () => {
     SantaMaria: false,
   });
   const [dataTotal, setDataTotal] = useState({
+    zona: "",
     terreno: [],
     unidad: [],
   });
@@ -39,12 +40,13 @@ const AvaluoForm = () => {
     let sumZHG = 0;
     if (zonasData != undefined) {
       zonasData.map((item, index) => {
-        sum += parseInt(item.area);
+        sum += parseFloat(item.area);
         if (isNaN(item.ZHG) || item.ZHG === "") {
           sumZHG++;
         }
       });
     }
+    console.log("Sum", sum);
     if (sum === areaTerreno && sumZHG === 0) {
       setEstBttAvaluo(false);
     } else {
@@ -90,14 +92,19 @@ const AvaluoForm = () => {
     });
     useEffect(() => {
       index.onDataChange(index.index, dataZonaGeo);
+      console.log("Entra", dataZonaGeo);
     }, [dataZonaGeo]);
-
+    function soloNumeros(event) {
+      const input = event.target;
+      console.log(input.value);
+      input.value = input.value.replace(/[^0-9.]/g, "");
+    }
     function handleZona(e) {
       let { name, value } = e.target;
 
       setDataZonaGeo((prevValues) => ({
         ...prevValues,
-        [name]: parseInt(value),
+        [name]: value,
       }));
     }
     //parseFloat(cadenaConComa.replace(',', '.'))
@@ -110,8 +117,9 @@ const AvaluoForm = () => {
           <div className="w-1/2 flex flex-col  ml-4">
             <label className="w-full font-semibold">Area (mt2) : </label>
             <input
+              type="text"
+              onInput={soloNumeros}
               onChange={handleZona}
-              type="number"
               className="border-2 p-2 rounded-lg text-center w-full"
               name="area"
               value={dataZonaGeo.area}
@@ -155,6 +163,14 @@ const AvaluoForm = () => {
   };
   ///////////////////////////////////////////tabla
   const TableForm = () => {
+    console.log("Datos de Tabla", dataTotal);
+
+    function redondear(numero) {
+      const resto = numero % 1000;
+      const redondeo = resto >= 500 ? 1000 - resto : -resto;
+      return numero + redondeo;
+    }
+
     function generarFilasUnidad() {
       return dataTotal.unidad.map((item, index) => {
         return (
@@ -163,7 +179,18 @@ const AvaluoForm = () => {
             <td className="border-2">{item.destinacion}</td>
             <td className="border-2">{item.puntaje}</td>
             <td className="border-2">{item.area}</td>
-            <td className="border-2">$ {item.total.toLocaleString()}</td>
+            <td className="border-2">
+              ${" "}
+              {dataTotal.zona === "00"
+                ? 0
+                : redondear(item.total).toLocaleString()}
+            </td>
+            <td className="border-2">
+              ${" "}
+              {dataTotal.zona === "00"
+                ? redondear(item.total).toLocaleString()
+                : redondear(item.total * 1.0431).toLocaleString()}
+            </td>
           </tr>
         );
       });
@@ -175,7 +202,18 @@ const AvaluoForm = () => {
             <td className="border-2">{index + 1}</td>
             <td className="border-2">{item.zhg}</td>
             <td className="border-2">{item.area}</td>
-            <td className="border-2">$ {item.total.toLocaleString()}</td>
+            <td className="border-2 pr-4 text-right">
+              ${" "}
+              {dataTotal.zona === "00"
+                ? 0
+                : redondear(item.total).toLocaleString()}
+            </td>
+            <td className="border-2 pr-4 text-right">
+              ${" "}
+              {dataTotal.zona === "00"
+                ? redondear(item.total).toLocaleString()
+                : redondear(item.total * 1.0431).toLocaleString()}
+            </td>
           </tr>
         );
       });
@@ -207,6 +245,7 @@ const AvaluoForm = () => {
               <th className="border-2  rounded-s-xl p-2">ID</th>
               <th className="border-2   p-2">Zona ZHG</th>
               <th className="border-2  p-2">Area</th>
+              <th className="border-2  rounded-e-xl p-2">Avaluo 2022</th>
               <th className="border-2 rounded-e-xl p-2">Avaluo 2023</th>
             </tr>
           </thead>
@@ -219,7 +258,16 @@ const AvaluoForm = () => {
                 Total Terreno:{" "}
               </td>
               <td className="text-right pr-4 border-2 border-black bg-gray-300">
-                $ {sumTerreno.toLocaleString()}
+                ${" "}
+                {dataTotal.zona === "00"
+                  ? 0
+                  : redondear(sumTerreno).toLocaleString()}
+              </td>
+              <td className="text-right pr-4 border-2 border-black bg-gray-300">
+                ${" "}
+                {dataTotal.zona === "00"
+                  ? redondear(sumTerreno).toLocaleString()
+                  : redondear(sumTerreno * 1.0431).toLocaleString()}
               </td>
             </tr>
           </tbody>
@@ -236,6 +284,7 @@ const AvaluoForm = () => {
               <th className="border-2  p-2">Uso Unidad</th>
               <th className="border-2  p-2">Puntaje</th>
               <th className="border-2  p-2">Area</th>
+              <th className="border-2 rounded-e-xl p-2">Avaluo 2022</th>
               <th className="border-2 rounded-e-xl p-2">Avaluo 2023</th>
             </tr>
           </thead>
@@ -250,7 +299,10 @@ const AvaluoForm = () => {
                 Total Unidad:{" "}
               </td>
               <td className="text-right pr-4 border-2 border-black  bg-gray-300">
-                $ {sumUnidad.toLocaleString()}
+                $ {redondear(sumUnidad).toLocaleString()}
+              </td>
+              <td className="text-right pr-4 border-2 border-black  bg-gray-300">
+                $ {redondear(sumUnidad * 1.0431).toLocaleString()}
               </td>
             </tr>
           </tbody>
@@ -258,7 +310,7 @@ const AvaluoForm = () => {
         <div className="flex flex-row text-center w-full justify-center mt-4">
           <label className="font-semibold text-2xl">Total Avaluo 2023: </label>
           <label className="font-semibold text-2xl ml-4">
-            $ {sum.toLocaleString()}
+            $ {redondear(sum).toLocaleString()}
           </label>
         </div>
         <div className="w-full flex flex-col items-center justify-center mt-4">
@@ -276,6 +328,7 @@ const AvaluoForm = () => {
     setLoading(true);
     setEstTable(false);
     setEstForm(false);
+    console.log("datos de numero predial", dataNumPredial);
     setMsjAvaluo("Calculando");
     //Calcular Segun tablas
     console.log("Entraaaaaaaaaaaaaaaaaaaa");
@@ -283,7 +336,7 @@ const AvaluoForm = () => {
     let ArrayPredial = numpredial.split("");
     let zona = "";
     //Extraer Zona
-    await ArrayPredial.map((item, index) => {
+    ArrayPredial.map((item, index) => {
       if (index >= 5 && index <= 6) {
         zona += item;
       }
@@ -309,7 +362,7 @@ const AvaluoForm = () => {
 
           for (const item of zonasData) {
             if (item.ZHG <= 9 && item.ZHG.toLocaleString().length < 2) {
-              console.log("Resul", item.ZHG);
+              console.log("Zonas HG", item.ZHG);
               item.ZHG = "0" + item.ZHG;
             }
             let newobj = {
@@ -319,6 +372,7 @@ const AvaluoForm = () => {
             };
             let url = "";
             if (zona == "00") {
+              año = 2023;
               url =
                 import.meta.env.VITE_API_URL_FIRST +
                 "avaluo-catastral/rural/valor-terreno?zona_economica=" +
@@ -327,11 +381,13 @@ const AvaluoForm = () => {
                 año;
             } else {
               if (zona == "01") {
+                año = 2022;
                 url =
                   import.meta.env.VITE_API_URL_FIRST +
                   "avaluo-catastral/urbano/valor-terreno?zhg_no=" +
                   item.ZHG +
-                  "&vigencia=2022";
+                  "&vigencia=" +
+                  año;
               }
             }
 
@@ -350,7 +406,7 @@ const AvaluoForm = () => {
                       parseFloat(result.data[0].valor);
                   }
                 }
-
+                console.log("Data Respuesta", newobj);
                 arrayResponse.push(newobj);
                 aux = true;
               } else {
@@ -365,6 +421,7 @@ const AvaluoForm = () => {
           }
           return aux;
         }
+        console.log("Data de Terreno", boolterreno);
         console.log("Datos de Result", dataNumPredial);
 
         if (boolterreno) {
@@ -1076,7 +1133,12 @@ const AvaluoForm = () => {
       setLoading(false);
       setEstBttAvaluo(true);
       setEstTable(true);
-      setDataTotal({ ...dataTotal, unidad: uni, terreno: arrayResponse });
+      setDataTotal({
+        ...dataTotal,
+        zona: zona,
+        unidad: uni,
+        terreno: arrayResponse,
+      });
     } else {
     }
     console.log("Motivo para Guardar");
@@ -1107,7 +1169,7 @@ const AvaluoForm = () => {
     setZonas("");
     setNumZonas("");
     setEstBttAvaluo(true);
-
+    setLoading(true);
     var requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -1131,6 +1193,7 @@ const AvaluoForm = () => {
       console.log("Valor Numero", num);
       //252900100000000020901900000064
       setAreaTerreno(parseFloat(num));
+      setLoading(false);
       console.log(result);
     } catch (error) {
       console.log("error", error);
@@ -1170,6 +1233,7 @@ const AvaluoForm = () => {
           Consultar{" "}
         </button>
       </div>
+      {Loading ? <Loader /> : null}
       {!estNumPredial ? (
         <div className="w-full flex flex-col">
           <label className="font-semibold">Datos Terreno</label>

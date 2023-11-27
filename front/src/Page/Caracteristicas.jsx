@@ -39,8 +39,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
       total_banios: "",
       total_locales: "",
       uso: "",
-      calificacionconvencional: "",
-      calificacionnoconvencional: "",
     });
     const [selectedId, setSelectedId] = useState(null);
     const [response, setResponse] = useState();

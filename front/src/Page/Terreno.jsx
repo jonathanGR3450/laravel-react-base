@@ -62,13 +62,12 @@ const TerrenoForm = (props, ref) => {
   }
   //     item.Dpto +  item.Mpio +  item.Zona +  item.Sector +  item.Comuna +  item.Barrio +  item.Manzana
 
-  const sendData = () => {
+  const sendData = async () => {
     if (terrenoData.SantaMaria == "") {
       terrenoData.SantaMaria = false;
     }
     console.log("Terreno Data", terrenoData);
-    let response = true;
-    //createTerreno();
+    let response = await createTerreno();
     terrenoData.area_terreno = parseFloat(
       terrenoData.area_terreno.replace(",", ".")
     );
@@ -167,16 +166,13 @@ const TerrenoForm = (props, ref) => {
     if (zonasData != undefined) {
       zonasData.map((item, index) => {
         console.log("Sumatoria", sum);
-        sum += parseFloat(item.area.replace(",", "."));
+        sum += parseFloat(item.area);
         if (isNaN(item.ZHG) || item.ZHG === "") {
           sumZHG++;
         }
       });
     }
-    if (
-      sum === parseFloat(terrenoData.area_terreno.replace(",", ".")) &&
-      sumZHG === 0
-    ) {
+    if (sum === parseFloat(terrenoData.area_terreno) && sumZHG === 0) {
       let manzana = "";
       if (typeof tableData !== "undefined") {
         let item = tableData[0];
