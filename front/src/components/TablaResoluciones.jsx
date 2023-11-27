@@ -1,6 +1,6 @@
 const TablaResoluciones = () => {
   const data = [
-    { radicado: 'R-2022-1234', idAsociado: "ID-12345", resolucion: ' 03-001-000', url: "http://localhost/storage/documents/2023-11-20-1973e4fa-18fc-4d57-817a-371f9cd80337-document.pdf" }
+    { radicado: 'R-2023-1234', idAsociado: "ID-12345", resolucion: ' 03-001-000', url: "http://localhost/storage/documents/2023-11-20-1973e4fa-18fc-4d57-817a-371f9cd80337-document.pdf" }
   ];
 
   const openPdfInNewTab = (url) => {
