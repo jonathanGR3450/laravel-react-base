@@ -34,7 +34,7 @@ return new class extends Migration
             $table->bigInteger('clase_suelo')->notNull();
             $table->bigInteger('categoria_suelo')->nullable();
             $table->string('nombre', 255)->nullable();
-            $table->timestamp('comienzo_vida_util_version')->notNull();
+            $table->timestamp('comienzo_vida_util_version')->nullable();
             $table->timestamp('fin_vida_util_version')->nullable();
             $table->string('espacio_de_nombres', 255)->notNull();
             $table->string('local_id', 255)->notNull();

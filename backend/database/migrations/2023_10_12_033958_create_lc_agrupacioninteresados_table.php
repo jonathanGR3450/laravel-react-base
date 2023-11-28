@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigIncrements('t_id');
             $table->bigInteger('tipo')->unsigned();
             $table->string('nombre', 255);
-            $table->timestamp('comienzo_vida_util_version');
+            $table->timestamp('comienzo_vida_util_version')->nullable();
             $table->timestamp('fin_vida_util_version')->nullable();
             $table->string('espacio_de_nombres', 255);
             $table->string('local_id', 255);

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->bigInteger('interesado_lc_interesado')->unsigned();
             $table->bigInteger('interesado_lc_agrupacioninteresados')->unsigned()->nullable();
             $table->bigInteger('unidad')->unsigned()->nullable();
-            $table->timestamp('comienzo_vida_util_version');
+            $table->timestamp('comienzo_vida_util_version')->nullable();
             $table->timestamp('fin_vida_util_version')->nullable();
             $table->string('espacio_de_nombres', 255);
         });
