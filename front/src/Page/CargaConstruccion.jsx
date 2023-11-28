@@ -284,6 +284,7 @@ export const LoadDataConstruccion = () => {
             item.ZHG = "0" + item.ZHG;
           }
           let newobj = {
+            zona: currentItem.Zona,
             area: item.area,
             zhg: item.ZHG,
             total: "",
@@ -296,14 +297,14 @@ export const LoadDataConstruccion = () => {
               "avaluo-catastral/rural/valor-terreno?zona_economica=" +
               newobj.zhg +
               "&vigencia=" +
-              año;
+              2023;
           } else {
             url =
               import.meta.env.VITE_API_URL_FIRST +
               "avaluo-catastral/urbano/valor-terreno?zhg_no=" +
               item.ZHG +
               "&vigencia=" +
-              año;
+              2022;
           }
           console.log("Urla", url);
           try {
@@ -320,7 +321,7 @@ export const LoadDataConstruccion = () => {
                   parseFloat(newobj.area) * parseFloat(result.data[0].valor);
               }
               console.log(
-                "data Area rural " +
+                "data Area urbano " +
                   parseFloat(newobj.area) +
                   " dataValor " +
                   parseFloat(result.data[0].valor) +
@@ -357,6 +358,7 @@ export const LoadDataConstruccion = () => {
             let dataCorrect = [];
             //Rural
             if (currentItem.Zona == "00") {
+              let año = 2023;
               console.log("uNIDADES", currentItem.unidad_construccion);
               for (const item of currentItem.unidad_construccion) {
                 console.log("item Numero Predial", item);
@@ -996,6 +998,7 @@ export const LoadDataConstruccion = () => {
               }
             } else {
               //Resto Urbano
+              let año = 2022;
               for (const item of currentItem.unidad_construccion) {
                 console.log("item Numero Predial", item);
                 let destinacion = item.caracteristicas.tipo_construccion;
@@ -1806,6 +1809,13 @@ export const LoadDataConstruccion = () => {
           });
           return sum;
         }
+        function calculateZona() {
+          let zona = "";
+          ArrayTerreno.map((item, index) => {
+            zona = item.zona;
+          });
+          return zona;
+        }
         let num =
           currentItem.Dpto +
           currentItem.Mpio +
@@ -1821,6 +1831,7 @@ export const LoadDataConstruccion = () => {
           currentItem.Unidad;
 
         let newobj = {
+          zona: calculateZona(),
           num_predial: num,
           matricula: 157 + " - " + currentItem.Matricula,
           direccion: calculateDireccion(),
@@ -2011,8 +2022,11 @@ export const LoadDataConstruccion = () => {
       return Math.ceil(data / 1000) * 1000;
     }
     function redondear(numero) {
+      console.log("Numero a Redondear", numero.toLocaleString());
       const resto = numero % 1000;
+      console.log("asdasd", resto);
       const redondeo = resto >= 500 ? 1000 - resto : -resto;
+      console.log("redondeo", redondeo);
       return numero + redondeo;
     }
     const Allfilas = Object.entries(dataTotal).map((items, index) => {
@@ -2031,7 +2045,10 @@ export const LoadDataConstruccion = () => {
           <td className="border-2 rounded-xl p-2">{item.area_terreno}</td>
           <td className="border-2 rounded-xl p-2">{item.area_construida}</td>
           <td className="border-2 rounded-xl p-2">
-            $ {redondear(item.avaluo).toLocaleString()}
+            ${" "}
+            {item.zona == "01"
+              ? redondear(item.avaluo * 1.0431).toLocaleString()
+              : redondear(item.avaluo).toLocaleString()}
           </td>
           <td className="border-2 rounded-xl p-2">{item.vigencia}</td>
         </tr>

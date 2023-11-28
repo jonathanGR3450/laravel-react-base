@@ -163,7 +163,8 @@ const Tabs = ({ tabs, arrayClass, updateFunction }) => {
           }
         }
         if (item.tipo_objeto_construccion < 6) {
-          conservacion = parseInt(item.tipo_objeto_construccion);
+          console.log("item propio", item);
+          conservacion = parseInt(item.puntos);
           arrayTemp.pop();
         }
         sum += item.puntos;

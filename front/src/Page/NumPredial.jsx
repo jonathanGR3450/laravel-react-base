@@ -1691,6 +1691,7 @@ export const NumPredialForm = () => {
     const [dataReturn, setDataReturn] = useState(50);
     const modalLoadRef = useRef();
     let ArrayTemp = [];
+
     function updateDataReturn(newData) {
       setDataReturn(newData);
     }
@@ -1702,7 +1703,8 @@ export const NumPredialForm = () => {
     };
     useEffect(() => {
       if (dataReturn === 1) {
-        updateArrayFinal(ArrayTemp);
+        console.log("array Temp", ArrayFinal);
+        updateArrayFinal(ArrayFinal);
         updateTableData(ArrayFinal);
         setBttChange(true);
         setBttfin(false);
@@ -1738,6 +1740,7 @@ export const NumPredialForm = () => {
           });
           console.log();
           sendNumPredial(JSON.stringify(Json));
+          updateTableData(ArrayFinal);
         }
       }
     }, [dataReturn]);
@@ -1788,6 +1791,7 @@ export const NumPredialForm = () => {
     function addData() {
       openModalLoad();
       ArrayTemp = ArrayFinal;
+      console.log("Array Final", ArrayFinal);
       ArrayPredial.map((item, index) => {
         ArrayTemp.push(item);
       });
