@@ -11,7 +11,7 @@ use App\Models\Local\LcAgrupacionInteresadosLocal;
 use App\Models\Local\LcInteresadoLocal;
 use Illuminate\Http\Request;
 
-class StoreColMiembros extends AppBaseController
+class StoreColMiembrosLocal extends AppBaseController
 {
     /**
      * Handle the incoming request.
@@ -19,17 +19,7 @@ class StoreColMiembros extends AppBaseController
     public function __invoke(StoreColMiembrosFormRequest $request)
     {
         try {
-            $interesado = LcInteresadoLocal::create($request->input('interesado_lc_interesado'));
-            $agrupacion = LcAgrupacionInteresadosLocal::create($request->input('interesado_lc_agrupacioninteresados'));
-    
-            $query = ColMiembroLocal::create([
-                'interesado_lc_interesado' => $interesado->t_id,
-                'interesado_lc_agrupacioninteresados' => $agrupacion->t_id,
-                'agrupacion' => $agrupacion->t_id,
-                'participacion' => $request->input('participacion'),
-            ]);
-            $query->refresh();
-            // dd($query->agrupacionInteresados);
+            $query = ColMiembroLocal::create($request->validated());
             $miembro = new InteresadoResource($query);
             return $this->sendResponse($miembro, "col miembros creado correctamente");
         } catch (\Exception $e) {

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('interesado_lc_interesado')->nullable();
             $table->bigInteger('interesado_lc_agrupacioninteresados')->nullable();
             $table->bigInteger('unidad')->nullable();
-            $table->timestamp('comienzo_vida_util_version')->nullable(false);
+            $table->timestamp('comienzo_vida_util_version')->nullable(true);
             $table->timestamp('fin_vida_util_version')->nullable();
             $table->string('espacio_de_nombres', 255)->nullable(false);
             $table->string('local_id', 255)->nullable(false);
