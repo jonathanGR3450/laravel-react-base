@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('etiqueta', 255)->nullable()->nullable();
             $table->bigInteger('relacion_superficie')->unsigned()->nullable();
             $table->bigInteger('nivel')->unsigned()->nullable();
-            $table->timestamp('comienzo_vida_util_version');
+            $table->timestamp('comienzo_vida_util_version')->nullable();
             $table->timestamp('fin_vida_util_version')->nullable();
             $table->string('espacio_de_nombres', 255);
 

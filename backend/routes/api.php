@@ -34,7 +34,9 @@ use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccio
 use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
-use App\Http\Controllers\Interesado\StoreColMiembros;
+use App\Http\Controllers\Interesado\StoreAgrupacionInteresadoLocal;
+use App\Http\Controllers\Interesado\StoreColMiembrosLocal;
+use App\Http\Controllers\Interesado\StoreInteresadoLocal;
 use App\Http\Controllers\Predio\GetPredioNumeroPredialController;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
 use App\Http\Controllers\Predio\IndexNumerosHomologadosController;
@@ -108,7 +110,9 @@ Route::prefix('v1')->middleware(['auth:api'])->group(function () {
     });
 
     Route::prefix('interesados')->group(function () {
-        Route::post('', StoreColMiembros::class);
+        Route::post('interesado', StoreInteresadoLocal::class);
+        Route::post('agrupacioninteresados', StoreAgrupacionInteresadoLocal::class);
+        Route::post('miembros', StoreColMiembrosLocal::class);
         Route::get('{nit}', Show::class);
     });
 
