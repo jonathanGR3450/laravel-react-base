@@ -103,6 +103,7 @@ const PredioForm = (props, ref) => {
             body: raw,
             redirect: "follow",
           };
+          console.log("url PREDIO", raw);
           try {
             const response = await fetch(url, requestOptions);
             const result = await response.json();

@@ -300,19 +300,45 @@ const AvaluoForm = () => {
                 Total Unidad:{" "}
               </td>
               <td className="text-right pr-4 border-2 border-black  bg-gray-300">
-                $ {redondear(sumUnidad).toLocaleString()}
+                ${" "}
+                {dataTotal.zona === "00"
+                  ? 0
+                  : redondear(sumUnidad).toLocaleString()}
               </td>
               <td className="text-right pr-4 border-2 border-black  bg-gray-300">
-                $ {redondear(sumUnidad * 1.0431).toLocaleString()}
+                ${" "}
+                {dataTotal.zona === "00"
+                  ? redondear(sumUnidad).toLocaleString()
+                  : redondear(sumUnidad * 1.0431).toLocaleString()}
               </td>
             </tr>
           </tbody>
         </table>
         <div className="flex flex-row text-center w-full justify-center mt-4">
-          <label className="font-semibold text-2xl">Total Avaluo 2023: </label>
-          <label className="font-semibold text-2xl ml-4">
-            $ {redondear(sum).toLocaleString()}
-          </label>
+          {dataTotal.zona === "00" ? null : (
+            <div>
+              <label className="font-semibold text-2xl">
+                Total Avaluo 2022:{" "}
+              </label>
+              <label className="font-semibold text-2xl ml-4">
+                $ {redondear(sum).toLocaleString()}
+              </label>
+            </div>
+          )}
+          {dataTotal.zona === "00" ? (
+            <label className="font-semibold text-2xl ml-4">
+              Total Avaluo 2023: $ {redondear(sum).toLocaleString()}
+            </label>
+          ) : (
+            <div>
+              <label className="font-semibold text-2xl ml-4">
+                Total Avaluo 2023:{" "}
+              </label>
+              <label className="font-semibold text-2xl ml-4">
+                $ {redondear(sum * 1.0431).toLocaleString()}
+              </label>
+            </div>
+          )}
         </div>
         <div className="w-full flex flex-col items-center justify-center mt-4">
           <button className="p-2 w-1/4 text-center  rounded-md  border-2  text-white bg-teal-500 ">

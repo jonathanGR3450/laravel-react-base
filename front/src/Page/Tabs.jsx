@@ -174,6 +174,7 @@ const Tabs = ({ tabs, arrayClass, updateFunction }) => {
           .fill()
           .map(() => ({ tipo_objeto_construccion: "", puntos: "" }))
       );
+
       let newgrupo = {
         clase_calificacion: tabs[activeTab].clase_calificacion,
         conservacion: conservacion,

@@ -838,7 +838,24 @@ export const PuntajeResumeForm = React.forwardRef((props, ref) => {
   }));
   function mostrar(datos) {
     console.log("Datos", datos);
-
+    function nombreconservacion(num) {
+      let nomCon = "";
+      switch (num) {
+        case 0:
+          nomCon = "Malo";
+          break;
+        case 2:
+          nomCon = "Regular";
+          break;
+        case 4:
+          nomCon = "Bueno";
+          break;
+        case 5:
+          nomCon = "Excelente";
+          break;
+      }
+      return nomCon;
+    }
     let sum = 0;
     function nombreclase(valor) {
       let categoria = 0;
@@ -1013,6 +1030,7 @@ export const PuntajeResumeForm = React.forwardRef((props, ref) => {
           <tbody>
             {datos.map((item, index) => {
               sum += item.subtotal;
+
               return (
                 <React.Fragment key={index}>
                   <tr className="text-white bg-teal-600 p-2 text-xl">
@@ -1024,7 +1042,12 @@ export const PuntajeResumeForm = React.forwardRef((props, ref) => {
                     <td className="border-2">
                       {nombreclase(item.clase_calificacion)}
                     </td>
-                    <td className="border-2">{item.conservacion}</td>
+                    <td className="border-2">
+                      {item.conservacion +
+                        " ( " +
+                        nombreconservacion(item.conservacion) +
+                        " )"}
+                    </td>
                     <td className="border-2">{item.subtotal}</td>
                   </tr>
                   <tr className="font-semibold text-white bg-teal-500 p-2">

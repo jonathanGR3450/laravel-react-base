@@ -221,14 +221,31 @@ const UniconstForm = (dataForm) => {
       ///////////////////////////////////////////////
       async function createJsonConve() {
         let sum = 0;
+        console.log("arrayclass antes ", arrayClass);
         arrayClass.map((item, index) => {
           sum += item.subtotal;
+          switch (item.conservacion) {
+            case 0:
+              item.conservacion = 1;
+              break;
+            case 2:
+              item.conservacion = 2;
+              break;
+            case 4:
+              item.conservacion = 3;
+              break;
+            case 5:
+              item.conservacion = 4;
+              break;
+          }
         });
+        console.log("arrayclass Despues ", arrayClass);
         let objCalificacion = {
           tipo_calificar: select.tipo_calificar,
           total_calificacion: sum,
           grupocalificacion: arrayClass,
         };
+        console.log("Ojbeto", objCalificacion);
 
         let Json = {
           construcciones: [
@@ -278,7 +295,7 @@ const UniconstForm = (dataForm) => {
         let url =
           import.meta.env.VITE_API_URL_FIRST +
           "caracteristicasunidadconstruccion/convencional";
-        console.log("Url");
+        console.log("Url", raw);
         try {
           const response = await fetch(url, requestOptions);
           console.log("Url", response);
