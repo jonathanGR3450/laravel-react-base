@@ -39,6 +39,7 @@ use App\Http\Controllers\Interesado\StoreColMiembrosLocal;
 use App\Http\Controllers\Interesado\StoreInteresadoLocal;
 use App\Http\Controllers\Predio\GetPredioNumeroPredialController;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
+use App\Http\Controllers\Predio\GetPrediosByNumeroPredialLocalController;
 use App\Http\Controllers\Predio\IndexNumerosHomologadosController;
 use App\Http\Controllers\Predio\IndexNumerosPredialesController;
 use App\Http\Controllers\Predio\StoreColUebaunitLocal;
@@ -83,6 +84,7 @@ Route::prefix('v1')->group(function () {
         Route::get('numeros-homologados', IndexNumerosHomologadosController::class);
         Route::post('numeros-homologados', StoreNumeroHomologadosController::class);
         Route::get('list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
+        Route::get('list/local/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialLocalController::class);
         Route::get('list/local/numeros-prediales', IndexNumerosPredialesController::class);
         Route::get('{predial}', GetPredioController::class);
     });
