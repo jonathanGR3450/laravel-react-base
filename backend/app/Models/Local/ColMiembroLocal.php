@@ -2,6 +2,7 @@
 
 namespace App\Models\Local;
 
+use App\Models\LcInteresado;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +16,7 @@ class ColMiembroLocal extends Model
 
     protected $fillable = [
         'interesado_lc_interesado',
+        'interesado_lc_interesado_conservacion',
         'interesado_lc_agrupacioninteresados',
         'agrupacion',
         'participacion',
@@ -23,6 +25,11 @@ class ColMiembroLocal extends Model
     public function interesado()
     {
         return $this->belongsTo(LcInteresadoLocal::class, 'interesado_lc_interesado', 't_id');
+    }
+
+    public function interesadoConservacion()
+    {
+        return $this->belongsTo(LcInteresado::class, 'interesado_lc_interesado_conservacion', 't_id');
     }
 
     public function agrupacionInteresados()

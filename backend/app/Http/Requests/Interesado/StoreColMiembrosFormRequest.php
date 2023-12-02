@@ -26,9 +26,14 @@ class StoreColMiembrosFormRequest extends FormRequest
     {
         return [
             'interesado_lc_interesado' => [
-                'required',
+                'nullable',
                 'integer',
                 'exists:lc_interesado,t_id',
+            ],
+            'interesado_lc_interesado_conservacion' => [
+                'nullable',
+                'integer',
+                'exists:pgsqlcatastro.lc_interesado,t_id',
             ],
             'interesado_lc_agrupacioninteresados' => [
                 'required',
