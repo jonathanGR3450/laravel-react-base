@@ -1,6 +1,5 @@
 import { Modal } from "./Modal";
-import {
-  forwardRef,
+import React, {
   useEffect,
   useImperativeHandle,
   useState,
@@ -12,24 +11,16 @@ import Loader from "./Loader";
 
 const InteresadoForm = (props, ref) => {
   //const [groupInterest, setGroupInterest] = useState(false);  const { updateInteresadoData, updateDataFinal } =useContext(InteresadoContext);
-  const { tableData, updateTableData } = useContext(TableContext);
+  console.log(props.contexto);
+  let tableData = [];
+  let updateTableData = () => {};
+
+  const {
+    tableData: contextTableData,
+    updateTableData: contextUpdateTableData,
+  } = useContext(TableContext);
+
   const [estBtt, setEstBtt] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  let [dataId, setDataId] = useState();
-
-  const openModal = (aux) => {
-    setDataId(aux);
-    setIsModalOpen(true);
-    console.log("Data Id", dataId);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  useImperativeHandle(ref, () => ({
-    openModal,
-  }));
 
   //Se Aceptan solo  Numeros
   function soloNumeros(event) {
@@ -69,62 +60,172 @@ const InteresadoForm = (props, ref) => {
     }));
     setInteresadosData(newInteresadosData);
   };
-  /////Cargar Datos
-  async function Send_Data() {
-    try {
-      interesadosData.map(async (item, index) => {
-        console.log("wwwwwwwwww", item);
-        let lcagrupacionintesados = {};
-        console.log("Item Enviar ", item);
-        ////Condicion si se agregan datos a Agrupacion o no
-        if (interesadosData.length >= 2) {
-          let agrupacioncivil = interesadosData.every(
-            (item) => item.tipo == 658
-          );
-          let agrupacionempresarial = interesadosData.every(
-            (item) => item.tipo == 659
-          );
-          ///Verificar que tipo de Agrupacion
-          if (agrupacioncivil) {
-            lcagrupacionintesados.tipo = 34;
-          } else {
-            if (agrupacionempresarial) {
-              console.log("Es empresarial ");
-              lcagrupacionintesados.tipo = 35;
-            } else {
-              console.log("Es Mixta");
-              lcagrupacionintesados.tipo = 37;
-            }
-          }
+  /////////////////////////////////////////////////////Enviar Datos
+  async function LoadAgrupacionTipo() {
+    let tipo = "";
+    let agrupacioncivil = "";
+    let agrupacionempresarial = "";
+    for (const [index, item] of interesadosData.entries()) {
+      agrupacioncivil = interesadosData.every((item) => item.tipo == 658);
+      agrupacionempresarial = interesadosData.every((item) => item.tipo == 659);
 
-          ////Condicion si es para agregar valores a BD
-          if (item.t_id == 0) {
-            let json = {
-              interesado_lc_interesado: item,
-              interesado_lc_agrupacioninteresados: lcagrupacionintesados,
-              participacion: parseFloat(item.participacion),
-            };
-            console.log("Valor Json", json);
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            let raw = JSON.stringify(json);
-            var requestOptions = {
-              method: "POST",
-              headers: myHeaders,
-              body: raw,
-              redirect: "follow",
-            };
-            let url = import.meta.env.VITE_API_URL_FIRST + "interesados";
-            const response = await fetch(url, requestOptions);
-            const result = await response.json();
-            console.log(result);
-          }
+      // Verificar el tipo de Agrupación
+    }
+    if (agrupacioncivil) {
+      tipo = 34;
+    } else {
+      if (agrupacionempresarial) {
+        console.log("Es empresarial ");
+        tipo = 35;
+      } else {
+        console.log("Es Mixta");
+        tipo = 37;
+      }
+    }
+    return tipo;
+  }
+  async function createAgrupacion(data) {
+    let json = {
+      tipo: data,
+      nombre: "Prueba",
+      comienzo_vida_util_version: "",
+      fin_vida_util_version: null,
+      espacio_de_nombres: "Fusagasuga",
+      local_id: "Preuba",
+    };
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    let raw = JSON.stringify(json);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    let url =
+      import.meta.env.VITE_API_URL_FIRST + "interesados/agrupacioninteresados";
+
+    const response = await fetch(url, requestOptions);
+    const result = await response.json();
+    console.log(result);
+    return result.data.t_id;
+  }
+  /////////////////////////////////////////////
+  async function createInteresado() {
+    try {
+      let auxId = [];
+      console.log("Data ", interesadosData);
+      for (const [index, item] of interesadosData.entries()) {
+        if (item.t_id == 0) {
+          console.log("Toca Crear");
+          let json = {
+            tipo: item.tipo,
+            tipo_documento: item.tipo_documento,
+            documento_identidad: item.documento_identidad,
+            primer_nombre: item.primer_nombre,
+            segundo_nombre: item.segundo_nombre,
+            primer_apellido: item.primer_apellido,
+            segundo_apellido: item.segundo_apellido,
+            sexo: item.sexo,
+            grupo_etnico: item.grupo_etnico,
+            razon_social: item.razon_social,
+            estado_civil: item.estado_civil,
+            nombre: item.nombre,
+            comienzo_vida_util_version: "",
+            fin_vida_util_version: null,
+            espacio_de_nombres: "Fusagasuga",
+            local_id: "0",
+          };
+          console.log("Json", json);
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+
+          let raw = JSON.stringify(json);
+          let requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+          };
+          let url =
+            import.meta.env.VITE_API_URL_FIRST + "interesados/interesado";
+          const response = await fetch(url, requestOptions);
+          const result = await response.json();
+          console.log(result);
+          auxId.push(result.data.interesado.t_id);
         } else {
-          if (item.t_id == 0) {
-            console.log("Agrregar");
-          }
+          auxId.push(item.t_id);
+          console.log("guardo id");
         }
+      }
+      return auxId;
+    } catch (error) {
+      console.log("error: " + error);
+    }
+  }
+  async function createColMiembros(agrupacion, interesado) {
+    for (const [index, item] of interesadosData.entries()) {
+      let json = {
+        interesado_lc_interesado: interesado[index],
+        interesado_lc_agrupacioninteresados: agrupacion,
+        agrupacion: agrupacion,
+        participacion: item.participacion,
+      };
+
+      console.log(json);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      let raw = JSON.stringify(json);
+      console.log(raw);
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      let url = import.meta.env.VITE_API_URL_FIRST + "interesados/miembros";
+      const response = await fetch(url, requestOptions);
+      const result = await response.json();
+      console.log("Resul Col_Miembros", result);
+    }
+  }
+  async function Send_Data() {
+    ////////////////Capturar valores Tabledata para Datos Homologados
+    ///////////////////////////////////////////////////////////////
+    if (props.contexto) {
+      tableData = contextTableData;
+      updateTableData = contextUpdateTableData;
+      let dataId = props.dataid;
+      tableData.map((item, index) => {
+        dataId.map((items) => {
+          if (items - 1 == index) {
+            item.interesados = interesadosData;
+          }
+        });
       });
+      updateTableData(tableData);
+    }
+
+    try {
+      let id_agrupacion = "";
+      let id_interesado = "";
+      ////Crear Agrupaciones
+      id_interesado = await createInteresado();
+      console.log("Idssss", id_interesado);
+      ///////////////////////////////////////////
+      if (interesadosData.length >= 2) {
+        let tipoInteresado = await LoadAgrupacionTipo();
+        id_agrupacion = await createAgrupacion(tipoInteresado);
+        console.log("Id Agrupacion", id_agrupacion);
+        createColMiembros(id_agrupacion, id_interesado);
+      }
+
+      //Guardar
     } catch (error) {}
   }
   //Form de Interesados
@@ -181,6 +282,7 @@ const InteresadoForm = (props, ref) => {
       participacion: "",
     });
     const [estFormData, setEstFormData] = useState(false);
+
     const handleReset = () => {
       console.log("reset");
       setDataInteresado((prevData) => ({
@@ -267,10 +369,21 @@ const InteresadoForm = (props, ref) => {
           [name]: value,
         }));
       } else {
-        setDataInteresado((prevData) => ({
-          ...prevData,
-          [name]: value,
-        }));
+        console.log(name);
+        if (name != "participacion") {
+          setDataInteresado((prevData) => ({
+            ...prevData,
+            nombre: `${prevData.primer_apellido ?? ""} ${
+              prevData.segundo_apellido ?? ""
+            } ${prevData.primer_nombre ?? ""} ${prevData.segundo_nombre ?? ""}`,
+            [name]: value,
+          }));
+        } else {
+          setDataInteresado((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
+        }
       }
       console.log("Value", value);
       console.log("Entra", name);
@@ -282,10 +395,6 @@ const InteresadoForm = (props, ref) => {
       index.onDataChange(index.index, dataInteresado);
       console.log("Actualizacion datos", dataInteresado);
     }, [dataInteresado]);
-
-    useEffect(() => {
-      // Función para establecer valores predeterminados en dataInteresado
-    }, [dataInteresado.tipo]);
     ////////////////////////////////////////////Form o mostrar valores
     ////////////////////////////////////////////Form Validar Interesado
     return (
@@ -563,36 +672,67 @@ const InteresadoForm = (props, ref) => {
   };
 
   return (
-    <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start ">
-        <h1 className="text-2xl">Datos Generales del Interesado</h1>
-        <div className="w-full pt-4 flex flex-row text-left">
-          <input
-            type="number"
-            placeholder="Número de interesados"
-            className="border-2 p-1 rounded-md w-full"
-            value={numInteresados}
-            onChange={Load_Num}
-            onInput={soloNumeros}
-          />
-          <button
-            className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
-            onClick={agregarInteresados}
-          >
-            Agregar Interesados
-          </button>
-        </div>
-        <div className="w-full">{interesados}</div>
-        <div className="w-full">
-          <button
-            onClick={Send_Data}
-            className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2 mt-2"
-          >
-            Guardar
-          </button>
-        </div>
+    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start ">
+      <h1 className="text-2xl">Datos Generales del Interesado</h1>
+      <div className="w-full pt-4 flex flex-row text-left">
+        <input
+          type="number"
+          placeholder="Número de interesados"
+          className="border-2 p-1 rounded-md w-full"
+          value={numInteresados}
+          onChange={Load_Num}
+          onInput={soloNumeros}
+        />
+        <button
+          className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
+          onClick={agregarInteresados}
+        >
+          Agregar Interesados
+        </button>
       </div>
-    </Modal>
+      <div className="w-full">{interesados}</div>
+      <div className="w-full">
+        <button
+          onClick={Send_Data}
+          className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2 mt-2"
+        >
+          Guardar
+        </button>
+      </div>
+    </div>
   );
 };
-export default forwardRef(InteresadoForm);
+
+export const ModalInteresadoForm = React.forwardRef((props, ref) => {
+  let [dataId, setDataId] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (aux) => {
+    console.log("Aux", aux);
+    setDataId(aux);
+    setIsModalOpen(true);
+    console.log("Data Id", dataId);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <InteresadoForm contexto={true} dataid={dataId} />
+    </Modal>
+  );
+});
+
+export const NormalInteresadoForm = React.forwardRef((props, ref) => {
+  return (
+    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
+      <InteresadoForm contexto={false} />
+    </div>
+  );
+});

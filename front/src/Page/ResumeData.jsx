@@ -839,6 +839,7 @@ export const PuntajeResumeForm = React.forwardRef((props, ref) => {
   function mostrar(datos) {
     console.log("Datos", datos);
     function nombreconservacion(num) {
+      console.log("Entra Conservacion");
       let nomCon = "";
       switch (num) {
         case 0:

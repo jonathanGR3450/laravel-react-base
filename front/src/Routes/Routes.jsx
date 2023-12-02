@@ -21,16 +21,20 @@ import { LoadDataForm } from "../Page/CargaDatos";
 import { LoadDataConstruccion } from "../Page/CargaConstruccion";
 import AvaluoForm from "../Page/Avaluo";
 
-
-
 import Resolucion from "../Page/Resolucion";
 import Resoluciones from "../Page/Resoluciones";
+import { NormalInteresadoForm } from "../Page/Interesado";
+import { NormalFuenteForm } from "../Page/FuenteAdmin";
+import { NormalPredioForm } from "../Page/Predio";
 const Ruta = () => {
   return (
     <InfoProvider>
       <Routes>
         <Route path="/" element={<Menu />}>
           <Route path="/Tablero" element={<Tablero />}></Route>
+          <Route path="/Interesado" element={<NormalInteresadoForm />}></Route>
+          <Route path="/FuenteAdmin" element={<NormalFuenteForm />}></Route>
+          <Route path="/Predio" element={<NormalPredioForm />}></Route>
           <Route path="/Consulta/:data" element={<Consulta />} />
           <Route path="/Ficha" element={<FichaPredial />}>
             <Route path="Uniconst/:info" element={<UniconstForm />}></Route>
@@ -72,8 +76,8 @@ const Ruta = () => {
           ></Route>
           <Route path="/DataHom" element={<LoadCodHom />}></Route>
           <Route path="/Avaluo" element={<AvaluoForm />}></Route>
-        <Route path="/Incremento" element={<IncrementoForm />}></Route>
-        
+          <Route path="/Incremento" element={<IncrementoForm />}></Route>
+
           <Route path="/Resolucion" element={<Resolucion />}></Route>
           <Route path="/Resoluciones" element={<Resoluciones />}></Route>
         </Route>

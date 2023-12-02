@@ -1,8 +1,8 @@
 import { useRef, useState, useContext, useEffect } from "react";
-import FuenteAdminForm from "./FuenteAdmin";
-import PredioForm from "./Predio";
-import DerechoForm from "./Derecho";
-import InteresadoForm from "./Interesado";
+import { ModalFuenteForm } from "./FuenteAdmin";
+import { ModalPredioForm } from "./Predio";
+import { ModalDerechoForm } from "./Derecho";
+import { ModalInteresadoForm } from "./Interesado";
 import { InteresadoProvider } from "../Page/Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
 import { DataContext } from "./Context/DataContext";
@@ -243,7 +243,7 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <PredioForm ref={predioFormRef} />
+              <ModalPredioForm ref={predioFormRef} />
             </div>
           ) : null}
           {dataSelect == 2 ? (
@@ -257,7 +257,7 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <InteresadoForm ref={interesadoFormRef} />
+              <ModalInteresadoForm ref={interesadoFormRef} />
             </div>
           ) : null}
           {dataSelect == 3 ? (
@@ -271,7 +271,7 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <DerechoForm ref={derechoFormRef} />
+              <ModalDerechoForm ref={derechoFormRef} />
             </div>
           ) : null}
           {dataSelect == 4 ? (
@@ -285,7 +285,7 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <FuenteAdminForm ref={fuenteFormRef} />
+              <ModalFuenteForm ref={fuenteFormRef} />
             </div>
           ) : null}
         </div>
