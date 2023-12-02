@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Document;
 
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\Radicado\StoreRadicadoFormRequest;
 use App\Models\Local\RadicadosLocal;
 use App\Services\Document;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class GenerateDocumentPdf extends AppBaseController
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(StoreRadicadoFormRequest $request)
     {
         try {
             $path = "templates";
@@ -33,6 +34,7 @@ class GenerateDocumentPdf extends AppBaseController
             $radicado = RadicadosLocal::create([
                 "url" => $url,
                 "no_radicado" => $request->input('no_radicado'),
+                "asociado_id" => $request->input('asociado_id'),
                 "tramite_id" => $request->input('tramite_id'),
             ]);
 
