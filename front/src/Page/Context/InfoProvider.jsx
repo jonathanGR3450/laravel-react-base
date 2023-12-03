@@ -7,6 +7,7 @@ const InfoContext = createContext();
 const InfoProvider = ({ children }) => {
   const [infoResolucion, setInfoResolucion] = useState([]);
   const [alerta, setAlerta] = useState([]);
+  const [resultado, setResultado] = useState({});
 
   const navigate = useNavigate();
 
@@ -30,16 +31,17 @@ const InfoProvider = ({ children }) => {
         infoResolucion,
         config
       );
+      setResultado(data);
       console.log(data);
 
       setAlerta({
         msg: "Resolución Creada Correctamente",
         error: false,
       });
-      setTimeout(()=>{
-          setAlerta({})
-          navigate("/resoluciones")
-      }, 3000)
+      setTimeout(() => {
+        setAlerta({});
+        navigate("/resoluciones");
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
@@ -51,6 +53,7 @@ const InfoProvider = ({ children }) => {
         mostrarAlerta,
         alerta,
         submitInfoResolucion,
+        resultado,
       }}
     >
       {children}
