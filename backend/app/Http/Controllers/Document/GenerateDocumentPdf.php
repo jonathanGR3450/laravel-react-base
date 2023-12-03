@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Document;
 
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\Radicado\StoreRadicadoFormRequest;
 use App\Models\Local\RadicadosLocal;
 use App\Services\Document;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class GenerateDocumentPdf extends AppBaseController
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(StoreRadicadoFormRequest $request)
     {
         try {
             $path = "templates";
@@ -24,20 +26,20 @@ class GenerateDocumentPdf extends AppBaseController
     
             $document->generateNameFileOutput();
             $pathTemplate = $document->generateWordDocument();
-            $pathOutputPdf = $document->convertToPdf($pathTemplate);
+            // $pathOutputPdf = $document->convertToPdf($pathTemplate);
 
-            $urlNameFile = "{$document->getPathOutput()}/{$document->getNameFileOutput()}.pdf";
+            $urlNameFile = "{$document->getPathOutput()}/{$document->getNameFileOutput()}.docx";
             $url = asset("storage/$urlNameFile");
 
             $radicado = RadicadosLocal::create([
                 "url" => $url,
                 "no_radicado" => $request->input('no_radicado'),
+                "asociado_id" => $request->input('asociado_id'),
                 "tramite_id" => $request->input('tramite_id'),
             ]);
 
-            // return Response::download($pathOutputPdf, "{$document->getNameFileOutput()}.pdf");
-
-            return $this->sendResponse(["url" => $url, "radicado" => $radicado], 'documento generado correctamente');
+            return Response::download($pathTemplate, "{$document->getNameFileOutput()}.docx");
+            // return $this->sendResponse(["url" => $url, "radicado" => $radicado], 'documento generado correctamente');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }

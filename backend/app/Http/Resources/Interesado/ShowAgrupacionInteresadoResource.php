@@ -116,7 +116,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *      
  * )
  */
-class InteresadoResource extends JsonResource
+class ShowAgrupacionInteresadoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -126,66 +126,13 @@ class InteresadoResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "interesado" => [
-                "interesado_lc_interesado" => [
-                    "t_id" => $this->interesado?->t_id ?? null,
-                    "tipo" => $this->interesado?->tipo ?? null,
-                    "tipo_documento" => $this->interesado?->tipo_documento ?? null,
-                    "documento_identidad" => $this->interesado?->documento_identidad ?? null,
-                    "primer_nombre" => $this->interesado?->primer_nombre ?? null,
-                    "segundo_nombre" => $this->interesado?->segundo_nombre ?? null,
-                    "primer_apellido" => $this->interesado?->primer_apellido ?? null,
-                    "segundo_apellido" => $this->interesado?->segundo_apellido ?? null,
-                    "sexo" => $this->interesado?->sexo ?? null,
-                    "grupo_etnico" => $this->interesado?->grupo_etnico ?? null,
-                    "razon_social" => $this->interesado?->razon_social ?? null,
-                    "estado_civil" => $this->interesado?->estado_civil ?? null,
-                    "nombre" => $this->interesado?->nombre ?? null,
-                    "comienzo_vida_util_version" => $this->interesado?->comienzo_vida_util_version ?? null,
-                    "fin_vida_util_version" => $this->interesado?->fin_vida_util_version ?? null,
-                    "espacio_de_nombres" => $this->interesado?->espacio_de_nombres ?? null,
-                    "local_id" => $this->interesado?->local_id ?? null,
-                ],
-                "interesado_lc_interesado_conservacion" => [
-                    "t_id" => $this->interesadoConservacion?->t_id ?? null,
-                    "tipo" => $this->interesadoConservacion?->tipo ?? null,
-                    "tipo_documento" => $this->interesadoConservacion?->tipo_documento ?? null,
-                    "documento_identidad" => $this->interesadoConservacion?->documento_identidad ?? null,
-                    "primer_nombre" => $this->interesadoConservacion?->primer_nombre ?? null,
-                    "segundo_nombre" => $this->interesadoConservacion?->segundo_nombre ?? null,
-                    "primer_apellido" => $this->interesadoConservacion?->primer_apellido ?? null,
-                    "segundo_apellido" => $this->interesadoConservacion?->segundo_apellido ?? null,
-                    "sexo" => $this->interesadoConservacion?->sexo ?? null,
-                    "grupo_etnico" => $this->interesadoConservacion?->grupo_etnico ?? null,
-                    "razon_social" => $this->interesadoConservacion?->razon_social ?? null,
-                    "estado_civil" => $this->interesadoConservacion?->estado_civil ?? null,
-                    "nombre" => $this->interesadoConservacion?->nombre ?? null,
-                    "comienzo_vida_util_version" => $this->interesadoConservacion?->comienzo_vida_util_version ?? null,
-                    "fin_vida_util_version" => $this->interesadoConservacion?->fin_vida_util_version ?? null,
-                    "espacio_de_nombres" => $this->interesadoConservacion?->espacio_de_nombres ?? null,
-                    "local_id" => $this->interesadoConservacion?->local_id ?? null,
-                ],
-                "interesado_lc_agrupacioninteresados" => [
-                    "t_id" => $this->agrupacionInteresados?->t_id ?? null,
-                    "tipo" => $this->agrupacionInteresados?->tipo ?? null,
-                    "nombre" => $this->agrupacionInteresados?->nombre ?? null,
-                    "comienzo_vida_util_version" => $this->agrupacionInteresados?->comienzo_vida_util_version ?? null,
-                    "fin_vida_util_version" => $this->agrupacionInteresados?->fin_vida_util_version ?? null,
-                    "espacio_de_nombres" => $this->agrupacionInteresados?->espacio_de_nombres ?? null,
-                    "local_id" => $this->agrupacionInteresados?->local_id ?? null,
-                ],
-                "agrupacion" => [
-                    "t_id" => $this->agrupacionRelacion?->t_id ?? null,
-                    "tipo" => $this->agrupacionRelacion?->tipo ?? null,
-                    "nombre" => $this->agrupacionRelacion?->nombre ?? null,
-                    "comienzo_vida_util_version" => $this->agrupacionRelacion?->comienzo_vida_util_version ?? null,
-                    "fin_vida_util_version" => $this->agrupacionRelacion?->fin_vida_util_version ?? null,
-                    "espacio_de_nombres" => $this->agrupacionRelacion?->espacio_de_nombres ?? null,
-                    "local_id" => $this->agrupacionRelacion?->local_id ?? null,
-                ],
-                "participacion" => $this->participacion ?? null,
-                "t_id" => $this->t_id ?? null,
-            ],
+            't_id' => $this->t_id,
+            'tipo' => $this->tipo,
+            'nombre' => $this->nombre,
+            'comienzo_vida_util_version' => $this->comienzo_vida_util_version,
+            'fin_vida_util_version' => $this->fin_vida_util_version,
+            'espacio_de_nombres' => $this->espacio_de_nombres,
+            'local_id' => $this->local_id,
         ];
     }
 }

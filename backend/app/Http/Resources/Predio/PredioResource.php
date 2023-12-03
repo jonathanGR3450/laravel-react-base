@@ -179,6 +179,7 @@ class PredioResource extends JsonResource
                                 "local_id" => $item->interesado?->local_id ?? null,
                             ],
                             "interesado_lc_agrupacioninteresados" => [
+                                "t_id" => $item->lcAgrupacionInteresados?->t_id ?? null,
                                 "tipo" => $item->lcAgrupacionInteresados?->tipo ?? null,
                                 "nombre" => $item->lcAgrupacionInteresados?->nombre ?? null,
                                 "comienzo_vida_util_version" => $item->lcAgrupacionInteresados?->comienzo_vida_util_version ?? null,
@@ -235,21 +236,23 @@ class PredioResource extends JsonResource
                     }),
                     "unidad_construccion" => $uebaunit->transform(function ($item) {
                         return [
+                            "t_id" => $item?->unidadConstruccion?->t_id,
                             "area_construida" => $item?->unidadConstruccion?->area_construida,
                             "lc_caracteristicasunidadconstruccion" => [
                                 "tipo_construccion" => [
-                                    "id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->t_id,
+                                    "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->t_id,
                                     "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->dispname,
                                 ],
                                 "tipo_unidad_construccion" => [
-                                    "id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoUnidadConstruccion->t_id,
+                                    "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoUnidadConstruccion->t_id,
                                     "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoUnidadConstruccion->dispname,
                                 ],
                                 "uso" => [
-                                    "id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->usoConstruccion->t_id,
+                                    "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->usoConstruccion->t_id,
                                     "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->usoConstruccion->dispname,
                                 ],
                                 "calificacionconvencional" => [
+                                    "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionConvencional()->get()->first()?->t_id,
                                     "total_calificacion" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionConvencional()->get()->first()?->total_calificacion,
                                 ],
                                 "calificacionnoconvencional" => [

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\AvaluoPredial\CalcularIncrementoAvaluoController;
+use App\Http\Controllers\AvaluoPredial\ListIncrementosController;
 use App\Http\Controllers\AvaluoPredial\ListTabAnexosUrbanaRuralLocalController;
 use App\Http\Controllers\AvaluoPredial\ListTabBod60UrbanaRuralLocalController;
 use App\Http\Controllers\AvaluoPredial\ListTabCcF0360UrbanaRuralLocalController;
@@ -32,11 +33,16 @@ use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
 use App\Http\Controllers\Construccion\UpdateLocal AS UpdateConstruccionLocal;
 use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccionLocal;
 use App\Http\Controllers\Document\GenerateDocumentPdf;
+use App\Http\Controllers\Document\ListRadicadoController;
+use App\Http\Controllers\Document\ListTipoTramiteController;
 use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
-use App\Http\Controllers\Interesado\StoreColMiembros;
+use App\Http\Controllers\Interesado\StoreAgrupacionInteresadoLocal;
+use App\Http\Controllers\Interesado\StoreColMiembrosLocal;
+use App\Http\Controllers\Interesado\StoreInteresadoLocal;
 use App\Http\Controllers\Predio\GetPredioNumeroPredialController;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
+use App\Http\Controllers\Predio\GetPrediosByNumeroPredialLocalController;
 use App\Http\Controllers\Predio\IndexNumerosHomologadosController;
 use App\Http\Controllers\Predio\IndexNumerosPredialesController;
 use App\Http\Controllers\Predio\StoreColUebaunitLocal;
@@ -81,6 +87,7 @@ Route::prefix('v1')->group(function () {
         Route::get('numeros-homologados', IndexNumerosHomologadosController::class);
         Route::post('numeros-homologados', StoreNumeroHomologadosController::class);
         Route::get('list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
+        Route::get('list/local/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialLocalController::class);
         Route::get('list/local/numeros-prediales', IndexNumerosPredialesController::class);
         Route::get('{predial}', GetPredioController::class);
     });
@@ -105,27 +112,28 @@ Route::prefix('v1')->group(function () {
         Route::get('tipo/tab-cc-f03', ListTabCcF0360UrbanaRuralLocalController::class);
         Route::get('tipo/tab-anexos', ListTabAnexosUrbanaRuralLocalController::class);
         Route::post('calcular/incremento', CalcularIncrementoAvaluoController::class);
+
+        Route::get('list/incrementos', ListIncrementosController::class);
     });
 
     Route::prefix('interesados')->group(function () {
-        Route::post('', StoreColMiembros::class);
+        Route::post('interesado', StoreInteresadoLocal::class);
+        Route::post('agrupacioninteresados', StoreAgrupacionInteresadoLocal::class);
+        Route::post('miembros', StoreColMiembrosLocal::class);
         Route::get('{nit}', Show::class);
     });
 
     Route::post('derecho/local', StoreDerechoLocal::class);
-
     Route::post('datos-condominio/local', StoreDatosCondominioLocal::class);
-
     Route::post('predio-copropiedad/local', StorePredioCopropiedadLocal::class);
-
     Route::post('ric-predio/local', StoreRicPredioLocal::class);
-
     Route::post('ric-tramite-catastral/local', StoreRicTramiteCatastralLocal::class);
-
     Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
 
-    Route::post('terreno/local', StoreTerrenoLocal::class);
-    Route::put('terreno/local/{id}', UpdateTerrenoLocal::class);
+    Route::prefix('caracteristicasunidadconstruccion')->group(function () {
+        Route::post('terreno/local', StoreTerrenoLocal::class);
+        Route::put('terreno/local/{id}', UpdateTerrenoLocal::class);
+    });
 
     Route::post('datos-adicionales/local', StoreDatosadicionaleslevantamientocatastralLocal::class);
 
@@ -138,6 +146,10 @@ Route::prefix('v1')->group(function () {
 
     Route::post('rrrfuente/fuente-administrativa/derecho', StoreFuenteAdministrativaDerechoController::class);
 
-    Route::post('document/generate', GenerateDocumentPdf::class);
+    Route::prefix('document')->group(function () {
+        Route::post('generate', GenerateDocumentPdf::class);
+        Route::get('list/tipo-tramite', ListTipoTramiteController::class);
+        Route::get('list/radicados', ListRadicadoController::class);
+    });
 
 });

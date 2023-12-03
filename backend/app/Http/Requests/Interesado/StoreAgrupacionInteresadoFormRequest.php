@@ -5,7 +5,7 @@ namespace App\Http\Requests\Interesado;
 use App\Traits\ValidationErrorResponseTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreColMiembrosFormRequest extends FormRequest
+class StoreAgrupacionInteresadoFormRequest extends FormRequest
 {
     use ValidationErrorResponseTrait;
     
@@ -25,30 +25,29 @@ class StoreColMiembrosFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'interesado_lc_interesado' => [
+            'tipo' => [
+                'required',
+                'integer',
+                'exists:pgsqlcatastro.col_grupointeresadotipo,t_id',
+            ],
+            'nombre' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'fin_vida_util_version' => [
                 'nullable',
-                'integer',
-                'exists:lc_interesado,t_id',
+                'date_format:Y-m-d H:i:s.u',
             ],
-            'interesado_lc_interesado_conservacion' => [
-                'nullable',
-                'integer',
-                'exists:pgsqlcatastro.lc_interesado,t_id',
-            ],
-            'interesado_lc_agrupacioninteresados' => [
+            'espacio_de_nombres' => [
                 'required',
-                'integer',
-                'exists:lc_agrupacioninteresados,t_id',
+                'string',
+                'max:255',
             ],
-            'agrupacion' => [
+            'local_id' => [
                 'required',
-                'integer',
-                'exists:lc_agrupacioninteresados,t_id',
-            ],
-            'participacion' => [
-                'required',
-                'numeric',
-                'between:0,1',
+                'string',
+                'max:255',
             ],
         ];
     }
