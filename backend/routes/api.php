@@ -130,9 +130,9 @@ Route::prefix('v1')->group(function () {
     Route::post('ric-tramite-catastral/local', StoreRicTramiteCatastralLocal::class);
     Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
 
-    Route::prefix('caracteristicasunidadconstruccion')->group(function () {
-        Route::post('terreno/local', StoreTerrenoLocal::class);
-        Route::put('terreno/local/{id}', UpdateTerrenoLocal::class);
+    Route::prefix('terreno')->group(function () {
+        Route::post('local', StoreTerrenoLocal::class);
+        Route::put('local/{id}', UpdateTerrenoLocal::class);
     });
 
     Route::post('datos-adicionales/local', StoreDatosadicionaleslevantamientocatastralLocal::class);
