@@ -1,17 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useRef, useState, useContext, useEffect } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { TableContext } from "./Context/Context";
 import { DataContext } from "./Context/DataContext";
 import { LoadDataForm } from "./CargaDatos";
-import UniConstruccionForm from "./Uniconstruccion";
-import TerrenoForm from "./Terreno";
-import ConstruccionForm from "./Construccion";
+import { ModalUniConForm } from "./Uniconstruccion";
+import { ModalTerrenoForm } from "./Terreno";
+import { ModalConstruccionForm } from "./Construccion";
 import {
   TerrenoResumeForm,
   UnidadConstruccionResumeForm,
   ConstruccionResumeForm,
 } from "./ResumeData";
+
 export const LoadDataConstruccion = () => {
   const uniConstruccionRef = useRef();
   const terrenoRef = useRef();
@@ -225,7 +226,7 @@ export const LoadDataConstruccion = () => {
               >
                 Carga
               </button>{" "}
-              <TerrenoForm ref={terrenoRef} />
+              <ModalTerrenoForm ref={terrenoRef} />
             </div>
           ) : null}
           {dataSelect == 2 ? (
@@ -238,7 +239,7 @@ export const LoadDataConstruccion = () => {
               >
                 Carga
               </button>{" "}
-              <ConstruccionForm ref={construccionRef} />
+              <ModalConstruccionForm ref={construccionRef} />
             </div>
           ) : null}
           {dataSelect == 3 ? (
@@ -251,7 +252,7 @@ export const LoadDataConstruccion = () => {
               >
                 Carga
               </button>
-              <UniConstruccionForm ref={uniConstruccionRef} />
+              <ModalUniConForm ref={uniConstruccionRef} />
             </div>
           ) : null}
         </div>
@@ -261,7 +262,6 @@ export const LoadDataConstruccion = () => {
 
   async function Avaluo() {
     let año = 2023;
-    let array = JSON.stringify(tableData);
 
     let keys = Object.keys(tableData);
     //Recorrer Numeros Prediales
@@ -271,7 +271,6 @@ export const LoadDataConstruccion = () => {
       console.log("current item", currentItem);
       let ArrayTerreno = [];
       let ArrayUnidad = [];
-
       async function TerrenoCalculate() {
         let aux = "";
         let zonasData = currentItem.terreno.ZHG;
@@ -362,8 +361,10 @@ export const LoadDataConstruccion = () => {
               console.log("uNIDADES", currentItem.unidad_construccion);
               for (const item of currentItem.unidad_construccion) {
                 console.log("item Numero Predial", item);
-                let destinacion = item.caracteristicas.tipo_construccion;
-                let tipo_unidad = item.caracteristicas.tipo_unidad_construccion;
+                let destinacion =
+                  item.caracteristicas.caracteristicas.tipo_construccion;
+                let tipo_unidad =
+                  item.caracteristicas.caracteristicas.tipo_unidad_construccion;
                 //Data Convencional
                 if (destinacion == 66) {
                   switch (parseInt(tipo_unidad)) {
@@ -374,8 +375,8 @@ export const LoadDataConstruccion = () => {
                       async function ResidenciaCalculate() {
                         let aux = "";
                         let puntos =
-                          item.caracteristicas.calificacionconvencional[0]
-                            .total_calificacion;
+                          item.caracteristicas.caracteristicas
+                            .calificacionconvencional[0].total_calificacion;
                         var requestOptions = {
                           method: "GET",
                           redirect: "follow",
@@ -404,7 +405,9 @@ export const LoadDataConstruccion = () => {
                             aux = true;
                             const result = await response.json();
                             let newobj = {
-                              destinacion: parseInt(item.caracteristicas.uso),
+                              destinacion: parseInt(
+                                item.caracteristicas.caracteristicas.uso
+                              ),
                               puntaje: parseFloat(result.data[0].puntos),
                               area: item.area_construida,
                               total: "",
@@ -445,7 +448,9 @@ export const LoadDataConstruccion = () => {
                       break;
                     //Comercial
                     case 540:
-                      var uso = parseInt(item.caracteristicas.uso);
+                      var uso = parseInt(
+                        item.caracteristicas.caracteristicas.uso
+                      );
 
                       console.log("ENTRA COMERCIAL");
 
@@ -453,8 +458,8 @@ export const LoadDataConstruccion = () => {
                         console.log("Calculando");
                         let aux = "";
                         let puntos =
-                          item.caracteristicas.calificacionconvencional[0]
-                            .total_calificacion;
+                          item.caracteristicas.caracteristicas
+                            .calificacionconvencional[0].total_calificacion;
 
                         var requestOptions = {
                           method: "GET",
@@ -568,8 +573,8 @@ export const LoadDataConstruccion = () => {
                       async function IndustrialCalculate() {
                         let aux = "";
                         let puntos =
-                          item.caracteristicas.calificacionconvencional[0]
-                            .total_calificacion;
+                          item.caracteristicas.caracteristicas
+                            .calificacionconvencional[0].total_calificacion;
 
                         var requestOptions = {
                           method: "GET",
@@ -640,16 +645,16 @@ export const LoadDataConstruccion = () => {
                     async function asignarDestino(item) {
                       console.log("eNTRA asignar", item);
                       let aux =
-                        item.caracteristicas.calificacionnoconvencional[0]
-                          .tipo_anexo;
+                        item.caracteristicas.caracteristicas
+                          .calificacionnoconvencional[0].tipo_anexo;
                       console.log("Entra Asignar", aux);
                       let destino = await obtenerDestino(aux);
 
                       if (destino != null) {
                         console.log("Destino", destino);
                         let puntos =
-                          item.caracteristicas.calificacionnoconvencional[0]
-                            .tipo_anexo;
+                          item.caracteristicas.caracteristicas
+                            .calificacionnoconvencional[0].tipo_anexo;
                         switch (puntos) {
                           case 452:
                             puntos = 90;
@@ -956,7 +961,9 @@ export const LoadDataConstruccion = () => {
                           const result = await response.json();
                           console.log("Anexos Rurales", result);
                           let newobj = {
-                            destinacion: item.caracteristicas.tipo_construccion,
+                            destinacion:
+                              item.caracteristicas.caracteristicas
+                                .tipo_construccion,
                             puntaje: result.data[0].puntos,
                             area: item.area_construida,
                             total: "",
@@ -1001,8 +1008,10 @@ export const LoadDataConstruccion = () => {
               let año = 2022;
               for (const item of currentItem.unidad_construccion) {
                 console.log("item Numero Predial", item);
-                let destinacion = item.caracteristicas.tipo_construccion;
-                let tipo_unidad = item.caracteristicas.tipo_unidad_construccion;
+                let destinacion =
+                  item.caracteristicas.caracteristicas.tipo_construccion;
+                let tipo_unidad =
+                  item.caracteristicas.caracteristicas.tipo_unidad_construccion;
                 //Data Convencional
                 if (destinacion == 66) {
                   switch (parseInt(tipo_unidad)) {
@@ -1014,8 +1023,8 @@ export const LoadDataConstruccion = () => {
                         let aux = "";
 
                         let puntos =
-                          item.caracteristicas.calificacionconvencional[0]
-                            .total_calificacion;
+                          item.caracteristicas.caracteristicas
+                            .calificacionconvencional[0].total_calificacion;
                         var requestOptions = {
                           method: "GET",
                           redirect: "follow",
@@ -1045,7 +1054,9 @@ export const LoadDataConstruccion = () => {
                             aux = true;
                             const result = await response.json();
                             let newobj = {
-                              destinacion: parseInt(item.caracteristicas.uso),
+                              destinacion: parseInt(
+                                item.caracteristicas.caracteristicas.uso
+                              ),
                               puntaje: parseFloat(result.data[0].puntos),
                               area: item.area_construida,
                               total: "",
@@ -1086,7 +1097,9 @@ export const LoadDataConstruccion = () => {
                       break;
                     //Comercial
                     case 540:
-                      var uso = parseInt(item.caracteristicas.uso);
+                      var uso = parseInt(
+                        item.caracteristicas.caracteristicas.uso
+                      );
 
                       console.log("ENTRA COMERCIAL");
 
@@ -1094,8 +1107,8 @@ export const LoadDataConstruccion = () => {
                         console.log("Calculando");
                         let aux = "";
                         let puntos =
-                          item.caracteristicas.calificacionconvencional[0]
-                            .total_calificacion;
+                          item.caracteristicas.caracteristicas
+                            .calificacionconvencional[0].total_calificacion;
 
                         var requestOptions = {
                           method: "GET",
@@ -1220,8 +1233,8 @@ export const LoadDataConstruccion = () => {
                       async function IndustrialCalculate() {
                         let aux = "";
                         let puntos =
-                          item.caracteristicas.calificacionconvencional[0]
-                            .total_calificacion;
+                          item.caracteristicas.caracteristicas
+                            .calificacionconvencional[0].total_calificacion;
 
                         var requestOptions = {
                           method: "GET",
@@ -1291,8 +1304,8 @@ export const LoadDataConstruccion = () => {
                     async function asignarDestino(item) {
                       console.log("Entra Asignar Destino", item);
                       let aux =
-                        item.caracteristicas.calificacionnoconvencional[0]
-                          .tipo_anexo;
+                        item.caracteristicas.caracteristicas
+                          .calificacionnoconvencional[0].tipo_anexo;
                       console.log("Entra Asignar", aux);
 
                       let destino = await obtenerDestino(aux);
@@ -1300,8 +1313,8 @@ export const LoadDataConstruccion = () => {
                       if (destino != null) {
                         console.log("Destino", destino);
                         let puntos =
-                          item.caracteristicas.calificacionnoconvencional[0]
-                            .tipo_anexo;
+                          item.caracteristicas.caracteristicas
+                            .calificacionnoconvencional[0].tipo_anexo;
                         switch (puntos) {
                           case 452:
                             puntos = 90;
@@ -1604,7 +1617,9 @@ export const LoadDataConstruccion = () => {
                           const result = await response.json();
 
                           let newobj = {
-                            destinacion: item.caracteristicas.tipo_construccion,
+                            destinacion:
+                              item.caracteristicas.caracteristicas
+                                .tipo_construccion,
                             puntaje: result.data[0].puntos,
                             area: item.area_construida,
                             total: "",
@@ -1675,7 +1690,98 @@ export const LoadDataConstruccion = () => {
         }
         function calculateDestino() {
           let destino = "";
-          ArrayUnidad.map((item, index) => {
+          console.log("datos tabla 123123", tableData);
+          tableData.map((item, index) => {
+            switch (parseInt(item.predio.destinacion_economica)) {
+              case 162:
+                destino = "M (PECUARIO) -ACUICOLA";
+                break;
+              case 163:
+                destino = "L (AGRICOLA)";
+                break;
+              case 164:
+                destino = "N (AGROINDUSTRIAL)";
+                break;
+              case 165:
+                destino = "D (AGROPECUARIO)";
+                break;
+              case 166:
+                destino =
+                  "L - O - M (AGRICOLA O PECUARIO, FORESTAL) - AGROFORESTAL";
+                break;
+              case 167:
+                destino = "C (COMERCIAL)";
+                break;
+              case 168:
+                destino = "F (CULTURAL)";
+                break;
+              case 169:
+                destino = "J (EDUCATIVO)";
+                break;
+              case 170:
+                destino = "0 (FORESTAL)";
+                break;
+              case 171:
+                destino = "A (HABITACIONAL)";
+                break;
+              case 172:
+                destino = "B (INDUSTRIAL)";
+                break;
+              case 173:
+                destino =
+                  "N (Infraestructura asociada a producción agropecuaria) AGROINDUSTRIAL";
+                break;
+              case 174:
+                destino = "Infraestructura hidráulica ";
+                break;
+              case 175:
+                destino = "Infraestructura de saneamiento básico";
+                break;
+              case 176:
+                destino = "Infraestructura seguridad";
+                break;
+              case 177:
+                destino = "Infraestructura transporte";
+                break;
+              case 178:
+                destino = "I (INSTITUCIONAL)";
+                break;
+              case 179:
+                destino = "E (MINERO)";
+                break;
+              case 180:
+                destino = "Q (LOTE NO URBANIZABLE NO URBANIZADO)";
+                break;
+              case 181:
+                destino = "R (LOTE URBANIZADO NO CONSTRUIDO)";
+                break;
+              case 182:
+                destino = "S (LOTE NO RUBANIZABLE)";
+                break;
+              case 183:
+                destino = "M (PECUARIO)";
+                break;
+              case 184:
+                destino = "G (RECREACIONAL)";
+                break;
+              case 185:
+                destino = "K (RELIGIOSO)";
+                break;
+              case 186:
+                destino = "H (SALUBRIDAD)";
+                break;
+              case 187:
+                destino = "T (SERVICIOS ESPECIALES) Servicios funerarios";
+                break;
+              case 188:
+                destino = "P (USO PUBLICO)";
+                break;
+              default:
+                destino = ""; // O cualquier valor por defecto
+                break;
+            }
+          });
+          /*ArrayUnidad.map((item, index) => {
             if (item.destinacion >= 220 && item.destinacion <= 234) {
               destino = "A";
             } else {
@@ -1694,7 +1800,7 @@ export const LoadDataConstruccion = () => {
                 }
               }
             }
-          });
+          });*/
           return destino;
         }
         function calculateConstruida() {
@@ -1981,6 +2087,7 @@ export const LoadDataConstruccion = () => {
           });
           return sum;
         }
+
         let num =
           currentItem.Dpto +
           currentItem.Mpio +
@@ -2010,17 +2117,18 @@ export const LoadDataConstruccion = () => {
 
       //Recorrer Numeros Prediales DATA
     }
-
     setEstDataTotal(true);
     console.log("ArrayTotal", ArrayTotal);
     setDataTotal(ArrayTotal);
   }
+
   const AllTableForm = () => {
     console.log("Datos Totales", dataTotal);
-
-    function redondearAvaluoTotal(data) {
-      return Math.ceil(data / 1000) * 1000;
-    }
+    let jsonInfoProvider = {
+      predio: [],
+      interesados: [],
+      liquidacion: [],
+    };
     function redondear(numero) {
       console.log("Numero a Redondear", numero.toLocaleString());
       const resto = numero % 1000;
@@ -2029,12 +2137,35 @@ export const LoadDataConstruccion = () => {
       console.log("redondeo", redondeo);
       return numero + redondeo;
     }
+
     const Allfilas = Object.entries(dataTotal).map((items, index) => {
       console.log("items", items);
       let item = items[1];
       ////////////////////////////////////////////////////FUncion de Redondear Valor Final Avaluo
       console.log("Valor Avaluo redondeado");
+      const fechaActual = new Date();
+      const añoActual = fechaActual.getFullYear();
+
+      let newDataPredio = {
+        num_predial: item.num_predial,
+        matricula: item.matricula,
+        direccion: item.direccion,
+        destinacion: item.destinacion,
+        area_terreno: item.area_terreno,
+        area_construida: item.area_construida,
+        avaluo: "",
+        vigencia: "01/01/" + añoActual,
+      };
+      console.log(newDataPredio);
+
+      if (item.zona == "01") {
+        newDataPredio.avaluo = redondear(item.avaluo * 1.0431).toLocaleString();
+      } else {
+        newDataPredio.avaluo = redondear(item.avaluo).toLocaleString();
+      }
+      jsonInfoProvider.predio.push(newDataPredio);
       //redondearAvaluoTotal(item.avaluo)
+
       return (
         <tr key={index}>
           <td className="border-2 rounded-xl p-2">{index + 1}</td>
@@ -2055,8 +2186,78 @@ export const LoadDataConstruccion = () => {
       );
     });
 
+    function infoInteresados() {
+      tableData.map((item, index) => {
+        let newDataInteresado = {
+          num_predial:
+            item.Dpto +
+            item.Mpio +
+            item.Zona +
+            item.Sector +
+            item.Comuna +
+            item.Barrio +
+            item.Manzana +
+            item.Terreno +
+            item.Condicion +
+            item.Edificio +
+            item.Piso +
+            item.Unidad,
+          interesado: [],
+        };
+        item.interesados.map((items, indexs) => {
+          let nombre = "";
+          if (items.tipo == 659) {
+            nombre = items.razon_social;
+          } else {
+            nombre = items.nombre;
+          }
+          let nom_documento = "";
+
+          switch (items.tipo_documento) {
+            case 529:
+              nom_documento = "C.C.";
+              break;
+            case 530:
+              nom_documento = "C.E.";
+              break;
+            case 531:
+              nom_documento = "NIT";
+              break;
+            case 532:
+              nom_documento = "T.I.";
+              break;
+            case 533:
+              nom_documento = "Registro Civil";
+              break;
+            case 534:
+              nom_documento = "Secuencial";
+              break;
+            case 535:
+              nom_documento = "Pasaporte";
+              break;
+            default:
+              nom_documento = "Vacio";
+              break;
+          }
+          let interesado = {
+            numero_propietario: indexs + 1,
+            nombre_propietario: nombre,
+            tipo_documento: nom_documento,
+            numero_documento: items.documento_identidad,
+          };
+          newDataInteresado.interesado.push(interesado);
+        });
+        jsonInfoProvider["interesados"].push(newDataInteresado);
+      });
+    }
+    function calculateLiquidacion() {}
+    function SendData() {
+      infoInteresados();
+      console.log("Datos Json123", jsonInfoProvider);
+    }
+
     return (
-      <div className="w-full">
+      <div className="w-full flex flex-col ">
         <table className="w-full text-center">
           <thead className="uppercase border-2  bg-teal-500 text-base text-white">
             <tr>
@@ -2083,6 +2284,14 @@ export const LoadDataConstruccion = () => {
           </thead>
           <tbody>{Allfilas}</tbody>
         </table>
+        <div className="w-full flex flex-col justify-center items-center">
+          <button
+            onClick={SendData}
+            className=" w-1/5 p-1 text-center rounded-md text-white bg-teal-500 text-lg mt-4 ml-4"
+          >
+            Guardar Avaluo
+          </button>
+        </div>
       </div>
     );
   };

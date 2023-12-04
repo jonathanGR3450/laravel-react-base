@@ -1,5 +1,5 @@
 import { Modal } from "./Modal";
-import {
+import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -9,37 +9,21 @@ import {
 import { InteresadoContext } from "./Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
 const TerrenoForm = (props, ref) => {
-  const { tableData, updateTableData } = useContext(TableContext);
-  console.log("Datos Tabla", tableData);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  let [dataId, setDataId] = useState();
-  const [terrenoData, setTerrenoData] = useState({
+  console.log(props.contexto);
+  let tableData = [];
+  let updateTableData = () => {};
+  const {
+    tableData: contextTableData,
+    updateTableData: contextUpdateTableData,
+  } = useContext(TableContext);
+  let [terrenoData, setTerrenoData] = useState({
+    t_id: "",
     area_terreno: "",
     codigo_manzana: "",
     avaluo_terreno: "",
     ZHG: [],
     SantaMaria: "",
   });
-
-  const openModal = (aux) => {
-    let newData = {
-      area_terreno: "",
-      codigo_manzana: "",
-      avaluo_terreno: "",
-      ZHG: [],
-      SantaMaria: "",
-    };
-    setTerrenoData(newData);
-    setDataId(aux);
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  useImperativeHandle(ref, () => ({
-    openModal,
-  }));
-
   const isAnyValueEmpty = () => {
     if (terrenoData.area_terreno !== "" && terrenoData.ZHG !== "") {
       setEstBtt(false);
@@ -67,30 +51,39 @@ const TerrenoForm = (props, ref) => {
       terrenoData.SantaMaria = false;
     }
     console.log("Terreno Data", terrenoData);
-    let response = await createTerreno();
+    console.log("terreno Data", props);
+    console.log("terreno Data");
 
-    console.log("terreno Data", terrenoData);
-    if (response) {
-      Object.entries(tableData).map((itemd, index) => {
-        let item = itemd[1];
-        console.log("Data Index", item);
-        dataId.map((items) => {
-          if (items - 1 == index) {
-            item.terreno = terrenoData;
+    if (props.contexto) {
+      tableData = contextTableData;
+      updateTableData = contextUpdateTableData;
+      let dataId = props.dataid;
+
+      const entries = Object.entries(tableData);
+      for (const [index, [key, item1]] of entries.entries()) {
+        for (const items of dataId) {
+          if (items - 1 === index) {
+            console.log("Data Index", item1);
+            let response = await createTerreno(item1);
+            console.log(response);
+            terrenoData.t_id = response.t_id;
+            terrenoData.area_terreno = response.area_terreno;
+            terrenoData.codigo_manzana = response.manzana_vereda_codigo;
+            item1.terreno = terrenoData;
           }
-        });
-      });
+        }
+      }
       console.log("Tabla Data", tableData);
-      closeModal();
       updateTableData(tableData);
     }
   };
   ////ENDPOINT
-  async function createTerreno() {
+  async function createTerreno(data) {
+    console.log("data 123 ", data);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     let url = import.meta.env.VITE_API_URL_FIRST + "terreno/local";
-    let aux = tableData[0];
+    let aux = data;
     let newobj = {
       area_terreno: terrenoData.area_terreno,
       avaluo_terreno: terrenoData.avaluo_terreno,
@@ -105,13 +98,14 @@ const TerrenoForm = (props, ref) => {
       geometria: "POINT (10 20)",
       dimension: 685,
       etiqueta: "Terreno",
-      relacion_superficie: 663,
+      relacion_superficie: null,
       nivel: "",
-      comienzo_vida_util_version: "2023-08-29 12:00:00",
+      comienzo_vida_util_version: null,
       fin_vida_util_version: null,
-      espacio_de_nombres: "Mi Espacio",
+      espacio_de_nombres: "Fusagasuga",
+      local_id: aux.codigo_homologado,
     };
-    console.log("Nuevo Ojbeto", JSON.stringify(newobj));
+    console.log("Nuevo Ojbeto", newobj);
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -123,13 +117,13 @@ const TerrenoForm = (props, ref) => {
       if (response.ok) {
         const result = await response.json();
         console.log("Dataaaaa", result);
-        return "id", response;
+        return result.data;
       } else {
         throw new Error("Error en la solicitud");
       }
     } catch (error) {
-      return false;
       console.log("Error:", error);
+      return error;
     }
   }
   //Datos de Zona
@@ -159,6 +153,7 @@ const TerrenoForm = (props, ref) => {
     }
     setZonas(nuevasZonas);
   };
+
   function validarArea() {
     let sum = 0;
     let sumZHG = 0;
@@ -173,27 +168,16 @@ const TerrenoForm = (props, ref) => {
     }
     if (sum === parseFloat(terrenoData.area_terreno) && sumZHG === 0) {
       let manzana = "";
-      if (typeof tableData !== "undefined") {
-        let item = tableData[0];
-        manzana =
-          item.Dpto +
-          item.Mpio +
-          item.Zona +
-          item.Sector +
-          item.Comuna +
-          item.Barrio +
-          item.Manzana;
-      }
       setEstBtt(false);
       setTerrenoData({
         ...terrenoData,
         ZHG: zonasData,
-        codigo_manzana: manzana,
       });
     } else {
       setEstBtt(true);
     }
   }
+
   useEffect(() => {
     console.log("aasas", zonasData);
     validarArea();
@@ -289,70 +273,101 @@ const TerrenoForm = (props, ref) => {
 
   console.log(terrenoData);
   return (
-    <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 ">
-        <h1 className="text-3xl ">Caracteristicas de Terreno</h1>
-        <div className="w-full flex flex-row mt-4 mb-4">
-          <label
-            htmlFor="terreno-checkbox"
-            className="flex items-center text-xl w-2/3"
-          >
-            <input
-              name="SantaMaria"
-              onChange={Load_Data}
-              type="checkbox"
-              id="terreno-checkbox"
-              className="mr-2"
-            />
-            El terreno pertenece a Santa Maria de los Angeles
+    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 ">
+      <h1 className="text-3xl ">Caracteristicas de Terreno</h1>
+      <div className="w-full flex flex-row mt-4 mb-4">
+        <label
+          htmlFor="terreno-checkbox"
+          className="flex items-center text-xl w-2/3"
+        >
+          <input
+            name="SantaMaria"
+            onChange={Load_Data}
+            type="checkbox"
+            id="terreno-checkbox"
+            className="mr-2"
+          />
+          El terreno pertenece a Santa Maria de los Angeles
+        </label>
+        <div className="w-1/3 flex flex-col ml-4">
+          <label>Area Total Terreno (mt2)</label>
+          <input
+            name="area_terreno"
+            type="text"
+            className="border-2 p-1 rounded-md w-full"
+            value={terrenoData.area_terreno}
+            onInput={soloNumeros}
+            onChange={Load_Data}
+          ></input>
+        </div>
+      </div>
+      <div className="w-full flex flex-row items-center justify-center">
+        <div className="w-full ml-4 flex flex-row items-center ">
+          <label className="w-2/4">
+            Cuantas Zonas Geoeconomicas tiene este Terreno
           </label>
-          <div className="w-1/3 flex flex-col ml-4">
-            <label>Area Total Terreno (mt2)</label>
-            <input
-              name="area_terreno"
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-              value={terrenoData.area_terreno}
-              onInput={soloNumeros}
-              onChange={Load_Data}
-            ></input>
-          </div>
-        </div>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-full ml-4 flex flex-row items-center ">
-            <label className="w-2/4">
-              Cuantas Zonas Geoeconomicas tiene este Terreno
-            </label>
-            <input
-              name="avaluo_terreno"
-              type="number"
-              className="border-2 p-1 rounded-md w-1/4"
-              value={numZonas}
-              onChange={load_tamaño}
-            ></input>
-            <button
-              onClick={agregarZonas}
-              className="p-2 text-center rounded-md text-white bg-teal-500 text-lg ml-4 mr-2"
-            >
-              Cargar Zonas
-            </button>
-          </div>
-        </div>
-        {zonas}
-        <div className="w-full flex flex-row mt-4 justify-center items-center">
+          <input
+            name="avaluo_terreno"
+            type="number"
+            className="border-2 p-1 rounded-md w-1/4"
+            value={numZonas}
+            onChange={load_tamaño}
+          ></input>
           <button
-            onClick={sendData}
-            className={`${
-              estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
-            } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
-            disabled={estBtt}
+            onClick={agregarZonas}
+            className="p-2 text-center rounded-md text-white bg-teal-500 text-lg ml-4 mr-2"
           >
-            Guardar
+            Cargar Zonas
           </button>
         </div>
       </div>
-    </Modal>
+      {zonas}
+      <div className="w-full flex flex-row mt-4 justify-center items-center">
+        <button
+          onClick={sendData}
+          className={`${
+            estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+          } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
+          disabled={estBtt}
+        >
+          Guardar
+        </button>
+      </div>
+    </div>
   );
 };
 
-export default forwardRef(TerrenoForm);
+export const ModalTerrenoForm = React.forwardRef((props, ref) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  let [dataId, setDataId] = useState();
+
+  const openModal = (aux) => {
+    let newData = {
+      area_terreno: "",
+      codigo_manzana: "",
+      avaluo_terreno: "",
+      ZHG: [],
+      SantaMaria: "",
+    };
+    setDataId(aux);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <TerrenoForm contexto={true} dataid={dataId} />
+    </Modal>
+  );
+});
+export const NormalInteresadoForm = React.forwardRef((props, ref) => {
+  return (
+    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
+      <TerrenoForm contexto={false} />
+    </div>
+  );
+});

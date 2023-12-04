@@ -1,5 +1,5 @@
 import { Modal } from "./Modal";
-import {
+import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -17,40 +17,18 @@ import { TableContext } from "./Context/Context";
 export const CaraContext = createContext();
 
 const UniConstruccionForm = (props, ref) => {
-  const { tableData, updateTableData } = useContext(TableContext);
+  console.log(props);
+  let tableData = [];
+  let updateTableData = () => {};
+  const {
+    tableData: contextTableData,
+    updateTableData: contextUpdateTableData,
+  } = useContext(TableContext);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  let [dataId, setDataId] = useState();
-  let [construcciones, setConstrucciones] = useState();
-
-  const openModal = (aux) => {
-    let newobj = [];
-
-    Object.entries(tableData).map((itemd, index) => {
-      let item = itemd[1];
-      aux.map((items) => {
-        if (items - 1 == index) {
-          if (item.construccion) {
-            newobj = item.construccion;
-          }
-        }
-      });
-    });
-    setConstrucciones(newobj);
-    setDataId(aux);
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  useImperativeHandle(ref, () => ({
-    openModal,
-  }));
   function soloNumeros(event) {
     const input = event.target;
     input.value = input.value.replace(/[^0-9.]/g, "");
   }
-
   //Cuantas Unidades Se Crean
   const [numUnidad, setNumUnidad] = useState();
   //Componentes Unidad
@@ -88,7 +66,6 @@ const UniConstruccionForm = (props, ref) => {
     });
   };
   const CreateUnidad = (index) => {
-    const { tableData, updateTableData } = useContext(TableContext);
     const [dataUnidad, setDataUnidad] = useState({
       planta_ubicacion: "",
       altura: "",
@@ -96,9 +73,11 @@ const UniConstruccionForm = (props, ref) => {
       etiqueta: "",
       construccion: "",
       caracteristicas: "",
+      lc_caracteristicasunidadconstruccion: "",
     });
     const Load_Data = (e) => {
       const { name, value } = e.target;
+      console.log("Valores ", name + " - " + value);
       setDataUnidad((prevValues) => ({ ...prevValues, [name]: value }));
     };
     //Modal de Crear y Cargar Caracteristicas
@@ -113,13 +92,18 @@ const UniConstruccionForm = (props, ref) => {
         carac = newobj.construcciones[0].caracteristicasunidadconstruccion;
       } else {
         console.log("Creo CONstruccion");
-        carac = newData.construcciones[0].caracteristicasunidadconstruccion;
+        carac = {
+          caracteristicas:
+            newData.construcciones[0].caracteristicasunidadconstruccion,
+          lc_caracteristicasunidadconstruccion: newData.t_id,
+        };
       }
       console.log("Caracteristicas", carac);
 
       setDataUnidad({ ...dataUnidad, caracteristicas: carac });
       closeCreateCaaracRef();
     };
+
     function convertirFormato(jsonOriginal) {
       console.log("Json Original", jsonOriginal);
       const {
@@ -210,7 +194,6 @@ const UniConstruccionForm = (props, ref) => {
     useEffect(() => {
       index.onDataChange(index.index, dataUnidad);
     }, [dataUnidad]);
-
     return (
       <CaraContext.Provider value={{ updateCaracteristicas }}>
         <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
@@ -220,10 +203,19 @@ const UniConstruccionForm = (props, ref) => {
           <div className="w-full flex flex-row mt-4">
             <div className="w-1/3 flex flex-col">
               <label>Relacion Construccion</label>
-              <select className="border-2 p-1 rounded-md w-full">
+              <select
+                name="construccion"
+                onChange={Load_Data}
+                value={dataUnidad.construccion}
+                className="border-2 p-1 rounded-md w-full"
+              >
                 <option></option>
-                {Object.entries(construcciones).map((item, index) => {
-                  return <option>Construccion {index + 1} </option>;
+                {Object.entries(props.construccion).map((item, index) => {
+                  return (
+                    <option value={props.construccion[index].t_id}>
+                      Construccion {index + 1}{" "}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -298,22 +290,74 @@ const UniConstruccionForm = (props, ref) => {
     );
   };
 
-  const sendData = () => {
-    Object.entries(tableData).map((itemd, index) => {
-      let item = itemd[1];
-      dataId.map((items) => {
-        if (items - 1 == index) {
-          item.unidad_construccion = unidadData;
+  const sendData = async () => {
+    if (props.contexto) {
+      console.log("UNidad adata", unidadData);
+      let dataId = props.dataId;
+      console.log("UNidad adata", dataId);
+      tableData = contextTableData;
+      updateTableData = contextUpdateTableData;
+      const entries = Object.entries(tableData);
+      const entriesUnidad = Object.entries(unidadData);
+      for (const [index, [key, item]] of entries.entries()) {
+        for (const items of dataId) {
+          if (items - 1 == index) {
+            for (const [index, [key, item1]] of entriesUnidad.entries()) {
+              item1.lc_caracteristicasunidadconstruccion =
+                item1.caracteristicas.lc_caracteristicasunidadconstruccion;
+              console.log(
+                "Data Interna",
+                item1.caracteristicas.lc_caracteristicasunidadconstruccion
+              );
+              let json = {
+                planta_ubicacion: item1.planta_ubicacion,
+                area_construida: item1.area_construida,
+                altura: item1.altura,
+                lc_caracteristicasunidadconstruccion:
+                  item1.lc_caracteristicasunidadconstruccion,
+                lc_construccion: item1.construccion,
+                dimension: null,
+                etiqueta: item1.etiqueta,
+                relacion_superficie: null,
+                nivel: null,
+                comienzo_vida_util_version: null,
+                fin_vida_util_version: null,
+                espacio_de_nombres: "Fusagasuga",
+                local_id: item.codigo_homologado,
+              };
+              var myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              let raw = JSON.stringify(json);
+              let url =
+                import.meta.env.VITE_API_URL_FIRST +
+                "unidad/construccion/local";
+              var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow",
+              };
+              try {
+                const response = await fetch(url, requestOptions);
+                const result = await response.json();
+                console.log(result);
+              } catch (error) {
+                console.log("error", error);
+              }
+            }
+
+            item.unidad_construccion = unidadData;
+          }
         }
-      });
-    });
-    console.log("datos de tabla", tableData);
-    updateTableData(tableData);
-    closeModal();
+      }
+
+      console.log("datos de tabla", tableData);
+      updateTableData(tableData);
+    }
   };
 
   return (
-    <Modal isOpen={isModalOpen} onClose={closeModal}>
+    <div>
       <h1 className="text-2xl">Datos Generales de Unidad de Construccion</h1>
       <div className="w-full pt-4 flex flex-row text-left">
         <input
@@ -339,8 +383,52 @@ const UniConstruccionForm = (props, ref) => {
           Guardar Todo
         </button>
       </div>
-    </Modal>
+    </div>
   );
 };
 
-export default forwardRef(UniConstruccionForm);
+export const ModalUniConForm = React.forwardRef((props, ref) => {
+  let [construcciones, setConstrucciones] = useState();
+  const { tableData, updateTableData } = useContext(TableContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  let [dataId, setDataId] = useState();
+
+  const openModal = (aux) => {
+    let newobj = [];
+    Object.entries(tableData).map((itemd, index) => {
+      let item = itemd[1];
+      aux.map((items) => {
+        if (items - 1 == index) {
+          if (item.construccion) {
+            newobj = item.construccion;
+          }
+        }
+      });
+    });
+    setConstrucciones(newobj);
+    setDataId(aux);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <UniConstruccionForm
+        contexto={true}
+        dataId={dataId}
+        construccion={construcciones}
+      />
+    </Modal>
+  );
+});
+export const NormalUniConForm = React.forwardRef((props, ref) => {
+  return (
+    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
+      <UniConstruccionForm contexto={false} />
+    </div>
+  );
+});

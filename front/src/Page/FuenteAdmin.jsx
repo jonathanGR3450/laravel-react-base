@@ -10,7 +10,7 @@ import { DataContext } from "./Context/DataContext";
 import { TableContext } from "./Context/Context";
 const FuenteAdminForm = (props, ref) => {
   //const { updateDataAll } = useContext(DataContext);
-  console.log(props);
+
   let tableData = [];
   let updateTableData = () => {};
 
@@ -39,56 +39,60 @@ const FuenteAdminForm = (props, ref) => {
     const input = event.target;
     input.value = input.value.replace(/[^0-9.]/g, "");
   }
-
+  /*  */
   const sendData = async () => {
     console.log("entra", objFuente);
     try {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      console.log("Fuente", objFuente);
-      let json = {
-        tipo: objFuente.tipo,
-        ente_emisor: objFuente.ente_emisor,
-        observacion: objFuente.observacion,
-        numero_fuente: objFuente.numero_fuente,
-        estado_disponibilidad: objFuente.estado_disponibilidad,
-        tipo_principal: objFuente.tipo_principal,
-        fecha_documento_fuente: objFuente.fecha_documento_fuente,
-        espacio_de_nombres: "MiEspacioDeNombres",
-      };
-      let raw = JSON.stringify(json);
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-      };
-      console.log("raw", raw);
-      let url =
-        import.meta.env.VITE_API_URL_FIRST + "fuente-administrativa/local";
-
-      const response = await fetch(url, requestOptions);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log(result);
-      setObjFuente((prevValues) => ({ ...prevValues, t_id: result.data.t_id }));
-
       if (props.contexto) {
+        console.log(props);
+        dataId = props.dataid;
         tableData = contextTableData;
         updateTableData = contextUpdateTableData;
-        tableData.map((item, index) => {
-          dataId.map((items) => {
+        const entries = Object.entries(tableData);
+        for (const [index, [key, item]] of entries.entries()) {
+          for (const items of dataId) {
             if (items - 1 == index) {
+              var myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              console.log("Fuente", objFuente);
+              let json = {
+                tipo: objFuente.tipo,
+                ente_emisor: objFuente.ente_emisor,
+                observacion: objFuente.observacion,
+                numero_fuente: objFuente.numero_fuente,
+                estado_disponibilidad: objFuente.estado_disponibilidad,
+                tipo_principal: objFuente.tipo_principal,
+                fecha_documento_fuente: objFuente.fecha_documento_fuente,
+                espacio_de_nombres: "Fusagasuga",
+                local_id: item.codigo_homologado,
+              };
+              let raw = JSON.stringify(json);
+              var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow",
+              };
+              console.log("raw", raw);
+              let url =
+                import.meta.env.VITE_API_URL_FIRST +
+                "fuente-administrativa/local";
+
+              const response = await fetch(url, requestOptions);
+
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+
+              const result = await response.json();
+              console.log(result);
+
+              objFuente.t_id = result.data.t_id;
               item.fuente_administrativa = objFuente;
             }
-          });
-        });
-        console.log(props);
-        props.onClose();
+          }
+        }
+        //props.onClose();
         updateTableData(tableData);
       }
     } catch (error) {

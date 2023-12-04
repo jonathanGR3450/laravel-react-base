@@ -11,6 +11,7 @@ import {
   TableContext,
 } from "./Context/Context";
 import { ModalData } from "./ModalData";
+//import Terreno from "./Terreno";
 //Objetos base con los datos que se necesitan
 let PredioMatriz = {
   Dpto: "",
@@ -107,6 +108,7 @@ export const NumPredialForm = () => {
     if (ArrayFinal.length == 0) {
       //DataJson.numeros_prediales Valor del Envio de Datos
       aux = allData;
+      console.log(aux);
       JSONtoObject(aux);
     } else {
       aux = ArrayFinal;
@@ -309,12 +311,14 @@ export const NumPredialForm = () => {
       }
       ArrayJsonBack.push(ObjectPredio);
     });
+    console.log("Valores del Array", ArrayJsonBack);
   }
   // 5 Buscar Ultimo Terreno mayor y modificar la posicion de terreno y unidad segun se necesite
   //Llena PredioMatriz
   function lastTerreno(aux) {
     //aux= value del select de tipo de predio
     //Llena Predio Matriz
+    console.log("Ultimo Terreno", aux);
     //Mayor Terreno
     let mayorTerreno = 0;
     //Mayor Unidad
@@ -331,11 +335,12 @@ export const NumPredialForm = () => {
         PredioMatriz.Manzana = item.Manzana;
         PredioMatriz.Edificio = item.Edificio;
         PredioMatriz.Piso = item.Piso;
+
         //Num = item de terreno
         let numTerreno = parseInt(item.Terreno);
-
         //Num = item de Unidad
         let numUnidad = parseInt(item.Unidad);
+        console.log("numTerreno " + numTerreno + " numUnidad " + numUnidad);
 
         for (let p = 0; p < item.Terreno.length; p++) {
           if (p == 1 && item.Terreno[p] == 9) {
@@ -410,18 +415,30 @@ export const NumPredialForm = () => {
             PredioMatriz.Unidad = mayorUnidad.toString().padStart(4, "0");
           } else {
             //Diferente a esos Valores
-            for (let i = 0; i <= item.Terreno.length; i++) {
-              if (i == 1 && item.Terreno[1] != 9 && item.Terreno[1] != 8) {
+            console.log("iTEM tERRENO     ", parseInt(item.Terreno));
+            console.log("iTEM Unidad    ", parseInt(item.Unidad));
+            if (parseInt(item.Terreno) < 800) {
+              console.log("Item no Contiene 9 u 8");
+              if (numTerreno > mayorTerreno) {
+                mayorTerreno = numTerreno;
+              }
+              PredioMatriz.Unidad = mayorUnidad.toString().padStart(4, "0");
+            } else {
+              console.log("Item Contiene 9 u 8");
+              console.log("Terreno", item.Terreno);
+              console.log("Unidad", item.Unidad);
+              if (parseInt(item.Unidad) == 0) {
                 if (numTerreno > mayorTerreno) {
                   mayorTerreno = numTerreno;
                 }
-                PredioMatriz.Unidad = mayorUnidad.toString().padStart(4, "0");
               } else {
                 if (numUnidad > mayorUnidad) {
-                  mayorUnidad = numUnidad;
+                  mayorTerreno = numUnidad;
                 }
               }
             }
+
+            console.log("Mayor Terreno", mayorTerreno);
             PredioMatriz.Terreno = mayorTerreno.toString().padStart(4, "0");
             PredioMatriz.Unidad = "0000";
           }
@@ -590,16 +607,39 @@ export const NumPredialForm = () => {
     const [bttCadena, setBttCadena] = useState(true);
 
     const datos = async () => {
-      const data = await fetchData();
-
-      let dataLength = data.last_page;
+      let dataLength = "";
       let tempData = [];
+      console.log("Pregunta Conservacion");
+      let urlConservacion =
+        import.meta.env.VITE_API_URL_FIRST +
+        `predio/list/numeros-prediales/${dataMatriz}?&limit=2000`;
+      const data = await fetchData(urlConservacion);
+      dataLength = data.last_page;
+
       for (let currentPage = 1; currentPage <= dataLength; currentPage++) {
-        const currentPageData = await fetchData(currentPage);
+        const currentPageData = await fetchData(urlConservacion, currentPage);
         currentPageData.data.map((item, index) => {
           tempData.push(item.numero_predial);
         });
       }
+      console.log("Data de Conservacion", tempData);
+      console.log("Pregunta Local");
+      let urlLocal =
+        import.meta.env.VITE_API_URL_FIRST +
+        `predio/list/local/numeros-prediales/${dataMatriz}?&limit=2000`;
+      const datalocal = await fetchData(urlLocal);
+      console.log("data Local", datalocal);
+      dataLength = datalocal.last_page;
+
+      for (let currentPage = 1; currentPage <= dataLength; currentPage++) {
+        const currentPageData = await fetchData(urlLocal, currentPage);
+        currentPageData.data.map((item, index) => {
+          console.log("Data item Local", item);
+          tempData.push(item.numero_predial);
+        });
+      }
+      console.log("toDO eL DATA", tempData);
+
       ///////////////////////////////////////////Poner la Consulta de Local y agregar Tempdata
       setLoading(false);
       setFormState(false);
@@ -607,15 +647,12 @@ export const NumPredialForm = () => {
       setNumPredial(dataMatriz);
     };
 
-    const fetchData = async (currentPage) => {
+    const fetchData = async (url, currentPage) => {
       try {
-        const response = await fetch(
-          `http://localhost/api/v1/predio/list/numeros-prediales/${dataMatriz}?page=${currentPage}&limit=2000`,
-          {
-            method: "GET",
-            redirect: "follow",
-          }
-        );
+        const response = await fetch(url, {
+          method: "GET",
+          redirect: "follow",
+        });
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -626,6 +663,7 @@ export const NumPredialForm = () => {
         return [];
       }
     };
+
     const dataDB = async () => {
       setLoading(true);
       try {

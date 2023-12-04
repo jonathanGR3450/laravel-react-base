@@ -292,7 +292,7 @@ export const LoadDataForm = () => {
       </div>
     );
   };
-
+  const sendData = async () => {};
   return (
     <InteresadoProvider>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
@@ -301,11 +301,22 @@ export const LoadDataForm = () => {
           <ChangeData />
           <TableForm />
         </div>
+        <div className="mt-4 w-full flex flex-col justify-center items-end">
+          <button
+            className={` w-1/5 p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
+          >
+            Siguiente
+          </button>
+        </div>
       </div>
     </InteresadoProvider>
   );
 };
-/*    <div>
+/*
+ onClick={sendData}
+            disabled={estBtt}
+<div>
+
             <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2">
               Cargar Numeros Prediales
             </button>

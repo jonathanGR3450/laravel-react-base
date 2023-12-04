@@ -17,6 +17,7 @@ const DerechoForm = (props, ref) => {
   } = useContext(TableContext);
 
   const [objDerecho, setobjDerecho] = useState({
+    t_id: "",
     tipo_derecho: "",
     tipo_restriccion: "",
     inicio_tenencia: "",
@@ -31,26 +32,64 @@ const DerechoForm = (props, ref) => {
     setobjDerecho((prevValues) => ({ ...prevValues, [name]: value }));
   }
 
-  const sendData = () => {
+  const sendData = async () => {
     if (props.contexto) {
       tableData = contextTableData;
+      let dataId = props.dataid;
       updateTableData = contextUpdateTableData;
       for (const [index, item] of tableData.entries()) {
         console.log("item", item);
+        console.log("item", item.interesados.length);
+        console.log("props", props);
         for (let i = 0; i < dataId.length; i++) {
           if (dataId[i] - 1 === index) {
+            let dataInte = 0;
+            let dataAgru = 0;
+            if (item.interesados.length >= 2) {
+              dataAgru = item.interesados.lc_agrupacion;
+              dataInte = null;
+            } else {
+              dataInte = item.interesados[0].t_id;
+              dataAgru = null;
+            }
             let json = {
               tipo: objDerecho.tipo_derecho,
               fraccion_derecho: objDerecho.fraccion_derecho,
               fecha_inicio_tenencia: objDerecho.inicio_tenencia,
               descripcion: objDerecho.descripcion,
-              interesado_lc_interesado: 1,
-              interesado_lc_agrupacioninteresados: 1,
-              unidad: "",
-              comienzo_vida_util_version: "2023-01-01",
-              fin_vida_util_version: "2023-12-31",
-              espacio_de_nombres: "Nombre del espacio",
+              interesado_lc_interesado: dataInte,
+              interesado_lc_agrupacioninteresados: dataAgru,
+              unidad: item.predio.t_id,
+              comienzo_vida_util_version: null,
+              fin_vida_util_version: null,
+              espacio_de_nombres: "Fusagasuga",
+              local_id: item.codigo_homologado,
             };
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            const url = import.meta.env.VITE_API_URL_FIRST + "derecho/local";
+            let raw = JSON.stringify(json);
+            console.log(raw);
+            let requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              body: raw,
+              redirect: "follow",
+            };
+            try {
+              const response = await fetch(url, requestOptions);
+              if (response.ok) {
+                const result = await response.json();
+                console.log("Resultado", result.data);
+                ///Retornar Id y guardarlo
+                objDerecho.t_id = 0;
+              } else {
+                const error = await response.json();
+                console.log("Error en la solicitud:", error);
+              }
+            } catch (error) {}
+            console.log("Json", json);
             tableData[index].derecho = objDerecho;
             console.log(tableData[index]);
           }

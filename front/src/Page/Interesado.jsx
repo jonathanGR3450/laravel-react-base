@@ -155,6 +155,7 @@ const InteresadoForm = (props, ref) => {
           const response = await fetch(url, requestOptions);
           const result = await response.json();
           console.log(result);
+          item.t_id = result.data.interesado.t_id;
           auxId.push(result.data.interesado.t_id);
         } else {
           auxId.push(item.t_id);
@@ -197,20 +198,6 @@ const InteresadoForm = (props, ref) => {
   async function Send_Data() {
     ////////////////Capturar valores Tabledata para Datos Homologados
     ///////////////////////////////////////////////////////////////
-    if (props.contexto) {
-      tableData = contextTableData;
-      updateTableData = contextUpdateTableData;
-      let dataId = props.dataid;
-      tableData.map((item, index) => {
-        dataId.map((items) => {
-          if (items - 1 == index) {
-            item.interesados = interesadosData;
-          }
-        });
-      });
-      updateTableData(tableData);
-    }
-
     try {
       let id_agrupacion = "";
       let id_interesado = "";
@@ -224,7 +211,20 @@ const InteresadoForm = (props, ref) => {
         console.log("Id Agrupacion", id_agrupacion);
         createColMiembros(id_agrupacion, id_interesado);
       }
-
+      if (props.contexto) {
+        tableData = contextTableData;
+        updateTableData = contextUpdateTableData;
+        let dataId = props.dataid;
+        tableData.map((item, index) => {
+          dataId.map((items) => {
+            if (items - 1 == index) {
+              interesadosData.lc_agrupacion = id_agrupacion;
+              item.interesados = interesadosData;
+            }
+          });
+        });
+        updateTableData(tableData);
+      }
       //Guardar
     } catch (error) {}
   }

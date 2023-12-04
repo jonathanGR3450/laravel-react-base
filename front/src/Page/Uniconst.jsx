@@ -13,6 +13,7 @@ import {
 import { PuntajeResumeForm } from "./ResumeData";
 
 import { CaraContext } from "./Uniconstruccion";
+import { json } from "react-router-dom";
 const UniconstForm = (dataForm) => {
   const [tipo_const, setTipo_Const] = useState("");
   const [estForm, setEstForm] = useState(false);
@@ -285,11 +286,6 @@ const UniconstForm = (dataForm) => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        if (iscontext(contextoCaracteristicas)) {
-          const { updateCaracteristicas } = contextoCaracteristicas;
-          updateCaracteristicas(Json);
-        }
-
         var raw = JSON.stringify(Json);
         var requestOptions = {
           method: "POST",
@@ -312,6 +308,11 @@ const UniconstForm = (dataForm) => {
           }
           const result = await response.json();
           console.log(result);
+          if (iscontext(contextoCaracteristicas)) {
+            const { updateCaracteristicas } = contextoCaracteristicas;
+            Json.t_id = result.data[0];
+            updateCaracteristicas(Json);
+          }
         } catch (error) {
           console.error("Error:", error);
         }
@@ -356,10 +357,6 @@ const UniconstForm = (dataForm) => {
         //http://localhost/api/v1/avaluo-catastral/tipo/tab-anexos?puntos=60&vigencia=2023&tipo=RURAL&destino=2
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        if (iscontext(contextoCaracteristicas)) {
-          const { updateCaracteristicas } = contextoCaracteristicas;
-          updateCaracteristicas(Json);
-        }
 
         var raw = JSON.stringify(Json);
         var requestOptions = {
@@ -380,6 +377,11 @@ const UniconstForm = (dataForm) => {
           }
           const result = await response.json();
           console.log(result);
+          if (iscontext(contextoCaracteristicas)) {
+            const { updateCaracteristicas } = contextoCaracteristicas;
+            Json.t_id = result.data[0];
+            updateCaracteristicas(Json);
+          }
         } catch (error) {
           console.error("Error:", error);
         }

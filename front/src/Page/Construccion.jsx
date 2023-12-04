@@ -1,5 +1,5 @@
 import { Modal } from "./Modal";
-import {
+import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -9,25 +9,9 @@ import {
 import { InteresadoContext } from "./Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
 const ConstruccionForm = (props, ref) => {
+  console.log(props);
   const { tableData, updateTableData } = useContext(TableContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  let [dataId, setDataId] = useState({
-    first: "",
-    second: "",
-  });
 
-  const openModal = (aux) => {
-    aux.first = parseInt(aux.first);
-    aux.second = parseInt(aux.second);
-    setDataId(aux);
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  useImperativeHandle(ref, () => ({
-    openModal,
-  }));
   /**/
   const [numConstruccion, setNumConstruccion] = useState();
   const [construccion, setConstruccion] = useState([]);
@@ -37,7 +21,9 @@ const ConstruccionForm = (props, ref) => {
     const newValue = parseInt(e.target.value);
     console.log(newValue);
     setNumConstruccion(newValue);
+
     const newConstruccionData = Array.from({ length: newValue }, () => ({
+      identificador: "",
       tipo_construccion: "",
       tipo_dominio: "",
       num_pisos: "",
@@ -78,10 +64,15 @@ const ConstruccionForm = (props, ref) => {
   };
   const CreateConstruction = (index) => {
     console.log(index);
+    console.log("1231", String.fromCharCode(65 + index.index));
+    let [estMsj, setEstMsj] = useState();
     const [construccionData, setConstruccionData] = useState({
+      t_id: "",
+      identificador: String.fromCharCode(65 + index.index),
       tipo_construccion: "",
       tipo_dominio: "",
       num_pisos: "",
+      num_sotanos: "",
       num_semisotanos: "",
       num_mezanines: "",
       anio_cons: "",
@@ -93,6 +84,14 @@ const ConstruccionForm = (props, ref) => {
     });
     const Load_Data = (e) => {
       const { name, value } = e.target;
+
+      if (name == "anio_cons") {
+        if (parseInt(value) < 1600) {
+          setEstMsj(true);
+        } else {
+          setEstMsj(false);
+        }
+      }
       setConstruccionData((prevValues) => ({ ...prevValues, [name]: value }));
       console.log("name", construccionData);
       console.log("value", value);
@@ -109,7 +108,18 @@ const ConstruccionForm = (props, ref) => {
           Caracteristicas de Construccion #{index.index + 1}
         </h1>
         <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/3 flex flex-col">
+          <div className="w-1/3   flex flex-col ">
+            <label>Identificador</label>
+            <input
+              name="identificador"
+              value={construccionData.identificador}
+              onChange={Load_Data}
+              type="text"
+              disabled
+              className="border-2 p-1 rounded-md w-full text-center"
+            ></input>
+          </div>
+          <div className="w-1/3 flex flex-col ml-4">
             <label>Tipo de Construccion</label>
             <select
               name="tipo_construccion"
@@ -147,6 +157,16 @@ const ConstruccionForm = (props, ref) => {
               className="border-2 p-1 rounded-md w-full"
             ></input>
           </div>
+          <div className="w-1/3  ml-4 flex flex-col">
+            <label>Numero Sotanos</label>
+            <input
+              name="num_sotanos"
+              value={construccionData.num_sotanos}
+              onChange={Load_Data}
+              type="text"
+              className="border-2 p-1 rounded-md w-full"
+            ></input>
+          </div>
           <div className="w-1/3 ml-4  flex flex-col">
             <label>Numero de Semisotanos</label>
             <input
@@ -157,7 +177,9 @@ const ConstruccionForm = (props, ref) => {
               className="border-2 p-1 rounded-md w-full"
             ></input>
           </div>
-          <div className="w-1/3 ml-4  flex flex-col">
+        </div>
+        <div className="w-full flex flex-row items-center justify-center">
+          <div className="w-1/3  flex flex-col">
             <label>Numero de Mezanines</label>
             <input
               name="num_mezanines"
@@ -167,9 +189,7 @@ const ConstruccionForm = (props, ref) => {
               className="border-2 p-1 rounded-md w-full"
             ></input>
           </div>
-        </div>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/3   flex flex-col">
+          <div className="w-1/3 ml-4   flex flex-col">
             <label>Año de Construccion</label>
             <input
               name="anio_cons"
@@ -178,6 +198,11 @@ const ConstruccionForm = (props, ref) => {
               type="text"
               className="border-2 p-1 rounded-md w-full"
             ></input>
+            {estMsj ? (
+              <label className="text-red-600">
+                "Año debe ser Mayor a 1600"
+              </label>
+            ) : null}
           </div>
           <div className="w-1/3 ml-4  flex flex-col">
             <label>Area de Construccion</label>
@@ -190,7 +215,9 @@ const ConstruccionForm = (props, ref) => {
               className="border-2 p-1 rounded-md w-full"
             ></input>
           </div>
-          <div className="w-1/3 ml-4  flex flex-col">
+        </div>
+        <div className="w-full flex flex-row items-center justify-center">
+          <div className="w-1/3   flex flex-col">
             <label>Avaluo Construccion</label>
             <input
               name="avaluo"
@@ -200,9 +227,7 @@ const ConstruccionForm = (props, ref) => {
               className="border-2 p-1 rounded-md w-full"
             ></input>
           </div>
-        </div>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/3  flex flex-col">
+          <div className="w-1/3  flex flex-col ml-4">
             <label>Valor Referencia</label>
             <input
               name="valor_referencia"
@@ -223,11 +248,13 @@ const ConstruccionForm = (props, ref) => {
               className="border-2 p-1 rounded-md w-full"
             ></input>
           </div>
-          <div className="w-1/3 ml-4  flex flex-col">
+        </div>
+        <div className="w-full flex flex-row items-center justify-center">
+          <div className="w-full  flex flex-col">
             <label>Observaciones</label>
             <input
               name="observacion"
-              value={construccionData.observaciones}
+              value={construccionData.observacion}
               onChange={Load_Data}
               type="text"
               className="border-2 p-1 rounded-md w-full"
@@ -251,72 +278,84 @@ const ConstruccionForm = (props, ref) => {
 
   const sendData = async () => {
     console.log("Construccion Data", construccionData);
-    try {
-      let json = [];
-      construccionData.map((item, index) => {
-        let newobj = {
-          identificador: "CSTR1234", // You can generate a unique identifier as needed
-          tipo_construccion: parseInt(item.tipo_construccion),
-          tipo_dominio: null,
-          numero_pisos: parseInt(item.num_pisos),
-          numero_sotanos: null,
-          numero_mezanines: parseInt(item.num_mezanines),
-          numero_semisotanos: null,
-          anio_construccion: parseInt(item.anio_cons),
-          avaluo_construccion: item.avaluo ? parseFloat(item.avaluo) : null,
-          valor_referencia_construccion: item.valor_referencia
-            ? parseFloat(item.valor_referencia)
-            : null,
-          area_construccion: parseFloat(item.area),
-          altura: parseFloat(item.altura),
-          observaciones: item.observacion,
-          dimension: null, // You need to provide the appropriate value for dimension
-          etiqueta: null, // You need to provide the appropriate value for etiqueta
-          relacion_superficie: null,
-          nivel: null,
-          comienzo_vida_util_version: "2023-08-29",
-          fin_vida_util_version: null,
-          espacio_de_nombres: "Ejemplo",
-        };
-        json.push(newobj);
-      });
-      let myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      let raw = JSON.stringify(json);
-      console.log(raw);
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-      };
-      let url = import.meta.env.VITE_API_URL_FIRST + "construccion/local";
-      const response = await fetch(url, requestOptions);
+    console.log("Construccion Data", props);
+    if (props.contexto) {
+      let dataId = props.dataid;
+      try {
+        const entries = Object.entries(tableData);
+        for (const [index, [key, item1]] of entries.entries()) {
+          for (const items of dataId) {
+            if (items - 1 === index) {
+              console.log("Construccion Data123 ", items);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+              for (const [currentIndex, item] of construccionData.entries()) {
+                console.log("itessss", item);
+                let newobj = {
+                  identificador: item.identificador,
+                  tipo_construccion: parseInt(item.tipo_construccion),
+                  tipo_dominio: item.tipo_dominio,
+                  numero_pisos: parseInt(item.num_pisos),
+                  numero_sotanos: parseInt(item.num_sotanos),
+                  numero_mezanines: parseInt(item.num_mezanines),
+                  numero_semisotanos: parseInt(item.num_semisotanos),
+                  anio_construccion: parseInt(item.anio_cons),
+                  avaluo_construccion: item.avaluo
+                    ? parseFloat(item.avaluo)
+                    : null,
+                  valor_referencia_construccion: item.valor_referencia
+                    ? parseFloat(item.valor_referencia)
+                    : null,
+                  area_construccion: parseFloat(item.area),
+                  altura: parseFloat(item.altura),
+                  observaciones: item.observacion,
+                  dimension: null,
+                  etiqueta: null,
+                  relacion_superficie: null,
+                  nivel: null,
+                  comienzo_vida_util_version: "",
+                  fin_vida_util_version: null,
+                  espacio_de_nombres: item1.codigo_homologado,
+                };
 
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.log("error", error);
-    }
-    Object.entries(tableData).map((itemd, index) => {
-      let item = itemd[1];
-      dataId.map((items) => {
-        if (items - 1 == index) {
-          item.construccion = construccionData;
+                let myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                let raw = JSON.stringify(newobj);
+                console.log(raw);
+                var requestOptions = {
+                  method: "POST",
+                  headers: myHeaders,
+                  body: raw,
+                  redirect: "follow",
+                };
+                let url =
+                  import.meta.env.VITE_API_URL_FIRST + "construccion/local";
+                const response = await fetch(url, requestOptions);
+
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                construccionData[currentIndex].t_id = result.data.t_id;
+
+                console.log(result);
+              }
+            }
+          }
+          item1.construccion = construccionData;
         }
-      });
-    });
-    console.log("datos de tabla", tableData);
-    closeModal();
-    updateTableData(tableData);
+
+        console.log("datos de tabla", tableData);
+        //closeModal();
+        updateTableData(tableData);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
   };
 
   return (
-    <Modal isOpen={isModalOpen} onClose={closeModal}>
+    <div>
       <h1 className="text-2xl">Datos Generales del Construcciones</h1>
       <div className="w-full pt-4 flex flex-row text-left">
         <input
@@ -343,7 +382,34 @@ const ConstruccionForm = (props, ref) => {
           Guardar Todo
         </button>
       </div>
-    </Modal>
+    </div>
   );
 };
-export default forwardRef(ConstruccionForm);
+export const ModalConstruccionForm = React.forwardRef((props, ref) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  let [dataId, setDataId] = useState({});
+
+  const openModal = (aux) => {
+    console.log(aux);
+    setDataId(aux);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <ConstruccionForm contexto={true} dataid={dataId} />
+    </Modal>
+  );
+});
+export const NormalConstruccionForm = React.forwardRef((props, ref) => {
+  return (
+    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
+      <ConstruccionForm contexto={false} />
+    </div>
+  );
+});
