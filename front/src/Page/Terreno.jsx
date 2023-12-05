@@ -105,7 +105,7 @@ const TerrenoForm = (props, ref) => {
       espacio_de_nombres: "Fusagasuga",
       local_id: aux.codigo_homologado,
     };
-    console.log("Nuevo Ojbeto", newobj);
+    console.log("Nuevo Ojbeto", JSON.stringify(newobj));
     var requestOptions = {
       method: "POST",
       headers: myHeaders,

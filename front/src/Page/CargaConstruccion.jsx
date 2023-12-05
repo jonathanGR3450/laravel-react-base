@@ -17,12 +17,15 @@ export const LoadDataConstruccion = () => {
   const uniConstruccionRef = useRef();
   const terrenoRef = useRef();
   const construccionRef = useRef();
-
+  const fechaActual = new Date();
+  let año = fechaActual.getFullYear();
+  const [añoActual, setAñoActual] = useState(año);
   const { tableData } = useContext(TableContext);
   const [dataSelect, setDataSelect] = useState(0);
   const [dataTotal, setDataTotal] = useState("");
   const [estDataTotal, setEstDataTotal] = useState(false);
-
+  const [DataLiq, setDataLiq] = useState("");
+  console.log("adas", añoActual);
   function soloNumeros(event) {
     const input = event.target;
     input.value = input.value.replace(/[^0-9.]/g, "");
@@ -260,9 +263,9 @@ export const LoadDataConstruccion = () => {
     );
   };
 
-  async function Avaluo() {
-    let año = 2023;
-
+  async function Avaluo(dataAño) {
+    setDataLiq("");
+    let año = dataAño;
     let keys = Object.keys(tableData);
     //Recorrer Numeros Prediales
     let ArrayTotal = [];
@@ -296,14 +299,14 @@ export const LoadDataConstruccion = () => {
               "avaluo-catastral/rural/valor-terreno?zona_economica=" +
               newobj.zhg +
               "&vigencia=" +
-              2023;
+              año;
           } else {
             url =
               import.meta.env.VITE_API_URL_FIRST +
               "avaluo-catastral/urbano/valor-terreno?zhg_no=" +
               item.ZHG +
               "&vigencia=" +
-              2022;
+              año;
           }
           console.log("Urla", url);
           try {
@@ -350,14 +353,13 @@ export const LoadDataConstruccion = () => {
       }
 
       async function calcularAvaluo() {
-        console.log("Inicia Avaluo");
+        console.log("Inicia Avaluo", año);
         try {
           let boolterreno = await TerrenoCalculate();
           if (boolterreno) {
             let dataCorrect = [];
             //Rural
             if (currentItem.Zona == "00") {
-              let año = 2023;
               console.log("uNIDADES", currentItem.unidad_construccion);
               for (const item of currentItem.unidad_construccion) {
                 console.log("item Numero Predial", item);
@@ -1005,7 +1007,6 @@ export const LoadDataConstruccion = () => {
               }
             } else {
               //Resto Urbano
-              let año = 2022;
               for (const item of currentItem.unidad_construccion) {
                 console.log("item Numero Predial", item);
                 let destinacion =
@@ -1677,7 +1678,7 @@ export const LoadDataConstruccion = () => {
         }
       }
 
-      let terminar = await calcularAvaluo();
+      let terminar = await calcularAvaluo(currentItem, añoActual);
       if (terminar) {
         console.log("terreno", ArrayTerreno);
         console.log("Unidad", ArrayUnidad);
@@ -2119,24 +2120,30 @@ export const LoadDataConstruccion = () => {
     }
     setEstDataTotal(true);
     console.log("ArrayTotal", ArrayTotal);
+    let newobj = {
+      avaluo: redondear(ArrayTotal[0].avaluo),
+      año: año,
+    };
+
     setDataTotal(ArrayTotal);
+    return newobj;
+  }
+  function redondear(numero) {
+    console.log("Numero a Redondear", numero.toLocaleString());
+    const resto = numero % 1000;
+    console.log("asdasd", resto);
+    const redondeo = resto >= 500 ? 1000 - resto : -resto;
+    console.log("redondeo", redondeo);
+    return numero + redondeo;
   }
 
   const AllTableForm = () => {
     console.log("Datos Totales", dataTotal);
     let jsonInfoProvider = {
-      predio: [],
-      interesados: [],
-      liquidacion: [],
+      inscribe_datos_predio_nmero_catastral: [],
+      inscribe_propietarios_nmero_catastral: [],
+      inscribe_liquidacion_nmero_catastral: [],
     };
-    function redondear(numero) {
-      console.log("Numero a Redondear", numero.toLocaleString());
-      const resto = numero % 1000;
-      console.log("asdasd", resto);
-      const redondeo = resto >= 500 ? 1000 - resto : -resto;
-      console.log("redondeo", redondeo);
-      return numero + redondeo;
-    }
 
     const Allfilas = Object.entries(dataTotal).map((items, index) => {
       console.log("items", items);
@@ -2158,14 +2165,14 @@ export const LoadDataConstruccion = () => {
       };
       console.log(newDataPredio);
 
-      if (item.zona == "01") {
-        newDataPredio.avaluo = redondear(item.avaluo * 1.0431).toLocaleString();
-      } else {
-        newDataPredio.avaluo = redondear(item.avaluo).toLocaleString();
-      }
-      jsonInfoProvider.predio.push(newDataPredio);
+      newDataPredio.avaluo = redondear(item.avaluo).toLocaleString();
+      jsonInfoProvider.inscribe_datos_predio_nmero_catastral.push(
+        newDataPredio
+      );
       //redondearAvaluoTotal(item.avaluo)
-
+      /* ${" "}
+            {item.zona == "01"
+              ? redondear(item.avaluo * 1.0431).toLocaleString() :*/
       return (
         <tr key={index}>
           <td className="border-2 rounded-xl p-2">{index + 1}</td>
@@ -2176,10 +2183,7 @@ export const LoadDataConstruccion = () => {
           <td className="border-2 rounded-xl p-2">{item.area_terreno}</td>
           <td className="border-2 rounded-xl p-2">{item.area_construida}</td>
           <td className="border-2 rounded-xl p-2">
-            ${" "}
-            {item.zona == "01"
-              ? redondear(item.avaluo * 1.0431).toLocaleString()
-              : redondear(item.avaluo).toLocaleString()}
+            {redondear(item.avaluo).toLocaleString()}
           </td>
           <td className="border-2 rounded-xl p-2">{item.vigencia}</td>
         </tr>
@@ -2247,13 +2251,103 @@ export const LoadDataConstruccion = () => {
           };
           newDataInteresado.interesado.push(interesado);
         });
-        jsonInfoProvider["interesados"].push(newDataInteresado);
+        jsonInfoProvider[" inscribe_propietarios_nmero_catastral"].push(
+          newDataInteresado
+        );
       });
     }
-    function calculateLiquidacion() {}
-    function SendData() {
+
+    async function calculateLiquidacion() {
+      let año = 0;
+      console.log("Datos J1231", DataLiq);
+      let dataLiquid = [];
+      let dataBase = [];
+      let arrayResult = "";
+      let isRural = "";
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      let url =
+        import.meta.env.VITE_API_URL_FIRST +
+        "avaluo-catastral/list/incrementos?limit=1500";
+      console.log("Url", url);
+      try {
+        const response = await fetch(url, requestOptions);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const result = await response.json();
+        arrayResult = result.data.data;
+        let aux = "";
+        let keys = Object.keys(tableData);
+        for (let key in keys) {
+          let currentItem = tableData[key];
+          if (currentItem.zona != "00") {
+            //Urbano
+            año = 2022;
+            isRural = false;
+            aux = await Avaluo(año);
+          } else {
+            isRural = true;
+            año = 2023;
+            aux = await Avaluo(año);
+            //Solo Rural
+          }
+          aux.num_predial =
+            currentItem.Dpto +
+            currentItem.Mpio +
+            currentItem.Zona +
+            currentItem.Sector +
+            currentItem.Comuna +
+            currentItem.Barrio +
+            currentItem.Manzana +
+            currentItem.Terreno +
+            currentItem.Condicion +
+            currentItem.Edificio +
+            currentItem.Piso +
+            currentItem.Unidad;
+          dataBase.push(aux);
+          console.log("datos 123", aux);
+          console.log("item tabla", currentItem);
+        }
+        if (!isRural) {
+          let newdata = {
+            numpredial: dataBase[0].num_predial,
+            concepto: "ACTUALIZACION CATASTRAL",
+            fecha: "01/01/" + dataBase[0].año,
+            avaluo: dataBase[0].avaluo,
+          };
+          dataLiquid.push(newdata);
+        }
+        //Valroesssss
+        for (const item of arrayResult) {
+          console.log("item año 123", item);
+          console.log("Item Año", dataBase);
+          let newdata = {
+            numpredial: dataBase[0].num_predial,
+            concepto: item.concepto,
+            fecha: "01/01/" + item.vigencia,
+            avaluo:
+              parseFloat(dataBase[0].avaluo) *
+              (1 + parseFloat(item.incremento)),
+          };
+          console.log("Nuevos Datos ", newdata);
+          dataLiquid.push(newdata);
+        }
+
+        console.log("Datos de la Liquidacion", dataLiquid);
+
+        jsonInfoProvider.inscribe_liquidacion_nmero_catastral.push(dataLiquid);
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    }
+
+    async function SendData() {
       infoInteresados();
       console.log("Datos Json123", jsonInfoProvider);
+      calculateLiquidacion();
     }
 
     return (
@@ -2305,7 +2399,7 @@ export const LoadDataConstruccion = () => {
       </div>
       <div className="mt-4 w-full flex flex-row justify-center">
         <button
-          onClick={Avaluo}
+          onClick={() => Avaluo(añoActual)}
           className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
         >
           Calcular Avaluo
