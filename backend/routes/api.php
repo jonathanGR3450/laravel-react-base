@@ -35,11 +35,11 @@ use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccio
 use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\Document\ListRadicadoController;
 use App\Http\Controllers\Document\ListTipoTramiteController;
-use App\Http\Controllers\GetPredioController;
 use App\Http\Controllers\Interesado\Show;
 use App\Http\Controllers\Interesado\StoreAgrupacionInteresadoLocal;
 use App\Http\Controllers\Interesado\StoreColMiembrosLocal;
 use App\Http\Controllers\Interesado\StoreInteresadoLocal;
+use App\Http\Controllers\Predio\GetPredioController;
 use App\Http\Controllers\Predio\GetPredioNumeroPredialController;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialLocalController;
@@ -78,6 +78,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('predio')->group(function () {
         Route::post('', StoreLcPredio::class);
+        Route::get('', GetPredioController::class);
         Route::put('{id}', UpdateLcPredio::class);
         Route::post('uebaunit', StoreColUebaunitLocal::class);
         Route::post('unidadfuente', StoreColUnidadfuenteLocal::class);
@@ -89,7 +90,6 @@ Route::prefix('v1')->group(function () {
         Route::get('list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
         Route::get('list/local/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialLocalController::class);
         Route::get('list/local/numeros-prediales', IndexNumerosPredialesController::class);
-        Route::get('{predial}', GetPredioController::class);
     });
 
     Route::prefix('caracteristicasunidadconstruccion')->group(function () {
