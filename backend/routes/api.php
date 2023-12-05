@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CodeCheckController;
+use App\Http\Controllers\API\ForgotPasswordController;
+use App\Http\Controllers\API\ResetPasswordController;
 use App\Http\Controllers\AvaluoPredial\CalcularIncrementoAvaluoController;
 use App\Http\Controllers\AvaluoPredial\ListIncrementosController;
 use App\Http\Controllers\AvaluoPredial\ListTabAnexosUrbanaRuralLocalController;
@@ -72,6 +75,10 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
 });
+
+Route::post('password/email',  ForgotPasswordController::class);
+Route::post('password/reset', ResetPasswordController::class);
+Route::post('password/code/check', CodeCheckController::class);
 
 // ->middleware(['auth:api'])
 Route::prefix('v1')->middleware(['auth:api'])->group(function () {
