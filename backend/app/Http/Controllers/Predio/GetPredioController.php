@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Predio;
 
+use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\Predio\IndexPredioFormRequest;
 use App\Http\Resources\Predio\PredioResource;
 use App\Models\LcPredio;
-use Illuminate\Http\Client\Response;
-use Illuminate\Http\Request;
+use Exception;
 
-class GetPredioController extends Controller
+class GetPredioController extends AppBaseController
 {
     /**
      * @OA\Get(
@@ -45,23 +46,28 @@ class GetPredioController extends Controller
      *     ),
      * )
      */
-    public function __invoke(string $predial)
+    public function __invoke(IndexPredioFormRequest $request)
     {
-        // try {
-            $predio = LcPredio::where('numero_predial', $predial)->get()->first();
+        try {
+            $matricula = $request->input('matricula_inmobiliaria');
+            $predial = $request->input('numero_predial');
+
+            if (!$matricula && !$predial) {
+                throw new Exception('matricula_inmobiliaria o numero_predial son requeridos');
+            }
+
+            $predio = LcPredio::when($predial, function ($query) use ($predial) {
+                $query->where('numero_predial', $predial);
+            })->when($matricula, function ($query) use ($matricula) {
+                $query->where('matricula_inmobiliaria', $matricula);
+            })->get()->first();
+            
 
             $predioResource = new PredioResource($predio);
-            return response()->json([
-                "status" => "successful",
-                "message" => "Predio get successfull",
-                "data" => $predioResource
-            ], 200);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         "status" => "error",
-        //         "message" => $e->getMessage()
-        //     ], 400, []);
-        // }
+            return $this->sendResponse($predioResource, 'lc predio obtenido correctamente');
+        } catch (\Exception $e) {
+            return $this->sendError($e->getMessage());
+        }
         
     }
 }

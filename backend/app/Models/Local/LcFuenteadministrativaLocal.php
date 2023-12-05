@@ -23,6 +23,7 @@ class LcFuenteadministrativaLocal extends Model
         'tipo_principal',
         'fecha_documento_fuente',
         'espacio_de_nombres',
+        'local_id',
     ];
 
     function colRrrFuente() : HasMany {

@@ -135,6 +135,7 @@ class FuenteAdministrativaResource extends JsonResource
             'tipo_principal' => $this->tipo_principal,
             'fecha_documento_fuente' => $this->fecha_documento_fuente,
             'espacio_de_nombres' => $this->espacio_de_nombres,
+            'local_id' => $this->local_id,
         ];
     }
 }

@@ -107,6 +107,20 @@ return [
             'search_path' => env('DB_SCHEMA_AUXILIAR', 'auxiliar'),
             'sslmode' => 'prefer',
         ],
+        'pgsqpublic' => [
+            'driver' => env('DB_CONNECTION_PUBLIC', 'pgsql'),
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_PUBLIC', '127.0.0.1'),
+            'port' => env('DB_PORT_PUBLIC', '5432'),
+            'database' => env('DB_DATABASE_PUBLIC', 'forge'),
+            'username' => env('DB_USERNAME_PUBLIC', 'forge'),
+            'password' => env('DB_PASSWORD_PUBLIC', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => env('DB_SCHEMA_PUBLIC', 'public'),
+            'sslmode' => 'prefer',
+        ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
