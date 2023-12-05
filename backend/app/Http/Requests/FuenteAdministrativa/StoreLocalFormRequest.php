@@ -33,6 +33,7 @@ class StoreLocalFormRequest extends FormRequest
             'tipo_principal' => 'exists:pgsqlcatastro.ci_forma_presentacion_codigo,t_id',
             'fecha_documento_fuente' => 'date',
             'espacio_de_nombres' => 'required|string|max:255',
+            'local_id' => 'required|string|max:255',
         ];
     }
 }
