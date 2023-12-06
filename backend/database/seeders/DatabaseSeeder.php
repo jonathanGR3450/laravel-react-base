@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             TabHot60UrbanaRuralLocalSeeder::class,
             TabAnexosUrbanaRuralLocalSeeder::class,
             LcValorTerrenoRuralLocalSeeder::class,
+            RoleSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }

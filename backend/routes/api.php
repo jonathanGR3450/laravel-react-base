@@ -70,12 +70,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(AuthController::class)->group(function () {
+    // login debe ser publico
     Route::post('login', 'login');
-    Route::post('register', 'register');
+    
+    Route::post('register', 'register')->middleware('role:Admin');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
 });
 
+// recuperar password debe ser publico
 Route::post('password/email',  ForgotPasswordController::class);
 Route::post('password/reset', ResetPasswordController::class);
 Route::post('password/code/check', CodeCheckController::class);
@@ -83,7 +86,7 @@ Route::post('password/code/check', CodeCheckController::class);
 // ->middleware(['auth:api'])
 Route::prefix('v1')->middleware(['auth:api'])->group(function () {
 
-    Route::prefix('predio')->group(function () {
+    Route::prefix('predio')->middleware(['role:Admin,Tramitador,Coordinador'])->group(function () {
         Route::post('', StoreLcPredio::class);
         Route::get('', GetPredioController::class);
         Route::put('{id}', UpdateLcPredio::class);
@@ -99,7 +102,7 @@ Route::prefix('v1')->middleware(['auth:api'])->group(function () {
         Route::get('list/local/numeros-prediales', IndexNumerosPredialesController::class);
     });
 
-    Route::prefix('caracteristicasunidadconstruccion')->group(function () {
+    Route::prefix('caracteristicasunidadconstruccion')->middleware(['role:Admin,Tramitador,Coordinador'])->group(function () {
         Route::get('convencional', ConvencionalIndexController::class);
         Route::get('convencional/{id}', ConvencionalShowController::class);
         Route::post('convencional', ConvencionalStoreController::class);
@@ -108,7 +111,8 @@ Route::prefix('v1')->middleware(['auth:api'])->group(function () {
         Route::post('no-convencional', NoConvencionalStoreController::class);
     });
 
-    Route::prefix('avaluo-catastral')->group(function () {
+    // rutas Incremento
+    Route::prefix('avaluo-catastral')->middleware(['role:Admin,Coordinador'])->group(function () {
         Route::get('urbano/valor-terreno', ListValorTerrenoUrbanoController::class);
         Route::get('rural/valor-terreno', ListValorTerrenoRuralController::class);
         Route::get('tipo/tab-viv', ListTabViv60UrbanaRuralController::class);
@@ -123,40 +127,47 @@ Route::prefix('v1')->middleware(['auth:api'])->group(function () {
         Route::get('list/incrementos', ListIncrementosController::class);
     });
 
-    Route::prefix('interesados')->group(function () {
+    Route::prefix('interesados')->middleware(['role:Admin,Tramitador,Coordinador'])->group(function () {
         Route::post('interesado', StoreInteresadoLocal::class);
         Route::post('agrupacioninteresados', StoreAgrupacionInteresadoLocal::class);
         Route::post('miembros', StoreColMiembrosLocal::class);
         Route::get('{nit}', Show::class);
     });
 
-    Route::post('derecho/local', StoreDerechoLocal::class);
-    Route::post('datos-condominio/local', StoreDatosCondominioLocal::class);
-    Route::post('predio-copropiedad/local', StorePredioCopropiedadLocal::class);
-    Route::post('ric-predio/local', StoreRicPredioLocal::class);
-    Route::post('ric-tramite-catastral/local', StoreRicTramiteCatastralLocal::class);
-    Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
 
-    Route::prefix('terreno')->group(function () {
+    Route::prefix('terreno')->middleware(['role:Admin,Tramitador,Coordinador'])->group(function () {
         Route::post('local', StoreTerrenoLocal::class);
         Route::put('local/{id}', UpdateTerrenoLocal::class);
     });
 
-    Route::post('datos-adicionales/local', StoreDatosadicionaleslevantamientocatastralLocal::class);
+    Route::middleware(['role:Admin,Tramitador,Coordinador'])->group(function () {
+        Route::post('derecho/local', StoreDerechoLocal::class);
+        Route::post('datos-condominio/local', StoreDatosCondominioLocal::class);
+        Route::post('predio-copropiedad/local', StorePredioCopropiedadLocal::class);
+        Route::post('ric-predio/local', StoreRicPredioLocal::class);
+        Route::post('ric-tramite-catastral/local', StoreRicTramiteCatastralLocal::class);
+        Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
+        Route::post('datos-adicionales/local', StoreDatosadicionaleslevantamientocatastralLocal::class);
+        Route::post('contacto-visita/local', StoreContactoVisitaLocal::class);
+        Route::post('unidad/construccion/local', StoreUnidadConstruccionLocal::class);
+        Route::post('rrrfuente/fuente-administrativa/derecho', StoreFuenteAdministrativaDerechoController::class);
+    });
 
-    Route::post('contacto-visita/local', StoreContactoVisitaLocal::class);
+    Route::prefix('construccion')->middleware(['role:Admin,Tramitador,Coordinador'])->group(function () {
+        Route::post('local', StoreConstruccionLocal::class);
+        Route::put('local/{id}', UpdateConstruccionLocal::class);
+        Route::post('documentos', StoreDocuments::class);
+    });
 
-    Route::post('unidad/construccion/local', StoreUnidadConstruccionLocal::class);
-    Route::post('construccion/local', StoreConstruccionLocal::class);
-    Route::put('construccion/local/{id}', UpdateConstruccionLocal::class);
-    Route::post('construccion/documentos', StoreDocuments::class);
 
-    Route::post('rrrfuente/fuente-administrativa/derecho', StoreFuenteAdministrativaDerechoController::class);
-
+    // Solo API de ver de todos los servicios y todos los servicios de Resolucion, esto lo debe ver el rol Juridico
     Route::prefix('document')->group(function () {
-        Route::post('generate', GenerateDocumentPdf::class);
-        Route::get('list/tipo-tramite', ListTipoTramiteController::class);
-        Route::get('list/radicados', ListRadicadoController::class);
+        Route::middleware(['role:Admin,Tramitador,Coordinador,Juridico'])->group(function () {
+            Route::post('generate', GenerateDocumentPdf::class);
+            Route::get('list/radicados', ListRadicadoController::class);
+        });
     });
 
 });
+
+Route::get('document/list/tipo-tramite', ListTipoTramiteController::class);
