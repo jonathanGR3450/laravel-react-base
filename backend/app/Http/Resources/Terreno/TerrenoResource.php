@@ -137,6 +137,7 @@ class TerrenoResource extends JsonResource
             'comienzo_vida_util_version' => $this->comienzo_vida_util_version,
             'fin_vida_util_version' => $this->fin_vida_util_version,
             'espacio_de_nombres' => $this->espacio_de_nombres,
+            'local_id' => $this->local_id,
         ];
     }
 }
