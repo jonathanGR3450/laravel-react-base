@@ -17,17 +17,18 @@ const TramitesForm = () => {
         vigencia:"2023"
       }
     )
-      console.log(tramites.Tramites[0].id)
+      //console.log(tramites.Tramites[0].id)
       const data = Object(tramites.Tramites);
       
       function handleEnviar(e) {  
-        const navigate = useNavigate();  
-        navigate(-1);
+        
+        navigate("/TramiteDetalle");
         
       }
     return(
         
         <>
+        <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 text-left">
             
             <pre>   </pre>
             <table className="w-full text-center">
@@ -83,7 +84,7 @@ const TramitesForm = () => {
 
                 </tbody>
             </table>
-
+            </div>
         </>
         )    
     
