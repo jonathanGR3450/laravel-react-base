@@ -36,7 +36,6 @@ const InteresadoForm = (props, ref) => {
   const [numInteresados, setNumInteresados] = useState();
   const [interesados, setInteresados] = useState([]);
   const [interesadosData, setInteresadosData] = useState();
-
   const Load_Num = (e) => {
     const newValue = parseInt(e.target.value);
     setNumInteresados(newValue);
@@ -117,6 +116,7 @@ const InteresadoForm = (props, ref) => {
   async function createInteresado() {
     try {
       let auxId = [];
+      let est = "";
       console.log("Data ", interesadosData);
       for (const [index, item] of interesadosData.entries()) {
         if (item.t_id == 0) {
@@ -156,6 +156,7 @@ const InteresadoForm = (props, ref) => {
           const result = await response.json();
           console.log(result);
           item.t_id = result.data.interesado.t_id;
+          item.isTemporal = true;
           auxId.push(result.data.interesado.t_id);
         } else {
           auxId.push(item.t_id);
@@ -170,11 +171,19 @@ const InteresadoForm = (props, ref) => {
   async function createColMiembros(agrupacion, interesado) {
     for (const [index, item] of interesadosData.entries()) {
       let json = {
-        interesado_lc_interesado: interesado[index],
+        interesado_lc_interesado: "",
+        interesado_lc_interesado_conservacion: "",
         interesado_lc_agrupacioninteresados: agrupacion,
         agrupacion: agrupacion,
         participacion: item.participacion,
       };
+      if (item.isTemporal) {
+        json.lc_interesado = interesado[index];
+        json.interesado_lc_interesado_conservacion = null;
+      } else {
+        json.interesado_lc_interesado_conservacion = interesado[index];
+        json.lc_interesado = null;
+      }
 
       console.log(json);
       var myHeaders = new Headers();

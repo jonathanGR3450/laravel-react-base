@@ -7,9 +7,14 @@ const InfoContext = createContext();
 const InfoProvider = ({ children }) => {
   const [infoResolucion, setInfoResolucion] = useState([]);
   const [alerta, setAlerta] = useState([]);
+  const [infoInscribir, setInfoInscribir] = useState();
 
   const navigate = useNavigate();
 
+  function updateJsonInscribir(newdata) {
+    console.log("entraron datos de Avaluo");
+    setInfoInscribir(newdata);
+  }
   const mostrarAlerta = (alerta) => {
     setAlerta(alerta);
 
@@ -36,10 +41,10 @@ const InfoProvider = ({ children }) => {
         msg: "Resolución Creada Correctamente",
         error: false,
       });
-      setTimeout(()=>{
-          setAlerta({})
-          navigate("/resoluciones")
-      }, 3000)
+      setTimeout(() => {
+        setAlerta({});
+        navigate("/resoluciones");
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
@@ -51,6 +56,7 @@ const InfoProvider = ({ children }) => {
         mostrarAlerta,
         alerta,
         submitInfoResolucion,
+        updateJsonInscribir,
       }}
     >
       {children}

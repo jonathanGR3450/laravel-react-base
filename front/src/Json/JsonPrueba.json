@@ -1,33 +1,106 @@
 {
-  "numeros_prediales": [
+  "inscribe_datos_predio_nmero_catastral": [
     {
-      "numero_predial": 123,
-      "matricula_inmobiliaria": "21212",
-      "extdireccion": {
-        "t_id": 75418,
-        "t_seq": null,
-        "tipo_direccion": 219,
-        "es_direccion_principal": false,
-        "codigo_postal": null,
-        "clase_via_principal": null,
-        "valor_via_principal": null,
-        "letra_via_principal": null,
-        "sector_ciudad": null,
-        "valor_via_generadora": null,
-        "letra_via_generadora": null,
-        "numero_predio": null,
-        "sector_predio": null,
-        "complemento": null,
-        "nombre_predio": "",
-        "extunidadedificcnfsica_ext_direccion_id": null,
-        "extinteresado_ext_direccion_id": null,
-        "lc_construccion_ext_direccion_id": null,
-        "lc_nu_spcjrdcrdsrvcios_ext_direccion_id": null,
-        "lc_n_spcjrdcndddfccion_ext_direccion_id": null,
-        "lc_terreno_ext_direccion_id": null,
-        "lc_unidadconstruccion_ext_direccion_id": null,
-        "lc_servidumbretransito_ext_direccion_id": null
-      }
+      "inscribe_datos_predio_nmero_catastral": "252900100000006430099000000000",
+      "inscribe_datos_predio_matricula_inmobiliaria": "157 - 2364444444",
+      "inscribe_datos_predio_Direccion": "Prueba",
+      "inscribe_datos_predio_destino_económico": "C (COMERCIAL)",
+      "inscribe_datos_predio_area_terreno": 1000,
+      "inscribe_datos_predio_area_construida": 0,
+      "inscribe_datos_predio_avaluo": "$ 1.314.306.000",
+      "inscribe_datos_predio_vigencia": "01/01/2023"
+    },
+    {
+      "inscribe_datos_predio_nmero_catastral": "252900100000006430100000000000",
+      "inscribe_datos_predio_matricula_inmobiliaria": "157 - 2364444445",
+      "inscribe_datos_predio_Direccion": "Prueba",
+      "inscribe_datos_predio_destino_económico": "C (COMERCIAL)",
+      "inscribe_datos_predio_area_terreno": 500,
+      "inscribe_datos_predio_area_construida": 0,
+      "inscribe_datos_predio_avaluo": "$ 112.655.000",
+      "inscribe_datos_predio_vigencia": "01/01/2023"
+    }
+  ],
+  "inscribe_propietarios_nmero_catastral": [
+    {
+      "inscribe_propietarios_nmero_catastral": "252900100000006430099000000000",
+      "inscribe_propietarios_numero_propietario": 1,
+      "inscribe_propietarios_nombre_propietario": "ABAONZA GOMEZ GRACIELA DEL CARMEN",
+      "inscribe_propietarios_tipo_documento": "C.C.",
+      "inscribe_propietarios_numero_documento": "26509237"
+    },
+    {
+      "inscribe_propietarios_nmero_catastral": "252900100000006430099000000000",
+      "inscribe_propietarios_numero_propietario": 2,
+      "inscribe_propietarios_nombre_propietario": "AB3  CONSTRUCTORES S A S",
+      "inscribe_propietarios_tipo_documento": "NIT",
+      "inscribe_propietarios_numero_documento": "90052222498"
+    },
+    {
+      "inscribe_propietarios_nmero_catastral": "252900100000006430100000000000",
+      "inscribe_propietarios_numero_propietario": 1,
+      "inscribe_propietarios_nombre_propietario": "ABAONZA GOMEZ GRACIELA DEL CARMEN",
+      "inscribe_propietarios_tipo_documento": "C.C.",
+      "inscribe_propietarios_numero_documento": "26509237"
+    },
+    {
+      "inscribe_propietarios_nmero_catastral": "252900100000006430100000000000",
+      "inscribe_propietarios_numero_propietario": 2,
+      "inscribe_propietarios_nombre_propietario": "AB3  CONSTRUCTORES S A S",
+      "inscribe_propietarios_tipo_documento": "NIT",
+      "inscribe_propietarios_numero_documento": "90052222498"
+    },
+    {
+      "inscribe_propietarios_nmero_catastral": "252900100000006430100000000000",
+      "inscribe_propietarios_numero_propietario": 3,
+      "inscribe_propietarios_nombre_propietario": "ABRIL OFELIA",
+      "inscribe_propietarios_tipo_documento": "C.C.",
+      "inscribe_propietarios_numero_documento": "20559632"
+    },
+    {
+      "inscribe_propietarios_nmero_catastral": "252900100000006430100000000000",
+      "inscribe_propietarios_numero_propietario": 4,
+      "inscribe_propietarios_nombre_propietario": "Gomez Martinez Diego Hernan",
+      "inscribe_propietarios_tipo_documento": "Vacio",
+      "inscribe_propietarios_numero_documento": "1117528719"
+    }
+  ],
+  "inscribe_liquidacion_nmero_catastral": [
+    {
+      "inscribe_liquidacion_nmero_catastral": "252900100000006430099000000000",
+      "inscribe_liquidacion_concepto": "ACTUALIZACION CATASTRAL",
+      "inscribe_liquidacion_fecha": "01/01/2022",
+      "inscribe_liquidacion_avaluo": "$ 1.260.000.000"
+    },
+    {
+      "inscribe_liquidacion_nmero_catastral": "252900100000006430099000000000",
+      "inscribe_liquidacion_concepto": "Dec004",
+      "inscribe_liquidacion_fecha": "01/01/2023",
+      "inscribe_liquidacion_avaluo": "$ 1.314.306.000"
+    },
+    {
+      "inscribe_liquidacion_nmero_catastral": "252900100000006430099000000000",
+      "inscribe_liquidacion_concepto": "10",
+      "inscribe_liquidacion_fecha": "01/01/2024",
+      "inscribe_liquidacion_avaluo": "$ 2.685.259.000"
+    },
+    {
+      "inscribe_liquidacion_nmero_catastral": "252900100000006430100000000000",
+      "inscribe_liquidacion_concepto": "ACTUALIZACION CATASTRAL",
+      "inscribe_liquidacion_fecha": "01/01/2022",
+      "inscribe_liquidacion_avaluo": "$ 108.000.000"
+    },
+    {
+      "inscribe_liquidacion_nmero_catastral": "252900100000006430100000000000",
+      "inscribe_liquidacion_concepto": "Dec004",
+      "inscribe_liquidacion_fecha": "01/01/2023",
+      "inscribe_liquidacion_avaluo": "$ 112.655.000"
+    },
+    {
+      "inscribe_liquidacion_nmero_catastral": "252900100000006430100000000000",
+      "inscribe_liquidacion_concepto": "10",
+      "inscribe_liquidacion_fecha": "01/01/2024",
+      "inscribe_liquidacion_avaluo": "$ 230.165.000"
     }
   ]
 }

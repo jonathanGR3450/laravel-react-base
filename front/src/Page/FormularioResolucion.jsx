@@ -96,26 +96,26 @@ const FormularioResolucion = () => {
       reviso_aprobo_nombre: "Oscar Rivera Aguilar",
       reviso_aprobo_cargo: "Aux. Administrativo",
     });
-    setSerialResolucion ("");
-    setDia ("");
-    setMes ("");
-    setAnio ("");
-    setNombre ("");
-    setCedula ("");
-    setCiudadCedula ("");
-    setNumeroRadicado ("");
-    setIdAasociado ("");   
-    setZona ("");
-    setNumeroEscritura ("");
-    setFechaEscritutra ("");
-    setNotaria ("");
-    setCiudadNotaria ("");    
-    setDiaNotificacionLetra ("");
-    setDiaNotificacion ("");
-    setMesNotificacionLetra ("");
-    setAnioNotificacionLetra ("");
-    setAnioNotificacion ("");
-    setnombreDirector ("");
+    setSerialResolucion("");
+    setDia("");
+    setMes("");
+    setAnio("");
+    setNombre("");
+    setCedula("");
+    setCiudadCedula("");
+    setNumeroRadicado("");
+    setIdAasociado("");
+    setZona("");
+    setNumeroEscritura("");
+    setFechaEscritutra("");
+    setNotaria("");
+    setCiudadNotaria("");
+    setDiaNotificacionLetra("");
+    setDiaNotificacion("");
+    setMesNotificacionLetra("");
+    setAnioNotificacionLetra("");
+    setAnioNotificacion("");
+    setnombreDirector("");
   };
 
   const { msg } = alerta;

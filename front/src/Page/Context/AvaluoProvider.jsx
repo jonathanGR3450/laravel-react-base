@@ -1,292 +1,32 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import React, { useRef, useState, useContext, useEffect } from "react";
-import { TableContext } from "./Context/Context";
-import { DataContext } from "./Context/DataContext";
-import { LoadDataForm } from "./CargaDatos";
-import { ModalUniConForm } from "./Uniconstruccion";
-import { ModalTerrenoForm } from "./Terreno";
-import { ModalConstruccionForm } from "./Construccion";
-import {
-  TerrenoResumeForm,
-  UnidadConstruccionResumeForm,
-  ConstruccionResumeForm,
-} from "./ResumeData";
-//import { AvaluoContext } from "./Context/AvaluoProvider";
-import useAvaluo from "../hooks/useAvaluo";
+import { useNavigate } from "react-router-dom";
+import { useState, createContext, useEffect } from "react";
+import useInfo from "../../hooks/useInfo";
 
-export const LoadDataConstruccion = () => {
-  const uniConstruccionRef = useRef();
-  const terrenoRef = useRef();
-  const construccionRef = useRef();
+const AvaluoContext = createContext();
 
+const AvaluoProvider = ({ children }) => {
+  const { updateJsonInscribir } = useInfo();
+  console.log("Informacion de Info", updateJsonInscribir);
+
+  const [avaluo, setAvaluo] = useState();
   const fechaActual = new Date();
+
   let añoActual = fechaActual.getFullYear();
-
-  const { tableData } = useContext(TableContext);
-  const { createAvaluo } = useAvaluo();
-  const [dataSelect, setDataSelect] = useState(0);
-  const [dataTotal, setDataTotal] = useState("");
-  const [estDataTotal, setEstDataTotal] = useState(false);
-  const [DataLiq, setDataLiq] = useState("");
-  const [añoBase, setAñoBase] = useState();
-  console.log("adas", añoActual);
-  function soloNumeros(event) {
-    const input = event.target;
-    input.value = input.value.replace(/[^0-9.]/g, "");
+  function redondear(numero) {
+    console.log("Numero a Redondear", numero.toLocaleString());
+    const resto = numero % 1000;
+    console.log("asdasd", resto);
+    const redondeo = resto >= 500 ? 1000 - resto : -resto;
+    console.log("redondeo", redondeo);
+    return numero + redondeo;
   }
-  useEffect(() => {
-    zonaYear();
-  }, []);
-
-  function zonaYear() {
-    tableData.map((item, index) => {
-      if (item.zona != "00") {
-        setAñoBase(2022);
-      } else {
-        setAñoBase(2023);
-      }
-    });
-  }
-
-  const TableForm = () => {
-    const terrenoResumeForm = useRef();
-    const unidadConstruccionResumeForm = useRef();
-    const construccionResumeForm = useRef();
-    //Aperturas
-    const openterrenoResumeForm = () => {
-      terrenoResumeForm.current.openModal();
-    };
-    const openunidadconstruccionResumeForm = () => {
-      unidadConstruccionResumeForm.current.openModal();
-    };
-    const openconstruccionResumeForm = () => {
-      construccionResumeForm.current.openModal();
-    };
-
-    const filas = Object.entries(tableData).map((items, index) => {
-      let item = items[1];
-      // console.log("Prueba", item);
-      // onClick={openpredioResumeForm}  <PredioResumeForm ref={predioResumeForm} datos={item} />
-      return (
-        <tr key={index}>
-          <td className="border-2 rounded-xl p-2">{index + 1}</td>
-          <td className="border-2 rounded-xl p-2">
-            {item.Dpto}-{item.Mpio}-{item.Zona}-{item.Sector}-{item.Comuna}-
-            {item.Barrio}-{item.Manzana}-{item.Terreno}-{item.Condicion}-
-            {item.Edificio}-{item.Piso}-{item.Unidad}
-          </td>
-          <td className="border-2 rounded-xl p-2">
-            {item.hasOwnProperty("terreno") ? (
-              <div>
-                <button onClick={openterrenoResumeForm}>
-                  {" "}
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-                <TerrenoResumeForm ref={terrenoResumeForm} datos={item} />
-              </div>
-            ) : null}
-          </td>
-          <td className="border-2 rounded-xl p-2">
-            {item.hasOwnProperty("construccion") ? (
-              <div>
-                <button onClick={openconstruccionResumeForm}>
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-                <ConstruccionResumeForm
-                  ref={construccionResumeForm}
-                  datos={item}
-                />
-              </div>
-            ) : null}
-          </td>
-          <td className="border-2 rounded-xl p-2">
-            {item.hasOwnProperty("unidad_construccion") ? (
-              <div>
-                <button onClick={openunidadconstruccionResumeForm}>
-                  {" "}
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-                <UnidadConstruccionResumeForm
-                  ref={unidadConstruccionResumeForm}
-                  datos={item}
-                />
-              </div>
-            ) : null}
-          </td>
-        </tr>
-      );
-    });
-
-    return (
-      <div className="w-full">
-        <table className="w-full text-center">
-          <thead className="uppercase border-2  bg-teal-500 text-base text-white">
-            <tr>
-              <th className="border-2 rounded-xl p-2">ID</th>
-              <th className="border-2 rounded-xl p-2">Número Predial</th>
-              <th className="border-2 rounded-xl p-2">Terreno</th>
-              <th className="border-2 rounded-xl p-2">Construccion</th>
-              <th className="border-2 rounded-xl p-2">Unidad Construccion</th>
-            </tr>
-          </thead>
-          <tbody>{filas}</tbody>
-        </table>
-      </div>
-    );
-  };
-
-  const ChangeData = () => {
-    let validNumbers = [];
-    const { updateIdArray } = useContext(DataContext);
-    const [dataId, setDataId] = useState("");
-    const [inputId, setInputId] = useState("");
-    const [estBtt, setEstBtt] = useState(true);
-    let [coma, setComa] = useState("");
-    function validarid() {
-      if (isNaN(dataId[0])) {
-        setEstBtt(true);
-      } else {
-        setEstBtt(false);
-      }
-    }
-    useEffect(() => {
-      validarid();
-    }, [dataId]);
-
-    function NumComa(e) {
-      let { value } = e.target;
-      value = value.replace(/[^0-9,-]/g, "");
-      // Elimina caracteres no numéricos
-      if (value.includes("-")) {
-        setComa(1);
-        if (value.split("-").length <= 2) {
-          //setTamaño(3);
-          let aux = value.split("-");
-          let numeros = aux.map((item) => {
-            return parseInt(item);
-          });
-          validNumbers = numeros;
-          setDataId(validNumbers);
-        }
-      } else {
-        let aux = "";
-        if (value.length === 0) {
-          aux = 0;
-        } else {
-          aux = value.split(",");
-        }
-        if (value.includes(",")) {
-          setComa(2);
-          let numeros = aux.map((item) => {
-            return parseInt(item);
-          });
-
-          validNumbers = numeros;
-          setDataId(validNumbers);
-        } else {
-          setComa(3);
-          validNumbers = [parseInt(value)];
-          setDataId(validNumbers);
-        }
-      }
-      setInputId(value);
-    }
-    function Selectdata(e) {
-      setDataSelect(e.target.value);
-    }
-
-    const openUniConstruccionForm = () => {
-      uniConstruccionRef.current.openModal(dataId);
-    };
-    const openTerrenoForm = () => {
-      terrenoRef.current.openModal(dataId);
-    };
-    const openConstruccionForm = () => {
-      construccionRef.current.openModal(dataId);
-    };
-    return (
-      <div className="w-full flex flex-row border-2 p-2 mt-4 mb-4 rounded-xl">
-        <div className="w-1/3 flex flex-col text-center ">
-          <div className="w-full">
-            <label className="font-semibold">Datos para Agregar</label>
-          </div>
-          <div className="w-full flex flex-col ">
-            <select
-              className="border-2 rounded-lg text-center m-1"
-              onChange={Selectdata}
-              value={dataSelect}
-            >
-              <option value={0}></option>
-              <option value={1}>Terreno</option>
-              <option value={2}>Construccion</option>
-              <option value={3}>Unidad de Construccion</option>
-            </select>
-          </div>
-        </div>
-        <div className="w-1/3 flex flex-col items-center">
-          <label className="font-semibold">SELECCIONAR ID</label>
-          <div className="flex flex-row items-center justify-center">
-            <input
-              type="text"
-              className="border-2 rounded-lg w-full p-1"
-              onChange={NumComa}
-              value={inputId}
-            ></input>
-          </div>
-        </div>
-        <div className="w-1/3 flex flex-col text-center">
-          <label className="font-semibold">CARGA FORMULARIO</label>
-          {dataSelect == 1 ? (
-            <div className="w-full flex flex-col items-center">
-              <button
-                className={`${
-                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
-                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
-                onClick={openTerrenoForm}
-              >
-                Carga
-              </button>{" "}
-              <ModalTerrenoForm ref={terrenoRef} />
-            </div>
-          ) : null}
-          {dataSelect == 2 ? (
-            <div className="w-full flex flex-col items-center">
-              <button
-                className={`${
-                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
-                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
-                onClick={openConstruccionForm}
-              >
-                Carga
-              </button>{" "}
-              <ModalConstruccionForm ref={construccionRef} />
-            </div>
-          ) : null}
-          {dataSelect == 3 ? (
-            <div className="w-full flex flex-col items-center">
-              <button
-                className={`${
-                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
-                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
-                onClick={openUniConstruccionForm}
-              >
-                Carga
-              </button>
-              <ModalUniConForm ref={uniConstruccionRef} />
-            </div>
-          ) : null}
-        </div>
-      </div>
-    );
-  };
-
-  async function Avaluo(dataAño) {
-    console.log("No Entra COntexto");
-    setDataLiq("");
+  const createAvaluo = async (dataAño, data) => {
+    console.log("entra a Contexto", dataAño);
     let año = dataAño;
+    let tableData = data;
     console.log("data AÑo", dataAño);
     let keys = Object.keys(tableData);
+    console.log("data tABLA", tableData);
     //Recorrer Numeros Prediales
     let ArrayTotal = [];
     for (let key in keys) {
@@ -294,6 +34,7 @@ export const LoadDataConstruccion = () => {
       console.log("current item", currentItem);
       let ArrayTerreno = [];
       let ArrayUnidad = [];
+      let ArrayInteresado = [];
       async function TerrenoCalculate() {
         let aux = "";
         let zonasData = currentItem.terreno.ZHG;
@@ -371,15 +112,13 @@ export const LoadDataConstruccion = () => {
         }
         return aux;
       }
-
       async function calcularAvaluo() {
         console.log("Inicia Avaluo", año);
         try {
+          ArrayInteresado.push(currentItem.interesados);
           let boolterreno = await TerrenoCalculate();
-
           if (boolterreno) {
-            let dataCorrect = [];
-            //Rural
+            let dataCorrect = []; //Rural
 
             if (currentItem.Zona == "00") {
               console.log("terreno Rural", currentItem);
@@ -1702,11 +1441,11 @@ export const LoadDataConstruccion = () => {
       }
 
       let terminar = await calcularAvaluo();
-
       console.log("Terminar", terminar);
       if (terminar) {
         console.log("terreno 123", ArrayTerreno);
         console.log("Unidad", ArrayUnidad);
+        console.log("Interesados", ArrayInteresado);
         function calculateAreatotal() {
           let sum = 0;
           ArrayTerreno.map((item, index) => {
@@ -1952,12 +1691,14 @@ export const LoadDataConstruccion = () => {
           area_construida: calculateConstruida(),
           avaluo: calculateAvaluo(),
           vigencia: "01/01/" + año,
+          interesados: ArrayInteresado,
         };
         console.log("entra valores", newobj);
         ArrayTotal.push(newobj);
       } else {
-        console.log("terreno Error Unidades", ArrayTerreno);
+        console.log("terreno SIn Unidades", ArrayTerreno);
         console.log("Unidad 1 1", ArrayUnidad);
+        console.log("Interesados 11", ArrayInteresado);
         function calculateAreatotal() {
           let sum = 0;
           ArrayTerreno.map((item, index) => {
@@ -2188,86 +1929,79 @@ export const LoadDataConstruccion = () => {
           area_terreno: calculateAreatotal(),
           area_construida: 0,
           avaluo: calculateAvaluo(),
-          vigencia: "01/01/2023",
+          vigencia: "01/01/" + año,
+          interesados: ArrayInteresado,
         };
         ArrayTotal.push(newobj);
       }
 
       //Recorrer Numeros Prediales DATA
     }
-
-    setEstDataTotal(true);
+    ///Mostrar valores base
     console.log("ArrayTotal", ArrayTotal);
+
     let dataTotal = [];
-    ArrayTotal.map((item, index) => {
-      let newobj = {
-        zona: item.zona,
-        num_predial: item.num_predial,
-        avaluo: redondear(item.avaluo),
-        año: año,
-      };
-      dataTotal.push(newobj);
-    });
 
-    setDataTotal(ArrayTotal);
-    return dataTotal;
-  }
+    let arrayResult = "";
+    ///Datos donde se guardaran las liquidaciones
+    let dataLiquid = [];
+    let dataPredio = [];
+    let dataInteresado = [];
+    //Preguntar valores de incrementos
+    let requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    let url =
+      import.meta.env.VITE_API_URL_FIRST +
+      "avaluo-catastral/list/incrementos?limit=1500";
+    console.log("Url", url);
+    try {
+      const response = await fetch(url, requestOptions);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const result = await response.json();
+      arrayResult = result.data.data;
+      //let dataBase = {};
 
-  function redondear(numero) {
-    console.log("Numero a Redondear", numero.toLocaleString());
-    const resto = numero % 1000;
-    console.log("asdasd", resto);
-    const redondeo = resto >= 500 ? 1000 - resto : -resto;
-    console.log("redondeo", redondeo);
-    return numero + redondeo;
-  }
-  async function loadAvaluoBase(año, data) {
-    let result = await createAvaluo(año, data);
-    console.log("Resultado Contexto", result);
-    setDataTotal(result);
-    setEstDataTotal(true);
-  }
-  const AllTableForm = () => {
-    console.log("Datos Totales", dataTotal);
+      ArrayTotal.map((items, index) => {
+        let newdata = { ...items };
 
-    const Allfilas = Object.entries(dataTotal).map((items, index) => {
-      let item = items[1];
-      console.log("items data total", item);
-      //redondearAvaluoTotal(item.avaluo)
-      /* ${" "}
-            {item.zona == "01"
-              ? redondear(item.avaluo * 1.0431).toLocaleString() :*/
-      return (
-        <tr key={index}>
-          <td className="border-2 rounded-xl p-2">{index + 1}</td>
-          <td className="border-2 rounded-xl p-2">{item.num_predial}</td>
-          <td className="border-2 rounded-xl p-2">{item.matricula}</td>
-          <td className="border-2 rounded-xl p-2">{item.direccion}</td>
-          <td className="border-2 rounded-xl p-2">{item.destinacion}</td>
-          <td className="border-2 rounded-xl p-2">{item.area_terreno}</td>
-          <td className="border-2 rounded-xl p-2">{item.area_construida}</td>
-          <td className="border-2 rounded-xl p-2">
-            $ {item.avaluo.toLocaleString()}
-          </td>
-          <td className="border-2 rounded-xl p-2">{item.vigencia}</td>
-        </tr>
-      );
-    });
+        console.log("neuva data", newdata);
+        if (items.zona != "00") {
+          if (items.vigencia == "01/01/2022") {
+            console.log("Entra uRBANO");
+            newdata.concepto = "ACTUALIZACION CATASTRAL";
+            newdata.avaluo = redondear(newdata.avaluo);
+            dataLiquid.push({ ...newdata });
+          }
+        }
+        let avaluoBase = items.avaluo;
+        arrayResult.sort((a, b) => a.vigencia - b.vigencia);
 
-    function infoInteresados() {
-      let newDataInteresado = [];
-      jsonInfoProvider.inscribe_propietarios_nmero_catastral = [];
-      tableData.map((item, index) => {
-        item.interesados.map((items, indexs) => {
+        for (const item of arrayResult) {
+          let newDataCopy = { ...newdata };
+          let valor_nuevo = avaluoBase * (1 + parseFloat(item.incremento));
+          newDataCopy.avaluo = redondear(valor_nuevo);
+          newDataCopy.concepto = item.concepto;
+          avaluoBase = valor_nuevo;
+          newDataCopy.vigencia = "01/01/" + item.vigencia;
+
+          dataLiquid.push(newDataCopy);
+        }
+        console.log("Info de Interesados", items.interesados);
+        items.interesados[0].map((item, index) => {
+          console.log("item de interesado", item);
           let nombre = "";
-          if (items.tipo == 659) {
-            nombre = items.razon_social;
+          if (item.tipo == 659) {
+            nombre = item.razon_social;
           } else {
-            nombre = items.nombre;
+            nombre = item.nombre;
           }
           let nom_documento = "";
 
-          switch (items.tipo_documento) {
+          switch (item.tipo_documento) {
             case 529:
               nom_documento = "C.C.";
               break;
@@ -2294,175 +2028,88 @@ export const LoadDataConstruccion = () => {
               break;
           }
           let interesado = {
-            inscribe_propietarios_nmero_catastral:
-              item.Dpto +
-              item.Mpio +
-              item.Zona +
-              item.Sector +
-              item.Comuna +
-              item.Barrio +
-              item.Manzana +
-              item.Terreno +
-              item.Condicion +
-              item.Edificio +
-              item.Piso +
-              item.Unidad,
-            inscribe_propietarios_numero_propietario: indexs + 1,
+            inscribe_propietarios_nmero_catastral: items.num_predial,
+            inscribe_propietarios_numero_propietario: index + 1,
             inscribe_propietarios_nombre_propietario: nombre,
             inscribe_propietarios_tipo_documento: nom_documento,
-            inscribe_propietarios_numero_documento: items.documento_identidad,
+            inscribe_propietarios_numero_documento: item.documento_identidad,
           };
-          newDataInteresado.push(interesado);
+          dataInteresado.push(interesado);
         });
       });
-      jsonInfoProvider.inscribe_propietarios_nmero_catastral =
-        newDataInteresado;
-    }
+      dataLiquid.map((item, index) => {
+        if (item.vigencia == "01/01/" + añoActual) {
+          console.log("Vigencias", item.vigencia);
+          console.log("Año ACTUAL", añoActual);
+          dataPredio.push(item);
+        }
+      });
+      console.log("Datos del Año Actual", dataPredio);
+      console.log("datos Final liquidacion", dataLiquid);
+      console.log("datos final de Interesados", dataInteresado);
 
-    async function calculateLiquidacion() {
-      let año = 0;
-      let dataLiquid = [];
-      let dataBase = [];
-      let arrayResult = "";
-      let isRural = "";
-      let requestOptions = {
-        method: "GET",
-        redirect: "follow",
+      let jsonInfoProvider = {
+        inscribe_datos_predio_nmero_catastral: [],
+        inscribe_propietarios_nmero_catastral: dataInteresado,
+        inscribe_liquidacion_nmero_catastral: [],
       };
-      let url =
-        import.meta.env.VITE_API_URL_FIRST +
-        "avaluo-catastral/list/incrementos?limit=1500";
-      console.log("Url", url);
-      try {
-        const response = await fetch(url, requestOptions);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const result = await response.json();
-        arrayResult = result.data.data;
-        let keys = Object.keys(tableData);
-        //Ciclo para sacar los Datos Base
-        for (let key in keys) {
-          let currentItem = tableData[key];
-          if (currentItem.zona != "00") {
-            //Urbano
-            año = 2022;
-            isRural = false;
-          } else {
-            isRural = true;
-            año = 2023;
-            //Solo Rural
-          }
-        }
-        console.log("item tabla", año);
-        dataBase = await Avaluo(año);
-        if (!isRural) {
-          dataBase.map((items, index) => {
-            let newdata = {
-              inscribe_liquidacion_nmero_catastral: items.num_predial,
-              inscribe_liquidacion_concepto: "ACTUALIZACION CATASTRAL",
-              inscribe_liquidacion_fecha: "01/01/" + items.año,
-              inscribe_liquidacion_avaluo:
-                "$ " + redondear(items.avaluo).toLocaleString(),
-            };
-            dataLiquid.push(newdata);
-          });
+
+      dataPredio.map((item, index) => {
+        let newData = {
+          inscribe_datos_predio_nmero_catastral: item.num_predial,
+          inscribe_datos_predio_matricula_inmobiliaria: item.matricula,
+          inscribe_datos_predio_Direccion: item.direccion,
+          inscribe_datos_predio_destino_económico: item.destinacion,
+          inscribe_datos_predio_area_terreno: item.area_terreno,
+          inscribe_datos_predio_area_construida: item.area_construida,
+          inscribe_datos_predio_avaluo: "$ " + item.avaluo.toLocaleString(),
+          inscribe_datos_predio_vigencia: item.vigencia,
+        };
+        jsonInfoProvider.inscribe_datos_predio_nmero_catastral.push(newData);
+      });
+      dataLiquid.map((item, index) => {
+        let newData = {
+          inscribe_liquidacion_nmero_catastral: item.num_predial,
+          inscribe_liquidacion_concepto: item.concepto,
+          inscribe_liquidacion_fecha: item.vigencia,
+          inscribe_liquidacion_avaluo: "$ " + item.avaluo.toLocaleString(),
+        };
+        jsonInfoProvider.inscribe_liquidacion_nmero_catastral.push(newData);
+      });
+
+      console.log("Json Inscripcion", JSON.stringify(jsonInfoProvider));
+      updateJsonInscribir(jsonInfoProvider);
+
+      /*dataLiquid.sort((a, b) => {
+        // Primero, ordena por "inscribe_liquidacion_nmero_catastral"
+        const comparacionCatastral =
+          a.inscribe_liquidacion_nmero_catastral.localeCompare(
+            b.inscribe_liquidacion_nmero_catastral
+          );
+
+        // Si los "inscribe_liquidacion_nmero_catastral" son iguales, ordena por "inscribe_liquidacion_fecha"
+        if (comparacionCatastral === 0) {
+          return (
+            new Date(a.inscribe_liquidacion_fecha) -
+            new Date(b.inscribe_liquidacion_fecha)
+          );
         }
 
-        //Liquidacion
-        console.log("Item Año", dataBase);
-        dataBase.map((items, index) => {
-          let avaluoBase = items.avaluo;
-          console.log("Prueba", items);
-          console.log("12345", arrayResult);
-          arrayResult.sort((a, b) => a.vigencia - b.vigencia);
-          for (const item of arrayResult) {
-            console.log("item año 123", item);
-            let valor_nuevo = avaluoBase * (1 + parseFloat(item.incremento));
-            console.log("Valor Nuevo", valor_nuevo);
-            let newdata = {
-              inscribe_liquidacion_nmero_catastral: items.num_predial,
-              inscribe_liquidacion_concepto: item.concepto,
-              inscribe_liquidacion_fecha: "01/01/" + item.vigencia,
-              inscribe_liquidacion_avaluo:
-                "$ " + redondear(valor_nuevo).toLocaleString(),
-            };
-            avaluoBase = valor_nuevo;
-            console.log("Nuevos Datos 123 ", newdata);
-            dataLiquid.push(newdata);
-          }
-        });
-
-        console.log("Datos de la Liquidacion", dataLiquid);
-        jsonInfoProvider.inscribe_liquidacion_nmero_catastral = dataLiquid;
-      } catch (error) {
-        console.log("Error:", error);
-      }
+        return comparacionCatastral;
+      });*/
+    } catch (error) {
+      console.log("Error:", error);
     }
 
-    async function SendData() {
-      infoInteresados();
-      await calculateLiquidacion();
-      console.log("Organizados ", JSON.stringify(jsonInfoProvider));
-    }
-
-    return (
-      <div className="w-full flex flex-col mt-4 ">
-        <table className="w-full text-center">
-          <thead className="uppercase border-2  bg-teal-500 text-base text-white">
-            <tr>
-              <th className="border-2 rounded-xl w-1/12 p-2">ID</th>
-              <th className="border-2 rounded-xl w-2/12 p-2">
-                Número Catastral
-              </th>
-              <th className="border-2 rounded-xl w-1/12 p-2">
-                Matricula Inmobiliaria
-              </th>
-              <th className="border-2 rounded-xl w-1/12 p-2">
-                Direccion del Predio
-              </th>
-              <th className="border-2 rounded-xl w-1/12 p-2">Destinacion</th>
-              <th className="border-2 rounded-xl w-1/12 p-2">
-                Area Terreno (mt2)
-              </th>
-              <th className="border-2 rounded-xl w-1/12 p-2">
-                Area Construida(mt2)
-              </th>
-              <th className="border-2 rounded-xl w-2/12 p-2">Avaluo</th>
-              <th className="border-2 rounded-xl w-1/12 p-2">Vigencia</th>
-            </tr>
-          </thead>
-          <tbody>{Allfilas}</tbody>
-        </table>
-        <div className="w-full flex flex-col justify-center items-center">
-          <button
-            onClick={SendData}
-            className=" w-1/5 p-1 text-center rounded-md text-white bg-teal-500 text-lg mt-4 ml-4"
-          >
-            Guardar Avaluo
-          </button>
-        </div>
-      </div>
-    );
+    return dataPredio;
   };
 
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-      <h1 className="text-2xl">Creacion de Predios</h1>
-      <div className="mt-4 w-full">
-        <ChangeData />
-        <TableForm />
-      </div>
-      <div className="mt-4 w-full flex flex-row justify-center">
-        <button
-          onClick={() => loadAvaluoBase(añoBase, tableData)}
-          className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
-        >
-          Calcular Avaluo
-        </button>
-      </div>
-      {estDataTotal ? <AllTableForm /> : null}
-    </div>
+    <AvaluoContext.Provider value={{ createAvaluo, avaluo }}>
+      {children}
+    </AvaluoContext.Provider>
   );
 };
-//Avaluo(añoActual)
+
+export { AvaluoProvider };
+export default AvaluoContext;
