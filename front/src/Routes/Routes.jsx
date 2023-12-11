@@ -37,6 +37,11 @@ const Ruta = () => {
           <Route path="/" element={<Menu />}>
             <Route path="/Tablero" element={<Tablero />}></Route>
             <Route
+              path="/ConsultarPredio"
+              element={<ConsultarPredio />}
+            ></Route>
+            <Route path="/DetallesPredio" element={<DetallesPredio />}></Route>
+            <Route
               path="/Interesado"
               element={<NormalInteresadoForm />}
             ></Route>
@@ -90,7 +95,25 @@ const Ruta = () => {
           </Route>
         </Routes>
       </AvaluoProvider>
-      <Routes>
+    </InfoProvider>
+  );
+};
+
+export default Ruta;
+//<Route path="/Dash"  Component = {LoginForm} />
+//<Route path="/AddPredio" element={<PredioForm />}></Route>
+/* <Route
+          path="/AddInteresado"
+          element={
+            <InteresadoProvider>
+              <AddInteresadoForm />{" "}
+            </InteresadoProvider>
+          }
+        ></Route> 
+        
+        
+        
+            <Routes>
         <Route path="/" element={<Menu />}>
           <Route path="/Tablero" element={<Tablero />}></Route>
           <Route path="/ConsultarPredio" element={<ConsultarPredio />}></Route>
@@ -142,18 +165,6 @@ const Ruta = () => {
           <Route path="/Resoluciones" element={<Resoluciones />}></Route>
         </Route>
       </Routes>
-    </InfoProvider>
-  );
-};
-
-export default Ruta;
-//<Route path="/Dash"  Component = {LoginForm} />
-//<Route path="/AddPredio" element={<PredioForm />}></Route>
-/* <Route
-          path="/AddInteresado"
-          element={
-            <InteresadoProvider>
-              <AddInteresadoForm />{" "}
-            </InteresadoProvider>
-          }
-        ></Route> */
+        
+        
+        */
