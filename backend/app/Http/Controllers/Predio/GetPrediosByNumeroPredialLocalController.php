@@ -6,7 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PrediosByNumeroPredialFormRequest;
 use App\Http\Resources\Predio\NumerosPredialesCollection;
-use App\Models\LcPredio;
+use App\Models\Local\LcNumerosPredialLocal;
 use App\Models\Local\LcPredioLocal;
 use App\Traits\PaginationTrait;
 use Illuminate\Support\Str;
@@ -25,7 +25,7 @@ class GetPrediosByNumeroPredialLocalController extends AppBaseController
         try {
             $numeroPredial = $numero_predial;
             $numeroPredial = Str::substr($numeroPredial, 0, 17);
-            $query = LcPredioLocal::where(DB::raw("LEFT(numero_predial, 17)"), $numeroPredial);
+            $query = LcNumerosPredialLocal::where(DB::raw("LEFT(numero_predial, 17)"), $numeroPredial);
 
             /**pagination */
             $sortable = [

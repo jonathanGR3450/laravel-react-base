@@ -29,4 +29,16 @@ class LcAgrupacionInteresados extends Model
     {
         return $this->hasMany(LcDerecho::class, 'interesado_lc_agrupacioninteresados', 't_id');
     }
+
+    // Definir relación inversa para la relación 'agrupacionInteresados' en ColMiembro
+    public function miembrosAgrupacionInteresados()
+    {
+        return $this->hasMany(ColMiembro::class, 'interesado_lc_agrupacioninteresados', 't_id');
+    }
+
+    // Definir relación inversa para la relación 'agrupacion' en ColMiembro
+    public function miembrosAgrupacion()
+    {
+        return $this->hasMany(ColMiembro::class, 'agrupacion', 't_id');
+    }
 }
