@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Tablero from "../Page/Dashboard";
 import Menu from "../Page/Menu";
+import ConsultarPredio from "../Page/ConsultarPredio";
+import DetallesPredio from "../Page/DetallesPredio";
 import Consulta from "../Page/Consulta";
 import FichaPredial from "../Page/FichaPredial";
 import UniconstForm from "../Page/Uniconst";
@@ -88,6 +90,58 @@ const Ruta = () => {
           </Route>
         </Routes>
       </AvaluoProvider>
+      <Routes>
+        <Route path="/" element={<Menu />}>
+          <Route path="/Tablero" element={<Tablero />}></Route>
+          <Route path="/ConsultarPredio" element={<ConsultarPredio />}></Route>
+          <Route path="/DetallesPredio" element={<DetallesPredio />}></Route>
+          <Route path="/Consulta/:data" element={<Consulta />} />
+          <Route path="/Ficha" element={<FichaPredial />}>
+            <Route path="Uniconst/:info" element={<UniconstForm />}></Route>
+          </Route>
+          <Route path="/Resumen" element={<ResumenForm />}></Route>
+          <Route
+            path="/NumPredial"
+            element={
+              <ArrayFinalProvider>
+                <TableProvider>
+                  <NumPredialForm />{" "}
+                </TableProvider>
+              </ArrayFinalProvider>
+            }
+          ></Route>
+          <Route
+            path="/LoadData"
+            element={
+              <ArrayFinalProvider>
+                <TableProvider>
+                  <DataProvider>
+                    <LoadDataForm />
+                  </DataProvider>
+                </TableProvider>
+              </ArrayFinalProvider>
+            }
+          ></Route>
+          <Route
+            path="/LoadConstruccion"
+            element={
+              <ArrayFinalProvider>
+                <TableProvider>
+                  <DataProvider>
+                    <LoadDataConstruccion />
+                  </DataProvider>
+                </TableProvider>
+              </ArrayFinalProvider>
+            }
+          ></Route>
+          <Route path="/DataHom" element={<LoadCodHom />}></Route>
+          <Route path="/Avaluo" element={<AvaluoForm />}></Route>
+          <Route path="/Incremento" element={<IncrementoForm />}></Route>
+
+          <Route path="/Resolucion" element={<Resolucion />}></Route>
+          <Route path="/Resoluciones" element={<Resoluciones />}></Route>
+        </Route>
+      </Routes>
     </InfoProvider>
   );
 };

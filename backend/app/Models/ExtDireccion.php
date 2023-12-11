@@ -42,6 +42,15 @@ class ExtDireccion extends Model
         'lc_servidumbretransito_ext_direccion_id',
     ];
 
+    public function sectorCuidad()
+    {
+        return $this->belongsTo(SectorCuidad::class, 'sector_ciudad', 't_id');
+    }
+
+    public function tipoDireccion()
+    {
+        return $this->belongsTo(TipoDireccion::class, 'tipo_direccion', 't_id');
+    }
     // Relaciones
     // public function extUnidadEdificacion()
     // {

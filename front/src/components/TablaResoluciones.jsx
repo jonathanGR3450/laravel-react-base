@@ -1,10 +1,19 @@
+import useInfo from "../hooks/useInfo";
+
 const TablaResoluciones = () => {
+  const { resultado } = useInfo();
+  console.log(resultado);
+  const { data: info } = resultado;
+  const { radicado } = info;
+  console.log(radicado);
+  const { t_id, url, no_radicado, tramite_id } = radicado;
   const data = [
     {
-      radicado: "R-2022-1234",
+      id: t_id,
+      radicado: no_radicado,
       idAsociado: "ID-12345",
       resolucion: " 03-001-000",
-      url: "http://localhost/storage/documents/2023-11-20-d6ba40b9-9464-4f47-b979-f1572e430abe-document.pdf",
+      url: url,
     },
   ];
 
@@ -15,6 +24,7 @@ const TablaResoluciones = () => {
     <table className="min-w-full bg-white border border-gray-300">
       <thead>
         <tr>
+          <th className="py-2 px-4 border-b">Id</th>
           <th className="py-2 px-4 border-b">Radicado</th>
           <th className="py-2 px-4 border-b">ID Asociado</th>
           <th className="py-2 px-4 border-b">Resolución</th>
@@ -24,6 +34,7 @@ const TablaResoluciones = () => {
       <tbody>
         {data.map((item, index) => (
           <tr key={index}>
+            <td className="py-2 px-4 border-b">{item.id}</td>
             <td className="py-2 px-4 border-b">{item.radicado}</td>
             <td className="py-2 px-4 border-b">{item.idAsociado}</td>
             <td className="py-2 px-4 border-b">{item.resolucion}</td>

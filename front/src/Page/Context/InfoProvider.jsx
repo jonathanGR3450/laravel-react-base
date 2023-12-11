@@ -7,6 +7,8 @@ const InfoContext = createContext();
 const InfoProvider = ({ children }) => {
   const [infoResolucion, setInfoResolucion] = useState([]);
   const [alerta, setAlerta] = useState([]);
+  const [resultado, setResultado] = useState({});
+  const [numPredial, setNumPredial] = useState("");
   const [infoInscribir, setInfoInscribir] = useState();
 
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ const InfoProvider = ({ children }) => {
         infoResolucion,
         config
       );
+      setResultado(data);
       console.log(data);
 
       setAlerta({
@@ -49,6 +52,25 @@ const InfoProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  const submitInfoNumPredial = async (tipoBusqueda, numPredial) => {
+    console.log(numPredial);
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await clienteAxios(
+        `/predio?${tipoBusqueda}=${numPredial}`,
+        config
+      );
+      setNumPredial(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <InfoContext.Provider
       value={{
@@ -56,6 +78,9 @@ const InfoProvider = ({ children }) => {
         mostrarAlerta,
         alerta,
         submitInfoResolucion,
+        resultado,
+        submitInfoNumPredial,
+        numPredial,
         updateJsonInscribir,
       }}
     >
