@@ -234,7 +234,16 @@ const InfoPredio = () => {
             <label className="font-light m-2" htmlFor="tieneFMI">
               Folio de matricula inmobiliaria
             </label>
-            <input
+            <div className="flex justify-center items-center">
+              <input
+                id="tieneFMI"
+                type="checkbox"
+                className=" border-2 checked:bg-blue-500 h-5 w-5 rounded-md mr-2 "
+                disabled
+                checked={tieneFMI}
+              />
+              <label>¿Tiene fmi?</label>
+              {/* <input
               type="text"
               id="tieneFMI"
               disabled
@@ -242,7 +251,8 @@ const InfoPredio = () => {
               placeholder=""
               value={tieneFMI ? tieneFMI : ""}
               onChange={(e) => setTieneFMI(e.target.value)}
-            />
+            /> */}
+            </div>
           </div>
         </div>
         <div className=" grid grid-cols-6 gap-6 ">
@@ -278,7 +288,17 @@ const InfoPredio = () => {
             <label className="font-light m-2" htmlFor="interrelacionado">
               Interrelacionado
             </label>
-            <input
+            <div className="flex justify-center items-center">
+              <input
+                id="interrelacionado"
+                type="checkbox"
+                className=" border-2 checked:bg-blue-500 h-5 w-5 rounded-md mr-2 "
+                disabled
+                checked={interrelacionado}
+              />
+              <label>¿Es interrelacionado?</label>
+            </div>
+            {/* <input
               type="text"
               id="interrelacionado"
               disabled
@@ -286,7 +306,7 @@ const InfoPredio = () => {
               placeholder=""
               value={interrelacionado ? interrelacionado : ""}
               onChange={(e) => setInterrelacionado(e.target.value)}
-            />
+            /> */}
           </div>
         </div>
         <div className=" grid grid-cols-6 gap-6 ">
@@ -294,7 +314,17 @@ const InfoPredio = () => {
             <label className="font-light m-2" htmlFor="codigoHomologadoFMI">
               Codigo Homologado FMI
             </label>
-            <input
+            <div className="flex justify-center items-center">
+              <input
+                id="codigoHomologadoFMI"
+                type="checkbox"
+                className=" border-2 checked:bg-blue-500 h-5 w-5 rounded-md mr-2 "
+                disabled
+                checked={codigoHomologadoFMI}
+              />
+              <label>¿Tiene codigo homologado fmi?</label>
+            </div>
+            {/* <input
               type="text"
               id="codigoHomologadoFMI"
               disabled
@@ -302,7 +332,7 @@ const InfoPredio = () => {
               placeholder=""
               value={codigoHomologadoFMI ? codigoHomologadoFMI : ""}
               onChange={(e) => setCodigoHomologadoFMI(e.target.value)}
-            />
+            /> */}
           </div>
           <div className="col-span-6 sm:col-span-3 lg:col-span-2">
             <label className="font-light m-2" htmlFor="destinacionEconomica">

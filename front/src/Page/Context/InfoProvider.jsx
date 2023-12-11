@@ -48,7 +48,7 @@ const InfoProvider = ({ children }) => {
     }
   };
 
-  const submitInfoNumPredial = async (numPredial) => {
+  const submitInfoNumPredial = async (tipoBusqueda,numPredial) => {
     console.log(numPredial);
     try {
       const config = {
@@ -56,7 +56,7 @@ const InfoProvider = ({ children }) => {
           "Content-Type": "application/json",
         },
       };
-      const { data } = await clienteAxios(`/predio/${numPredial}`, config);
+      const { data } = await clienteAxios(`/predio?${tipoBusqueda}=${numPredial}`, config);
       setNumPredial(data);
       console.log(data);
     } catch (error) {

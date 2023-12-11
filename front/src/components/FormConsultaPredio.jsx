@@ -5,6 +5,8 @@ import Alerta from "./Alerta";
 
 const FormConsultaPredio = () => {
   const [numeroPredial, setNumeroPredial] = useState("");
+  const [tipoBusqueda, setTipoBusqueda] = useState("numero_predial");
+
   const { mostrarAlerta, alerta, submitInfoNumPredial, numPredial } = useInfo();
   console.log(numPredial);
   const { data: info } = numPredial;
@@ -29,14 +31,17 @@ const FormConsultaPredio = () => {
       });
       return;
     }
-    if ([numeroPredial].some((item) => item.trim().length !== 30)) {
+    if (
+      [tipoBusqueda].includes("numero_predial") &&
+      [numeroPredial].some((item) => item.trim().length !== 30)
+    ) {
       mostrarAlerta({
         msg: "Cada número predial debe tener exactamente 30 dígitos",
         error: true,
       });
       return;
     }
-    await submitInfoNumPredial(numeroPredial);
+    await submitInfoNumPredial(tipoBusqueda, numeroPredial);
     setNumeroPredial("");
   };
 
@@ -46,30 +51,45 @@ const FormConsultaPredio = () => {
     <>
       <form
         action=""
-        className="flex flex-col  py-10 px-5 md:w-1/2 rounded-lg shadow"
+        className=" w-full py-10 px-5 md:w-1/2 rounded-lg shadow"
         onSubmit={handleSubmit}
       >
         {msg && <Alerta alerta={alerta} />}
-        <div className="  mb-3">
-          <label className="font-semibold m-2" htmlFor="numeroPredial">
-            Numero Predial
+        <div className=" flex justify-between items-center w-full mb-3">
+          <label className="font-semibold m-2 " htmlFor="numeroPredial">
+            Tipo de Busqueda
+          </label>
+          <select
+            className=" w-full border-2 rounded-lg text-center p-3"
+            value={tipoBusqueda}
+            onChange={(e) => setTipoBusqueda(e.target.value)}
+          >
+            <option value="matricula_inmobiliaria">
+              Matrícula Inmobiliaria
+            </option>
+            <option value="numero_predial">Número Predial</option>
+          </select>
+          <label
+            className="font-semibold m-2 text-center "
+            htmlFor="numeroPredial"
+          >
+            Buscar
           </label>
           <input
             type="text"
             id="numeroPredial"
-            className="w-full border-2 rounded-lg text-center "
+            className="w-full border-2 rounded-lg text-center p-3"
             placeholder="252900001000000010065000000000"
             value={numeroPredial}
             onChange={(e) => setNumeroPredial(e.target.value)}
           />
-        </div>
-        <input
-          type="submit"
-          value="Buscar"
-          className="
-      p-2 text-center rounded text-white bg-teal-500 text-lg mr-2 cursor-pointer
+          <input
+            type="submit"
+            value="Buscar"
+            className=" ml-2 p-2 text-center rounded text-white bg-teal-500 text-lg mr-2 cursor-pointer
       hover:bg-teal-700 transition-colors uppercase "
-        />
+          />
+        </div>
       </form>
 
       {Predio ? (
@@ -91,8 +111,10 @@ const FormConsultaPredio = () => {
               <td className="py-2 px-4 border-b">{Matricula_Inmobiliaria}</td>
               <td className="py-2 px-4 border-b flex justify-start ">
                 <Link to="/DetallesPredio">
-                  <button className="bg-teal-500 text-white px-3 py-1 rounded mr-2 cursor-pointer
-                                hover:bg-teal-700 transition-colors">
+                  <button
+                    className="bg-teal-500 text-white px-3 py-1 rounded mr-2 cursor-pointer
+                                hover:bg-teal-700 transition-colors"
+                  >
                     Detalles
                   </button>
                 </Link>

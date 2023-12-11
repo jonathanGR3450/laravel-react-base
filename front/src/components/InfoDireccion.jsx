@@ -16,24 +16,31 @@ const InfoDireccion = () => {
     Nombre_Predio,
     Numero_Predio,
     Sector_Predio,
-    Tipo_Direccion,
+
     Valor_Via_Principal,
   } = Predio ? Predio[0].Direccion[0] : {};
+  const { dispname: Tipo_Direccion } = Predio
+    ? Predio[0].Direccion[0].Tipo_Direccion
+    : {};
 
-  const [claseViaPrincipal, setClaseViaPrincipal] = useState(Clase_Via_Principal);
+  const [claseViaPrincipal, setClaseViaPrincipal] =
+    useState(Clase_Via_Principal);
   const [codigoPostal, setCodigoPostal] = useState(Codigo_Postal);
   const [complemento, setComplemento] = useState(Complemento);
-  const [esDireccionPrincipal, setEsDireccionPrincipal] = useState(Es_Direccion_Principal); 
-  const [letraViaPrincipal, setLetraViaPrincipal] = useState(Letra_Via_Principal);
+  const [esDireccionPrincipal, setEsDireccionPrincipal] = useState(
+    Es_Direccion_Principal
+  );
+  const [letraViaPrincipal, setLetraViaPrincipal] =
+    useState(Letra_Via_Principal);
   const [letraViaGeneradora, setLetraViaGeneradora] = useState("");
   const [nombrePredio, setNombrePredio] = useState(Nombre_Predio);
   const [numeroPredio, setNumeroPredio] = useState(Numero_Predio);
   const [sectorPredio, setSectorPredio] = useState(Sector_Predio);
   const [sectorCiudad, setSectorCiudad] = useState("");
   const [tipoDireccion, setTipoDireccion] = useState(Tipo_Direccion);
-  const [valorViaPrincipal, setValorViaPrincipal] = useState(Valor_Via_Principal);
+  const [valorViaPrincipal, setValorViaPrincipal] =
+    useState(Valor_Via_Principal);
   const [valorViaGeneradora, setValorViaGeneradora] = useState("");
-  
 
   return (
     <>
