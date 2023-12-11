@@ -142,18 +142,27 @@ class PredioResource extends JsonResource
                     "derechos" => $this->lcDerechos->transform(function ($item) {
                         return [
                             't_id' => $item->t_id,
-                            'tipo' => $item->tipo,
+                            'tipo' => [
+                                "t_id" => $item->lcDerechoTipo?->t_id,
+                                "dispname" => $item->lcDerechoTipo?->dispname,
+                            ],
                             'fraccion_derecho' => $item->fraccion_derecho,
                             'fecha_inicio_tenencia' => $item->fecha_inicio_tenencia,
                             'descripcion' => $item->descripcion,
                             "fuenteadministrativa" => $item->colRrrFuente->transform(function ($item) {
                                 return [
                                     't_id' => $item->fuenteAdministrativa?->t_id,
-                                    'tipo' => $item->fuenteAdministrativa?->tipo,
+                                    'tipo' => [
+                                        "t_id" => $item->fuenteAdministrativa?->fuenteAdministrativaTipo?->t_id,
+                                        "dispname" => $item->fuenteAdministrativa?->fuenteAdministrativaTipo?->dispname,
+                                    ],
                                     'ente_emisor' => $item->fuenteAdministrativa?->ente_emisor,
                                     'observacion' => $item->fuenteAdministrativa?->observacion,
                                     'numero_fuente' => $item->fuenteAdministrativa?->numero_fuente,
-                                    'estado_disponibilidad' => $item->fuenteAdministrativa?->estado_disponibilidad,
+                                    'estado_disponibilidad' => [
+                                        "t_id" => $item->fuenteAdministrativa?->estadoDisponibilidadTipo?->t_id,
+                                        "dispname" => $item->fuenteAdministrativa?->estadoDisponibilidadTipo?->dispname,
+                                    ],
                                     'tipo_principal' => $item->fuenteAdministrativa?->tipo_principal,
                                     'fecha_documento_fuente' => $item->fuenteAdministrativa?->fecha_documento_fuente,
                                     'espacio_de_nombres' => $item->fuenteAdministrativa?->espacio_de_nombres,
@@ -186,6 +195,18 @@ class PredioResource extends JsonResource
                                 "fin_vida_util_version" => $item->lcAgrupacionInteresados?->fin_vida_util_version ?? null,
                                 "espacio_de_nombres" => $item->lcAgrupacionInteresados?->espacio_de_nombres ?? null,
                                 "local_id" => $item->lcAgrupacionInteresados?->local_id ?? null,
+                                // dd($item->lcAgrupacionInteresados?->miembrosAgrupacion),
+                                "interesados" => $item->lcAgrupacionInteresados?->miembrosAgrupacion?->transform(function ($item) {
+                                    return [
+                                        't_id' => $item->interesado?->t_id,
+                                        'tipo' => $item->interesado?->tipo,
+                                        'nombre' => $item->interesado?->nombre,
+                                        'comienzo_vida_util_version' => $item->interesado?->comienzo_vida_util_version,
+                                        'fin_vida_util_version' => $item->interesado?->fin_vida_util_version,
+                                        'espacio_de_nombres' => $item->interesado?->espacio_de_nombres,
+                                        'local_id' => $item->interesado?->local_id,
+                                    ];
+                                }),
                             ],
                             'unidad' => $item->unidad,
                             'comienzo_vida_util_version' => $item->comienzo_vida_util_version,
@@ -239,6 +260,7 @@ class PredioResource extends JsonResource
                             "t_id" => $item?->unidadConstruccion?->t_id,
                             "area_construida" => $item?->unidadConstruccion?->area_construida,
                             "lc_caracteristicasunidadconstruccion" => [
+                                "identificador" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->identificador,
                                 "tipo_construccion" => [
                                     "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->t_id,
                                     "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->dispname,

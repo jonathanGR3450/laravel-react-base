@@ -29,15 +29,15 @@ class LcFuenteadministrativa extends Model
         return $this->hasMany(ColRrrfuente::class, 't_id', 'fuente_administrativa');
     }
 
-    // public function fuenteAdministrativaTipo()
-    // {
-    //     return $this->belongsTo(ColFuenteadministrativaTipo::class, 'tipo', 't_id');
-    // }
+    public function fuenteAdministrativaTipo()
+    {
+        return $this->belongsTo(ColFuenteadministrativaTipo::class, 'tipo', 't_id');
+    }
 
-    // public function estadoDisponibilidadTipo()
-    // {
-    //     return $this->belongsTo(ColEstadoDisponibilidadTipo::class, 'estado_disponibilidad', 't_id');
-    // }
+    public function estadoDisponibilidadTipo()
+    {
+        return $this->belongsTo(ColEstadoDisponibilidadTipo::class, 'estado_disponibilidad', 't_id');
+    }
 
     // public function formaPresentacionCodigo()
     // {
