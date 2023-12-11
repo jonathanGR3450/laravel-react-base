@@ -1,0 +1,31 @@
+{
+    "Tramites": [
+      { 
+      "Radicado":"r001",
+      "tramiteTipo":"Cambio de Propietario",
+      "radicacionFecha":"2023-12-06",
+      "predioTipo":"Urbano",
+      "npn":"252900100000012120038000000000",
+      "Estado":"En revision",
+      "notificacionFecha":"2023-12-07",
+      "notificacionMetodo":"Correo",
+      "observaciones":"Na",
+      "id": 10, 
+      "valor": 1260000 
+    },
+    { 
+        "Radicado":"r002",
+        "tramiteTipo":"Cambio de Propietario",
+        "radicacionFecha":"2023-12-06",
+        "predioTipo":"Urbano",
+        "npn":"252900100000012120039000000000",
+        "Estado":"En revision",
+        "notificacionFecha":"2023-12-07",
+        "notificacionMetodo":"Correo",
+        "observaciones":"Na",
+        "id": 20, 
+        "valor": 1260000 
+      }
+    ],
+    "var2":[{"id" :2}]
+  }

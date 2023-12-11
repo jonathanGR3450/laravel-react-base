@@ -7,6 +7,8 @@ import Consulta from "../Page/Consulta";
 import FichaPredial from "../Page/FichaPredial";
 import UniconstForm from "../Page/Uniconst";
 import IncrementoForm from "../Page/Incremento";
+import TramitesForm from "../Page/Tramites";
+import TramiteDetalleForm from "../Page/TramiteDetalle";
 import { ResumenForm } from "../Page/Resume";
 import { NumPredialForm } from "../Page/NumPredial";
 import { LoadCodHom } from "../Page/LoadCodHom";
@@ -159,8 +161,10 @@ export default Ruta;
           ></Route>
           <Route path="/DataHom" element={<LoadCodHom />}></Route>
           <Route path="/Avaluo" element={<AvaluoForm />}></Route>
-          <Route path="/Incremento" element={<IncrementoForm />}></Route>
-
+        <Route path="/Incremento" element={<IncrementoForm />}></Route>
+        <Route path="/Tramites" element={<TramitesForm />}></Route>
+        <Route path="/TramiteDetalle" element={<TramiteDetalleForm />}></Route>
+        
           <Route path="/Resolucion" element={<Resolucion />}></Route>
           <Route path="/Resoluciones" element={<Resoluciones />}></Route>
         </Route>
