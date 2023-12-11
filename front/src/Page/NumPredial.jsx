@@ -69,6 +69,7 @@ export const NumPredialForm = (props) => {
   //Consulta de datos en bd
   const [loading, setLoading] = useState(false);
   const [msjLoading, setMsjLoading] = useState("");
+  const [msjLoadingCreate, setMsjLoadingCreate] = useState("");
   const [msjCadena, setMsjCadena] = useState("");
   const [estCadena, setEstCadena] = useState(false);
   //0 CAPTURA DE DATA MATRIZ
@@ -195,13 +196,9 @@ export const NumPredialForm = (props) => {
       console.log("Entra al Seguir");
       //let newArray = [...tableData];
       let newArray = [...responseBack];
-      console.log("datos de array Final", ArrayFinal);
-      console.log("datos de reswponseback antes", newArray.length);
       ArrayFinal.map((item, index) => {
         newArray.push(item);
       });
-
-      console.log("datos de reswponsebackdespues", newArray.length);
       setResponseBack(newArray);
       //lastTerreno(aux);
     }
@@ -1504,14 +1501,15 @@ export const NumPredialForm = (props) => {
     const [dataRel, setDataRel] = useState({
       numeros_relacion: [],
     });
-    const [estLoading, setEstLoading] = useState(false);
-    const [msjLoading, setMsjLoading] = useState("");
 
-    const [dataReturn, setDataReturn] = useState("");
+    //Estado de Mensaje para enviar
+    const [estLoading, setEstLoading] = useState(false);
+    const [errorCreate, setErrorCreate] = useState(0);
+    //const [dataCreate, setDataCreate] = useState(false);
     const modalLoadRef = useRef();
     let ArrayTemp = [];
 
-    function updateDataReturn(newData) {
+    async function updateDataReturn(newData) {
       console.log("valor del modal", newData);
       let auxArray = "";
       if (newData == 1) {
@@ -1536,50 +1534,55 @@ export const NumPredialForm = (props) => {
         setSelect(false);
       } else {
         if (newData == 0) {
-          setEstLoading(true);
-          console.log(ArrayFinal);
-          let Json = {
-            numeros_prediales: [],
-          };
-          ArrayFinal.map((item, index) => {
-            let newobj = {
-              numero_predial:
-                item.Dpto +
-                item.Mpio +
-                item.Zona +
-                item.Sector +
-                item.Comuna +
-                item.Barrio +
-                item.Manzana +
-                item.Terreno +
-                item.Condicion +
-                item.Edificio +
-                item.Piso +
-                item.Unidad,
-              matricula_inmobiliaria: parseInt(item.Matricula),
-              extdireccion: item.Direccion,
-            };
-            Json.numeros_prediales.push(newobj);
-          });
-          console.log();
-          sendNumPredial(JSON.stringify(Json));
-          updateTableData(ArrayFinal);
+          console.log("Enviar");
+          await Send_Data(tableData);
+          updateArrayFinal(tableData);
         }
       }
-      setDataReturn(newData);
     }
+    async function Send_Data(data) {
+      setEstLoading(true);
+      let auxData = data;
+      let Json = {
+        numeros_prediales: [],
+      };
+      auxData.map((item, index) => {
+        let newobj = {
+          numero_predial:
+            item.Dpto +
+            item.Mpio +
+            item.Zona +
+            item.Sector +
+            item.Comuna +
+            item.Barrio +
+            item.Manzana +
+            item.Terreno +
+            item.Condicion +
+            item.Edificio +
+            item.Piso +
+            item.Unidad,
+          matricula_inmobiliaria: parseInt(item.Matricula),
+          extdireccion: item.Direccion,
+        };
+        Json.numeros_prediales.push(newobj);
+      });
+      console.log("NewData", auxData);
+      await sendNumPredial(JSON.stringify(Json));
+    }
+    useEffect(() => {
+      console.log("error 123", errorCreate);
+      if (errorCreate == 0) {
+        updateTableData(tableData);
+      }
+    }, [errorCreate]);
     const openModalLoad = () => {
       modalLoadRef.current.openModal();
     };
-    const closeModalLoad = () => {
-      modalLoadRef.current.closeModal();
-    };
-    useEffect(() => {}, [dataReturn]);
+    //useEffect(() => {}, [dataCreate]);
 
     async function sendNumPredial(json) {
       ///////Crear Predios
-
-      setMsjLoading("Creando Predios");
+      setMsjLoadingCreate("Creando Predios");
       const response = await addPredio(json);
       console.log("Respuesta de agregar Predio ", response);
       if (response.success) {
@@ -1588,7 +1591,7 @@ export const NumPredialForm = (props) => {
         });
         console.log("Array Final", ArrayFinal);
         ///////Crear Pedir Numeros Homologados
-        setMsjLoading("Cargando Datos Homologados");
+        setMsjLoadingCreate("Cargando Datos Homologados");
         const responseHom = await addDataHomo();
         if (responseHom.success) {
           const data = responseHom.data;
@@ -1599,21 +1602,34 @@ export const NumPredialForm = (props) => {
           });
 
           ///////Relacionar Predios y Numeros Homologados
-          setMsjLoading("Relacionando Numero Predial - Datos Homologados");
+          setMsjLoadingCreate(
+            "Relacionando Numero Predial - Datos Homologados"
+          );
           const responseRel = await reDataHomoPredial();
           if (responseRel.success) {
             setEstLoading(false);
             navigate("/LoadData");
           } else {
-            setMsjLoading("Error");
+            console.log("Error de relacion", responseRel);
+            setMsjLoadingCreate("Error");
           }
         } else {
-          setMsjLoading("Error");
+          console.log("Error de Consulta", responseHom);
+          setMsjLoadingCreate("Error");
         }
 
         updateTableData(ArrayFinal);
       } else {
-        setMsjLoading("Error");
+        let msj = "Error";
+        if (response.errors) {
+          let aux = Object.entries(response.errors);
+          aux.map((item, index) => {
+            msj += "\n" + item[1];
+          });
+        }
+        console.log(msj);
+        setErrorCreate(1);
+        setMsjLoadingCreate(msj);
       }
 
       /////Redirigir Pagina
@@ -1621,15 +1637,11 @@ export const NumPredialForm = (props) => {
 
     function addData() {
       openModalLoad();
-      /*   ArrayTemp = ArrayFinal;
-      console.log("Array Final", ArrayFinal);
-      arrayPredial.map((item, index) => {
-        ArrayTemp.push(item);
-      });*/
     }
 
     //Llenar primero Store Numero Predial
     async function addPredio(json) {
+      console.log(estLoading);
       let myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       let raw = json;
@@ -1641,20 +1653,13 @@ export const NumPredialForm = (props) => {
         body: raw,
         redirect: "follow",
       };
-
       try {
         const response = await fetch(url, requestOptions);
-        if (response.ok) {
-          const result = await response.json();
-          console.log("Resultado Predio", result);
-          return result;
-        } else {
-          throw new Error("Error en la solicitud");
-          return "Error en la Solicitud";
-        }
+        const result = await response.json();
+        console.log("Resultado Predio", result);
+        return result;
       } catch (error) {
-        console.log("Error:", error);
-        return "Error en la Solicitud" + error;
+        console.log("Error en Creacion:", error);
       }
     }
     //Llamar Datos Homologados
@@ -1725,21 +1730,21 @@ export const NumPredialForm = (props) => {
       }
     }
     return (
-      <div className="flex flex-row justify-center mt-2 w-full p-2">
+      <div className="flex flex-col justify-center items-center mt-2 w-full p-2 text-center">
         <button
           className={`${
             bttload ? "opacity-50 cursor-not-allowed" : "opacity-100"
-          } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
+          } p-2 text-center rounded-md w-1/6 text-white bg-teal-500 text-lg mr-2`}
           onClick={addData}
           disabled={bttload}
         >
           Agregar Predios
         </button>
-        {estLoading ? (
-          <label className="text-3xl text-indigo-600 font-bold transform inline-block animate-bounce">
-            {msjLoading}
-          </label>
-        ) : null}
+
+        <label className="text-3xl text-indigo-600 whitespace-pre-line font-bold transform inline-block">
+          {msjLoadingCreate}
+        </label>
+
         <ModalData ref={modalLoadRef} onChange={updateDataReturn} />
       </div>
     );
