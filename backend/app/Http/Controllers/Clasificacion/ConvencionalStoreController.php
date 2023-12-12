@@ -5,10 +5,14 @@ namespace App\Http\Controllers\Clasificacion;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidarConstruccionesFormRequest;
+use App\Http\Resources\Cafificacion\ConvencionalCollection;
 use App\Models\Local\LcCaracteristicasUnidadConstruccionLocal;
+use App\Traits\PaginationTrait;
 
 class ConvencionalStoreController extends AppBaseController
 {
+    use PaginationTrait;
+
     /**
      * @OA\Post(
      *     path="/api/v1/caracteristicasunidadconstruccion/convencional",
@@ -91,10 +95,20 @@ class ConvencionalStoreController extends AppBaseController
                     }
                 }
             }
+
+            // dd($ids);
             
-            return $this->sendResponse($ids, 'Calificacion convencional creada con exito');
+            /**pagination */
+            $sortable = [
+                'name'    => 't_id',
+            ];
+            $query = LcCaracteristicasUnidadConstruccionLocal::whereIn('t_id', $ids);
+            $query = $this->paginationQuery($query, $sortable, $request);
+            $convencionalesCollection = new ConvencionalCollection($query);
+
+            return $this->sendResponse($convencionalesCollection, 'Calificacion convencional creada con exito');
         } catch (\Exception $e) {
-            $this->sendError($e->getMessage());
+            return $this->sendError($e->getMessage());
         }
     }
 }

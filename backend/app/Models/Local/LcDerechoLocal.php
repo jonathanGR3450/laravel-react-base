@@ -20,6 +20,7 @@ class LcDerechoLocal extends Model
         'fecha_inicio_tenencia',
         'descripcion',
         'interesado_lc_interesado',
+        'interesado_lc_interesado_conservacion',
         'interesado_lc_agrupacioninteresados',
         'unidad',
         'comienzo_vida_util_version',
