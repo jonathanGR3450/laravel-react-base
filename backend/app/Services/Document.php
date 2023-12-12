@@ -42,6 +42,10 @@ class Document
 
         $templateProcessor = new TemplateProcessor($templatePath);
         $templateVariable    = $templateProcessor->getVariables();
+
+        // 
+        // $resultado = array_diff($templateVariable, array_keys($this->data));
+
         foreach ($this->data as $variable => $value) {
             if (in_array($variable, $templateVariable)) {
                 if (is_array($value)) {
@@ -58,6 +62,8 @@ class Document
                 } else {
                     $templateProcessor->setValue($variable, $value);
                 }
+            } else {
+                $templateProcessor->setValue($variable, "");
             }
         }
 

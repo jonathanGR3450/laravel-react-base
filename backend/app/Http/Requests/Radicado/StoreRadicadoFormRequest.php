@@ -25,7 +25,7 @@ class StoreRadicadoFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tramite_id' => 'required|integer|exists:pgsqpublic.tramitetipo,id',
+            'tramite_id' => 'required|integer|exists:tramitetipo,id',
             'no_radicado' => 'required',
             'asociado_id' => 'required',
         ];
