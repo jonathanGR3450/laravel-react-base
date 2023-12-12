@@ -30,6 +30,11 @@ class StoreLocalFormRequest extends FormRequest
             'fecha_inicio_tenencia' => 'nullable|date',
             'descripcion' => 'nullable|string|max:255',
             'interesado_lc_interesado' => 'nullable|exists:lc_interesado,t_id',
+            'interesado_lc_interesado_conservacion' => [
+                'nullable',
+                'integer',
+                'exists:pgsqlcatastro.lc_interesado,t_id',
+            ],
             'interesado_lc_agrupacioninteresados' => 'nullable|exists:lc_agrupacioninteresados,t_id',
             'unidad' => 'nullable|exists:lc_predio,t_id',
             'espacio_de_nombres' => 'required|string|max:255',
