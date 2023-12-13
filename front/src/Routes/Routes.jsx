@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Tablero from "../Page/Dashboard";
 import Menu from "../Page/Menu";
+import ConsultarPredio from "../Page/ConsultarPredio";
+import DetallesPredio from "../Page/DetallesPredio";
 import Consulta from "../Page/Consulta";
 import FichaPredial from "../Page/FichaPredial";
 import UniconstForm from "../Page/Uniconst";
@@ -23,8 +25,6 @@ import { LoadDataForm } from "../Page/CargaDatos";
 import { LoadDataConstruccion } from "../Page/CargaConstruccion";
 import AvaluoForm from "../Page/Avaluo";
 
-
-
 import Resolucion from "../Page/Resolucion";
 import Resoluciones from "../Page/Resoluciones";
 const Ruta = () => {
@@ -33,6 +33,8 @@ const Ruta = () => {
       <Routes>
         <Route path="/" element={<Menu />}>
           <Route path="/Tablero" element={<Tablero />}></Route>
+          <Route path="/ConsultarPredio" element={<ConsultarPredio />}></Route>
+          <Route path="/DetallesPredio" element={<DetallesPredio />}></Route>
           <Route path="/Consulta/:data" element={<Consulta />} />
           <Route path="/Ficha" element={<FichaPredial />}>
             <Route path="Uniconst/:info" element={<UniconstForm />}></Route>
@@ -78,6 +80,8 @@ const Ruta = () => {
         <Route path="/Tramites" element={<TramitesForm />}></Route>
         <Route path="/TramiteDetalle" element={<TramiteDetalleForm />}></Route>
         
+          <Route path="/Incremento" element={<IncrementoForm />}></Route>
+
           <Route path="/Resolucion" element={<Resolucion />}></Route>
           <Route path="/Resoluciones" element={<Resoluciones />}></Route>
         </Route>
