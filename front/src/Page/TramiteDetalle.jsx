@@ -60,11 +60,17 @@ const TramiteDetalleForm = () => {
     console.log(construccion)
     console.log((interesado))//
     console.log(unidadConstruccion)
+    console.log(derecho)
+    console.log(fuenteAdministrativa)
     //console.log((construccion))//
     const [open, setOpen] = useState(false);  
     const closeModal = () => setOpen(false);
-    function handleEnviar(e) {  
-
+    function handleInput(e) {    
+      
+        const {name, value} = e.target;
+        jsonValues.incremento=value
+        console.log(value);
+        
       }
 
     return(
@@ -246,7 +252,7 @@ const TramiteDetalleForm = () => {
                     (derecho).map((registro,key) => 
                     <tr value={key}>                        
                         <td>{registro.t_id}</td>
-                        <td>{registro.tipo}</td>
+                        <td>{registro.tipo.dispname}</td>
                         <td>{registro.fraccion_derecho}</td>
                         <td>{registro.fecha_inicio_tenencia}</td>
                         
@@ -257,7 +263,7 @@ const TramiteDetalleForm = () => {
                     (derechoInscribe).map((registro,key) => 
                     <tr value={key}>                        
                         <td>{registro.t_id}</td>
-                        <td>{registro.tipo}</td>
+                        <td>{registro.tipo.dispname}</td>
                         <td>{registro.fraccion_derecho}</td>
                         <td>{registro.fecha_inicio_tenencia}</td>
                         
@@ -288,11 +294,11 @@ const TramiteDetalleForm = () => {
                     (fuenteAdministrativa).map((registro,key) => 
                     <tr value={key}>                        
                         <td>{registro.t_id}</td>
-                        <td>{registro.tipo}</td>
+                        <td>{registro.tipo.dispname}</td>
                         <td>{registro.ente_emisor}</td>
                         <td>{registro.observacion}</td>
                         <td>{registro.numero_fuente}</td>
-                        <td>{registro.estado_disponibilidad}</td>
+                        <td>{registro.estado_disponibilidad.dispname}</td>
                         <td>{registro.tipo_principal}</td>
                         <td>{registro.fecha_documento_fuente}</td>
                         <td>{registro.espacio_de_nombres}</td>
@@ -303,11 +309,11 @@ const TramiteDetalleForm = () => {
                     (fuenteAdministrativaInscribe).map((registro,key) => 
                     <tr value={key}>                        
                         <td>{registro.t_id}</td>
-                        <td>{registro.tipo}</td>
+                        <td>{registro.tipo.dispname}</td>
                         <td>{registro.ente_emisor}</td>
                         <td>{registro.observacion}</td>
                         <td>{registro.numero_fuente}</td>
-                        <td>{registro.estado_disponibilidad}</td>
+                        <td>{registro.estado_disponibilidad.dispname}</td>
                         <td>{registro.tipo_principal}</td>
                         <td>{registro.fecha_documento_fuente}</td>
                         <td>{registro.espacio_de_nombres}</td>
@@ -382,7 +388,7 @@ const TramiteDetalleForm = () => {
                     {
                     (construccion).map((registro,key) => 
                     <tr value={key}>                        
-                        <td>{registro.t_id+""}</td>
+                        <td>{registro.t_id}</td>
                         <td>{registro.area_construccion}</td>
                         <td>{registro.numero_pisos}</td>
                         <td>{registro.numero_sotanos}</td>
@@ -424,7 +430,7 @@ const TramiteDetalleForm = () => {
                     {
                     (unidadConstruccion).map((registro,key) => 
                     <tr value={key}>                        
-                        <td>{registro.t_id+""}</td>
+                        <td>{registro.t_id}</td>
                         <td>{registro.area_construida}</td>
                         <td>{registro.lc_caracteristicasunidadconstruccion.calificacionconvencional.total_calificacion}</td>
                         <td>{registro.lc_caracteristicasunidadconstruccion.calificacionnoconvencional.total_calificacion}</td>
@@ -435,7 +441,83 @@ const TramiteDetalleForm = () => {
                         </tbody>
                     </table>
                 </AccordionItemPanel>
-            </AccordionItem>                                 
+            </AccordionItem>    
+            <AccordionItem>
+                <AccordionItemHeading>
+                    <AccordionItemButton>
+                        Ric Tramite Catastral
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                <AccordionItemPanel>
+                    <br/>
+                    <div className=" flex justify-center items-center w-full mb-3">
+                        <div className="w-1/4 flex flex-col  ml-4 ">
+                            <label className="w-mid font-semibold">Id : </label>
+                            <input
+                            onChange={handleInput}
+                            type="text"
+                            className="border-2 p-2 rounded-lg text-center w-full"
+                            name="area1"                        
+                            ></input>
+                        </div>                        
+                        <div className="w-1/4 flex flex-col  ml-4 ">
+                            <label className="w-mid font-semibold">Clasificacion Mutacion : </label>
+                            <input
+                            onChange={handleInput}
+                            type="text"
+                            step="0.01"
+                            className="border-2 p-2 rounded-lg text-center w-full"
+                            name="area1"                        
+                            ></input>                        
+                        </div>          
+                        <div className="w-1/4 flex flex-col  ml-4 ">
+                            <label className="w-mid font-semibold">Numero de Resolucion : </label>
+                            <input
+                            onChange={handleInput}
+                            type="text"
+                            step="0.01"
+                            className="border-2 p-2 rounded-lg text-center w-full"
+                            name="area1"                        
+                            ></input>                        
+                        </div>
+                                                  
+                    </div>
+                    <div className=" flex justify-center items-center w-full mb-3">
+                        <div className="w-1/4 flex flex-col  ml-4 ">
+                            <label className="w-mid font-semibold">Fecha Resolucion : </label>
+                            <input
+                            onChange={handleInput}
+                            type="text"
+                            step="0.01"
+                            className="border-2 p-2 rounded-lg text-center w-full"
+                            name="area1"                        
+                            ></input>                        
+                        </div>
+                        <div className="w-1/4 flex flex-col  ml-4 ">
+                            <label className="w-mid font-semibold">Fecha Radicación : </label>
+                            <input
+                            onChange={handleInput}
+                            type="text"
+                            step="0.01"
+                            className="border-2 p-2 rounded-lg text-center w-full"
+                            name="area1"                        
+                            ></input>                        
+                        </div>
+                        <div className="w-1/4 flex flex-col  ml-4 ">
+                            <label className="w-mid font-semibold">Ric Predio : </label>
+                            <input
+                            onChange={handleInput}
+                            type="text"
+                            step="0.01"
+                            className="border-2 p-2 rounded-lg text-center w-full"
+                            name="area1"                        
+                            ></input>                        
+                        </div>
+                    </div>                    
+                    <br/>
+
+                </AccordionItemPanel>
+            </AccordionItem>                                          
         </Accordion>      
         </div>
     </>
