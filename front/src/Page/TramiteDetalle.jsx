@@ -40,9 +40,27 @@ const TramiteDetalleForm = () => {
     const fuenteAdministrativa = (Object(predioPrueba.data.Predio[0].derechos[0].fuenteadministrativa))
     const fuenteAdministrativaInscribe = (Object(inscribe.data.Predio[0].derechos[0].fuenteadministrativa))
     const terreno = Array(Object(predioPrueba.data.Predio[0].terreno))
+    var construccion = []
+    var unidadConstruccion = []
+    //const construccion = predioPrueba.data.Predio[0].construccion
     //const data = Object(tramites.Tramites);//en este caso no se convierte a Array porque en Json ya esta en Array
     //console.log(data)    
+    //console.log(predio)
+//    console.log(predio[0].construccion)
+    for (let i = 0; i < predio.length; i++) {
+            for (var j = 0; j < predio[i].construccion.length; j++) {
+                construccion.push(predio[i].construccion[j])
+                    }
+    }
+    for (let i = 0; i < predio.length; i++) {
+        for (var j = 0; j < predio[i].unidad_construccion.length; j++) {
+            unidadConstruccion.push(predio[i].unidad_construccion[j])
+                }
+    }    
+    console.log(construccion)
     console.log((interesado))//
+    console.log(unidadConstruccion)
+    //console.log((construccion))//
     const [open, setOpen] = useState(false);  
     const closeModal = () => setOpen(false);
     function handleEnviar(e) {  
@@ -338,13 +356,103 @@ const TramiteDetalleForm = () => {
             <AccordionItem>
                 <AccordionItemHeading>
                     <AccordionItemButton>
-                        Item Adicional
+                        Construcción
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                <AccordionItemPanel>
+                <h3><b>Construcción</b></h3>
+
+                    <table className="w-full text-center">
+                        <thead className="uppercase border-2  bg-teal-500 text-base text-white">
+                        <tr>
+                            <th className="border-2 rounded-xl p-2">Id</th>
+                            <th className="border-2 rounded-xl p-2">Area Construida</th>
+                            <th className="border-2 rounded-xl p-2"># pisos</th>
+                            <th className="border-2 rounded-xl p-2"># Sotanos</th>
+                            <th className="border-2 rounded-xl p-2"> # Mezanines </th>
+                            <th className="border-2 rounded-xl p-2"> #Semisotanos </th>
+                            <th className="border-2 rounded-xl p-2"> Año Construcción </th>
+                            <th className="border-2 rounded-xl p-2"> Altura </th>
+                            <th className="border-2 rounded-xl p-2"> Observaciones </th>
+                                                        
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                    {
+                    (construccion).map((registro,key) => 
+                    <tr value={key}>                        
+                        <td>{registro.t_id+""}</td>
+                        <td>{registro.area_construccion}</td>
+                        <td>{registro.numero_pisos}</td>
+                        <td>{registro.numero_sotanos}</td>
+                        <td>{registro.numero_mezanines}</td>
+                        <td>{registro.numero_semisotanos}</td>
+                        <td>{registro.anio_construccion}</td>
+                        <td>{registro.altura}</td>
+                        <td>{registro.observaciones}</td>
+                        
+                    </tr>)
+                    }
+                  
+                        </tbody>
+                    </table>
+                </AccordionItemPanel>
+            </AccordionItem>                     
+            <AccordionItem>
+                <AccordionItemHeading>
+                    <AccordionItemButton>
+                        Unidad de Construcción
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                <AccordionItemPanel>
+                <h3><b>Unidad de Construcción</b></h3>
+                    <table className="w-full text-center">
+                        <thead className="uppercase border-2  bg-teal-500 text-base text-white">
+                        <tr>
+                            <th className="border-2 rounded-xl p-2">Id</th>
+                            <th className="border-2 rounded-xl p-2">Area Construida</th>
+                            <th className="border-2 rounded-xl p-2">Calificación Convencional</th>
+                            <th className="border-2 rounded-xl p-2">Calificación No Convencional</th>
+                            <th className="border-2 rounded-xl p-2">Uso</th>
+
+                                                        
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                    {
+                    (unidadConstruccion).map((registro,key) => 
+                    <tr value={key}>                        
+                        <td>{registro.t_id+""}</td>
+                        <td>{registro.area_construida}</td>
+                        <td>{registro.lc_caracteristicasunidadconstruccion.calificacionconvencional.total_calificacion}</td>
+                        <td>{registro.lc_caracteristicasunidadconstruccion.calificacionnoconvencional.total_calificacion}</td>
+                        <td>{registro.lc_caracteristicasunidadconstruccion.uso.dispname}</td>
+                    </tr>)
+                    }
+                  
+                        </tbody>
+                    </table>
+                </AccordionItemPanel>
+            </AccordionItem>                                 
+        </Accordion>      
+        </div>
+    </>
+    )
+}
+export default TramiteDetalleForm;
+/*
+            <AccordionItem>
+                <AccordionItemHeading>
+                    <AccordionItemButton>
+                        Construcción
                     </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
                     <p>Hola</p>
                 </AccordionItemPanel>
-            </AccordionItem>                     
+            </AccordionItem> 
             <AccordionItem>
                 <AccordionItemHeading>
                     <AccordionItemButton>
@@ -394,10 +502,5 @@ const TramiteDetalleForm = () => {
                         </tbody>
                 </table>
                 </AccordionItemPanel>
-            </AccordionItem>            
-        </Accordion>      
-        </div>
-    </>
-    )
-}
-export default TramiteDetalleForm;
+            </AccordionItem>
+*/
