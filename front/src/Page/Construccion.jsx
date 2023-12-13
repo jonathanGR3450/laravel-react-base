@@ -348,6 +348,7 @@ const ConstruccionForm = (props, ref) => {
         console.log("datos de tabla", tableData);
         //closeModal();
         updateTableData(tableData);
+        props.onClose();
       } catch (error) {
         console.log("error", error);
       }
@@ -402,7 +403,7 @@ export const ModalConstruccionForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <ConstruccionForm contexto={true} dataid={dataId} />
+      <ConstruccionForm contexto={true} dataid={dataId} onClose={closeModal} />
     </Modal>
   );
 });

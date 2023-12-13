@@ -85,15 +85,16 @@ const FuenteAdminForm = (props, ref) => {
               }
 
               const result = await response.json();
-              console.log(result);
+              console.log("Resultado Fuente", result);
 
               objFuente.t_id = result.data.t_id;
               item.fuente_administrativa = objFuente;
             }
           }
         }
-        //props.onClose();
+
         updateTableData(tableData);
+        props.onClose();
       }
     } catch (error) {
       console.log("error", error);

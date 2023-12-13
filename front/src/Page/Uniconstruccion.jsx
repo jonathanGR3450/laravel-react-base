@@ -353,6 +353,7 @@ const UniConstruccionForm = (props, ref) => {
 
       console.log("datos de tabla", tableData);
       updateTableData(tableData);
+      props.onClose();
     }
   };
 
@@ -421,6 +422,7 @@ export const ModalUniConForm = React.forwardRef((props, ref) => {
         contexto={true}
         dataId={dataId}
         construccion={construcciones}
+        onClose={closeModal}
       />
     </Modal>
   );

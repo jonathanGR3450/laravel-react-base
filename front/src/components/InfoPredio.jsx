@@ -65,6 +65,12 @@ const InfoPredio = () => {
     useState(DestinacionEconomica);
   const [claseSuelo, setClaseSuelo] = useState(ClaseSuelo);
   const [categoriaSuelo, setCategoriaSuelo] = useState(CategoriaSuelo);
+  const [estInput, setEstInput] = useState(true);
+
+  const editToggle = (e) => {
+    e.preventDefault();
+    setEstInput((prevEstInput) => !prevEstInput);
+  };
   return (
     <>
       <div className=" text-center m-5 border ">Predio</div>
@@ -77,7 +83,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="departamento"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full"
               placeholder=""
               value={departamento ? departamento : ""}
@@ -91,7 +97,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="municipio"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={municipio ? municipio : ""}
@@ -105,7 +111,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="idOperacion"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={idOperacion ? idOperacion : ""}
@@ -121,7 +127,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="valorReferencia"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={valorReferencia ? valorReferencia : ""}
@@ -135,7 +141,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="codigoOrip"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={codigoOrip ? codigoOrip : ""}
@@ -149,7 +155,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="matriculaInmobiliaria"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={matriculaInmobiliaria ? matriculaInmobiliaria : ""}
@@ -165,7 +171,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="numeroPredial"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={numeroPredial ? numeroPredial : ""}
@@ -179,7 +185,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="numeroPredialAnterior"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={numeroPredialAnterior ? numeroPredialAnterior : ""}
@@ -193,7 +199,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="codigoHomologado"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={codigoHomologado ? codigoHomologado : ""}
@@ -209,7 +215,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="nupre"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={nupre ? nupre : ""}
@@ -223,7 +229,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="avaluoCatastral"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={avaluoCatastral ? avaluoCatastral : ""}
@@ -239,7 +245,7 @@ const InfoPredio = () => {
                 id="tieneFMI"
                 type="checkbox"
                 className=" border-2 checked:bg-blue-500 h-5 w-5 rounded-md mr-2 "
-                disabled
+                disabled={estInput}
                 checked={tieneFMI}
               />
               <label>¿Tiene fmi?</label>
@@ -263,7 +269,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="tipo"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={tipo ? tipo : ""}
@@ -277,7 +283,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="condicionPredio"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={condicionPredio ? condicionPredio : ""}
@@ -293,7 +299,7 @@ const InfoPredio = () => {
                 id="interrelacionado"
                 type="checkbox"
                 className=" border-2 checked:bg-blue-500 h-5 w-5 rounded-md mr-2 "
-                disabled
+                disabled={estInput}
                 checked={interrelacionado}
               />
               <label>¿Es interrelacionado?</label>
@@ -319,7 +325,7 @@ const InfoPredio = () => {
                 id="codigoHomologadoFMI"
                 type="checkbox"
                 className=" border-2 checked:bg-blue-500 h-5 w-5 rounded-md mr-2 "
-                disabled
+                disabled={estInput}
                 checked={codigoHomologadoFMI}
               />
               <label>¿Tiene codigo homologado fmi?</label>
@@ -341,7 +347,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="destinacionEconomica"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={destinacionEconomica ? destinacionEconomica : ""}
@@ -355,7 +361,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="claseSuelo"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={claseSuelo ? claseSuelo : ""}
@@ -371,12 +377,23 @@ const InfoPredio = () => {
             <input
               type="text"
               id="categoriaSuelo"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={categoriaSuelo ? categoriaSuelo : ""}
               onChange={(e) => setCategoriaSuelo(e.target.value)}
             />
+          </div>
+          <div className="flex flex-row w-2/3 ml-4 items-end justify-end">
+            <button
+              onClick={editToggle}
+              className="p-2 text-center rounded-md text-white bg-orange-700"
+            >
+              Editar
+            </button>
+            <button className="p-2 ml-4 text-center rounded-md text-white bg-teal-500">
+              Guardar
+            </button>
           </div>
         </div>
       </form>

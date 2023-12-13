@@ -41,7 +41,12 @@ const InfoDireccion = () => {
   const [valorViaPrincipal, setValorViaPrincipal] =
     useState(Valor_Via_Principal);
   const [valorViaGeneradora, setValorViaGeneradora] = useState("");
+  const [estInput, setEstInput] = useState(true);
 
+  const editToggle = (e) => {
+    e.preventDefault();
+    setEstInput((prevEstInput) => !prevEstInput);
+  };
   return (
     <>
       <div className=" text-center m-5 border ">Dirección</div>
@@ -54,7 +59,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="tipoDireccion"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full"
               placeholder=""
               value={tipoDireccion ? tipoDireccion : ""}
@@ -68,7 +73,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="esDireccionPrincipal"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={esDireccionPrincipal ? esDireccionPrincipal : ""}
@@ -82,7 +87,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="codigoPostal"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={codigoPostal ? codigoPostal : ""}
@@ -98,7 +103,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="claseViaPrincipal"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={claseViaPrincipal ? claseViaPrincipal : ""}
@@ -112,7 +117,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="valorViaPrincipal"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={valorViaPrincipal ? valorViaPrincipal : ""}
@@ -126,7 +131,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="letraViaPrincipal"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={letraViaPrincipal ? letraViaPrincipal : ""}
@@ -142,7 +147,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="sectorCiudad"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={sectorCiudad ? sectorCiudad : ""}
@@ -156,7 +161,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="valorViaGeneradora"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={valorViaGeneradora ? valorViaGeneradora : ""}
@@ -170,7 +175,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="letraViaGeneradora"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={letraViaGeneradora ? letraViaGeneradora : ""}
@@ -186,7 +191,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="numeroPredio"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={numeroPredio ? numeroPredio : ""}
@@ -200,7 +205,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="sectorPredio"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={sectorPredio ? sectorPredio : ""}
@@ -214,7 +219,7 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="complemento"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={complemento ? complemento : ""}
@@ -230,12 +235,23 @@ const InfoDireccion = () => {
             <input
               type="text"
               id="nombrePredio"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={nombrePredio ? nombrePredio : ""}
               onChange={(e) => setNombrePredio(e.target.value)}
             />
+          </div>
+          <div className="flex flex-row w-2/3 ml-4 items-end justify-end">
+            <button
+              onClick={editToggle}
+              className="p-2 text-center rounded-md text-white bg-orange-700"
+            >
+              Editar
+            </button>
+            <button className="p-2 ml-4 text-center rounded-md text-white bg-teal-500">
+              Guardar
+            </button>
           </div>
         </div>
       </form>

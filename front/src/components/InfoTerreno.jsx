@@ -13,7 +13,15 @@ const InfoTerreno = () => {
 
   const [areaTerreno, setAreaTerreno] = useState(area_terreno);
   const [avaluoTerreno, setAvaluoTerreno] = useState(avaluo_terreno);
-  const [manzanaVeredaCodigo, setManzanaVeredaCodigo] = useState(manzana_vereda_codigo);
+  const [manzanaVeredaCodigo, setManzanaVeredaCodigo] = useState(
+    manzana_vereda_codigo
+  );
+  const [estInput, setEstInput] = useState(true);
+
+  const editToggle = (e) => {
+    e.preventDefault();
+    setEstInput((prevEstInput) => !prevEstInput);
+  };
   return (
     <>
       <div className=" text-center m-5 border ">Terreno</div>
@@ -26,7 +34,7 @@ const InfoTerreno = () => {
             <input
               type="text"
               id="manzanaVeredaCodigo"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full"
               placeholder=""
               value={manzanaVeredaCodigo ? manzanaVeredaCodigo : ""}
@@ -40,7 +48,7 @@ const InfoTerreno = () => {
             <input
               type="text"
               id="areaTerreno"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={areaTerreno ? areaTerreno : ""}
@@ -54,13 +62,24 @@ const InfoTerreno = () => {
             <input
               type="text"
               id="avaluoTerreno"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={avaluoTerreno ? avaluoTerreno : ""}
               onChange={(e) => setAvaluoTerreno(e.target.value)}
             />
           </div>
+        </div>
+        <div className="flex flex-row w-full mt-4 items-center justify-center">
+          <button
+            onClick={editToggle}
+            className="p-2 text-center rounded-md text-white bg-orange-700"
+          >
+            Editar
+          </button>
+          <button className="p-2 ml-4 text-center rounded-md text-white bg-teal-500">
+            Guardar
+          </button>
         </div>
       </form>
     </>

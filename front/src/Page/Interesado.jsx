@@ -142,7 +142,6 @@ const InteresadoForm = (props, ref) => {
           console.log("Json", json);
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
-
           let raw = JSON.stringify(json);
           let requestOptions = {
             method: "POST",
@@ -154,11 +153,12 @@ const InteresadoForm = (props, ref) => {
             import.meta.env.VITE_API_URL_FIRST + "interesados/interesado";
           const response = await fetch(url, requestOptions);
           const result = await response.json();
-          console.log(result);
+          console.log("Resultado interesado", result);
           item.t_id = result.data.interesado.t_id;
           item.isTemporal = true;
           auxId.push(result.data.interesado.t_id);
         } else {
+          item.isTemporal = false;
           auxId.push(item.t_id);
           console.log("guardo id");
         }
@@ -169,6 +169,7 @@ const InteresadoForm = (props, ref) => {
     }
   }
   async function createColMiembros(agrupacion, interesado) {
+    console.log("interesado Entrando", interesado);
     for (const [index, item] of interesadosData.entries()) {
       let json = {
         interesado_lc_interesado: "",
@@ -177,12 +178,13 @@ const InteresadoForm = (props, ref) => {
         agrupacion: agrupacion,
         participacion: item.participacion,
       };
+      console.log("Es temporal", item.isTemporal);
       if (item.isTemporal) {
-        json.lc_interesado = interesado[index];
+        json.interesado_lc_interesado = interesado[index];
         json.interesado_lc_interesado_conservacion = null;
       } else {
         json.interesado_lc_interesado_conservacion = interesado[index];
-        json.lc_interesado = null;
+        json.interesado_lc_interesado = null;
       }
 
       console.log(json);
@@ -190,15 +192,16 @@ const InteresadoForm = (props, ref) => {
       myHeaders.append("Content-Type", "application/json");
 
       let raw = JSON.stringify(json);
-      console.log(raw);
+
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
         body: raw,
         redirect: "follow",
       };
-
+      console.log("Json Col Interesado", raw);
       let url = import.meta.env.VITE_API_URL_FIRST + "interesados/miembros";
+
       const response = await fetch(url, requestOptions);
       const result = await response.json();
       console.log("Resul Col_Miembros", result);
@@ -232,6 +235,7 @@ const InteresadoForm = (props, ref) => {
             }
           });
         });
+        props.onClose();
         updateTableData(tableData);
       }
       //Guardar
@@ -733,7 +737,7 @@ export const ModalInteresadoForm = React.forwardRef((props, ref) => {
 
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <InteresadoForm contexto={true} dataid={dataId} />
+      <InteresadoForm contexto={true} dataid={dataId} onClose={closeModal} />
     </Modal>
   );
 });

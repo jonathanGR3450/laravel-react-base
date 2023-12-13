@@ -13,13 +13,14 @@ import {
   DerechoResumeForm,
   PredioResumeForm,
 } from "./ResumeData";
+import { useNavigate } from "react-router-dom";
 
 export const LoadDataForm = () => {
   const fuenteFormRef = useRef();
   const predioFormRef = useRef();
   const interesadoFormRef = useRef();
   const derechoFormRef = useRef();
-
+  const navigate = useNavigate();
   //const { ArrayFinal, updateArrayFinal } = useContext(ArrayFinalContext);
   const { dataAll, updateDataAll } = useContext(DataContext);
   const { tableData } = useContext(TableContext);
@@ -292,7 +293,88 @@ export const LoadDataForm = () => {
       </div>
     );
   };
-  const sendData = async () => {};
+  const sendData = async () => {
+    const entries = Object.entries(tableData);
+    for (const [index, [key, item]] of entries.entries()) {
+      console.log(item);
+      let rr = await relRRRFuente(item);
+      if (rr) {
+        let uniFuente = await relUnidadFuente(item);
+        if (uniFuente) {
+          navigate("/LoadConstruccion");
+        } else {
+          console.log("Error  ");
+        }
+      } else {
+        console.log("Error  ");
+      }
+    }
+  };
+  async function relRRRFuente(item) {
+    console.log("Item RRRfuente", item);
+    let jsonRR = {
+      numeros_relacion: [
+        {
+          fuente_administrativa: item.fuente_administrativa.t_id,
+          rrr_lc_derecho: item.derecho.t_id,
+        },
+      ],
+    };
+    let raw = JSON.stringify(jsonRR);
+    console.log(raw);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const url =
+      import.meta.env.VITE_API_URL_FIRST +
+      "rrrfuente/fuente-administrativa/derecho";
+    console.log("Url RRRfUENTE", url);
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    const response = await fetch(url, requestOptions);
+    const result = await response.json();
+    console.log("Resultado Relacion RRRFuente", result);
+
+    if (result.success) {
+      //si sale bien
+      return true;
+    } else {
+      //Si no Sale bien
+      return false;
+    }
+  }
+  async function relUnidadFuente(item) {
+    console.log("Item Unidad Fuente", item);
+    let jsonUnidadFuente = {
+      fuente_administrativa: item.fuente_administrativa.t_id,
+      unidad: item.predio.t_id,
+    };
+    let raw = JSON.stringify(jsonUnidadFuente);
+    console.log(raw);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const url = import.meta.env.VITE_API_URL_FIRST + "predio/unidadfuente";
+    console.log("Url Unidad Fuente", url);
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    const response = await fetch(url, requestOptions);
+    const result = await response.json();
+    console.log("Resultado Relacion Unidad Funete", result);
+    if (result.success) {
+      //si sale mal
+      return true;
+    } else {
+      //Si no Sale bien
+      return false;
+    }
+  }
   return (
     <InteresadoProvider>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
@@ -303,6 +385,7 @@ export const LoadDataForm = () => {
         </div>
         <div className="mt-4 w-full flex flex-col justify-center items-end">
           <button
+            onClick={sendData}
             className={` w-1/5 p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
           >
             Siguiente

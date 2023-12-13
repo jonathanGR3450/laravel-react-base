@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { DataContext } from "./Context/DataContext";
 import { TableContext } from "./Context/Context";
+import Loader from "./Loader";
 const DerechoForm = (props, ref) => {
   console.log(props);
   let tableData = [];
@@ -24,7 +25,8 @@ const DerechoForm = (props, ref) => {
     fraccion_derecho: "",
     descripcion: "",
   });
-
+  const [loading, setLoading] = useState(false);
+  const [msjLoading, setMsjLoading] = useState("");
   const [estBtt, setEstBtt] = useState(true);
 
   function Load_Data(e) {
@@ -33,6 +35,7 @@ const DerechoForm = (props, ref) => {
   }
 
   const sendData = async () => {
+    setLoading(true);
     if (props.contexto) {
       tableData = contextTableData;
       let dataId = props.dataid;
@@ -83,7 +86,7 @@ const DerechoForm = (props, ref) => {
                 const result = await response.json();
                 console.log("Resultado", result.data);
                 ///Retornar Id y guardarlo
-                objDerecho.t_id = 0;
+                objDerecho.t_id = result.data.t_id;
               } else {
                 const error = await response.json();
                 console.log("Error en la solicitud:", error);
@@ -96,6 +99,7 @@ const DerechoForm = (props, ref) => {
         }
       }
       updateTableData(tableData);
+      props.onClose();
     }
   };
 
@@ -178,13 +182,14 @@ const DerechoForm = (props, ref) => {
             ></input>
           </div>
         </div>
-        <div className="flex flex-row w-full mt-2">
+        <div className="flex flex-row w-full mt-2 items-center justify-center">
           <button
             onClick={sendData}
             className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
           >
             Guardar
           </button>
+          {loading ? <Loader /> : null}
         </div>
       </div>
     </div>

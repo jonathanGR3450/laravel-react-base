@@ -79,6 +79,8 @@ export const NumPredialForm = (props) => {
   ///Evento del Boton Cargar para Consultar
   const dataDB = async () => {
     setFormState(true);
+    setMsjLoadingCreate("");
+    updateArrayFinal([]);
     updateTableData([]);
     setAllData("");
     setMsjLoading("Consultando Datos");
@@ -475,22 +477,37 @@ export const NumPredialForm = (props) => {
     let tip_predio = parseInt(aux);
     let dataterreno = 0;
     let dataunidad = 0;
+
     switch (tip_predio) {
       case 8:
         dataterreno = mayorTerreno8 + 1;
         dataunidad = mayor;
+        if (dataterreno < 800) {
+          dataterreno = dataterreno.toString().padStart(4, "08");
+        } else {
+          dataterreno = dataterreno.toString().padStart(4, "0");
+        }
 
+        console.log("dataterreno condominios", dataterreno);
         break;
       case 9:
         dataterreno = mayorTerreno9 + 1;
         dataunidad = mayor;
+        if (dataterreno < 900) {
+          dataterreno = dataterreno.toString().padStart(4, "09");
+        } else {
+          dataterreno = dataterreno.toString().padStart(4, "0");
+        }
+        console.log("dataterreno PH", dataterreno);
         break;
       default:
         dataterreno = mayor;
         dataunidad = 0;
+        dataterreno.toString().padStart(4, "0");
         break;
     }
-    PredioMatriz.Terreno = dataterreno.toString().padStart(4, "0");
+
+    PredioMatriz.Terreno = dataterreno;
     PredioMatriz.Unidad = dataunidad.toString().padStart(4, "0");
     console.log(" mayor Valores de Predio Matriz", PredioMatriz);
     setPredioMatriz(PredioMatriz);
@@ -1507,8 +1524,6 @@ export const NumPredialForm = (props) => {
     const [errorCreate, setErrorCreate] = useState(0);
     //const [dataCreate, setDataCreate] = useState(false);
     const modalLoadRef = useRef();
-    let ArrayTemp = [];
-
     async function updateDataReturn(newData) {
       console.log("valor del modal", newData);
       let auxArray = "";
@@ -1567,45 +1582,45 @@ export const NumPredialForm = (props) => {
         Json.numeros_prediales.push(newobj);
       });
       console.log("NewData", auxData);
-      await sendNumPredial(JSON.stringify(Json));
+      await sendNumPredial(JSON.stringify(Json), auxData);
     }
     useEffect(() => {
-      console.log("error 123", errorCreate);
       if (errorCreate == 0) {
         updateTableData(tableData);
       }
     }, [errorCreate]);
+
     const openModalLoad = () => {
       modalLoadRef.current.openModal();
     };
     //useEffect(() => {}, [dataCreate]);
 
-    async function sendNumPredial(json) {
+    async function sendNumPredial(json, array) {
       ///////Crear Predios
+      let auxData = array;
       setMsjLoadingCreate("Creando Predios");
       const response = await addPredio(json);
       console.log("Respuesta de agregar Predio ", response);
       if (response.success) {
-        ArrayFinal.map((item, index) => {
+        auxData.map((item, index) => {
           item.idNumPredial = response.data[index];
         });
-        console.log("Array Final", ArrayFinal);
+        console.log("Array Final", auxData);
         ///////Crear Pedir Numeros Homologados
         setMsjLoadingCreate("Cargando Datos Homologados");
         const responseHom = await addDataHomo();
         if (responseHom.success) {
           const data = responseHom.data;
-          ArrayFinal.map((item, index) => {
+          auxData.map((item, index) => {
             console.log("carga datos", item);
             item.codigo_homologado = data[index].numeros_homologados;
             item.id_codigo_homologado = data[index].t_id;
           });
-
           ///////Relacionar Predios y Numeros Homologados
           setMsjLoadingCreate(
             "Relacionando Numero Predial - Datos Homologados"
           );
-          const responseRel = await reDataHomoPredial();
+          const responseRel = await reDataHomoPredial(auxData);
           if (responseRel.success) {
             setEstLoading(false);
             navigate("/LoadData");
@@ -1617,8 +1632,7 @@ export const NumPredialForm = (props) => {
           console.log("Error de Consulta", responseHom);
           setMsjLoadingCreate("Error");
         }
-
-        updateTableData(ArrayFinal);
+        updateTableData(auxData);
       } else {
         let msj = "Error";
         if (response.errors) {
@@ -1668,7 +1682,7 @@ export const NumPredialForm = (props) => {
         const url =
           import.meta.env.VITE_API_URL_FIRST +
           "predio/numeros-homologados?limit=" +
-          ArrayFinal.length;
+          tableData.length;
         var requestOptions = {
           method: "GET",
           redirect: "follow",
@@ -1689,11 +1703,12 @@ export const NumPredialForm = (props) => {
       }
     }
 
-    async function reDataHomoPredial() {
+    async function reDataHomoPredial(array) {
+      let auxData = array;
       const json = {
         numeros_relacion: [],
       };
-      ArrayFinal.map((item, index) => {
+      auxData.map((item, index) => {
         let newObj = {
           numero_predial: item.idNumPredial,
           numero_homologado: parseInt(item.id_codigo_homologado),
@@ -1741,7 +1756,7 @@ export const NumPredialForm = (props) => {
           Agregar Predios
         </button>
 
-        <label className="text-3xl text-indigo-600 whitespace-pre-line font-bold transform inline-block">
+        <label className="text-3xl text-black whitespace-pre-line font-bold transform inline-block mt-4">
           {msjLoadingCreate}
         </label>
 

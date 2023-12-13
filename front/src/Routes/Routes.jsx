@@ -91,7 +91,22 @@ const Ruta = () => {
             <Route path="/DataHom" element={<LoadCodHom />}></Route>
             <Route path="/Avaluo" element={<AvaluoForm />}></Route>
             <Route path="/Incremento" element={<IncrementoForm />}></Route>
-
+            <Route
+              path="/Tramites"
+              element={
+                <TableProvider>
+                  <TramitesForm />
+                </TableProvider>
+              }
+            ></Route>
+            <Route
+              path="/TramiteDetalle"
+              element={
+                <TableProvider>
+                  <TramiteDetalleForm />
+                </TableProvider>
+              }
+            ></Route>
             <Route path="/Resolucion" element={<Resolucion />}></Route>
             <Route path="/Resoluciones" element={<Resoluciones />}></Route>
           </Route>

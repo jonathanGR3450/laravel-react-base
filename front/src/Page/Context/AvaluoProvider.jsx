@@ -9,6 +9,7 @@ const AvaluoProvider = ({ children }) => {
   console.log("Informacion de Info", updateJsonInscribir);
 
   const [avaluo, setAvaluo] = useState();
+  const [dataDesenglobe, setDataDesenglobe] = useState();
   const fechaActual = new Date();
 
   let añoActual = fechaActual.getFullYear();
@@ -2103,9 +2104,14 @@ const AvaluoProvider = ({ children }) => {
 
     return dataPredio;
   };
-
+  function Load_Data_Desenglobe(newdata) {
+    console.log("Entra Datos en Avaluo sobre Desenglobe", newdata);
+    setDataDesenglobe(newdata);
+  }
   return (
-    <AvaluoContext.Provider value={{ createAvaluo, avaluo }}>
+    <AvaluoContext.Provider
+      value={{ createAvaluo, avaluo, Load_Data_Desenglobe, dataDesenglobe }}
+    >
       {children}
     </AvaluoContext.Provider>
   );

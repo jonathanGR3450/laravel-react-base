@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { DataContext } from "./Context/DataContext";
 import { TableContext } from "./Context/Context";
+import Loader from "./Loader";
 const PredioForm = (props, ref) => {
   console.log("Props", props);
   let tableData = [];
@@ -17,6 +18,8 @@ const PredioForm = (props, ref) => {
   } = useContext(TableContext);
   const [estBtt, setEstBtt] = useState(true);
   const [codFMI, setCodFMI] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [msjLoading, setMsjLoading] = useState("");
   const [dataForm, setDataForm] = useState({
     t_id: "",
     departamento: "25",
@@ -61,6 +64,7 @@ const PredioForm = (props, ref) => {
   }
 
   const sendData = async () => {
+    setLoading(true);
     if (props.contexto) {
       let dataId = props.dataid;
       console.log(dataId);
@@ -90,6 +94,7 @@ const PredioForm = (props, ref) => {
             if (dataForm.interrelacionado) {
               dataForm.nupre = item.codigo_homologado;
             }
+
             let json = {
               departamento: dataForm.departamento,
               municipio: dataForm.municipio,
@@ -131,9 +136,15 @@ const PredioForm = (props, ref) => {
             try {
               const response = await fetch(url, requestOptions);
               const result = await response.json();
-              dataForm.t_id = result.data.t_id;
-              item.predio = dataForm;
-              console.log(result);
+              if (result.success) {
+                dataForm.t_id = result.data.t_id;
+                item.predio = dataForm;
+                props.onClose();
+              } else {
+                alert("Error");
+              }
+              console.log("Rsultado Predio", result);
+              setLoading(false);
             } catch (error) {
               console.log("error", error);
             }
@@ -150,11 +161,13 @@ const PredioForm = (props, ref) => {
     setCodFMI(!codFMI);
   };
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
+    <div className="p-4 w-full flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center">
       <h1 className="text-3xl">Caracteristicas del predio</h1>
       <p>A continuación se muestran las caracteristicas del predio</p>
       <div className="w-full">
-        <h2 className="text-2xl">Datos Generales del Predio</h2>
+        <div className="w-full  text-white bg-teal-500 rounded-lg p-2">
+          <h2 className="text-2xl">Datos Generales del Predio</h2>
+        </div>
         <div className="w-full flex flex-row">
           <div className="w-1/3 flex flex-row ml-4 items-center ">
             <input
@@ -165,7 +178,7 @@ const PredioForm = (props, ref) => {
             <label className="ml-4">Tiene FMI ?</label>
           </div>
           <div className="w-1/3 flex flex-col">
-            <label className="font-semibold">Codigo ORIP* :</label>
+            <label className="font-semibold">Codigo ORIP :</label>
             <input
               onChange={Load_Data}
               name="codigo_orip"
@@ -194,7 +207,7 @@ const PredioForm = (props, ref) => {
           </div>
           {codFMI ? (
             <div className="w-1/3 flex flex-col ml-4">
-              <label className="font-semibold">NUPRE* :</label>
+              <label className="font-semibold">NUPRE :</label>
               <input
                 name="nupre"
                 type="text"
@@ -216,7 +229,7 @@ const PredioForm = (props, ref) => {
             ></input>
           </div>
           <div className="w-1/3 flex flex-col ml-4">
-            <label className="font-semibold">Valor Referencia* :</label>
+            <label className="font-semibold">Valor Referencia :</label>
             <input
               onChange={Load_Data}
               name="valor_referencia"
@@ -347,6 +360,7 @@ const PredioForm = (props, ref) => {
               Guardar
             </button>
           </div>
+          {loading ? <Loader /> : null}
         </div>
       </div>
     </div>

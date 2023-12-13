@@ -26,16 +26,27 @@ const InfoJuridica = () => {
   const [fraccionDerecho, setFraccionDerecho] = useState(fraccion_derecho);
   const [fechaInicioTenencia, setFechaInicioTenencia] = useState(
     fecha_inicio_tenencia
-  );const [descripcionDerecho, setDescripcionDerecho] = useState(descripcion);
+  );
+  const [descripcionDerecho, setDescripcionDerecho] = useState(descripcion);
 
   const [tipoFuenteAdmini, setTipoFuenteAdmini] = useState(tipoFuente);
   const [enteEmisor, setEnteEmisor] = useState(ente_emisor);
-  const [observacionFuenteAdmini, setObservacionFuenteAdmini] = useState(observacion);
+  const [observacionFuenteAdmini, setObservacionFuenteAdmini] =
+    useState(observacion);
   const [numeroFuente, setNumeroFuente] = useState(numero_fuente);
-  const [estadoDisponibilidad, setEstadoDisponibilidad] = useState(estado_disponibilidad);
+  const [estadoDisponibilidad, setEstadoDisponibilidad] = useState(
+    estado_disponibilidad
+  );
   const [tipoPrincipal, setTipoPrincipal] = useState(tipo_principal);
-  const [fechaDocumentoFuente, setFechaDocumentoFuente] = useState(fecha_documento_fuente);
-  
+  const [fechaDocumentoFuente, setFechaDocumentoFuente] = useState(
+    fecha_documento_fuente
+  );
+  const [estInput, setEstInput] = useState(true);
+
+  const editToggle = (e) => {
+    e.preventDefault();
+    setEstInput((prevEstInput) => !prevEstInput);
+  };
 
   return (
     <>
@@ -49,7 +60,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="tipoDerecho"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full"
               placeholder=""
               value={tipoDerecho ? tipoDerecho : ""}
@@ -63,7 +74,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="fraccionDerecho"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={fraccionDerecho ? fraccionDerecho : ""}
@@ -77,7 +88,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="fechaInicioTenencia"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={fechaInicioTenencia ? fechaInicioTenencia : ""}
@@ -93,7 +104,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="descripcionDerecho"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={descripcionDerecho ? descripcionDerecho : ""}
@@ -112,7 +123,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="tipoFuenteAdmini"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full"
               placeholder=""
               value={tipoFuenteAdmini ? tipoFuenteAdmini : ""}
@@ -126,7 +137,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="enteEmisor"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={enteEmisor ? enteEmisor : ""}
@@ -140,7 +151,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="observacionFuenteAdmini"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={observacionFuenteAdmini ? observacionFuenteAdmini : ""}
@@ -156,7 +167,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="numeroFuente"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={numeroFuente ? numeroFuente : ""}
@@ -170,7 +181,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="estadoDisponibilidad"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={estadoDisponibilidad ? estadoDisponibilidad : ""}
@@ -184,7 +195,7 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="tipoPrincipal"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={tipoPrincipal ? tipoPrincipal : ""}
@@ -198,12 +209,23 @@ const InfoJuridica = () => {
             <input
               type="text"
               id="fechaDocumentoFuente"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={fechaDocumentoFuente ? fechaDocumentoFuente : ""}
               onChange={(e) => setFechaDocumentoFuente(e.target.value)}
             />
+          </div>
+          <div className="flex flex-row w-2/3 ml-4 items-end justify-end">
+            <button
+              onClick={editToggle}
+              className="p-2 text-center rounded-md text-white bg-orange-700"
+            >
+              Editar
+            </button>
+            <button className="p-2 ml-4 text-center rounded-md text-white bg-teal-500">
+              Guardar
+            </button>
           </div>
         </div>
       </form>

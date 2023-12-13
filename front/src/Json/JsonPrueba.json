@@ -1,106 +1,139 @@
-{
-  "inscribe_datos_predio_nmero_catastral": [
-    {
-      "inscribe_datos_predio_nmero_catastral": "252900100000006430099000000000",
-      "inscribe_datos_predio_matricula_inmobiliaria": "157 - 2364444444",
-      "inscribe_datos_predio_Direccion": "Prueba",
-      "inscribe_datos_predio_destino_económico": "C (COMERCIAL)",
-      "inscribe_datos_predio_area_terreno": 1000,
-      "inscribe_datos_predio_area_construida": 0,
-      "inscribe_datos_predio_avaluo": "$ 1.314.306.000",
-      "inscribe_datos_predio_vigencia": "01/01/2023"
+[
+  {
+    "Dpto": "25",
+    "Mpio": "290",
+    "Zona": "00",
+    "Sector": "02",
+    "Comuna": "00",
+    "Barrio": "00",
+    "Manzana": "0007",
+    "Terreno": "0830",
+    "Condicion": "0",
+    "Edificio": "00",
+    "Piso": "00",
+    "Unidad": "0000",
+    "Matricula": "2153463",
+    "Direccion": {
+      "t_id": 0,
+      "t_seq": null,
+      "tipo_direccion": "219",
+      "es_direccion_principal": false,
+      "codigo_postal": null,
+      "clase_via_principal": "",
+      "valor_via_principal": "",
+      "letra_via_principal": "",
+      "sector_ciudad": "",
+      "valor_via_generadora": "",
+      "letra_via_generadora": "",
+      "numero_predio": "",
+      "sector_predio": "",
+      "complemento": "",
+      "nombre_predio": "12",
+      "extunidadedificcnfsica_ext_direccion_id": null,
+      "extinteresado_ext_direccion_id": null,
+      "lc_construccion_ext_direccion_id": null,
+      "lc_nu_spcjrdcrdsrvcios_ext_direccion_id": null,
+      "lc_n_spcjrdcndddfccion_ext_direccion_id": null,
+      "lc_terreno_ext_direccion_id": null,
+      "lc_unidadconstruccion_ext_direccion_id": null,
+      "lc_servidumbretransito_ext_direccion_id": null
     },
-    {
-      "inscribe_datos_predio_nmero_catastral": "252900100000006430100000000000",
-      "inscribe_datos_predio_matricula_inmobiliaria": "157 - 2364444445",
-      "inscribe_datos_predio_Direccion": "Prueba",
-      "inscribe_datos_predio_destino_económico": "C (COMERCIAL)",
-      "inscribe_datos_predio_area_terreno": 500,
-      "inscribe_datos_predio_area_construida": 0,
-      "inscribe_datos_predio_avaluo": "$ 112.655.000",
-      "inscribe_datos_predio_vigencia": "01/01/2023"
-    }
-  ],
-  "inscribe_propietarios_nmero_catastral": [
-    {
-      "inscribe_propietarios_nmero_catastral": "252900100000006430099000000000",
-      "inscribe_propietarios_numero_propietario": 1,
-      "inscribe_propietarios_nombre_propietario": "ABAONZA GOMEZ GRACIELA DEL CARMEN",
-      "inscribe_propietarios_tipo_documento": "C.C.",
-      "inscribe_propietarios_numero_documento": "26509237"
+    "codigo_homologado": "BAF0008FNEE",
+    "idNumPredial": 176,
+    "id_codigo_homologado": 134,
+    "predio": {
+      "t_id": 91,
+      "departamento": "25",
+      "municipio": "290",
+      "id_operacion": "252900002000000070830000000000",
+      "tiene_fmi": false,
+      "codigo_orip": null,
+      "matricula_inmobiliaria": "2153463",
+      "numero_predial": "252900002000000070830000000000",
+      "numero_predial_anterior": "",
+      "codigo_homologado": "BAF0008FNEE",
+      "interrelacionado": false,
+      "codigo_homologado_fmi": false,
+      "nupre": null,
+      "avaluo_catastral": 0,
+      "valor_referencia": 0,
+      "tipo": "890",
+      "condicion_predio": "443",
+      "destinacion_economica": "175",
+      "clase_suelo": "85",
+      "categoria_suelo": "777",
+      "nombre": null,
+      "comienzo_vida_util_version": "2022-05-20 01:23:26.006883",
+      "fin_vida_util_version": null,
+      "espacio_de_nombres": "Fusagasuga",
+      "local_id": "BAF0008FNEE"
     },
-    {
-      "inscribe_propietarios_nmero_catastral": "252900100000006430099000000000",
-      "inscribe_propietarios_numero_propietario": 2,
-      "inscribe_propietarios_nombre_propietario": "AB3  CONSTRUCTORES S A S",
-      "inscribe_propietarios_tipo_documento": "NIT",
-      "inscribe_propietarios_numero_documento": "90052222498"
+    "interesados": [
+      {
+        "t_id": 395886,
+        "tipo": 659,
+        "tipo_documento": 531,
+        "documento_identidad": "90052222498",
+        "primer_nombre": null,
+        "segundo_nombre": null,
+        "primer_apellido": null,
+        "segundo_apellido": null,
+        "sexo": null,
+        "grupo_etnico": null,
+        "razon_social": "AB3  CONSTRUCTORES S A S",
+        "estado_civil": null,
+        "nombre": "AB3  CONSTRUCTORES S A S",
+        "comienzo_vida_util_version": "2022-05-20 01:45:29.163023",
+        "fin_vida_util_version": null,
+        "espacio_de_nombres": "Fusagasuga",
+        "local_id": "62263",
+        "isTemporal": false
+      }
+    ],
+    "derecho": {
+      "t_id": "",
+      "tipo_derecho": "47",
+      "tipo_restriccion": "800",
+      "inicio_tenencia": "2023-12-08",
+      "fraccion_derecho": "1",
+      "descripcion": "23"
     },
-    {
-      "inscribe_propietarios_nmero_catastral": "252900100000006430100000000000",
-      "inscribe_propietarios_numero_propietario": 1,
-      "inscribe_propietarios_nombre_propietario": "ABAONZA GOMEZ GRACIELA DEL CARMEN",
-      "inscribe_propietarios_tipo_documento": "C.C.",
-      "inscribe_propietarios_numero_documento": "26509237"
+    "fuente_administrativa": {
+      "t_id": 26,
+      "tipo": "50",
+      "ente_emisor": "1",
+      "numero_fuente": "2",
+      "estado_disponibilidad": "886",
+      "tipo_principal": "18",
+      "fecha_documento_fuente": "2023-12-12",
+      "espacio_de_nombres": "Fusagasuga",
+      "observacion": "23"
     },
-    {
-      "inscribe_propietarios_nmero_catastral": "252900100000006430100000000000",
-      "inscribe_propietarios_numero_propietario": 2,
-      "inscribe_propietarios_nombre_propietario": "AB3  CONSTRUCTORES S A S",
-      "inscribe_propietarios_tipo_documento": "NIT",
-      "inscribe_propietarios_numero_documento": "90052222498"
+    "terreno": {
+      "t_id": 128,
+      "area_terreno": "100",
+      "codigo_manzana": "25290000200000007",
+      "avaluo_terreno": "",
+      "ZHG": [{ "area": "100", "ZHG": "02" }],
+      "SantaMaria": false
     },
-    {
-      "inscribe_propietarios_nmero_catastral": "252900100000006430100000000000",
-      "inscribe_propietarios_numero_propietario": 3,
-      "inscribe_propietarios_nombre_propietario": "ABRIL OFELIA",
-      "inscribe_propietarios_tipo_documento": "C.C.",
-      "inscribe_propietarios_numero_documento": "20559632"
-    },
-    {
-      "inscribe_propietarios_nmero_catastral": "252900100000006430100000000000",
-      "inscribe_propietarios_numero_propietario": 4,
-      "inscribe_propietarios_nombre_propietario": "Gomez Martinez Diego Hernan",
-      "inscribe_propietarios_tipo_documento": "Vacio",
-      "inscribe_propietarios_numero_documento": "1117528719"
-    }
-  ],
-  "inscribe_liquidacion_nmero_catastral": [
-    {
-      "inscribe_liquidacion_nmero_catastral": "252900100000006430099000000000",
-      "inscribe_liquidacion_concepto": "ACTUALIZACION CATASTRAL",
-      "inscribe_liquidacion_fecha": "01/01/2022",
-      "inscribe_liquidacion_avaluo": "$ 1.260.000.000"
-    },
-    {
-      "inscribe_liquidacion_nmero_catastral": "252900100000006430099000000000",
-      "inscribe_liquidacion_concepto": "Dec004",
-      "inscribe_liquidacion_fecha": "01/01/2023",
-      "inscribe_liquidacion_avaluo": "$ 1.314.306.000"
-    },
-    {
-      "inscribe_liquidacion_nmero_catastral": "252900100000006430099000000000",
-      "inscribe_liquidacion_concepto": "10",
-      "inscribe_liquidacion_fecha": "01/01/2024",
-      "inscribe_liquidacion_avaluo": "$ 2.685.259.000"
-    },
-    {
-      "inscribe_liquidacion_nmero_catastral": "252900100000006430100000000000",
-      "inscribe_liquidacion_concepto": "ACTUALIZACION CATASTRAL",
-      "inscribe_liquidacion_fecha": "01/01/2022",
-      "inscribe_liquidacion_avaluo": "$ 108.000.000"
-    },
-    {
-      "inscribe_liquidacion_nmero_catastral": "252900100000006430100000000000",
-      "inscribe_liquidacion_concepto": "Dec004",
-      "inscribe_liquidacion_fecha": "01/01/2023",
-      "inscribe_liquidacion_avaluo": "$ 112.655.000"
-    },
-    {
-      "inscribe_liquidacion_nmero_catastral": "252900100000006430100000000000",
-      "inscribe_liquidacion_concepto": "10",
-      "inscribe_liquidacion_fecha": "01/01/2024",
-      "inscribe_liquidacion_avaluo": "$ 230.165.000"
-    }
-  ]
-}
+    "construccion": [
+      {
+        "t_id": 30,
+        "identificador": "A",
+        "tipo_construccion": "66",
+        "tipo_dominio": "322",
+        "num_pisos": "1",
+        "num_sotanos": "1",
+        "num_semisotanos": "1",
+        "num_mezanines": "1",
+        "anio_cons": "2000",
+        "area": "1",
+        "avaluo": "",
+        "valor_referencia": "1",
+        "altura": "1",
+        "observacion": "1"
+      }
+    ]
+  }
+]

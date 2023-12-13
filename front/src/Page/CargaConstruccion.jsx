@@ -24,7 +24,7 @@ export const LoadDataConstruccion = () => {
   let añoActual = fechaActual.getFullYear();
 
   const { tableData } = useContext(TableContext);
-  const { createAvaluo } = useAvaluo();
+  const { createAvaluo, Load_Data_Desenglobe } = useAvaluo();
   const [dataSelect, setDataSelect] = useState(0);
   const [dataTotal, setDataTotal] = useState("");
   const [estDataTotal, setEstDataTotal] = useState(false);
@@ -41,7 +41,8 @@ export const LoadDataConstruccion = () => {
 
   function zonaYear() {
     tableData.map((item, index) => {
-      if (item.zona != "00") {
+      console.log("zona Año", item.Zona);
+      if (item.Zona != "00") {
         setAñoBase(2022);
       } else {
         setAñoBase(2023);
@@ -2226,6 +2227,7 @@ export const LoadDataConstruccion = () => {
     console.log("Resultado Contexto", result);
     setDataTotal(result);
     setEstDataTotal(true);
+    Load_Data_Desenglobe(tableData);
   }
   const AllTableForm = () => {
     console.log("Datos Totales", dataTotal);

@@ -16,6 +16,7 @@ const TerrenoForm = (props, ref) => {
     tableData: contextTableData,
     updateTableData: contextUpdateTableData,
   } = useContext(TableContext);
+
   let [terrenoData, setTerrenoData] = useState({
     t_id: "",
     area_terreno: "",
@@ -73,8 +74,9 @@ const TerrenoForm = (props, ref) => {
           }
         }
       }
-      console.log("Tabla Data", tableData);
+
       updateTableData(tableData);
+      props.onClose();
     }
   };
   ////ENDPOINT
@@ -360,7 +362,7 @@ export const ModalTerrenoForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <TerrenoForm contexto={true} dataid={dataId} />
+      <TerrenoForm contexto={true} dataid={dataId} onClose={closeModal} />
     </Modal>
   );
 });

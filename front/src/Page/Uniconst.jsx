@@ -300,21 +300,21 @@ const UniconstForm = (dataForm) => {
         console.log("Url", raw);
         try {
           const response = await fetch(url, requestOptions);
-          console.log("Url", response);
+          const result = await response.text();
+          console.log("Resultado Convencional", result);
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response}`);
           } else {
             setLoading(false);
           }
-          const result = await response.json();
-          console.log(result);
           if (iscontext(contextoCaracteristicas)) {
             const { updateCaracteristicas } = contextoCaracteristicas;
             Json.t_id = result.data[0];
+            console.log("Json para Actualziar");
             updateCaracteristicas(Json);
           }
         } catch (error) {
-          console.error("Error:", error);
+          console.log("Error:", error);
         }
       }
       ////////////////////////////////////

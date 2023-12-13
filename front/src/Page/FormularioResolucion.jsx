@@ -62,7 +62,7 @@ const FormularioResolucion = () => {
       return;
     }
     await submitInfoResolucion({
-      tramite_id: "001",//asociado al tipo de tramite ejem cambio de propietario
+      tramite_id: "001", //asociado al tipo de tramite ejem cambio de propietario
       no_resolucion: serialResolucion,
       dia: dia,
       mes: mes,
@@ -70,7 +70,7 @@ const FormularioResolucion = () => {
       nombre_gestor: nombre,
       cedula_numero_gestor: cedula,
       cedula_cuidad_gestor: ciudadCedula,
-      calidad_gestor: "PROPIETARIO",//posible select para cambiar entre propietario o apoderado
+      calidad_gestor: "PROPIETARIO", //posible select para cambiar entre propietario o apoderado
       no_radicado: numeroRadicado,
       asociado_id: idAasociado,
       numero_predial: "252900001000000010007000000000",
@@ -81,7 +81,7 @@ const FormularioResolucion = () => {
       no_notaria: notaria,
       ciudad: ciudadNotaria,
       extension_desde: "157-00000",
-      extension_hasta: "157-99999",      
+      extension_hasta: "157-99999",
       ingrese_imagen: "INGRESAR IMÁGEN LEGIBLE Y CENTRADA",
       dia_now_letra: diaNotificacionLetra,
       dia_now_numero: diaNotificacion,
@@ -95,63 +95,69 @@ const FormularioResolucion = () => {
       nombre_reviso_contratista: "Diego",
       reviso_aprobo_nombre: "Oscar Rivera Aguilar",
       reviso_aprobo_cargo: "Aux. Administrativo",
-      cancela_datos_predio_nmero_catastral : [
+      cancela_datos_predio_nmero_catastral: [
         {
-            cancela_datos_predio_nmero_catastral: "252900100000002150187000000000",
-            cancela_datos_predio_matricula_inmobiliaria: "157-75298",
-            cancela_datos_predio_direccion: "Lo No 6",
-            cancela_datos_predio_destino_economico: "R",
-            cancela_datos_predio_area_terreno: 748,
-            cancela_datos_predio_area_construida: 0,
-            cancela_datos_predio_avaluo: "$ 336,600,000",
-            cancela_datos_predio_vigencia: "01012023"
-        }
-    ],
-    cancela_propietarios_nmero_catastral: [
+          cancela_datos_predio_nmero_catastral:
+            "252900100000002150187000000000",
+          cancela_datos_predio_matricula_inmobiliaria: "157-75298",
+          cancela_datos_predio_direccion: "Lo No 6",
+          cancela_datos_predio_destino_economico: "R",
+          cancela_datos_predio_area_terreno: 748,
+          cancela_datos_predio_area_construida: 0,
+          cancela_datos_predio_avaluo: "$ 336,600,000",
+          cancela_datos_predio_vigencia: "01012023",
+        },
+      ],
+      cancela_propietarios_nmero_catastral: [
         {
-            cancela_propietarios_nmero_catastral: "252900100000002150187000000000",
-            cancela_propietarios_numero_propietario: "1",
-            cancela_propietarios_nombre_propietario: nombre,
-            cancela_propietarios_tipo_documento: "CC",
-            cancela_propietarios_numero_documento: "9005943878"
-        }
-    ],
-    inscribe_datos_predio_nmero_catastral : [
+          cancela_propietarios_nmero_catastral:
+            "252900100000002150187000000000",
+          cancela_propietarios_numero_propietario: "1",
+          cancela_propietarios_nombre_propietario: nombre,
+          cancela_propietarios_tipo_documento: "CC",
+          cancela_propietarios_numero_documento: "9005943878",
+        },
+      ],
+      inscribe_datos_predio_nmero_catastral: [
         {
-            inscribe_datos_predio_nmero_catastral: "252900100000002150187000000000",
-            inscribe_datos_predio_matricula_inmobiliaria: "157-75298",
-            inscribe_datos_predio_Direccion: "Lo No 6",
-            inscribe_datos_predio_destino_económico: "R",
-            inscribe_datos_predio_area_terreno: 748,
-            inscribe_datos_predio_area_construida: 0,
-            inscribe_datos_predio_avaluo: "$ 336,600,000",
-            inscribe_datos_predio_vigencia: "01012023"
-        }
-    ],
-    inscribe_propietarios_nmero_catastral: [
+          inscribe_datos_predio_nmero_catastral:
+            "252900100000002150187000000000",
+          inscribe_datos_predio_matricula_inmobiliaria: "157-75298",
+          inscribe_datos_predio_Direccion: "Lo No 6",
+          inscribe_datos_predio_destino_económico: "R",
+          inscribe_datos_predio_area_terreno: 748,
+          inscribe_datos_predio_area_construida: 0,
+          inscribe_datos_predio_avaluo: "$ 336,600,000",
+          inscribe_datos_predio_vigencia: "01012023",
+        },
+      ],
+      inscribe_propietarios_nmero_catastral: [
         {
-            inscribe_propietarios_nmero_catastral: "252900100000002150187000000000",
-            inscribe_propietarios_numero_propietario: "1",
-            inscribe_propietarios_nombre_propietario: "LA SOCIEDAD BERESNAJE COLOMBIA S",
-            inscribe_propietarios_tipo_documento: "N",
-            inscribe_propietarios_numero_documento: "9005943878"
-        }
-    ],
-    inscribe_liquidacion_nmero_catastral: [
+          inscribe_propietarios_nmero_catastral:
+            "252900100000002150187000000000",
+          inscribe_propietarios_numero_propietario: "1",
+          inscribe_propietarios_nombre_propietario:
+            "LA SOCIEDAD BERESNAJE COLOMBIA S",
+          inscribe_propietarios_tipo_documento: "N",
+          inscribe_propietarios_numero_documento: "9005943878",
+        },
+      ],
+      inscribe_liquidacion_nmero_catastral: [
         {
-            inscribe_liquidacion_nmero_catastral: "252900100000002150187000000000",
-            inscribe_liquidacion_concepto: "ACTUALIZACION CATASTRAL",
-            inscribe_liquidacion_avaluo: "$ 321,683,000",
-            inscribe_liquidacion_fecha: "1/1/2022"
+          inscribe_liquidacion_nmero_catastral:
+            "252900100000002150187000000000",
+          inscribe_liquidacion_concepto: "ACTUALIZACION CATASTRAL",
+          inscribe_liquidacion_avaluo: "$ 321,683,000",
+          inscribe_liquidacion_fecha: "1/1/2022",
         },
         {
-            inscribe_liquidacion_nmero_catastral: "252900100000002150187000000000",
-            inscribe_liquidacion_concepto: "DECRETO 2653 /2022",
-            inscribe_liquidacion_avaluo: "$ 335,548,000",
-            inscribe_liquidacion_fecha: "1/1/2023"
-        }
-    ]
-
+          inscribe_liquidacion_nmero_catastral:
+            "252900100000002150187000000000",
+          inscribe_liquidacion_concepto: "DECRETO 2653 /2022",
+          inscribe_liquidacion_avaluo: "$ 335,548,000",
+          inscribe_liquidacion_fecha: "1/1/2023",
+        },
+      ],
     });
     setSerialResolucion("");
     setDia("");
