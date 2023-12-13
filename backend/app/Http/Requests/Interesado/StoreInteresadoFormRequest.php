@@ -41,7 +41,7 @@ class StoreInteresadoFormRequest extends FormRequest
                 'max:50',
             ],
             'primer_nombre' => [
-                'required',
+                'nullable',
                 'string',
                 'max:100',
             ],
@@ -51,7 +51,7 @@ class StoreInteresadoFormRequest extends FormRequest
                 'max:100',
             ],
             'primer_apellido' => [
-                'required',
+                'nullable',
                 'string',
                 'max:100',
             ],
@@ -61,12 +61,12 @@ class StoreInteresadoFormRequest extends FormRequest
                 'max:100',
             ],
             'sexo' => [
-                'required',
+                'nullable',
                 'integer',
                 'exists:pgsqlcatastro.lc_sexotipo,t_id',
             ],
             'grupo_etnico' => [
-                'required',
+                'nullable',
                 'integer',
                 'exists:pgsqlcatastro.lc_grupoetnicotipo,t_id',
             ],
@@ -81,7 +81,7 @@ class StoreInteresadoFormRequest extends FormRequest
                 'exists:pgsqlcatastro.lc_estadociviltipo,t_id',
             ],
             'nombre' => [
-                'required',
+                'nullable',
                 'string',
                 'max:255',
             ],

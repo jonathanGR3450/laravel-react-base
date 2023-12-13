@@ -5,10 +5,15 @@ namespace App\Http\Controllers\Clasificacion;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidarConstruccionesNoConvencionalesFormRequest;
+use App\Http\Resources\Cafificacion\NoConvencionalCollection;
 use App\Models\Local\LcCaracteristicasUnidadConstruccionLocal;
+use App\Traits\PaginationTrait;
 
 class NoConvencionalStoreController extends AppBaseController
 {
+
+    use PaginationTrait;
+
     /**
      * @OA\Post(
      *     path="/api/v1/caracteristicasunidadconstruccion/no-convencional",
@@ -75,7 +80,15 @@ class NoConvencionalStoreController extends AppBaseController
                 }
             }
 
-            return $this->sendResponse($ids, 'Calificacion no convencional creada con exito');
+            /**pagination */
+            $sortable = [
+                'name'    => 'first_name',
+            ];
+            $query = LcCaracteristicasUnidadConstruccionLocal::whereIn('t_id', $ids);
+            $query = $this->paginationQuery($query, $sortable, $request);
+            $noConvencionalesCollection = new NoConvencionalCollection($query);
+
+            return $this->sendResponse($noConvencionalesCollection, 'Calificacion no convencional creada con exito');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }

@@ -11,8 +11,6 @@ class TramiteTipo extends Model
 {
     use HasFactory;
 
-    protected $connection = 'pgsqpublic';
-
     protected $table = 'tramitetipo';
     protected $primaryKey = 'id';
     public $timestamps = false;
