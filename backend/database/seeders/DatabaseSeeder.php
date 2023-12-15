@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             TabHot60UrbanaRuralLocalSeeder::class,
             TabAnexosUrbanaRuralLocalSeeder::class,
             LcValorTerrenoRuralLocalSeeder::class,
+            TramiteTipoSeeder::class,
         ]);
     }
 }
