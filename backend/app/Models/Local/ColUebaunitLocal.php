@@ -27,7 +27,7 @@ class ColUebaunitLocal extends Model
 
     public function construccion()
     {
-        return $this->belongsTo(LcConstruccion::class, 'ue_lc_construccion', 't_id');
+        return $this->belongsTo(LcConstruccionLocal::class, 'ue_lc_construccion', 't_id');
     }
 
 

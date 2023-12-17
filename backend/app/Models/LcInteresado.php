@@ -40,23 +40,23 @@ class LcInteresado extends Model
         return $this->hasOne(ColMiembro::class, 'interesado_lc_interesado', 't_id');
     }
 
-    function tipoInteresado(): BelongsTo {
+    public function tipoInteresado(): BelongsTo {
         return $this->belongsTo(LcInteresadoTipo::class, 'tipo', 't_id');
     }
 
-    function documentoTipo(): BelongsTo {
+    public function documentoTipo(): BelongsTo {
         return $this->belongsTo(LcInteresadoDocumentoTipo::class, 'tipo_documento', 't_id');
     }
 
-    function sexoTipo(): BelongsTo {
+    public function sexoTipo(): BelongsTo {
         return $this->belongsTo(LcSexoTipo::class, 'sexo', 't_id');
     }
 
-    function grupoEtnico(): BelongsTo {
+    public function grupoEtnico(): BelongsTo {
         return $this->belongsTo(LcGrupoEtnicoTipo::class, 'grupo_etnico', 't_id');
     }
 
-    function estadoCivil(): BelongsTo {
+    public function estadoCivil(): BelongsTo {
         return $this->belongsTo(LcEstadoCivilTipo::class, 'estado_civil', 't_id');
     }
 }

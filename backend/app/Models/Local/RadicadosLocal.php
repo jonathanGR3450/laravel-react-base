@@ -23,7 +23,7 @@ class RadicadosLocal extends Model
         'tramite_id',
     ];
 
-    function tipoRadicado(): BelongsTo {
+    public function tipoRadicado(): BelongsTo {
         return $this->belongsTo(TramiteTipo::class, 'tramite_id', 'id');
     }
 

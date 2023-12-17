@@ -27,7 +27,7 @@ class LcAnexoTipo extends Model
         'description',
     ];
 
-    function calificacionesConvencionales(): HasMany {
+    public function calificacionesConvencionales(): HasMany {
         return $this->hasMany(CalificacionConvencional::class, 'tipo_anexo', 't_id');
     }
 

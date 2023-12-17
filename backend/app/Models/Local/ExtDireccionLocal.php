@@ -41,7 +41,7 @@ class ExtDireccionLocal extends Model
         'lc_numeros_prediales_id',
     ];
 
-    function numeroPredial(): BelongsTo {
+    public function numeroPredial(): BelongsTo {
         return $this->belongsTo(LcNumerosPredialLocal::class, 'lc_numeros_prediales_id', 't_id');
     }
 
@@ -81,10 +81,10 @@ class ExtDireccionLocal extends Model
     //     return $this->belongsTo(LcUnidadConstruccion::class, 'lc_unidadconstruccion_ext_direccion_id');
     // }
 
-    // public function lcPredio()
-    // {
-    //     return $this->belongsTo(LcPredio::class, 'lc_predio_direccion');
-    // }
+    public function lcPredio()
+    {
+        return $this->belongsTo(LcPredioLocal::class, 'lc_predio_direccion', 't_id');
+    }
 
     // public function lcServidumbreTransito()
     // {

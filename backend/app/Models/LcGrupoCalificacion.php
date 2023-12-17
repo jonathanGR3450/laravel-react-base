@@ -38,7 +38,7 @@ class LcGrupoCalificacion extends Model
         return $this->belongsTo(LcCalificacionConvencional::class, 'lc_calificacion_convencional', 't_id');
     }
 
-    function objetoConstruccion() : HasMany {
-        return $this->hasMany(LcObjetoConstruccion::class, 'lc_grupo_calificacion');
+    public function objetoConstruccion() : HasMany {
+        return $this->hasMany(LcObjetoConstruccion::class, 'lc_grupo_calificacion', 't_id');
     }
 }
