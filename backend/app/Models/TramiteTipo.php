@@ -20,7 +20,7 @@ class TramiteTipo extends Model
         'descripcion',
     ];
 
-    function radicados(): HasMany {
+    public function radicados(): HasMany {
         return $this->hasMany(RadicadosLocal::class, 'tramite_id', 'id');
     }
 

@@ -89,7 +89,7 @@ class LcPredio extends Model
     // Relación con lc_derecho (Unidades)
     public function lcDerechos()
     {
-        return $this->hasMany(LcDerecho::class, 'unidad');
+        return $this->hasMany(LcDerecho::class, 'unidad', 't_id');
     }
 
     // Relación con extreferenciaregistralsistemaantiguo

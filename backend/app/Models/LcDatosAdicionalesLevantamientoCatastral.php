@@ -57,4 +57,9 @@ class LcDatosAdicionalesLevantamientoCatastral extends Model
     {
         return $this->hasMany(LcEstructuraNovedadFMI::class, 'lc_dtsdcnlstmstrl_nvdd_fmi', 't_id');
     }
+
+    public function contactoVisita()
+    {
+        return $this->hasMany(LcContactoVisita::class, 'lc_datos_adicionales', 't_id');
+    }
 }

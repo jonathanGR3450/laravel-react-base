@@ -26,8 +26,12 @@ class LcFuenteadministrativaLocal extends Model
         'local_id',
     ];
 
-    function colRrrFuente() : HasMany {
-        return $this->hasMany(ColRrrfuenteLocal::class, 't_id', 'fuente_administrativa');
+    public function colRrrFuente() : HasMany {
+        return $this->hasMany(ColRrrfuenteLocal::class, 'fuente_administrativa', 't_id');
+    }
+
+    public function colUnidadFuente() : HasMany {
+        return $this->hasMany(ColUnidadfuenteLocal::class, 'fuente_administrativa', 't_id');
     }
 
     // public function fuenteAdministrativaTipo()

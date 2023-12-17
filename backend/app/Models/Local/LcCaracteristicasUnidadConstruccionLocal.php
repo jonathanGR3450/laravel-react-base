@@ -44,12 +44,12 @@ class LcCaracteristicasUnidadConstruccionLocal  extends Model
     // Relación con lc_construcciontipo
     public function calificacionConvencional()
     {
-        return $this->hasMany(LcCalificacionConvencionalLocal::class, 'lc_unidad_construccion');
+        return $this->hasMany(LcCalificacionConvencionalLocal::class, 'lc_unidad_construccion', 't_id');
     }
 
     public function calificacionNoConvencional()
     {
-        return $this->hasMany(LcCalificacionNoConvencionalLocal::class, 'lc_unidad_construccion');
+        return $this->hasMany(LcCalificacionNoConvencionalLocal::class, 'lc_unidad_construccion', 't_id');
     }
 
     // // Relación con lc_construcciontipo

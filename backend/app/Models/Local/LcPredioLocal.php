@@ -89,11 +89,11 @@ class LcPredioLocal extends Model
         return $this->hasMany(ColUebaunitLocal::class, 'baunit', 't_id');
     }
 
-    // // Relación con lc_derecho (Unidades)
-    // public function lcDerechos()
-    // {
-    //     return $this->hasMany(LcDerecho::class, 'unidad');
-    // }
+    // Relación con lc_derecho (Unidades)
+    public function lcDerechos()
+    {
+        return $this->hasMany(LcDerechoLocal::class, 'unidad', 't_id');
+    }
 
     // // Relación con extreferenciaregistralsistemaantiguo
     // public function referenciasSistemaAntiguo()
