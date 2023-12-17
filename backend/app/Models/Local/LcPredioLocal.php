@@ -5,6 +5,7 @@ namespace App\Models\Local;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LcPredioLocal extends Model
 {
@@ -71,17 +72,22 @@ class LcPredioLocal extends Model
     //     return $this->belongsTo(LcPredioTipo::class, 'tipo');
     // }
 
-    // // Relación con lc_datosadicionaleslevantamientocatastral
-    // public function datosAdicionalesLevantamientoCatastral()
-    // {
-    //     return $this->hasOne(LcDatosAdicionalesLevantamientoCatastral::class, 'lc_predio');
-    // }
+    // Relación con lc_datosadicionaleslevantamientocatastral
+    public function datosAdicionalesLevantamientoCatastral()
+    {
+        return $this->hasOne(LcDatosadicionaleslevantamientocatastralLocal::class, 'lc_predio', 't_id');
+    }
 
-    // // Relación con lc_datosphcondominio
-    // public function lcDatosPhCondominio()
-    // {
-    //     return $this->hasOne(lcDatosPhCondominio::class, 'lc_predio');
-    // }
+    // Relación con lc_datosphcondominio
+    public function lcDatosPhCondominio()
+    {
+        return $this->hasOne(LcDatosphcondominioLocal::class, 'lc_predio', 't_id');
+    }
+
+    public function uebaunit()
+    {
+        return $this->hasMany(ColUebaunitLocal::class, 'baunit', 't_id');
+    }
 
     // // Relación con lc_derecho (Unidades)
     // public function lcDerechos()
@@ -100,11 +106,19 @@ class LcPredioLocal extends Model
     //     return $this->hasMany(ExtDireccion::class, 'lc_predio_direccion', 't_id');
     // }
 
-    function lcRestricion() : HasMany {
+    public function lcRestricion() : HasMany {
         return $this->hasMany(LcRestriccionLocal::class, 't_id', 'unidad');
     }
 
-    function ricPredio() : HasMany {
+    public function ricPredio() : HasMany {
         return $this->hasMany(RicPredioLocal::class, 't_id', 'lc_predio');
+    }
+
+    public function matrizCopropiedad(): HasOne {
+        return $this->hasOne(LcPredioCopropiedadLocal::class, 'matriz', 't_id');
+    }
+
+    public function unidadPredialCopropiedad(): HasOne {
+        return $this->hasOne(LcPredioCopropiedadLocal::class, 'unidad_predial', 't_id');
     }
 }

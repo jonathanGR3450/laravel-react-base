@@ -35,21 +35,6 @@ class ColUebaunit extends Model
         return $this->belongsTo(LcConstruccion::class, 'ue_lc_construccion');
     }
 
-    // public function espJuridicoRedServicios()
-    // {
-    //     return $this->belongsTo(LcEspacioJuridicoRedServicios::class, 'ue_lc_nu_espaciojuridicoredservicios');
-    // }
-
-    // public function espJuridicoUnidadEdificacion()
-    // {
-    //     return $this->belongsTo(LcEspacioJuridicoUnidadEdificacion::class, 'ue_lc_nu_espaciojuridicounidadedificacion');
-    // }
-
-    // public function servidumbreTransito()
-    // {
-    //     return $this->belongsTo(LcServidumbreTransito::class, 'ue_lc_servidumbretransito');
-    // }
-
     public function terreno()
     {
         return $this->belongsTo(LcTerreno::class, 'ue_lc_terreno', 't_id');

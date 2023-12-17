@@ -39,7 +39,7 @@ class LcDatosAdicionalesLevantamientoCatastral extends Model
     // Relación con lc_predio
     public function lcPredio()
     {
-        return $this->belongsTo(LcPredio::class, 'lc_predio');
+        return $this->belongsTo(LcPredio::class, 'lc_predio', 't_id');
     }
 
     public function procedimientoCatastralRegistraltipo()

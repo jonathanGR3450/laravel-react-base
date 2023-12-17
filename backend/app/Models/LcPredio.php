@@ -17,6 +17,7 @@ class LcPredio extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        't_ili_tid',
         'departamento',
         'municipio',
         'id_operacion',
@@ -76,13 +77,13 @@ class LcPredio extends Model
     // Relación con lc_datosadicionaleslevantamientocatastral
     public function datosAdicionalesLevantamientoCatastral()
     {
-        return $this->hasOne(LcDatosAdicionalesLevantamientoCatastral::class, 'lc_predio');
+        return $this->hasOne(LcDatosAdicionalesLevantamientoCatastral::class, 'lc_predio', 't_id');
     }
 
     // Relación con lc_datosphcondominio
     public function lcDatosPhCondominio()
     {
-        return $this->hasOne(lcDatosPhCondominio::class, 'lc_predio');
+        return $this->hasOne(LcDatosPhCondominio::class, 'lc_predio', 't_id');
     }
 
     // Relación con lc_derecho (Unidades)
@@ -107,11 +108,11 @@ class LcPredio extends Model
         return $this->hasMany(ColUebaunit::class, 'baunit', 't_id');
     }
 
-    function matrizCopropiedad(): HasOne {
+    public function matrizCopropiedad(): HasOne {
         return $this->hasOne(LcPredioCopropiedad::class, 'matriz', 't_id');
     }
 
-    function unidadPredialCopropiedad(): HasOne {
+    public function unidadPredialCopropiedad(): HasOne {
         return $this->hasOne(LcPredioCopropiedad::class, 'unidad_predial', 't_id');
     }
 }
