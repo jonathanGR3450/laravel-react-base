@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Tablero from "../Page/Dashboard";
 import Menu from "../Page/Menu";
 import ConsultarPredio from "../Page/ConsultarPredio";
+import InfoInspeccion from "../Page/InfoInspeccion";
 import DetallesPredio from "../Page/DetallesPredio";
 import Consulta from "../Page/Consulta";
 import FichaPredial from "../Page/FichaPredial";
@@ -41,6 +42,10 @@ const Ruta = () => {
             <Route
               path="/ConsultarPredio"
               element={<ConsultarPredio />}
+            ></Route>
+            <Route
+              path="/InfoInspeccion"
+              element={<InfoInspeccion/>}
             ></Route>
             <Route path="/DetallesPredio" element={<DetallesPredio />}></Route>
             <Route
