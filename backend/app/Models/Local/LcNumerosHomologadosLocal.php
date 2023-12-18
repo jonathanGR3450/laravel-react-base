@@ -21,7 +21,7 @@ class LcNumerosHomologadosLocal extends Model
         'lc_numeros_prediales_id',
     ];
 
-    function numeroPredial(): BelongsTo {
+    public function numeroPredial(): BelongsTo {
         return $this->belongsTo(LcNumerosPredialLocal::class, 'lc_numeros_prediales_id', 't_id');
     }
 }

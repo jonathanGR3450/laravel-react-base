@@ -27,7 +27,7 @@ class LcConstruccionPlantaTipo extends Model
         'description',
     ];
 
-    function unidadConstrucciones() : HasMany {
+    public function unidadConstrucciones() : HasMany {
         return $this->hasMany(LcCaracteristicasUnidadConstruccion::class, 'tipo_construccion');
     }
 }

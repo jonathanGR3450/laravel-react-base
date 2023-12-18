@@ -45,6 +45,7 @@ use App\Http\Controllers\Predio\GetPrediosByNumeroPredialController;
 use App\Http\Controllers\Predio\GetPrediosByNumeroPredialLocalController;
 use App\Http\Controllers\Predio\IndexNumerosHomologadosController;
 use App\Http\Controllers\Predio\IndexNumerosPredialesController;
+use App\Http\Controllers\Predio\MigracionConservacionController;
 use App\Http\Controllers\Predio\StoreColUebaunitLocal;
 use App\Http\Controllers\Predio\StoreColUnidadfuenteLocal;
 use App\Http\Controllers\Predio\StoreFuenteAdministrativaDerechoController;
@@ -90,6 +91,8 @@ Route::prefix('v1')->group(function () {
         Route::get('list/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialController::class);
         Route::get('list/local/numeros-prediales/{numero_predial}/', GetPrediosByNumeroPredialLocalController::class);
         Route::get('list/local/numeros-prediales', IndexNumerosPredialesController::class);
+
+        Route::post('migracion/conservacion', MigracionConservacionController::class);
     });
 
     Route::prefix('caracteristicasunidadconstruccion')->group(function () {

@@ -46,7 +46,7 @@ class LcRestriccionLocal extends Model
         return $this->belongsTo(LcPredioLocal::class, 'unidad', 't_id');
     }
 
-    function colRrrFuente() : HasMany {
+    public function colRrrFuente() : HasMany {
         return $this->hasMany(ColRrrfuenteLocal::class, 't_id', 'rrr_lc_restriccion');
     }
 }

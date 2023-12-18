@@ -32,7 +32,7 @@ class LcAgrupacionInteresadosLocal extends Model
     // Definir relación inversa para la relación 'agrupacion' en ColMiembroLocal
     public function miembrosAgrupacion()
     {
-        return $this->hasMany(ColMiembroLocal::class, 't_id', 'agrupacion');
+        return $this->hasMany(ColMiembroLocal::class, 'agrupacion', 't_id');
     }
 
     // public function tipoInteresado()
@@ -40,7 +40,7 @@ class LcAgrupacionInteresadosLocal extends Model
     //     return $this->belongsTo(GrupointeresadoTipo::class, 'tipo');
     // }
 
-    function lcRestricion() : HasMany {
+    public function lcRestricion() : HasMany {
         return $this->hasMany(LcRestriccionLocal::class, 't_id', 'interesado_lc_agrupacioninteresados');
     }
 }

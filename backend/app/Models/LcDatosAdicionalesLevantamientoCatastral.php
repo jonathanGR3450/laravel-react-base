@@ -39,7 +39,7 @@ class LcDatosAdicionalesLevantamientoCatastral extends Model
     // Relación con lc_predio
     public function lcPredio()
     {
-        return $this->belongsTo(LcPredio::class, 'lc_predio');
+        return $this->belongsTo(LcPredio::class, 'lc_predio', 't_id');
     }
 
     public function procedimientoCatastralRegistraltipo()
@@ -56,5 +56,10 @@ class LcDatosAdicionalesLevantamientoCatastral extends Model
     public function estructuraNovedadFMI()
     {
         return $this->hasMany(LcEstructuraNovedadFMI::class, 'lc_dtsdcnlstmstrl_nvdd_fmi', 't_id');
+    }
+
+    public function contactoVisita()
+    {
+        return $this->hasMany(LcContactoVisita::class, 'lc_datos_adicionales', 't_id');
     }
 }
