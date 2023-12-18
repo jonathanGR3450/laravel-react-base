@@ -543,17 +543,54 @@ export const PredioResumeForm = React.forwardRef((props, ref) => {
   );
 });
 export const InteresadoResumeForm = React.forwardRef((props, ref) => {
+  console.log("props resume interesado", props);
+  let { interesados } = props.datos;
+  console.log(interesados);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
-    const closeModal = () => {
-      setIsModalOpen(false);
-    };
-    useImperativeHandle(ref, () => ({
-      openModal,
-    }));
   };
-  return <Modal isOpen={isModalOpen} onClose={closeModal}></Modal>;
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+
+  const mostrar = (data) => {
+    return data.map((item, index) => {
+      console.log(item);
+      return (
+        <div className="flex flex-col">
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo Interesados</th>
+                <th>Primer Nombre</th>
+                <th> Segundo Nombre</th>
+                <th>Primer Apellido</th>
+                <th>Segundo Apellido</th>
+              </tr>
+            </thead>
+          </table>
+          <label> Interesado {index + 1}</label>
+          <div className="flex flex-row">
+            <div></div>
+            <label>
+              {item.tipo == 658 ? "Persona Natural" : "Persona Juridica"}
+            </label>
+            <label>{item.primer_nombre}</label>
+          </div>
+        </div>
+      );
+    });
+  };
+
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      {mostrar(interesados)}
+    </Modal>
+  );
 });
 export const TerrenoResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

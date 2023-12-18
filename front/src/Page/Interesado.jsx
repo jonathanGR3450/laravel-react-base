@@ -167,10 +167,9 @@ const InteresadoForm = (props, ref) => {
           console.log("guardo id");
         }
       }
-      props.msj("Datos Interesado Guardado Correctamente");
+
       return auxId;
     } catch (error) {
-      props.msj("Error al Guardar Datos de Interesado");
       console.log("error: " + error);
     }
   }
@@ -242,7 +241,7 @@ const InteresadoForm = (props, ref) => {
             }
           });
         });
-
+        props.msj("Datos Interesado Guardado Correctamente");
         props.onClose();
         updateTableData(tableData);
       } else {
@@ -250,7 +249,9 @@ const InteresadoForm = (props, ref) => {
       setLoading(false);
       console.log("Data interesado", interesadosData);
       //Guardar
-    } catch (error) {}
+    } catch (error) {
+      props.msj("Error al Guardar Datos de Interesado");
+    }
   }
   //Form de Interesados
   const agregarInteresados = () => {

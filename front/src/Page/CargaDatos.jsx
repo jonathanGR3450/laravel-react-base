@@ -12,6 +12,7 @@ import {
   FuenteResumeForm,
   DerechoResumeForm,
   PredioResumeForm,
+  InteresadoResumeForm,
 } from "./ResumeData";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
@@ -42,6 +43,7 @@ export const LoadDataForm = () => {
     const fuenteResumeForm = useRef();
     const derechoResumeForm = useRef();
     const predioResumeForm = useRef();
+    const interesadosResumeForm = useRef();
     //Resume
     const openfuenteResumeForm = () => {
       fuenteResumeForm.current.openModal();
@@ -51,6 +53,9 @@ export const LoadDataForm = () => {
     };
     const openpredioResumeForm = () => {
       predioResumeForm.current.openModal();
+    };
+    const openinteresadosResumeForm = () => {
+      interesadosResumeForm.current.openModal();
     };
     const filas = Object.entries(tableData).map((items, index) => {
       let item = items[1];
@@ -74,11 +79,17 @@ export const LoadDataForm = () => {
             ) : null}
           </td>
           <td className="border-2 rounded-xl p-2">
-            {item.hasOwnProperty("interesado") ? (
-              <button>
-                {" "}
-                <FontAwesomeIcon icon={faSearch} />
-              </button>
+            {item.hasOwnProperty("interesados") ? (
+              <div>
+                <button onClick={openinteresadosResumeForm}>
+                  <FontAwesomeIcon icon={faSearch} />
+                </button>
+                <InteresadoResumeForm
+                  ref={interesadosResumeForm}
+                  datos={item}
+                  id={index}
+                />
+              </div>
             ) : null}
           </td>
           <td className="border-2 rounded-xl p-2">
