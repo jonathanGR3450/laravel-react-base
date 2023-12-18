@@ -28,9 +28,24 @@ const FormularioResolucion = () => {
   const [anioNotificacionLetra, setAnioNotificacionLetra] = useState("");
   const [anioNotificacion, setAnioNotificacion] = useState("");
   const [nombreDirector, setnombreDirector] = useState("");
+  const [documentosAdjuntados, setDocumentosAdjuntados] = useState([]);
 
   const { mostrarAlerta, alerta, submitInfoResolucion, infoInscribir } =
     useInfo();
+
+  const adjuntarDocumentos = (e) => {
+    const valorOpcion = e.target.value;
+    // Verificar si la opción ya está seleccionada
+    if (documentosAdjuntados.includes(valorOpcion)) {
+      // Si está seleccionada, quitarla del array
+      setDocumentosAdjuntados(
+        documentosAdjuntados.filter((opcion) => opcion !== valorOpcion)
+      );
+    } else {
+      // Si no está seleccionada, agregarla al array
+      setOpcionesSeleccionadas([...opcionesSeleccionadas, valorOpcion]);
+    }
+  };
 
   let auxinfoInscribir = Inscripcion;
   console.log("info escribir", auxinfoInscribir);
@@ -172,7 +187,7 @@ const FormularioResolucion = () => {
           onChange={(e) => setSerialResolucion(e.target.value)}
         />
       </div>
-      <div className="  mb-3">
+     {/*  <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="dia">
           Día
         </label>
@@ -184,8 +199,8 @@ const FormularioResolucion = () => {
           value={dia}
           onChange={(e) => setDia(e.target.value)}
         />
-      </div>
-      <div className=" mb-3">
+      </div> */}
+      {/* <div className=" mb-3">
         <label className="font-semibold m-2 " htmlFor="mes">
           Mes
         </label>
@@ -197,8 +212,8 @@ const FormularioResolucion = () => {
           value={mes}
           onChange={(e) => setMes(e.target.value)}
         />
-      </div>
-      <div className=" mb-3">
+      </div> */}
+      {/* <div className=" mb-3">
         <label className="font-semibold m-2 " htmlFor="anio">
           Año
         </label>
@@ -210,7 +225,7 @@ const FormularioResolucion = () => {
           value={anio}
           onChange={(e) => setAnio(e.target.value)}
         />
-      </div>
+      </div> */}
       <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="nombre">
           Nombre Completo Propietario
@@ -303,7 +318,7 @@ const FormularioResolucion = () => {
       </div>
       <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="notaria">
-          Notaria
+          Notaria en Texto
         </label>
         <input
           type="text"
@@ -327,9 +342,54 @@ const FormularioResolucion = () => {
           onChange={(e) => setCiudadNotaria(e.target.value)}
         />
       </div>
+      <label className="font-semibold m-2 " htmlFor="ciudadNotaria">
+        Documentos Adjuntos
+      </label>
+      <div className=" flex justify-center">
+        <label>
+          Selecciona los documentos Adjuntos:
+          <div>
+            <input
+              type="checkbox"
+              value="EscrituraPublica"
+              checked={documentosAdjuntados.includes("opcion1")}
+              onChange={adjuntarDocumentos}
+            />
+            Escritura Publica
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              value="CertificadoTradicionLibertad"
+              checked={documentosAdjuntados.includes("opcion2")}
+              onChange={adjuntarDocumentos}
+            />
+            Certificado Tradicion y libertad
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              value="ReglamentoPH"
+              checked={documentosAdjuntados.includes("opcion3")}
+              onChange={adjuntarDocumentos}
+            />
+            Reglamento PH
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              value="Otros"
+              checked={documentosAdjuntados.includes("opcion3")}
+              onChange={adjuntarDocumentos}
+            />
+            Otros
+          </div>
+        </label>
+      </div>
+
       <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="diaNotificacionLetra">
-          Dia Notificacion en Letra
+          Dia Resolución en Letra
         </label>
         <input
           type="text"
@@ -342,7 +402,7 @@ const FormularioResolucion = () => {
       </div>
       <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="diaNotificacion">
-          Dia Notificacion
+          Dia Resolución
         </label>
         <input
           type="text"
@@ -355,7 +415,7 @@ const FormularioResolucion = () => {
       </div>
       <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="mesNotificacionLetra">
-          Mes Notificacion Letra
+          Mes Resolución Letra
         </label>
         <input
           type="text"
@@ -368,7 +428,7 @@ const FormularioResolucion = () => {
       </div>
       <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="anioNotificacionLetra">
-          Año Notificacion Letra
+          Año Resolución Letra
         </label>
         <input
           type="text"
@@ -381,7 +441,7 @@ const FormularioResolucion = () => {
       </div>
       <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="anioNotificacion">
-          Año Notificacion
+          Año Resolución
         </label>
         <input
           type="text"
@@ -394,13 +454,13 @@ const FormularioResolucion = () => {
       </div>
       <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="nombreDirector">
-          Nombre Director
+          Nombre Directora
         </label>
         <input
           type="text"
-          id="nombreDirector"
+          id="nombreDirectora"
           className=" w-full border-2 rounded-lg text-center "
-          placeholder="JIM NIXON DÍAZ HENAO"
+          placeholder="LUISA MONTOYA"
           value={nombreDirector}
           onChange={(e) => setnombreDirector(e.target.value)}
         />
