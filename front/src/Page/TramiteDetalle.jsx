@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import ZonaGeo from "../Json/zonaGeoEconomica.json";
 import TablaCatastral from "../Json/prueba.json";
 import TablaVivienda from "../Json/vivienda.json";
@@ -27,9 +27,11 @@ const TramiteDetalleForm = () => {
     const [vigenciaTipo, setVigenciaTipo] = useState(["2023", "2024", "2025"])
     const [jsonValues,setJsonValues] = useState(  
       {
-        incremento:0,
-        decreto:"Na",
-        vigencia:"2023"
+        clasificacion_mutacion: 153,
+        numero_resolucion:"res 0002",
+        fecha_resolucion:"2023-12-06",
+        fecha_radicacion:"2023-11-06",
+        ric_predio: 1
       }
     )
     const interesado = Array(Object(predioPrueba.data.Predio[0].derechos[0].interesado_lc_interesado))//Se convierte a array porque en Json no es array
@@ -65,12 +67,61 @@ const TramiteDetalleForm = () => {
     //console.log((construccion))//
     const [open, setOpen] = useState(false);  
     const closeModal = () => setOpen(false);
-    function handleInput(e) {    
-      
+    const ref = useRef(null);
+    const ref1 = useRef(null);
+    const ref2 = useRef(null);
+    const ref3 = useRef(null);
+    const ref4 = useRef(null);
+    function handleInput(e) {          
         const {name, value} = e.target;
-        jsonValues.incremento=value
-        console.log(value);
-        
+        jsonValues.clasificacion_mutacion=parseInt(value)
+        console.log(value);        
+      }
+      function handleInput1(e) {          
+        const {name, value} = e.target;
+        jsonValues.numero_resolucion=value
+        console.log(value);        
+      }
+      function handleInput2(e) {          
+        const {name, value} = e.target;
+        jsonValues.fecha_resolucion=value
+        console.log(value);        
+      }
+      function handleInput3(e) {          
+        const {name, value} = e.target;
+        jsonValues.fecha_radicacion=value
+        console.log(value);        
+      }
+      function handleInput4(e) {          
+        const {name, value} = e.target;
+        jsonValues.ric_predio=parseInt(value)
+        //console.log(value);           
+        console.log(ref4.current.value);  
+      }                        
+      async function postJSON(data) {
+        try {
+          const response = await fetch("http://localhost/api/v1/ric-tramite-catastral/local", {
+            method: "POST", // or 'PUT'
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+            
+          });
+      
+          const result = await response.json();
+          console.log("Success:", result);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    
+      function handleEnviar(e) {    
+        console.log("Enviando ...");
+        const jsonEnviar={"clasificacion_mutacion":jsonValues.clasificacion_mutacion,"numero_resolucion":jsonValues.numero_resolucion,"fecha_resolucion": jsonValues.fecha_resolucion,"ric_predio": jsonValues.ric_predio}
+        console.log(jsonEnviar)
+        console.log(jsonValues)
+        postJSON(jsonEnviar);
       }
 
     return(
@@ -451,33 +502,27 @@ const TramiteDetalleForm = () => {
                 <AccordionItemPanel>
                     <br/>
                     <div className=" flex justify-center items-center w-full mb-3">
-                        <div className="w-1/4 flex flex-col  ml-4 ">
-                            <label className="w-mid font-semibold">Id : </label>
-                            <input
-                            onChange={handleInput}
-                            type="text"
-                            className="border-2 p-2 rounded-lg text-center w-full"
-                            name="area1"                        
-                            ></input>
-                        </div>                        
+                    
                         <div className="w-1/4 flex flex-col  ml-4 ">
                             <label className="w-mid font-semibold">Clasificacion Mutacion : </label>
                             <input
                             onChange={handleInput}
-                            type="text"
-                            step="0.01"
+                            type="number"
+                            step="1"
                             className="border-2 p-2 rounded-lg text-center w-full"
-                            name="area1"                        
+                            name="area1"      
+                            ref={ref}                  
                             ></input>                        
                         </div>          
                         <div className="w-1/4 flex flex-col  ml-4 ">
                             <label className="w-mid font-semibold">Numero de Resolucion : </label>
                             <input
-                            onChange={handleInput}
+                            onChange={handleInput1}
                             type="text"
                             step="0.01"
                             className="border-2 p-2 rounded-lg text-center w-full"
-                            name="area1"                        
+                            name="area1"    
+                            ref={ref1}                    
                             ></input>                        
                         </div>
                                                   
@@ -486,36 +531,46 @@ const TramiteDetalleForm = () => {
                         <div className="w-1/4 flex flex-col  ml-4 ">
                             <label className="w-mid font-semibold">Fecha Resolucion : </label>
                             <input
-                            onChange={handleInput}
+                            onChange={handleInput2}
                             type="text"
                             step="0.01"
                             className="border-2 p-2 rounded-lg text-center w-full"
                             name="area1"                        
-                            ></input>                        
+                            ref={ref2}
+                            ></input>                    
                         </div>
                         <div className="w-1/4 flex flex-col  ml-4 ">
                             <label className="w-mid font-semibold">Fecha Radicación : </label>
                             <input
-                            onChange={handleInput}
+                            onChange={handleInput3}
                             type="text"
                             step="0.01"
                             className="border-2 p-2 rounded-lg text-center w-full"
-                            name="area1"                        
+                            name="area1"
+                            ref={ref3}                        
                             ></input>                        
                         </div>
                         <div className="w-1/4 flex flex-col  ml-4 ">
                             <label className="w-mid font-semibold">Ric Predio : </label>
                             <input
-                            onChange={handleInput}
-                            type="text"
-                            step="0.01"
+                            onChange={handleInput4}
+                            type="number"
+                            step="1"
                             className="border-2 p-2 rounded-lg text-center w-full"
-                            name="area1"                        
+                            name="area1"
+                            ref={ref4} id="box"
                             ></input>                        
                         </div>
                     </div>                    
                     <br/>
-
+                    <br/>
+                    <div className="w-full flex flex-col items-center justify-center mt-4">
+                    <button className="p-2 w-1/4 text-center  rounded-md  border-2  text-white bg-teal-500 "
+                    onClick={handleEnviar}
+                    >
+                        Guardar Tramite
+                    </button>
+                    </div>
                 </AccordionItemPanel>
             </AccordionItem>                                          
         </Accordion>      
