@@ -432,6 +432,7 @@ export const ModalConstruccionForm = React.forwardRef((props, ref) => {
   );
 });
 export const NormalConstruccionForm = React.forwardRef((props, ref) => {
+  console.log("props normal construccion", props);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = (aux) => {
@@ -445,7 +446,7 @@ export const NormalConstruccionForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <ConstruccionForm contexto={false} />
+      <ConstruccionForm contexto={false} data={props.data} />
     </Modal>
   );
 });

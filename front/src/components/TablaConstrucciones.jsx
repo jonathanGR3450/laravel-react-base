@@ -22,17 +22,15 @@ const TablaConstrucciones = (props) => {
             </tr>
           ) : (
             construccion.map((item, index) => {
-              if (item.t_id != null) {
-                return (
-                  <tr key={index}>
-                    <td>{item.identificador}</td>
-                    <td>{item.tipo_construccion.dispname}</td>
-                    <td>{item.avaluo_construccion}</td>
-                    <td>{item.area_construccion}</td>
-                    <td>"Modal"</td>
-                  </tr>
-                );
-              }
+              return (
+                <tr key={index}>
+                  <td>{item.identificador}</td>
+                  <td>{item.tipo_construccion.dispname}</td>
+                  <td>{item.avaluo_construccion}</td>
+                  <td>{item.area_construccion}</td>
+                  <td>"Modal"</td>
+                </tr>
+              );
             })
           )}
         </tbody>

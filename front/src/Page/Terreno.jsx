@@ -28,15 +28,16 @@ const TerrenoForm = (props, ref) => {
     ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
       useContext(TableContext));
   } else {
-    let terrenoData = props.data ? props.data[0].terreno : "";
+    let terrenoData = props.data ? props.data[0] : "";
     console.log("TerrenoData", terrenoData);
     auxDataForm = {
-      t_id: terrenoData.t_id,
-      area_terreno: terrenoData.area_terreno,
-      codigo_manzana: terrenoData.manzana_vereda_codigo,
-      avaluo_terreno: terrenoData.avaluo_terreno,
+      t_id: terrenoData.terreno.t_id,
+      area_terreno: terrenoData.terreno.area_terreno,
+      codigo_manzana: terrenoData.terreno.manzana_vereda_codigo,
+      avaluo_terreno: terrenoData.terreno.avaluo_terreno,
       ZHG: [],
       SantaMaria: "",
+      cod_homo: terrenoData.Codigo_Homologado,
     };
   }
 
@@ -96,6 +97,35 @@ const TerrenoForm = (props, ref) => {
       updateTableData(tableData);
       props.onClose();
     } else {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      let url = import.meta.env.VITE_API_URL_FIRST + "terreno/local";
+      let json = {
+        area_terreno: terrenoData.area_terreno,
+        avaluo_terreno: terrenoData.avaluo_terreno,
+        manzana_vereda_codigo: terrenoData.codigo_manzana,
+        geometria: "POINT (10 20)",
+        dimension: 685,
+        etiqueta: "",
+        relacion_superficie: null,
+        nivel: "",
+        comienzo_vida_util_version: null,
+        fin_vida_util_version: null,
+        espacio_de_nombres: "Fusagasuga",
+        local_id: terrenoData.cod_homo,
+      };
+      console.log(json);
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(json),
+        redirect: "follow",
+      };
+      const response = await fetch(url, requestOptions);
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Dataaaaa", result);
+      }
     }
     setLoading(false);
   };
@@ -295,7 +325,6 @@ const TerrenoForm = (props, ref) => {
     }
     setTerrenoData((prevValues) => ({ ...prevValues, [name]: value }));
   };
-
   console.log(terrenoData);
   return (
     <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 ">

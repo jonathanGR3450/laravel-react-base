@@ -13,11 +13,16 @@ const InfoConstrucciones = () => {
   const { data: info } = numPredial;
   const { Predio } = info || {};
   const { construccion } = Predio ? Predio[0] : {};
-  console.log("data construccion", construccion);
   const construccionRef = useRef();
   const openConstruccion = () => {
     construccionRef.current.openModal();
   };
+  const dataNoNull = [];
+  construccion.map((item, index) => {
+    if (item.t_id != null) {
+      dataNoNull.push(item);
+    }
+  });
   const editToggle = (e) => {
     e.preventDefault();
     //setEstInput((prevEstInput) => !prevEstInput);
@@ -27,7 +32,7 @@ const InfoConstrucciones = () => {
     <>
       <div className="w-full text-center">Info Construcciones</div>
       <div className="w-full">
-        <TablaConstrucciones data={construccion} />
+        <TablaConstrucciones data={dataNoNull} />
       </div>
       <div className="flex flex-row w-full items-center justify-center ml-4">
         <button
@@ -36,8 +41,7 @@ const InfoConstrucciones = () => {
         >
           Editar
         </button>
-
-        <NormalConstruccionForm ref={construccionRef} />
+        <NormalConstruccionForm ref={construccionRef} data={dataNoNull} />
       </div>
     </>
   );
