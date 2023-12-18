@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useInfo from "../hooks/useInfo";
+import { NormalDerechoForm } from "../Page/Derecho";
+import { NormalFuenteForm } from "../Page/FuenteAdmin";
 
 const InfoJuridica = () => {
   const { numPredial } = useInfo();
-  console.log(numPredial);
+  console.log("Info Predial", numPredial.data);
   const { data: info } = numPredial;
 
   // Verificar si 'info' y 'Predio' existen antes de desestructurar
@@ -23,6 +25,7 @@ const InfoJuridica = () => {
   } = Predio ? Predio[0].derechos[0].fuenteadministrativa[0] : {};
 
   const [tipoDerecho, setTipoDerecho] = useState(tipo);
+  console.log("tipo de derecho", tipoDerecho);
   const [fraccionDerecho, setFraccionDerecho] = useState(fraccion_derecho);
   const [fechaInicioTenencia, setFechaInicioTenencia] = useState(
     fecha_inicio_tenencia
@@ -41,11 +44,29 @@ const InfoJuridica = () => {
   const [fechaDocumentoFuente, setFechaDocumentoFuente] = useState(
     fecha_documento_fuente
   );
+  /////
+  const derechoRef = useRef();
+  const fuenteAdministrativaRef = useRef();
+  const openDerecho = () => {
+    derechoRef.current.openModal();
+  };
+  const openFuente = () => {
+    fuenteAdministrativaRef.current.openModal();
+  };
   const [estInput, setEstInput] = useState(true);
 
   const editToggle = (e) => {
     e.preventDefault();
-    setEstInput((prevEstInput) => !prevEstInput);
+    let { name } = e.target;
+    console.log("Name Boton", name);
+    if (name === "derecho") {
+      openDerecho();
+    }
+    if (name === "fuente_administrativa") {
+      openFuente();
+    }
+
+    //setEstInput((prevEstInput) => !prevEstInput);
   };
 
   return (
@@ -63,7 +84,7 @@ const InfoJuridica = () => {
               disabled={estInput}
               className=" border-2 rounded-lg text-center w-full"
               placeholder=""
-              value={tipoDerecho ? tipoDerecho : ""}
+              value={tipoDerecho ? tipoDerecho.dispname : ""}
               onChange={(e) => setTipoDerecho(e.target.value)}
             />
           </div>
@@ -111,6 +132,17 @@ const InfoJuridica = () => {
               onChange={(e) => setDescripcionDerecho(e.target.value)}
             />
           </div>
+          <div className="flex flex-row w-2/3 ml-4 items-end justify-end">
+            <button
+              name="derecho"
+              onClick={editToggle}
+              className="p-2 text-center rounded-md text-white bg-orange-700"
+            >
+              Editar
+            </button>
+
+            <NormalDerechoForm data={Predio} ref={derechoRef} />
+          </div>
         </div>
       </form>
       <div className=" text-center m-5 border ">Fuente Administrativa</div>
@@ -126,7 +158,7 @@ const InfoJuridica = () => {
               disabled={estInput}
               className=" border-2 rounded-lg text-center w-full"
               placeholder=""
-              value={tipoFuenteAdmini ? tipoFuenteAdmini : ""}
+              value={tipoFuenteAdmini ? tipoFuenteAdmini.dispname : ""}
               onChange={(e) => setTipoFuenteAdmini(e.target.value)}
             />
           </div>
@@ -184,7 +216,7 @@ const InfoJuridica = () => {
               disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
-              value={estadoDisponibilidad ? estadoDisponibilidad : ""}
+              value={estadoDisponibilidad ? estadoDisponibilidad.dispname : ""}
               onChange={(e) => setEstadoDisponibilidad(e.target.value)}
             />
           </div>
@@ -218,14 +250,14 @@ const InfoJuridica = () => {
           </div>
           <div className="flex flex-row w-2/3 ml-4 items-end justify-end">
             <button
+              name="fuente_administrativa"
               onClick={editToggle}
               className="p-2 text-center rounded-md text-white bg-orange-700"
             >
               Editar
             </button>
-            <button className="p-2 ml-4 text-center rounded-md text-white bg-teal-500">
-              Guardar
-            </button>
+
+            <NormalFuenteForm data={Predio} ref={fuenteAdministrativaRef} />
           </div>
         </div>
       </form>

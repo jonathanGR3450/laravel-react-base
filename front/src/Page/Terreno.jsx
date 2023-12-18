@@ -8,23 +8,39 @@ import React, {
 } from "react";
 import { InteresadoContext } from "./Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
+import Loader from "./Loader";
 const TerrenoForm = (props, ref) => {
-  console.log(props.contexto);
+  console.log(props);
   let tableData = [];
   let updateTableData = () => {};
-  const {
-    tableData: contextTableData,
-    updateTableData: contextUpdateTableData,
-  } = useContext(TableContext);
+  let contextTableData, contextUpdateTableData;
+  let auxDataForm = {};
+  let [loading, setLoading] = useState(false);
+  if (props.contexto) {
+    auxDataForm = {
+      t_id: "",
+      area_terreno: "",
+      codigo_manzana: "",
+      avaluo_terreno: "",
+      ZHG: [],
+      SantaMaria: "",
+    };
+    ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
+      useContext(TableContext));
+  } else {
+    let terrenoData = props.data ? props.data[0].terreno : "";
+    console.log("TerrenoData", terrenoData);
+    auxDataForm = {
+      t_id: terrenoData.t_id,
+      area_terreno: terrenoData.area_terreno,
+      codigo_manzana: terrenoData.manzana_vereda_codigo,
+      avaluo_terreno: terrenoData.avaluo_terreno,
+      ZHG: [],
+      SantaMaria: "",
+    };
+  }
 
-  let [terrenoData, setTerrenoData] = useState({
-    t_id: "",
-    area_terreno: "",
-    codigo_manzana: "",
-    avaluo_terreno: "",
-    ZHG: [],
-    SantaMaria: "",
-  });
+  let [terrenoData, setTerrenoData] = useState(auxDataForm);
   const isAnyValueEmpty = () => {
     if (terrenoData.area_terreno !== "" && terrenoData.ZHG !== "") {
       setEstBtt(false);
@@ -47,7 +63,9 @@ const TerrenoForm = (props, ref) => {
   }
   //     item.Dpto +  item.Mpio +  item.Zona +  item.Sector +  item.Comuna +  item.Barrio +  item.Manzana
 
-  const sendData = async () => {
+  const sendData = async (e) => {
+    setLoading(true);
+    e.preventDefault();
     if (terrenoData.SantaMaria == "") {
       terrenoData.SantaMaria = false;
     }
@@ -77,7 +95,9 @@ const TerrenoForm = (props, ref) => {
 
       updateTableData(tableData);
       props.onClose();
+    } else {
     }
+    setLoading(false);
   };
   ////ENDPOINT
   async function createTerreno(data) {
@@ -119,8 +139,10 @@ const TerrenoForm = (props, ref) => {
       if (response.ok) {
         const result = await response.json();
         console.log("Dataaaaa", result);
+        props.msj("Datos Terrenos Guardados Correctamente");
         return result.data;
       } else {
+        props.msj("Error al guardar Datos Terreno");
         throw new Error("Error en la solicitud");
       }
     } catch (error) {
@@ -145,8 +167,9 @@ const TerrenoForm = (props, ref) => {
     }));
     setZonasData(newZonasData);
   }
-  const agregarZonas = () => {
+  const agregarZonas = (e) => {
     //  setEstForm(true);
+    e.preventDefault();
     const nuevasZonas = [];
     for (let i = 0; i < numZonas; i++) {
       nuevasZonas.push(
@@ -324,7 +347,7 @@ const TerrenoForm = (props, ref) => {
         </div>
       </div>
       {zonas}
-      <div className="w-full flex flex-row mt-4 justify-center items-center">
+      <div className="w-full flex flex-col mt-4 justify-center items-center">
         <button
           onClick={sendData}
           className={`${
@@ -334,6 +357,7 @@ const TerrenoForm = (props, ref) => {
         >
           Guardar
         </button>
+        {loading ? <Loader /> : null}
       </div>
     </div>
   );
@@ -362,14 +386,30 @@ export const ModalTerrenoForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <TerrenoForm contexto={true} dataid={dataId} onClose={closeModal} />
+      <TerrenoForm
+        contexto={true}
+        dataid={dataId}
+        onClose={closeModal}
+        msj={props.msj}
+      />
     </Modal>
   );
 });
-export const NormalInteresadoForm = React.forwardRef((props, ref) => {
+export const NormalTerrenoForm = React.forwardRef((props, ref) => {
+  console.log("Props de Normal Derecho", props);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-      <TerrenoForm contexto={false} />
-    </div>
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <TerrenoForm contexto={false} data={props.data} />
+    </Modal>
   );
 });

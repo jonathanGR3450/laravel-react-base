@@ -1,0 +1,58 @@
+{
+  "inscribe_datos_predio_nmero_catastral": [
+    {
+      "inscribe_datos_predio_nmero_catastral": "252900100000012120137000000000",
+      "inscribe_datos_predio_matricula_inmobiliaria": "157 - 1356423",
+      "inscribe_datos_predio_Direccion": "Prueba",
+      "inscribe_datos_predio_destino_económico": "Infraestructura de saneamiento básico",
+      "inscribe_datos_predio_area_terreno": 100,
+      "inscribe_datos_predio_area_construida": 250,
+      "inscribe_datos_predio_avaluo": 213572000,
+      "inscribe_datos_predio_avaluo_terreno": 62586000,
+      "inscribe_datos_predio_vigencia": "01/01/2023"
+    }
+  ],
+  "inscribe_propietarios_nmero_catastral": [
+    {
+      "inscribe_propietarios_nmero_catastral": "252900100000012120137000000000",
+      "inscribe_propietarios_numero_propietario": 1,
+      "inscribe_propietarios_nombre_propietario": "ABAONZA GOMEZ GRACIELA DEL CARMEN",
+      "inscribe_propietarios_tipo_documento": "C.C.",
+      "inscribe_propietarios_numero_documento": "26509237"
+    },
+    {
+      "inscribe_propietarios_nmero_catastral": "252900100000012120137000000000",
+      "inscribe_propietarios_numero_propietario": 2,
+      "inscribe_propietarios_nombre_propietario": "AB3  CONSTRUCTORES S A S",
+      "inscribe_propietarios_tipo_documento": "NIT",
+      "inscribe_propietarios_numero_documento": "90052222498"
+    },
+    {
+      "inscribe_propietarios_nmero_catastral": "252900100000012120137000000000",
+      "inscribe_propietarios_numero_propietario": 3,
+      "inscribe_propietarios_nombre_propietario": "ABRIL OFELIA",
+      "inscribe_propietarios_tipo_documento": "C.C.",
+      "inscribe_propietarios_numero_documento": "20559632"
+    }
+  ],
+  "inscribe_liquidacion_nmero_catastral": [
+    {
+      "inscribe_liquidacion_nmero_catastral": "252900100000012120137000000000",
+      "inscribe_liquidacion_concepto": "ACTUALIZACION CATASTRAL",
+      "inscribe_liquidacion_fecha": "01/01/2022",
+      "inscribe_liquidacion_avaluo": "$ 204.748.000"
+    },
+    {
+      "inscribe_liquidacion_nmero_catastral": "252900100000012120137000000000",
+      "inscribe_liquidacion_concepto": "Dec004",
+      "inscribe_liquidacion_fecha": "01/01/2023",
+      "inscribe_liquidacion_avaluo": "$ 213.572.000"
+    },
+    {
+      "inscribe_liquidacion_nmero_catastral": "252900100000012120137000000000",
+      "inscribe_liquidacion_concepto": "10",
+      "inscribe_liquidacion_fecha": "01/01/2024",
+      "inscribe_liquidacion_avaluo": "$ 436.349.000"
+    }
+  ]
+}

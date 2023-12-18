@@ -14,6 +14,8 @@ import {
 } from "./ResumeData";
 //import { AvaluoContext } from "./Context/AvaluoProvider";
 import useAvaluo from "../hooks/useAvaluo";
+import dataAvaluo from "../Json/dataAvaluo.json";
+import Loader from "./Loader";
 
 export const LoadDataConstruccion = () => {
   const uniConstruccionRef = useRef();
@@ -22,7 +24,8 @@ export const LoadDataConstruccion = () => {
 
   const fechaActual = new Date();
   let añoActual = fechaActual.getFullYear();
-
+  const [loading, setLoading] = useState(false);
+  const [msjLoading, setMsjLoading] = useState("Prueba");
   const { tableData } = useContext(TableContext);
   const { createAvaluo, Load_Data_Desenglobe } = useAvaluo();
   const [dataSelect, setDataSelect] = useState(0);
@@ -138,12 +141,9 @@ export const LoadDataConstruccion = () => {
   };
 
   const ChangeData = () => {
-    let validNumbers = [];
-    const { updateIdArray } = useContext(DataContext);
     const [dataId, setDataId] = useState("");
     const [inputId, setInputId] = useState("");
     const [estBtt, setEstBtt] = useState(true);
-    let [coma, setComa] = useState("");
     function validarid() {
       if (isNaN(dataId[0])) {
         setEstBtt(true);
@@ -157,18 +157,16 @@ export const LoadDataConstruccion = () => {
 
     function NumComa(e) {
       let { value } = e.target;
+      let num = [];
       value = value.replace(/[^0-9,-]/g, "");
       // Elimina caracteres no numéricos
       if (value.includes("-")) {
-        setComa(1);
         if (value.split("-").length <= 2) {
           //setTamaño(3);
           let aux = value.split("-");
-          let numeros = aux.map((item) => {
-            return parseInt(item);
-          });
-          validNumbers = numeros;
-          setDataId(validNumbers);
+          for (let i = parseInt(aux[0]); i <= parseInt(aux[1]); i++) {
+            num.push(i);
+          }
         }
       } else {
         let aux = "";
@@ -178,19 +176,17 @@ export const LoadDataConstruccion = () => {
           aux = value.split(",");
         }
         if (value.includes(",")) {
-          setComa(2);
           let numeros = aux.map((item) => {
             return parseInt(item);
           });
 
-          validNumbers = numeros;
-          setDataId(validNumbers);
+          num = numeros;
         } else {
-          setComa(3);
-          validNumbers = [parseInt(value)];
-          setDataId(validNumbers);
+          let aux = [parseInt(value)];
+          num = [aux];
         }
       }
+      setDataId(num);
       setInputId(value);
     }
     function Selectdata(e) {
@@ -248,7 +244,7 @@ export const LoadDataConstruccion = () => {
               >
                 Carga
               </button>{" "}
-              <ModalTerrenoForm ref={terrenoRef} />
+              <ModalTerrenoForm ref={terrenoRef} msj={setMsjLoading} />
             </div>
           ) : null}
           {dataSelect == 2 ? (
@@ -261,7 +257,10 @@ export const LoadDataConstruccion = () => {
               >
                 Carga
               </button>{" "}
-              <ModalConstruccionForm ref={construccionRef} />
+              <ModalConstruccionForm
+                ref={construccionRef}
+                msj={setMsjLoading}
+              />
             </div>
           ) : null}
           {dataSelect == 3 ? (
@@ -274,7 +273,8 @@ export const LoadDataConstruccion = () => {
               >
                 Carga
               </button>
-              <ModalUniConForm ref={uniConstruccionRef} />
+              {loading ? <Loader /> : null}
+              <ModalUniConForm ref={uniConstruccionRef} msj={setMsjLoading} />
             </div>
           ) : null}
         </div>
@@ -2222,235 +2222,295 @@ export const LoadDataConstruccion = () => {
     console.log("redondeo", redondeo);
     return numero + redondeo;
   }
+
   async function loadAvaluoBase(año, data) {
     let result = await createAvaluo(año, data);
-    console.log("Resultado Contexto", result);
+    console.log("Resultado Contexto", JSON.stringify(result));
+    //result = dataAvaluo;
     setDataTotal(result);
     setEstDataTotal(true);
     Load_Data_Desenglobe(tableData);
   }
   const AllTableForm = () => {
     console.log("Datos Totales", dataTotal);
-
-    const Allfilas = Object.entries(dataTotal).map((items, index) => {
-      let item = items[1];
-      console.log("items data total", item);
-      //redondearAvaluoTotal(item.avaluo)
-      /* ${" "}
-            {item.zona == "01"
-              ? redondear(item.avaluo * 1.0431).toLocaleString() :*/
-      return (
-        <tr key={index}>
-          <td className="border-2 rounded-xl p-2">{index + 1}</td>
-          <td className="border-2 rounded-xl p-2">{item.num_predial}</td>
-          <td className="border-2 rounded-xl p-2">{item.matricula}</td>
-          <td className="border-2 rounded-xl p-2">{item.direccion}</td>
-          <td className="border-2 rounded-xl p-2">{item.destinacion}</td>
-          <td className="border-2 rounded-xl p-2">{item.area_terreno}</td>
-          <td className="border-2 rounded-xl p-2">{item.area_construida}</td>
-          <td className="border-2 rounded-xl p-2">
-            $ {item.avaluo.toLocaleString()}
-          </td>
-          <td className="border-2 rounded-xl p-2">{item.vigencia}</td>
-        </tr>
-      );
-    });
-
-    function infoInteresados() {
-      let newDataInteresado = [];
-      jsonInfoProvider.inscribe_propietarios_nmero_catastral = [];
-      tableData.map((item, index) => {
-        item.interesados.map((items, indexs) => {
-          let nombre = "";
-          if (items.tipo == 659) {
-            nombre = items.razon_social;
-          } else {
-            nombre = items.nombre;
-          }
-          let nom_documento = "";
-
-          switch (items.tipo_documento) {
-            case 529:
-              nom_documento = "C.C.";
-              break;
-            case 530:
-              nom_documento = "C.E.";
-              break;
-            case 531:
-              nom_documento = "NIT";
-              break;
-            case 532:
-              nom_documento = "T.I.";
-              break;
-            case 533:
-              nom_documento = "Registro Civil";
-              break;
-            case 534:
-              nom_documento = "Secuencial";
-              break;
-            case 535:
-              nom_documento = "Pasaporte";
-              break;
-            default:
-              nom_documento = "Vacio";
-              break;
-          }
-          let interesado = {
-            inscribe_propietarios_nmero_catastral:
-              item.Dpto +
-              item.Mpio +
-              item.Zona +
-              item.Sector +
-              item.Comuna +
-              item.Barrio +
-              item.Manzana +
-              item.Terreno +
-              item.Condicion +
-              item.Edificio +
-              item.Piso +
-              item.Unidad,
-            inscribe_propietarios_numero_propietario: indexs + 1,
-            inscribe_propietarios_nombre_propietario: nombre,
-            inscribe_propietarios_tipo_documento: nom_documento,
-            inscribe_propietarios_numero_documento: items.documento_identidad,
-          };
-          newDataInteresado.push(interesado);
-        });
-      });
-      jsonInfoProvider.inscribe_propietarios_nmero_catastral =
-        newDataInteresado;
-    }
-
-    async function calculateLiquidacion() {
-      let año = 0;
-      let dataLiquid = [];
-      let dataBase = [];
-      let arrayResult = "";
-      let isRural = "";
-      let requestOptions = {
-        method: "GET",
-        redirect: "follow",
-      };
-      let url =
-        import.meta.env.VITE_API_URL_FIRST +
-        "avaluo-catastral/list/incrementos?limit=1500";
-      console.log("Url", url);
-      try {
-        const response = await fetch(url, requestOptions);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const result = await response.json();
-        arrayResult = result.data.data;
-        let keys = Object.keys(tableData);
-        //Ciclo para sacar los Datos Base
-        for (let key in keys) {
-          let currentItem = tableData[key];
-          if (currentItem.zona != "00") {
-            //Urbano
-            año = 2022;
-            isRural = false;
-          } else {
-            isRural = true;
-            año = 2023;
-            //Solo Rural
-          }
-        }
-        console.log("item tabla", año);
-        dataBase = await Avaluo(año);
-        if (!isRural) {
-          dataBase.map((items, index) => {
-            let newdata = {
-              inscribe_liquidacion_nmero_catastral: items.num_predial,
-              inscribe_liquidacion_concepto: "ACTUALIZACION CATASTRAL",
-              inscribe_liquidacion_fecha: "01/01/" + items.año,
-              inscribe_liquidacion_avaluo:
-                "$ " + redondear(items.avaluo).toLocaleString(),
-            };
-            dataLiquid.push(newdata);
-          });
-        }
-
-        //Liquidacion
-        console.log("Item Año", dataBase);
-        dataBase.map((items, index) => {
-          let avaluoBase = items.avaluo;
-          console.log("Prueba", items);
-          console.log("12345", arrayResult);
-          arrayResult.sort((a, b) => a.vigencia - b.vigencia);
-          for (const item of arrayResult) {
-            console.log("item año 123", item);
-            let valor_nuevo = avaluoBase * (1 + parseFloat(item.incremento));
-            console.log("Valor Nuevo", valor_nuevo);
-            let newdata = {
-              inscribe_liquidacion_nmero_catastral: items.num_predial,
-              inscribe_liquidacion_concepto: item.concepto,
-              inscribe_liquidacion_fecha: "01/01/" + item.vigencia,
-              inscribe_liquidacion_avaluo:
-                "$ " + redondear(valor_nuevo).toLocaleString(),
-            };
-            avaluoBase = valor_nuevo;
-            console.log("Nuevos Datos 123 ", newdata);
-            dataLiquid.push(newdata);
-          }
-        });
-
-        console.log("Datos de la Liquidacion", dataLiquid);
-        jsonInfoProvider.inscribe_liquidacion_nmero_catastral = dataLiquid;
-      } catch (error) {
-        console.log("Error:", error);
+    const predioFilas = dataTotal.inscribe_datos_predio_nmero_catastral.map(
+      (item, index) => {
+        console.log(item);
+        return (
+          <tr key={index}>
+            <td className="border-2 rounded-xl p-2">{index + 1}</td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_datos_predio_nmero_catastral}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_datos_predio_matricula_inmobiliaria}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_datos_predio_Direccion}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_datos_predio_destino_económico}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_datos_predio_area_terreno}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_datos_predio_area_construida}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              $ {item.inscribe_datos_predio_avaluo_terreno.toLocaleString()}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              $ {item.inscribe_datos_predio_avaluo.toLocaleString()}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_datos_predio_vigencia}
+            </td>
+          </tr>
+        );
       }
-    }
-
-    async function SendData() {
-      infoInteresados();
-      await calculateLiquidacion();
-      console.log("Organizados ", JSON.stringify(jsonInfoProvider));
-    }
-
+    );
+    const interesadoFilas = dataTotal.inscribe_propietarios_nmero_catastral.map(
+      (item, index) => {
+        console.log(item);
+        return (
+          <tr key={index}>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_propietarios_nmero_catastral}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_propietarios_numero_propietario}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_propietarios_nombre_propietario}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_propietarios_tipo_documento}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_propietarios_numero_documento}
+            </td>
+          </tr>
+        );
+      }
+    );
+    const liquidacionFilas = dataTotal.inscribe_liquidacion_nmero_catastral.map(
+      (item, index) => {
+        console.log(item);
+        return (
+          <tr key={index}>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_liquidacion_nmero_catastral}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_liquidacion_concepto}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_liquidacion_fecha}
+            </td>
+            <td className="border-2 rounded-xl p-2">
+              {item.inscribe_liquidacion_avaluo}
+            </td>
+          </tr>
+        );
+      }
+    );
     return (
       <div className="w-full flex flex-col mt-4 ">
         <table className="w-full text-center">
-          <thead className="uppercase border-2  bg-teal-500 text-base text-white">
+          <thead className="uppercase border-y-2  bg-teal-500 text-base text-white">
             <tr>
-              <th className="border-2 rounded-xl w-1/12 p-2">ID</th>
-              <th className="border-2 rounded-xl w-2/12 p-2">
-                Número Catastral
+              <th className="border-b-2   w-2/12 p-2 " colSpan={10}>
+                Inscribe Predio
               </th>
-              <th className="border-2 rounded-xl w-1/12 p-2">
-                Matricula Inmobiliaria
-              </th>
-              <th className="border-2 rounded-xl w-1/12 p-2">
-                Direccion del Predio
-              </th>
-              <th className="border-2 rounded-xl w-1/12 p-2">Destinacion</th>
-              <th className="border-2 rounded-xl w-1/12 p-2">
-                Area Terreno (mt2)
-              </th>
-              <th className="border-2 rounded-xl w-1/12 p-2">
-                Area Construida(mt2)
-              </th>
-              <th className="border-2 rounded-xl w-2/12 p-2">Avaluo</th>
-              <th className="border-2 rounded-xl w-1/12 p-2">Vigencia</th>
+            </tr>
+            <tr>
+              <th className=" rounded-es-lg w-1/12 p-2">ID</th>
+              <th className="border-x-2  w-2/12 p-2">Número Catastral</th>
+              <th className="border-x-2 w-1/12 p-2">Matricula Inmobiliaria</th>
+              <th className="border-x-2  w-1/12 p-2">Direccion del Predio</th>
+              <th className="border-x-2  w-1/12 p-2">Destinacion</th>
+              <th className="border-x-2  w-1/12 p-2">Area Terreno (mt2)</th>
+              <th className="border-x-2  w-1/12 p-2">Area Construida(mt2)</th>
+              <th className="border-x-2  w-2/12 p-2">Avaluo Terreno</th>
+              <th className="border-x-2  w-2/12 p-2">Avaluo Total</th>
+              <th className="rounded-ee-lg w-1/12 p-2">Vigencia</th>
             </tr>
           </thead>
-          <tbody>{Allfilas}</tbody>
+          <tbody>{predioFilas}</tbody>
         </table>
-        <div className="w-full flex flex-col justify-center items-center">
-          <button
-            onClick={SendData}
-            className=" w-1/5 p-1 text-center rounded-md text-white bg-teal-500 text-lg mt-4 ml-4"
-          >
-            Guardar Avaluo
-          </button>
-        </div>
+        <table className="w-full text-center">
+          <thead className="uppercase   bg-teal-500 text-base text-white">
+            <tr>
+              <th className="border-b-2   w-2/12 p-2 " colSpan={10}>
+                Inscribe Propietario
+              </th>
+            </tr>
+            <tr>
+              <th className=" rounded-es-lg w-4/12 p-2">Número Catastral</th>
+              <th className="border-x-2  w-1/12 p-2"># Propietario</th>
+              <th className="border-x-2  w-3/12 p-2">Nombre Propietario</th>
+              <th className="border-x-2  w-1/12 p-2">Tipo Documento</th>
+              <th className="rounded-ee-lg w-3/12 p-2">Numero Documento</th>
+            </tr>
+          </thead>
+          <tbody>{interesadoFilas}</tbody>
+        </table>
+        <table className="w-full text-center">
+          <thead className="uppercase  bg-teal-500 text-base text-white">
+            <tr>
+              <th className="border-b-2   w-2/12 p-2 " colSpan={4}>
+                Liquidacion Predio
+              </th>
+            </tr>
+            <tr>
+              <th className=" rounded-es-lg w-4/12 p-2">Número Catastral</th>
+              <th className="border-x-2  w-1/12 p-2">Concepto</th>
+              <th className="border-x-2  w-3/12 p-2">Fecha</th>
+              <th className="rounded-ee-lg w-3/12 p-2">Avaluo</th>
+            </tr>
+          </thead>
+          <tbody>{liquidacionFilas}</tbody>
+        </table>
       </div>
     );
   };
+  //  onClick={0}
 
+  async function update_Data(data) {
+    try {
+      let dataAux = data;
+      let dataPredio = dataTotal.inscribe_datos_predio_nmero_catastral;
+      console.log("data axu", dataAux);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      let url = "";
+      for (const [index, predio] of dataAux.entries()) {
+        let jsonTerreno = {
+          avaluo_terreno:
+            dataPredio[index].inscribe_datos_predio_avaluo_terreno,
+        };
+        let jsonPredio = {
+          avaluo_catastral: dataPredio[index].inscribe_datos_predio_avaluo,
+        };
+        let requestOptionsTerrreno = {
+          method: "PUT",
+          headers: myHeaders,
+          body: JSON.stringify(jsonTerreno),
+          redirect: "follow",
+        };
+        let requestOptionsPredio = {
+          method: "PUT",
+          headers: myHeaders,
+          body: JSON.stringify(jsonPredio),
+          redirect: "follow",
+        };
+        let urlTerreno =
+          import.meta.env.VITE_API_URL_FIRST +
+          "terreno/local/" +
+          predio.terreno.t_id;
+        let urlPredio =
+          import.meta.env.VITE_API_URL_FIRST + "predio/" + predio.predio.t_id;
+        setMsjLoading("Actualizando Valores de Avaluo de Terreno");
+        const responseTerreno = await fetch(urlTerreno, requestOptionsTerrreno);
+        setMsjLoading("Actualizando Valores de Avaluo de Predio");
+        const responsePredio = await fetch(urlPredio, requestOptionsPredio);
+        setMsjLoading("Datos Guardados");
+        const resultTerreno = await responseTerreno.json();
+        const resultPredio = await responsePredio.json();
+        console.log("Predio", predio);
+        console.log("Index", index);
+        console.log("123", dataPredio[index]);
+        console.log("Predio", urlTerreno);
+        console.log("Predio", urlPredio);
+      }
+    } catch (error) {
+      setMsjLoading("Error " + error);
+      console.log(error);
+    }
+  }
+  async function send_data() {
+    try {
+      console.log("Datos Totales", dataTotal);
+      let data = tableData;
+      await update_Data(data);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var raw = "";
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      let url = import.meta.env.VITE_API_URL_FIRST + "predio/uebaunit";
+
+      for (const predio of data) {
+        console.log("item Predio", predio);
+        let prediojson = {
+          ue_lc_unidadconstruccion: "",
+          ue_lc_construccion: "",
+          ue_lc_terreno: predio.terreno.t_id,
+          baunit: predio.predio.t_id,
+        };
+
+        raw = JSON.stringify(prediojson);
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+        console.log("raw predio", raw);
+        let prediofetch = await fetch(url, requestOptions);
+        console.log("Datos de Predio fetch", prediofetch);
+        console.log("Predio Json", prediojson);
+
+        for (const unidad of predio.unidad_construccion) {
+          let unidadjson = {
+            ue_lc_unidadconstruccion: unidad.t_id,
+            ue_lc_construccion: "",
+            ue_lc_terreno: "",
+            baunit: predio.predio.t_id,
+          };
+          raw = JSON.stringify(unidadjson);
+          var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+          };
+          let unidadfetch = await fetch(url, requestOptions);
+          console.log("Datos de Unidad fetch", unidadfetch);
+          console.log("Unidad Json", unidadjson);
+        }
+
+        for (const construccion of predio.construccion) {
+          let construccionjson = {
+            ue_lc_unidadconstruccion: "",
+            ue_lc_construccion: construccion.t_id,
+            ue_lc_terreno: "",
+            baunit: predio.predio.t_id,
+          };
+          raw = JSON.stringify(construccionjson);
+          var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+          };
+          let construccionfetch = await fetch(url, requestOptions);
+          console.log("Datos de Construccion fetch", construccionfetch);
+          console.log("Construccion Json", construccionjson);
+        }
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
   return (
     <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-      <h1 className="text-2xl">Creacion de Predios</h1>
+      <h1 className="text-2xl">Datos Construccion</h1>
       <div className="mt-4 w-full">
         <ChangeData />
         <TableForm />
@@ -2462,9 +2522,18 @@ export const LoadDataConstruccion = () => {
         >
           Calcular Avaluo
         </button>
+        {estDataTotal ? (
+          <button
+            onClick={() => update_Data(tableData)}
+            className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
+          >
+            Guardar Avaluo
+          </button>
+        ) : null}
+        <label className="ml-4 font-semibold text-lg">{msjLoading}</label>
       </div>
+
       {estDataTotal ? <AllTableForm /> : null}
     </div>
   );
 };
-//Avaluo(añoActual)

@@ -14,7 +14,7 @@ import {
   PredioResumeForm,
 } from "./ResumeData";
 import { useNavigate } from "react-router-dom";
-
+import Loader from "./Loader";
 export const LoadDataForm = () => {
   const fuenteFormRef = useRef();
   const predioFormRef = useRef();
@@ -24,7 +24,8 @@ export const LoadDataForm = () => {
   //const { ArrayFinal, updateArrayFinal } = useContext(ArrayFinalContext);
   const { dataAll, updateDataAll } = useContext(DataContext);
   const { tableData } = useContext(TableContext);
-
+  const [loading, setLoading] = useState(false);
+  const [msjLoading, setMsjLoading] = useState("Prueba");
   useEffect(() => {
     updateDataAll((prevValues) => ({
       ...prevValues,
@@ -53,6 +54,7 @@ export const LoadDataForm = () => {
     };
     const filas = Object.entries(tableData).map((items, index) => {
       let item = items[1];
+      console.log("existe predio", item.hasOwnProperty("predio"));
       return (
         <tr key={index}>
           <td className="border-2 rounded-xl p-2">{index + 1}</td>
@@ -65,7 +67,6 @@ export const LoadDataForm = () => {
             {item.hasOwnProperty("predio") ? (
               <div>
                 <button onClick={openpredioResumeForm}>
-                  {" "}
                   <FontAwesomeIcon icon={faSearch} />
                 </button>
                 <PredioResumeForm ref={predioResumeForm} datos={item} />
@@ -125,14 +126,10 @@ export const LoadDataForm = () => {
   };
 
   const ChangeData = () => {
-    let validNumbers = [];
-    const { updateIdArray } = useContext(DataContext);
     const [dataId, setDataId] = useState("");
     const [dataSelect, setDataSelect] = useState(0);
     const [inputId, setInputId] = useState("");
     const [estBtt, setEstBtt] = useState(true);
-    //SI el ID tiene  1= guion, 2=Coma o 3= esta solo
-    let [coma, setComa] = useState("");
     function validarid() {
       if (isNaN(dataId[0])) {
         setEstBtt(true);
@@ -146,19 +143,16 @@ export const LoadDataForm = () => {
 
     function NumComa(e) {
       let { value } = e.target;
+      let num = [];
       value = value.replace(/[^0-9,-]/g, "");
       // Elimina caracteres no numéricos
       if (value.includes("-")) {
-        setComa(1);
         if (value.split("-").length <= 2) {
           //setTamaño(3);
           let aux = value.split("-");
-          let numeros = aux.map((item) => {
-            return parseInt(item);
-          });
-          validNumbers = numeros;
-          console.log(validNumbers);
-          setDataId(validNumbers);
+          for (let i = parseInt(aux[0]); i <= parseInt(aux[1]); i++) {
+            num.push(i);
+          }
         }
       } else {
         let aux = "";
@@ -168,21 +162,20 @@ export const LoadDataForm = () => {
           aux = value.split(",");
         }
         if (value.includes(",")) {
-          setComa(2);
           let numeros = aux.map((item) => {
             return parseInt(item);
           });
 
-          validNumbers = numeros;
-          setDataId(validNumbers);
+          num = numeros;
         } else {
-          setComa(3);
-          validNumbers = [parseInt(value)];
-          setDataId(validNumbers);
+          let aux = [parseInt(value)];
+          num = [aux];
         }
       }
+      setDataId(num);
       setInputId(value);
     }
+
     function Selectdata(e) {
       setDataSelect(e.target.value);
     }
@@ -244,7 +237,7 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <ModalPredioForm ref={predioFormRef} />
+              <ModalPredioForm ref={predioFormRef} msj={setMsjLoading} />
             </div>
           ) : null}
           {dataSelect == 2 ? (
@@ -258,7 +251,10 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <ModalInteresadoForm ref={interesadoFormRef} />
+              <ModalInteresadoForm
+                ref={interesadoFormRef}
+                msj={setMsjLoading}
+              />
             </div>
           ) : null}
           {dataSelect == 3 ? (
@@ -272,7 +268,7 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <ModalDerechoForm ref={derechoFormRef} />
+              <ModalDerechoForm ref={derechoFormRef} msj={setMsjLoading} />
             </div>
           ) : null}
           {dataSelect == 4 ? (
@@ -286,7 +282,7 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <ModalFuenteForm ref={fuenteFormRef} />
+              <ModalFuenteForm ref={fuenteFormRef} msj={setMsjLoading} />
             </div>
           ) : null}
         </div>
@@ -294,6 +290,8 @@ export const LoadDataForm = () => {
     );
   };
   const sendData = async () => {
+    setMsjLoading("Guardando Datos");
+    setLoading(true);
     const entries = Object.entries(tableData);
     for (const [index, [key, item]] of entries.entries()) {
       console.log(item);
@@ -301,11 +299,14 @@ export const LoadDataForm = () => {
       if (rr) {
         let uniFuente = await relUnidadFuente(item);
         if (uniFuente) {
+          setLoading(false);
           navigate("/LoadConstruccion");
         } else {
+          setLoading(false);
           console.log("Error  ");
         }
       } else {
+        setLoading(false);
         console.log("Error  ");
       }
     }
@@ -378,18 +379,20 @@ export const LoadDataForm = () => {
   return (
     <InteresadoProvider>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-        <h1 className="text-2xl">Creacion de Predios</h1>
+        <h1 className="text-2xl">Datos Iniciales</h1>
         <div className="mt-4 w-full">
           <ChangeData />
           <TableForm />
         </div>
-        <div className="mt-4 w-full flex flex-col justify-center items-end">
+        <div className="mt-4 w-full flex flex-col justify-center items-center">
           <button
             onClick={sendData}
             className={` w-1/5 p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
           >
             Siguiente
           </button>
+          <label className="text-xl font-semibold">{msjLoading} </label>
+          {loading ? <Loader /> : null}
         </div>
       </div>
     </InteresadoProvider>

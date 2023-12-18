@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useInfo from "../hooks/useInfo";
+import { NormalPredioForm } from "../Page/Predio";
 
 const InfoPredio = () => {
   const { numPredial } = useInfo();
   console.log(numPredial);
   const { data: info } = numPredial;
-
+  console.log("data Info", info);
   // Verificar si 'info' y 'Predio' existen antes de desestructurar
   const { Predio } = info || {};
   console.log(Predio ? Predio[0] : null);
@@ -36,6 +37,7 @@ const InfoPredio = () => {
   const { dispname: CategoriaSuelo } = Predio
     ? Predio[0].Categoria_Suelo[0]
     : {};
+  console.log("Data Predio", Predio);
 
   const [departamento, setDepartamento] = useState(Departamento);
   const [municipio, setMunicipio] = useState(Municipio);
@@ -65,11 +67,16 @@ const InfoPredio = () => {
     useState(DestinacionEconomica);
   const [claseSuelo, setClaseSuelo] = useState(ClaseSuelo);
   const [categoriaSuelo, setCategoriaSuelo] = useState(CategoriaSuelo);
+  ///////
   const [estInput, setEstInput] = useState(true);
-
+  const predioRef = useRef();
+  const openPredio = () => {
+    predioRef.current.openModal();
+  };
   const editToggle = (e) => {
     e.preventDefault();
-    setEstInput((prevEstInput) => !prevEstInput);
+    //setEstInput((prevEstInput) => !prevEstInput);
+    openPredio();
   };
   return (
     <>
@@ -384,16 +391,15 @@ const InfoPredio = () => {
               onChange={(e) => setCategoriaSuelo(e.target.value)}
             />
           </div>
-          <div className="flex flex-row w-2/3 ml-4 items-end justify-end">
+          <div className="flex flex-row w-2/3 ml-4">
             <button
               onClick={editToggle}
-              className="p-2 text-center rounded-md text-white bg-orange-700"
+              className="py-2 px-4 text-center rounded-md text-white bg-orange-700"
             >
               Editar
             </button>
-            <button className="p-2 ml-4 text-center rounded-md text-white bg-teal-500">
-              Guardar
-            </button>
+
+            <NormalPredioForm data={Predio} ref={predioRef} />
           </div>
         </div>
       </form>

@@ -13,17 +13,20 @@ import {
   CreateCaracteristicasForm,
 } from "./Caracteristicas";
 import { TableContext } from "./Context/Context";
-
+import Loader from "./Loader";
 export const CaraContext = createContext();
 
 const UniConstruccionForm = (props, ref) => {
-  console.log(props);
+  console.log("Data de Unidad de Construccion", props);
   let tableData = [];
   let updateTableData = () => {};
-  const {
-    tableData: contextTableData,
-    updateTableData: contextUpdateTableData,
-  } = useContext(TableContext);
+  let contextTableData, contextUpdateTableData;
+  let auxDataForm = {};
+  let [loading, setLoading] = useState(false);
+  if (props.contexto) {
+    ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
+      useContext(TableContext));
+  }
 
   function soloNumeros(event) {
     const input = event.target;
@@ -67,6 +70,7 @@ const UniConstruccionForm = (props, ref) => {
   };
   const CreateUnidad = (index) => {
     const [dataUnidad, setDataUnidad] = useState({
+      identificador: String.fromCharCode(65 + index.index),
       planta_ubicacion: "",
       altura: "",
       area_construida: "",
@@ -200,7 +204,10 @@ const UniConstruccionForm = (props, ref) => {
           <h1 className="text-3xl">
             Caracteristicas de Unidad de Construccion #{index.index + 1}
           </h1>
-          <div className="w-full flex flex-row mt-4">
+          <h2 className="text-2xl">
+            Identificador: {dataUnidad.identificador}
+          </h2>
+          <div className="w-full flex flex-row mt-2">
             <div className="w-1/3 flex flex-col">
               <label>Relacion Construccion</label>
               <select
@@ -210,35 +217,29 @@ const UniConstruccionForm = (props, ref) => {
                 className="border-2 p-1 rounded-md w-full"
               >
                 <option></option>
-                {Object.entries(props.construccion).map((item, index) => {
-                  return (
-                    <option value={props.construccion[index].t_id}>
-                      Construccion {index + 1}{" "}
-                    </option>
-                  );
-                })}
+                {props.contexto
+                  ? Object.entries(props.construccion).map((item, index) => {
+                      return (
+                        <option value={props.construccion[index].t_id}>
+                          Construccion {index + 1}{" "}
+                        </option>
+                      );
+                    })
+                  : null}
               </select>
             </div>
-            <div className="w-1/3 ml-4 flex flex-col">
-              <button
-                onClick={openLoadCaractForm}
-                className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
-              >
-                Carga Caracteristicas
-              </button>
-              <LoadCaracteristicasForm
-                ref={LoadCaracRef}
-                onchangeData={updateCaracteristicas}
-              />
-            </div>
-            <div className="w-1/3 ml-4 flex flex-col">
+
+            <div className="w-2/3 ml-4 flex flex-col">
               <button
                 onClick={openCreateCaracRef}
                 className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
               >
                 Crear Caracteristica
               </button>
-              <CreateCaracteristicasForm ref={CreateCaracRef} />
+              <CreateCaracteristicasForm
+                ref={CreateCaracRef}
+                dataIden={dataUnidad.identificador}
+              />
             </div>
           </div>
           <div className="w-full flex flex-row items-center justify-center">
@@ -291,6 +292,7 @@ const UniConstruccionForm = (props, ref) => {
   };
 
   const sendData = async () => {
+    setLoading(true);
     if (props.contexto) {
       console.log("UNidad adata", unidadData);
       let dataId = props.dataId;
@@ -299,22 +301,21 @@ const UniConstruccionForm = (props, ref) => {
       updateTableData = contextUpdateTableData;
       const entries = Object.entries(tableData);
       const entriesUnidad = Object.entries(unidadData);
+      console.log("Enties Unidad", entriesUnidad);
       for (const [index, [key, item]] of entries.entries()) {
         for (const items of dataId) {
           if (items - 1 == index) {
             for (const [index, [key, item1]] of entriesUnidad.entries()) {
               item1.lc_caracteristicasunidadconstruccion =
                 item1.caracteristicas.lc_caracteristicasunidadconstruccion;
-              console.log(
-                "Data Interna",
-                item1.caracteristicas.lc_caracteristicasunidadconstruccion
-              );
+              console.log("Data Interna", item1);
               let json = {
                 planta_ubicacion: item1.planta_ubicacion,
                 area_construida: item1.area_construida,
                 altura: item1.altura,
                 lc_caracteristicasunidadconstruccion:
-                  item1.lc_caracteristicasunidadconstruccion,
+                  item1.caracteristicas.lc_caracteristicasunidadconstruccion
+                    .t_id,
                 lc_construccion: item1.construccion,
                 dimension: null,
                 etiqueta: item1.etiqueta,
@@ -340,7 +341,8 @@ const UniConstruccionForm = (props, ref) => {
               try {
                 const response = await fetch(url, requestOptions);
                 const result = await response.json();
-                console.log(result);
+                console.log("Data Unidad", result);
+                item1.t_id = result.data.t_id;
               } catch (error) {
                 console.log("error", error);
               }
@@ -350,11 +352,12 @@ const UniConstruccionForm = (props, ref) => {
           }
         }
       }
-
+      props.msj("Datos Unidad de Construccion Guardados Correctamente");
       console.log("datos de tabla", tableData);
       updateTableData(tableData);
       props.onClose();
     }
+    setLoading(false);
   };
 
   return (
@@ -376,13 +379,14 @@ const UniConstruccionForm = (props, ref) => {
         </button>
       </div>
       <div className="w-full">{unidad}</div>
-      <div className="w-full mt-4">
+      <div className="w-full flex flex-col mt-4">
         <button
           onClick={sendData}
           className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
         >
           Guardar Todo
         </button>
+        {loading ? <Loader /> : null}
       </div>
     </div>
   );
@@ -423,14 +427,38 @@ export const ModalUniConForm = React.forwardRef((props, ref) => {
         dataId={dataId}
         construccion={construcciones}
         onClose={closeModal}
+        msj={props.msj}
       />
     </Modal>
   );
 });
 export const NormalUniConForm = React.forwardRef((props, ref) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (aux) => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
       <UniConstruccionForm contexto={false} />
-    </div>
+    </Modal>
   );
 });
+/*<div className="w-1/3 ml-4 flex flex-col">
+  <button
+    onClick={openLoadCaractForm}
+    className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
+  >
+    Carga Caracteristicas
+  </button>
+  <LoadCaracteristicasForm
+    ref={LoadCaracRef}
+    onchangeData={updateCaracteristicas}
+  />
+</div>; */

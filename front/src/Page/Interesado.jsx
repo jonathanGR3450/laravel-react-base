@@ -11,14 +11,21 @@ import Loader from "./Loader";
 
 const InteresadoForm = (props, ref) => {
   //const [groupInterest, setGroupInterest] = useState(false);  const { updateInteresadoData, updateDataFinal } =useContext(InteresadoContext);
-  console.log(props.contexto);
+  console.log("Props Interesados", props);
+  let data = props.data ? props.data : {};
   let tableData = [];
   let updateTableData = () => {};
-
-  const {
-    tableData: contextTableData,
-    updateTableData: contextUpdateTableData,
-  } = useContext(TableContext);
+  let contextTableData, contextUpdateTableData;
+  let auxDataForm = {};
+  let [loading, setLoading] = useState(false);
+  const [numInteresados, setNumInteresados] = useState();
+  const [interesados, setInteresados] = useState([]);
+  const [interesadosData, setInteresadosData] = useState();
+  if (props.contexto) {
+    ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
+      useContext(TableContext));
+  } else {
+  }
 
   const [estBtt, setEstBtt] = useState(true);
 
@@ -33,9 +40,6 @@ const InteresadoForm = (props, ref) => {
     input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
   }
 
-  const [numInteresados, setNumInteresados] = useState();
-  const [interesados, setInteresados] = useState([]);
-  const [interesadosData, setInteresadosData] = useState();
   const Load_Num = (e) => {
     const newValue = parseInt(e.target.value);
     setNumInteresados(newValue);
@@ -163,8 +167,10 @@ const InteresadoForm = (props, ref) => {
           console.log("guardo id");
         }
       }
+      props.msj("Datos Interesado Guardado Correctamente");
       return auxId;
     } catch (error) {
+      props.msj("Error al Guardar Datos de Interesado");
       console.log("error: " + error);
     }
   }
@@ -210,6 +216,7 @@ const InteresadoForm = (props, ref) => {
   async function Send_Data() {
     ////////////////Capturar valores Tabledata para Datos Homologados
     ///////////////////////////////////////////////////////////////
+    setLoading(true);
     try {
       let id_agrupacion = "";
       let id_interesado = "";
@@ -235,9 +242,13 @@ const InteresadoForm = (props, ref) => {
             }
           });
         });
+
         props.onClose();
         updateTableData(tableData);
+      } else {
       }
+      setLoading(false);
+      console.log("Data interesado", interesadosData);
       //Guardar
     } catch (error) {}
   }
@@ -704,13 +715,14 @@ const InteresadoForm = (props, ref) => {
         </button>
       </div>
       <div className="w-full">{interesados}</div>
-      <div className="w-full">
+      <div className="w-full flex flex-col">
         <button
           onClick={Send_Data}
           className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2 mt-2"
         >
           Guardar
         </button>
+        {loading ? <Loader /> : null}
       </div>
     </div>
   );
@@ -737,15 +749,34 @@ export const ModalInteresadoForm = React.forwardRef((props, ref) => {
 
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <InteresadoForm contexto={true} dataid={dataId} onClose={closeModal} />
+      <InteresadoForm
+        contexto={true}
+        dataid={dataId}
+        onClose={closeModal}
+        msj={props.msj}
+      />
     </Modal>
   );
 });
 
 export const NormalInteresadoForm = React.forwardRef((props, ref) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-      <InteresadoForm contexto={false} />
-    </div>
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <InteresadoForm contexto={false} est={props.est} data={props.data} />
+    </Modal>
   );
 });

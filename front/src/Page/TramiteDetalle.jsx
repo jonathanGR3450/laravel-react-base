@@ -64,12 +64,22 @@ const TramiteDetalleForm = () => {
   );
   //const terreno = Array(Object(predioPrueba.data.Predio[0].terreno));
   let terreno = dataDesenglobe[0].terreno;
-  Object.entries(terreno).map((item, index) => {
-    console.log("desenglobe Carga Item", item);
-  });
+  Object.entries(terreno).map((item, index) => {});
   //const data = Object(tramites.Tramites);//en este caso no se convierte a Array porque en Json ya esta en Array
   //console.log(data)
-  console.log(interesado); //
+  console.log(interesado);
+
+  let construccion = [];
+  dataDesenglobe[0].construccion.map((item, index) => {
+    construccion.push(item);
+  });
+  let unidadConst = [];
+  dataDesenglobe[0].unidad_construccion.map((item, index) => {
+    console.log("desenglobe item unidad", item);
+    unidadConst.push(item);
+  });
+
+  //
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   function handleEnviar(e) {}
@@ -352,6 +362,92 @@ const TramiteDetalleForm = () => {
           </AccordionItem>
           <AccordionItem className="bg-transparent bg-white bg-opacity-80">
             <AccordionItemHeading>
+              <AccordionItemButton>Construcciones</AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+              <h3>
+                <b>Construccion</b>
+              </h3>
+              <table className="w-full text-center">
+                <thead className="uppercase border-2  bg-teal-500 text-base text-white">
+                  <tr>
+                    <th className="border-2 rounded-xl p-2">Identificador</th>
+                    <th className="border-2 rounded-xl p-2">
+                      Tipo Construccion
+                    </th>
+                    <th className="border-2 rounded-xl p-2">Avaluo</th>
+                    <th className="border-2 rounded-xl p-2">Area</th>
+                    <th className="border-2 rounded-xl p-2">Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {construccion.map((item, index) => {
+                    return (
+                      <tr value={0}>
+                        <td>{item.identificador}</td>
+                        <td>
+                          {item.tipo_construccion == "66"
+                            ? "Convencional"
+                            : "No Convencional"}
+                        </td>
+                        <td>{item.avaluo}</td>
+                        <td>{item.area}</td>
+                        <td>"Modal"</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </AccordionItemPanel>
+          </AccordionItem>
+          <AccordionItem className="bg-transparent bg-white bg-opacity-80">
+            <AccordionItemHeading>
+              <AccordionItemButton>
+                Unidades de Construcciones
+              </AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+              <h3>
+                <b> Unidades de Construcciones</b>
+              </h3>
+              <table className="w-full text-center">
+                <thead className="uppercase   bg-teal-500 text-base text-white">
+                  <tr>
+                    <th className=" rounded-s-lg p-2">Construccion</th>
+                    <th className="border-x-2  p-2">Identificador</th>
+                    <th className="border-x-2  p-2">Tipo Unidad</th>
+                    <th className="border-x-2  p-2">Area</th>
+                    <th className=" rounded-e-lg p-2">Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {unidadConst.map((item, index) => {
+                    return (
+                      <tr value={0}>
+                        <td className="border-2">{item.identificador}</td>
+                        <td className="border-2">
+                          {
+                            item.lc_caracteristicasunidadconstruccion
+                              .identificador
+                          }
+                        </td>
+                        <td className="border-2">
+                          {
+                            item.lc_caracteristicasunidadconstruccion
+                              .tipo_unidad_construccion.dispname
+                          }
+                        </td>
+                        <td className="border-2">{item.area_construida}</td>
+                        <td className="border-2">"Modal"</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </AccordionItemPanel>
+          </AccordionItem>
+          <AccordionItem className="bg-transparent bg-white bg-opacity-80">
+            <AccordionItemHeading>
               <AccordionItemButton>Terreno</AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
@@ -378,14 +474,6 @@ const TramiteDetalleForm = () => {
                   </tr>
                 </tbody>
               </table>
-            </AccordionItemPanel>
-          </AccordionItem>
-          <AccordionItem className="bg-transparent bg-white bg-opacity-80">
-            <AccordionItemHeading>
-              <AccordionItemButton>Item Adicional</AccordionItemButton>
-            </AccordionItemHeading>
-            <AccordionItemPanel>
-              <p>Hola</p>
             </AccordionItemPanel>
           </AccordionItem>
           <AccordionItem className="bg-transparent bg-white bg-opacity-80">

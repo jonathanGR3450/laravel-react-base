@@ -15,30 +15,33 @@ const TablaUnidadConstruccion = ({ datosUnidadConstruccion }) => {
             {/* Agrega más encabezados según tus necesidades */}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="text-center">
           {datosUnidadConstruccion?.map((unidad, index) => (
             <tr key={index}>
-              <td className="py-2 px-4 border-b">{unidad.identificador}</td>
+              <td className="py-2 px-4 border-b">
+                {unidad.lc_caracteristicasunidadconstruccion.identificador}
+              </td>
 
               <td className="py-2 px-4 border-b">{unidad.area_construida}</td>
               <td className="py-2 px-4 border-b">
                 {
-                  unidad.lc_caracteristicasunidadconstruccion.tipo_construccion.dispname
+                  unidad.lc_caracteristicasunidadconstruccion.tipo_construccion
+                    .dispname
                 }
               </td>
               <td className="py-2 px-4 border-b">
                 {
-                  unidad.lc_caracteristicasunidadconstruccion.tipo_unidad_construccion.dispname
+                  unidad.lc_caracteristicasunidadconstruccion
+                    .tipo_unidad_construccion.dispname
                 }
               </td>
               <td className="py-2 px-4 border-b">
-                {
-                  unidad.lc_caracteristicasunidadconstruccion.uso.dispname
-                }
+                {unidad.lc_caracteristicasunidadconstruccion.uso.dispname}
               </td>
               <td className="py-2 px-4 border-b">
                 {
-                  unidad.lc_caracteristicasunidadconstruccion.calificacionconvencional.total_calificacion
+                  unidad.lc_caracteristicasunidadconstruccion
+                    .calificacionconvencional.total_calificacion
                 }
               </td>
               {/* Agrega más celdas según tus necesidades */}

@@ -8,10 +8,20 @@ import React, {
 } from "react";
 import { InteresadoContext } from "./Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
-const ConstruccionForm = (props, ref) => {
-  console.log(props);
-  const { tableData, updateTableData } = useContext(TableContext);
+import Loader from "./Loader";
 
+const ConstruccionForm = (props, ref) => {
+  console.log("Props Construccion", props);
+  let tableData = [];
+  let updateTableData = () => {};
+  let contextTableData, contextUpdateTableData;
+  let [loading, setLoading] = useState(false);
+  let auxDataForm = {};
+  if (props.contexto) {
+    ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
+      useContext(TableContext));
+  } else {
+  }
   /**/
   const [numConstruccion, setNumConstruccion] = useState();
   const [construccion, setConstruccion] = useState([]);
@@ -277,10 +287,13 @@ const ConstruccionForm = (props, ref) => {
   }
 
   const sendData = async () => {
+    setLoading(true);
     console.log("Construccion Data", construccionData);
     console.log("Construccion Data", props);
     if (props.contexto) {
       let dataId = props.dataid;
+      tableData = contextTableData;
+      updateTableData = contextUpdateTableData;
       try {
         const entries = Object.entries(tableData);
         for (const [index, [key, item1]] of entries.entries()) {
@@ -347,8 +360,12 @@ const ConstruccionForm = (props, ref) => {
 
         console.log("datos de tabla", tableData);
         //closeModal();
+
         updateTableData(tableData);
+        console.log("props construccion", props);
+        props.msj("Datos Construccion Guardados Correctamente");
         props.onClose();
+        setLoading(false);
       } catch (error) {
         console.log("error", error);
       }
@@ -375,19 +392,21 @@ const ConstruccionForm = (props, ref) => {
         </button>
       </div>
       <div className="w-full">{construccion}</div>
-      <div className="w-full  mt-4">
+      <div className="w-full flex flex-col  mt-4">
         <button
           onClick={sendData}
           className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
         >
           Guardar Todo
         </button>
+        {loading ? <Loader /> : null}
       </div>
     </div>
   );
 };
 export const ModalConstruccionForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log("props modal construccion", props);
   let [dataId, setDataId] = useState({});
 
   const openModal = (aux) => {
@@ -403,14 +422,30 @@ export const ModalConstruccionForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <ConstruccionForm contexto={true} dataid={dataId} onClose={closeModal} />
+      <ConstruccionForm
+        contexto={true}
+        dataid={dataId}
+        onClose={closeModal}
+        msj={props.msj}
+      />
     </Modal>
   );
 });
 export const NormalConstruccionForm = React.forwardRef((props, ref) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (aux) => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
       <ConstruccionForm contexto={false} />
-    </div>
+    </Modal>
   );
 });

@@ -8,40 +8,61 @@ import React, {
 } from "react";
 import { DataContext } from "./Context/DataContext";
 import { TableContext } from "./Context/Context";
+import Loader from "./Loader";
 const FuenteAdminForm = (props, ref) => {
   //const { updateDataAll } = useContext(DataContext);
 
   let tableData = [];
   let updateTableData = () => {};
-
-  const {
-    tableData: contextTableData,
-    updateTableData: contextUpdateTableData,
-  } = useContext(TableContext);
+  let contextTableData, contextUpdateTableData;
+  let auxDataForm = {};
+  if (props.contexto) {
+    auxDataForm = {
+      t_id: 0,
+      tipo: "",
+      ente_emisor: "",
+      numero_fuente: "",
+      estado_disponibilidad: "",
+      tipo_principal: "",
+      fecha_documento_fuente: "",
+      observacion: "",
+    };
+    ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
+      useContext(TableContext));
+  } else {
+    let dataFuente = props.data
+      ? props.data[0].derechos[0].fuenteadministrativa[0]
+      : "";
+    console.log("Data Fuente", dataFuente);
+    auxDataForm = {
+      t_id: dataFuente.t_id,
+      tipo: dataFuente.tipo.t_id,
+      ente_emisor: dataFuente.ente_emisor,
+      numero_fuente: dataFuente.numero_fuente,
+      estado_disponibilidad: dataFuente.estado_disponibilidad.t_id,
+      tipo_principal: dataFuente.tipo_principal,
+      fecha_documento_fuente: dataFuente.fecha_documento_fuente,
+      observacion: dataFuente.observacion,
+    };
+    console.log("123 ", auxDataForm);
+  }
 
   //const { tableData, updateTableData } = useContext(TableContext);
   const [estBtt, setEstBtt] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   let [dataId, setDataId] = useState();
-  const [objFuente, setObjFuente] = useState({
-    t_id: 0,
-    tipo: "",
-    ente_emisor: "",
-    numero_fuente: "",
-    estado_disponibilidad: "",
-    tipo_principal: "",
-    fecha_documento_fuente: "",
-    observacion: "",
-  });
-
+  const [objFuente, setObjFuente] = useState(auxDataForm);
+  const [loading, setLoading] = useState(false);
   //Se Aceptan solo  Numeros
   function soloNumeros(event) {
     const input = event.target;
     input.value = input.value.replace(/[^0-9.]/g, "");
   }
   /*  */
-  const sendData = async () => {
+  const sendData = async (e) => {
     console.log("entra", objFuente);
+    setLoading(true);
+    e.preventDefault();
     try {
       if (props.contexto) {
         console.log(props);
@@ -81,9 +102,10 @@ const FuenteAdminForm = (props, ref) => {
               const response = await fetch(url, requestOptions);
 
               if (!response.ok) {
+                props.msj("Error Datos Fuente Adminsitrativa ");
                 throw new Error(`HTTP error! Status: ${response.status}`);
               }
-
+              props.msj("Datos Fuente Administrativa Guardado Correctamente");
               const result = await response.json();
               console.log("Resultado Fuente", result);
 
@@ -95,7 +117,42 @@ const FuenteAdminForm = (props, ref) => {
 
         updateTableData(tableData);
         props.onClose();
+      } else {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        console.log("Fuente", objFuente);
+        let json = {
+          tipo: objFuente.tipo,
+          ente_emisor: objFuente.ente_emisor,
+          observacion: objFuente.observacion,
+          numero_fuente: objFuente.numero_fuente,
+          estado_disponibilidad: objFuente.estado_disponibilidad,
+          tipo_principal: objFuente.tipo_principal,
+          fecha_documento_fuente: objFuente.fecha_documento_fuente,
+          espacio_de_nombres: "Fusagasuga",
+          local_id: props.data ? props.data[0].Codigo_Homologado : "",
+        };
+        let raw = JSON.stringify(json);
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+        console.log("raw", raw);
+        let url =
+          import.meta.env.VITE_API_URL_FIRST + "fuente-administrativa/local";
+
+        const response = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log("Resultado Fuente", result);
       }
+      setLoading(false);
     } catch (error) {
       console.log("error", error);
     }
@@ -133,7 +190,7 @@ const FuenteAdminForm = (props, ref) => {
             <h3 className="font-semibold">Tipo de Fuente Administrativa* : </h3>
             <select
               onChange={Load_Data}
-              value={objFuente.tipo_fuente}
+              value={objFuente.tipo}
               name="tipo"
               className="border-2 p-2 rounded-md w-full"
             >
@@ -233,10 +290,11 @@ const FuenteAdminForm = (props, ref) => {
             disabled={estBtt}
             className={`${
               estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
-            }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
+            }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-4`}
           >
             Guardar
           </button>
+          {loading ? <Loader /> : null}
         </div>
       </div>
     </div>
@@ -264,14 +322,30 @@ export const ModalFuenteForm = React.forwardRef((props, ref) => {
 
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <FuenteAdminForm contexto={true} dataid={dataId} onClose={closeModal} />
+      <FuenteAdminForm
+        contexto={true}
+        dataid={dataId}
+        onClose={closeModal}
+        msj={props.msj}
+      />
     </Modal>
   );
 });
 export const NormalFuenteForm = React.forwardRef((props, ref) => {
+  console.log("Props de Normal Fuente", props);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-      <FuenteAdminForm contexto={false} />
-    </div>
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <FuenteAdminForm contexto={false} data={props.data} />
+    </Modal>
   );
 });

@@ -15,7 +15,8 @@ import { Link, Outlet } from "react-router-dom";
 import UniconstForm from "./Uniconst";
 import { CaracteristicaProvider } from "./Context/CaracteristicaContext";
 import { CaracteristicasResumeForm } from "./ResumeData";
-const FichaPredial = () => {
+const FichaPredial = (props) => {
+  console.log("props ficha", props.ident);
   const [loading, setLoading] = useState(true);
   const [estForm, setEstForm] = useState(false);
   const [valueBtt, setValueBtt] = useState("");
@@ -81,9 +82,13 @@ const FichaPredial = () => {
       {estForm ? (
         <CaracteristicaProvider>
           {valueBtt == 66 ? (
-            <UniconstForm data={"Convencional"} id={66} />
+            <UniconstForm data={"Convencional"} id={66} ident={props.ident} />
           ) : (
-            <UniconstForm data={"No Convencional"} id={67} />
+            <UniconstForm
+              data={"No Convencional"}
+              id={67}
+              ident={props.ident}
+            />
           )}
         </CaracteristicaProvider>
       ) : null}

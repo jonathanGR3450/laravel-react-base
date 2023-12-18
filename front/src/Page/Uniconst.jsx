@@ -15,6 +15,7 @@ import { PuntajeResumeForm } from "./ResumeData";
 import { CaraContext } from "./Uniconstruccion";
 import { json } from "react-router-dom";
 const UniconstForm = (dataForm) => {
+  console.log("props caracteristicas", dataForm);
   const [tipo_const, setTipo_Const] = useState("");
   const [estForm, setEstForm] = useState(false);
   const [estMsjError, setEstMsjError] = useState({
@@ -256,7 +257,7 @@ const UniconstForm = (dataForm) => {
           construcciones: [
             {
               caracteristicasunidadconstruccion: {
-                identificador: dataCaracteristica.identificador,
+                identificador: dataForm.ident,
                 tipo_construccion: dataCaracteristica.tipo_construccion,
                 tipo_dominio: dataCaracteristica.tipo_dominio,
                 tipo_unidad_construccion:
@@ -300,7 +301,7 @@ const UniconstForm = (dataForm) => {
         console.log("Url", raw);
         try {
           const response = await fetch(url, requestOptions);
-          const result = await response.text();
+          const result = await response.json();
           console.log("Resultado Convencional", result);
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response}`);
@@ -309,7 +310,7 @@ const UniconstForm = (dataForm) => {
           }
           if (iscontext(contextoCaracteristicas)) {
             const { updateCaracteristicas } = contextoCaracteristicas;
-            Json.t_id = result.data[0];
+            Json.t_id = result.data.data[0];
             console.log("Json para Actualziar");
             updateCaracteristicas(Json);
           }
@@ -328,7 +329,7 @@ const UniconstForm = (dataForm) => {
           construcciones: [
             {
               caracteristicasunidadconstruccion: {
-                identificador: dataCaracteristica.identificador,
+                identificador: dataForm.ident,
                 tipo_construccion: dataCaracteristica.tipo_construccion,
                 tipo_dominio: dataCaracteristica.tipo_dominio,
                 tipo_unidad_construccion:
@@ -379,7 +380,8 @@ const UniconstForm = (dataForm) => {
           console.log(result);
           if (iscontext(contextoCaracteristicas)) {
             const { updateCaracteristicas } = contextoCaracteristicas;
-            Json.t_id = result.data[0];
+            Json.t_id = result.data.data[0];
+            console.log("QUE SE VA A ACTUALIZAR", Json);
             updateCaracteristicas(Json);
           }
         } catch (error) {
@@ -576,6 +578,11 @@ const UniconstForm = (dataForm) => {
     <div className=" w-full flex flex-col  items-center bg-transparent h-full bg-white bg-opacity-80">
       <h1 className="text-3xl">Construccion {dataForm.data}</h1>
       <h1 className="text-3xl">Datos Generales</h1>
+      <div className="flex flex-row items-center w-10/12 pb-2 ">
+        <label className="text-2xl font-semibold">
+          Identificador: {dataForm.ident}
+        </label>
+      </div>
       <div className="flex flex-row items-center w-10/12 pb-2 text-center ">
         <div className="flex flex-col items-center w-1/4 pb-2  ">
           <label className="w-full"> Tipo Dominio</label>

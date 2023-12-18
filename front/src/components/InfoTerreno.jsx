@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useInfo from "../hooks/useInfo";
+import { NormalTerrenoForm } from "../Page/Terreno";
 const InfoTerreno = () => {
   const { numPredial } = useInfo();
   console.log(numPredial);
@@ -17,10 +18,14 @@ const InfoTerreno = () => {
     manzana_vereda_codigo
   );
   const [estInput, setEstInput] = useState(true);
-
+  const terrenoRef = useRef();
+  const openTerreno = () => {
+    terrenoRef.current.openModal();
+  };
   const editToggle = (e) => {
     e.preventDefault();
-    setEstInput((prevEstInput) => !prevEstInput);
+    openTerreno();
+    ////setEstInput((prevEstInput) => !prevEstInput);
   };
   return (
     <>
@@ -73,13 +78,12 @@ const InfoTerreno = () => {
         <div className="flex flex-row w-full mt-4 items-center justify-center">
           <button
             onClick={editToggle}
-            className="p-2 text-center rounded-md text-white bg-orange-700"
+            className="py-2 px-4 text-center rounded-md text-white bg-orange-700"
           >
             Editar
           </button>
-          <button className="p-2 ml-4 text-center rounded-md text-white bg-teal-500">
-            Guardar
-          </button>
+
+          <NormalTerrenoForm data={Predio} ref={terrenoRef} />
         </div>
       </form>
     </>

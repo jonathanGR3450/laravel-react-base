@@ -12,41 +12,88 @@ const PredioForm = (props, ref) => {
   console.log("Props", props);
   let tableData = [];
   let updateTableData = () => {};
-  const {
-    tableData: contextTableData,
-    updateTableData: contextUpdateTableData,
-  } = useContext(TableContext);
+  let contextTableData, contextUpdateTableData;
+  let auxDataForm = {};
+
+  if (props.contexto) {
+    auxDataForm = {
+      t_id: "",
+      departamento: "25",
+      municipio: "290",
+      id_operacion: "",
+      tiene_fmi: false,
+      codigo_orip: null,
+      matricula_inmobiliaria: null,
+      numero_predial: "",
+      numero_predial_anterior: "",
+      codigo_homologado: "",
+      interrelacionado: false,
+      codigo_homologado_fmi: false,
+      nupre: null,
+      avaluo_catastral: 0,
+      valor_referencia: 0,
+      tipo: 0,
+      condicion_predio: 0,
+      destinacion_economica: 0,
+      clase_suelo: 0,
+      categoria_suelo: null,
+      nombre: null,
+      comienzo_vida_util_version: "",
+      fin_vida_util_version: null,
+      espacio_de_nombres: "Fusagasuga",
+      local_id: "",
+    };
+    ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
+      useContext(TableContext));
+  } else {
+    let dataPredio = props.data && props.data.length > 0 ? props.data[0] : "";
+    console.log("Tramites General", dataPredio);
+    auxDataForm = {
+      t_id: dataPredio.t_id,
+      departamento: dataPredio.Departamento,
+      municipio: dataPredio.Municipio,
+      id_operacion: dataPredio.Id_Operacion,
+      tiene_fmi: dataPredio.Tiene_FMI,
+      codigo_orip: dataPredio.Codigo_ORIP,
+      matricula_inmobiliaria: dataPredio.Matricula_Inmobiliaria,
+      numero_predial: dataPredio.Numero_Predial,
+      numero_predial_anterior: dataPredio.Numero_Predial_Anterior,
+      codigo_homologado: dataPredio.Codigo_Homologado,
+      interrelacionado: dataPredio.interrelacionado,
+      codigo_homologado_fmi: dataPredio.interrelacionado_FMI,
+      nupre: dataPredio.NUPRE,
+      avaluo_catastral: dataPredio.Avaluo_Catastral
+        ? dataPredio.Avaluo_Catastral.toLocaleString()
+        : null,
+      valor_referencia: dataPredio.Valor_Referencia,
+      tipo: dataPredio.Tipo ? dataPredio.Tipo[0].t_id.toString() : null,
+      condicion_predio: dataPredio.Condicion_Predio
+        ? dataPredio.Condicion_Predio[0].t_id.toString()
+        : null,
+      destinacion_economica: dataPredio.Destinacion_Economica
+        ? dataPredio.Destinacion_Economica[0].t_id.toString()
+        : null,
+      clase_suelo: dataPredio.Clase_Suelo
+        ? dataPredio.Clase_Suelo[0].t_id.toString()
+        : null,
+      categoria_suelo:
+        dataPredio.Categoria_Suelo && dataPredio.Categoria_Suelo[0].t_id != null
+          ? dataPredio.Categoria_Suelo[0].t_id.toString()
+          : null,
+      nombre: null,
+      comienzo_vida_util_version: "2022-05-20 01:23:26.006883",
+      fin_vida_util_version: null,
+      espacio_de_nombres: "Fusagasuga",
+      local_id: dataPredio.Codigo_Homologado,
+    };
+  }
+  let [dataForm, setDataForm] = useState(auxDataForm);
+  console.log("Tramite", dataForm);
   const [estBtt, setEstBtt] = useState(true);
   const [codFMI, setCodFMI] = useState(false);
   const [loading, setLoading] = useState(false);
   const [msjLoading, setMsjLoading] = useState("");
-  const [dataForm, setDataForm] = useState({
-    t_id: "",
-    departamento: "25",
-    municipio: "290",
-    id_operacion: "",
-    tiene_fmi: false,
-    codigo_orip: null,
-    matricula_inmobiliaria: null,
-    numero_predial: "",
-    numero_predial_anterior: "",
-    codigo_homologado: "",
-    interrelacionado: false,
-    codigo_homologado_fmi: false,
-    nupre: null,
-    avaluo_catastral: 0,
-    valor_referencia: 0,
-    tipo: 0,
-    condicion_predio: 0,
-    destinacion_economica: 0,
-    clase_suelo: 0,
-    categoria_suelo: null,
-    nombre: null,
-    comienzo_vida_util_version: "2022-05-20 01:23:26.006883",
-    fin_vida_util_version: null,
-    espacio_de_nombres: "Fusagasuga",
-    local_id: "BAF0006WHJF",
-  });
+
   function Load_Data(e) {
     let { name, value } = e.target;
     if (e.target.type == "checkbox") {
@@ -63,8 +110,9 @@ const PredioForm = (props, ref) => {
     }));
   }
 
-  const sendData = async () => {
+  const sendData = async (e) => {
     setLoading(true);
+    e.preventDefault();
     if (props.contexto) {
       let dataId = props.dataid;
       console.log(dataId);
@@ -139,8 +187,10 @@ const PredioForm = (props, ref) => {
               if (result.success) {
                 dataForm.t_id = result.data.t_id;
                 item.predio = dataForm;
+                props.msj("Datos de Predio Guardado Satisfactoriamente");
                 props.onClose();
               } else {
+                props.msj("Error al guardar datos de Predio");
                 alert("Error");
               }
               console.log("Rsultado Predio", result);
@@ -151,10 +201,66 @@ const PredioForm = (props, ref) => {
           }
         }
       }
+      console.log("Datos Form predio", dataForm);
+      console.log("datos de tabla", tableData);
+      updateTableData(tableData);
+    } else {
+      let json = {
+        departamento: dataForm.departamento,
+        municipio: dataForm.municipio,
+        id_operacion: dataForm.id_operacion,
+        tiene_fmi: dataForm.tiene_fmi,
+        codigo_orip: dataForm.codigo_orip,
+        matricula_inmobiliaria: dataForm.matricula_inmobiliaria,
+        numero_predial: dataForm.numero_predial,
+        numero_predial_anterior: "0",
+        codigo_homologado: dataForm.codigo_homologado,
+        interrelacionado: dataForm.interrelacionado,
+        codigo_homologado_fmi: false,
+        nupre: dataForm.nupre,
+        avaluo_catastral: dataForm.avaluo_catastral,
+        valor_referencia: dataForm.valor_referencia,
+        tipo: dataForm.tipo,
+        condicion_predio: dataForm.condicion_predio,
+        destinacion_economica: dataForm.destinacion_economica,
+        clase_suelo: dataForm.clase_suelo,
+        categoria_suelo: dataForm.categoria_suelo,
+        nombre: null,
+        comienzo_vida_util_version: "",
+        fin_vida_util_version: null,
+        espacio_de_nombres: "Fusagasuga",
+        local_id: dataForm.codigo_homologado,
+      };
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      let url = import.meta.env.VITE_API_URL_FIRST + "predio";
+      let raw = JSON.stringify(json);
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      console.log("url PREDIO", raw);
+      try {
+        const response = await fetch(url, requestOptions);
+        const result = await response.json();
+        if (result.success) {
+          dataForm.t_id = result.data.t_id;
+          props.msj("Datos de Predio Guardado Satisfactoriamente");
+          props.onClose();
+        } else {
+          props.msj("Error al guardar datos de Predio");
+          alert("Error");
+        }
+        console.log("Rsultado Predio", result);
+
+        setLoading(false);
+      } catch (error) {
+        console.log("error", error);
+      }
     }
-    console.log("Datos Form predio", dataForm);
-    console.log("datos de tabla", tableData);
-    updateTableData(tableData);
   };
 
   const handleOnChange = () => {
@@ -174,6 +280,7 @@ const PredioForm = (props, ref) => {
               name="tiene_fmi"
               type="checkbox"
               onChange={Load_Data}
+              checked={dataForm.tiene_fmi}
             ></input>
             <label className="ml-4">Tiene FMI ?</label>
           </div>
@@ -184,6 +291,7 @@ const PredioForm = (props, ref) => {
               name="codigo_orip"
               type="text"
               className="border-2 p-1 rounded-md w-full"
+              value={dataForm.codigo_orip}
             ></input>
           </div>
           <div className="w-1/3 flex flex-row ml-4 items-center ">
@@ -191,6 +299,7 @@ const PredioForm = (props, ref) => {
               type="checkbox"
               name="interrelacionado"
               onChange={Load_Data}
+              checked={dataForm.interrelacionado}
             ></input>
             <label className="ml-4">Interrelacionado ?</label>
           </div>
@@ -200,8 +309,8 @@ const PredioForm = (props, ref) => {
             <input
               type="checkbox"
               name="codigo_homologado_fmi"
-              checked={codFMI}
               onChange={handleOnChange}
+              checked={dataForm.codigo_homologado_fmi}
             ></input>
             <label className="p-4"> Codigo Homologado FMI ?</label>
           </div>
@@ -213,7 +322,7 @@ const PredioForm = (props, ref) => {
                 type="text"
                 disabled
                 className="border-2 p-1 rounded-md w-full"
-                value={dataForm.codigo_homologado}
+                value={dataForm.nupre}
               ></input>
             </div>
           ) : null}
@@ -226,6 +335,7 @@ const PredioForm = (props, ref) => {
               name="avaluo_catastral"
               type="text"
               className="border-2 p-1 rounded-md w-full"
+              value={dataForm.avaluo_catastral.toLocaleString()}
             ></input>
           </div>
           <div className="w-1/3 flex flex-col ml-4">
@@ -235,6 +345,7 @@ const PredioForm = (props, ref) => {
               name="valor_referencia"
               type="text"
               className="border-2 p-1 rounded-md w-full"
+              value={dataForm.valor_referencia}
             ></input>
           </div>
           <div className="w-1/3 flex flex-col ml-4">
@@ -242,6 +353,7 @@ const PredioForm = (props, ref) => {
             <select
               onChange={Load_Data}
               name="tipo"
+              value={dataForm.tipo}
               className="border-2 p-1 rounded-md w-full"
             >
               <option></option>
@@ -271,6 +383,7 @@ const PredioForm = (props, ref) => {
               onChange={Load_Data}
               name="condicion_predio"
               className="border-2 p-1 rounded-md w-full"
+              value={dataForm.condicion_predio}
             >
               <option></option>
               <option value="442">No propiedad horizontal</option>
@@ -292,6 +405,7 @@ const PredioForm = (props, ref) => {
               onChange={Load_Data}
               name="destinacion_economica"
               className="border-2 p-1 rounded-md w-full"
+              value={dataForm.destinacion_economica}
             >
               <option></option>
               <option value="162">Acuícola</option>
@@ -331,6 +445,7 @@ const PredioForm = (props, ref) => {
               onChange={Load_Data}
               name="clase_suelo"
               className="border-2 p-1 rounded-md w-full"
+              value={dataForm.clase_suelo}
             >
               <option></option>
               <option value="84">Urbano</option>
@@ -346,6 +461,7 @@ const PredioForm = (props, ref) => {
               onChange={Load_Data}
               name="categoria_suelo"
               className="border-2 p-1 rounded-md w-full"
+              value={dataForm.categoria_suelo}
             >
               <option></option>
               <option value="777">Suburbano</option>
@@ -368,6 +484,8 @@ const PredioForm = (props, ref) => {
 };
 
 export const ModalPredioForm = React.forwardRef((props, ref) => {
+  console.log(props);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   let [dataId, setDataId] = useState();
 
@@ -383,14 +501,30 @@ export const ModalPredioForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <PredioForm contexto={true} dataid={dataId} onClose={closeModal} />
+      <PredioForm
+        contexto={true}
+        dataid={dataId}
+        onClose={closeModal}
+        msj={props.msj}
+      />
     </Modal>
   );
 });
 export const NormalPredioForm = React.forwardRef((props, ref) => {
+  console.log("Props de Normal Predio", props);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-      <PredioForm contexto={false} />
-    </div>
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <PredioForm contexto={false} data={props.data} />
+    </Modal>
   );
 });

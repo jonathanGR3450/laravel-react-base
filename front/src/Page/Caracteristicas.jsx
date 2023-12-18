@@ -599,6 +599,7 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
 });
 
 export const CreateCaracteristicasForm = React.forwardRef((props, ref) => {
+  console.log("PROPS Caracteristicas", props);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
@@ -615,7 +616,7 @@ export const CreateCaracteristicasForm = React.forwardRef((props, ref) => {
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <h2 className="text-4xl">Crear Caracteristicas </h2>
       <div className="w-full flex flex-col items-center justify-center">
-        <FichaPredial />
+        <FichaPredial ident={props.dataIden} />
       </div>
     </Modal>
   );

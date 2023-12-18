@@ -12,19 +12,37 @@ const DerechoForm = (props, ref) => {
   console.log(props);
   let tableData = [];
   let updateTableData = () => {};
-  const {
-    tableData: contextTableData,
-    updateTableData: contextUpdateTableData,
-  } = useContext(TableContext);
+  let contextTableData, contextUpdateTableData;
+  let auxDataForm = {};
+  if (props.contexto) {
+    auxDataForm = {
+      t_id: "",
+      tipo_derecho: "",
+      tipo_restriccion: "",
+      inicio_tenencia: "",
+      fraccion_derecho: "",
+      descripcion: "",
+    };
+    ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
+      useContext(TableContext));
+  } else {
+    let dataDerecho = props.data ? props.data[0] : "";
+    console.log("Info Derecho", dataDerecho);
+    auxDataForm = {
+      t_id: dataDerecho.derechos[0].t_id,
+      tipo_derecho: dataDerecho.derechos[0].tipo.t_id,
+      tipo_restriccion: 0,
+      agrupacion:
+        dataDerecho.derechos[0].interesado_lc_agrupacioninteresados.t_id,
+      interesado: dataDerecho.derechos[0].interesado_lc_interesado.t_id,
+      inicio_tenencia: dataDerecho.derechos[0].fecha_inicio_tenencia,
+      fraccion_derecho: dataDerecho.derechos[0].fraccion_derecho,
+      descripcion: dataDerecho.derechos[0].descripcion,
+    };
+    console.log(auxDataForm);
+  }
 
-  const [objDerecho, setobjDerecho] = useState({
-    t_id: "",
-    tipo_derecho: "",
-    tipo_restriccion: "",
-    inicio_tenencia: "",
-    fraccion_derecho: "",
-    descripcion: "",
-  });
+  const [objDerecho, setobjDerecho] = useState(auxDataForm);
   const [loading, setLoading] = useState(false);
   const [msjLoading, setMsjLoading] = useState("");
   const [estBtt, setEstBtt] = useState(true);
@@ -34,7 +52,8 @@ const DerechoForm = (props, ref) => {
     setobjDerecho((prevValues) => ({ ...prevValues, [name]: value }));
   }
 
-  const sendData = async () => {
+  const sendData = async (e) => {
+    e.preventDefault();
     setLoading(true);
     if (props.contexto) {
       tableData = contextTableData;
@@ -48,11 +67,19 @@ const DerechoForm = (props, ref) => {
           if (dataId[i] - 1 === index) {
             let dataInte = 0;
             let dataAgru = 0;
+            let inteCons = "";
+            console.log("Data de Interesados", item.interesados);
             if (item.interesados.length >= 2) {
               dataAgru = item.interesados.lc_agrupacion;
               dataInte = null;
             } else {
-              dataInte = item.interesados[0].t_id;
+              if (item.interesados[0].isTemporal) {
+                dataInte = item.interesados[0].t_id;
+                inteCons = null;
+              } else {
+                inteCons = item.interesados[0].t_id;
+                dataInte = null;
+              }
               dataAgru = null;
             }
             let json = {
@@ -62,6 +89,7 @@ const DerechoForm = (props, ref) => {
               descripcion: objDerecho.descripcion,
               interesado_lc_interesado: dataInte,
               interesado_lc_agrupacioninteresados: dataAgru,
+              interesado_lc_interesado_conservacion: inteCons,
               unidad: item.predio.t_id,
               comienzo_vida_util_version: null,
               fin_vida_util_version: null,
@@ -87,18 +115,66 @@ const DerechoForm = (props, ref) => {
                 console.log("Resultado", result.data);
                 ///Retornar Id y guardarlo
                 objDerecho.t_id = result.data.t_id;
+                props.msj("Datos Derecho Guardado Correctamente");
               } else {
+                props.msj("Error Datos Derecho ");
                 const error = await response.json();
                 console.log("Error en la solicitud:", error);
               }
-            } catch (error) {}
+            } catch (error) {
+              console.log("Error", error);
+            }
             console.log("Json", json);
             tableData[index].derecho = objDerecho;
             console.log(tableData[index]);
           }
         }
       }
+
       updateTableData(tableData);
+      props.onClose();
+    } else {
+      let json = {
+        tipo: objDerecho.tipo_derecho,
+        fraccion_derecho: objDerecho.fraccion_derecho,
+        fecha_inicio_tenencia: objDerecho.inicio_tenencia,
+        descripcion: objDerecho.descripcion,
+        interesado_lc_interesado_conservacion: objDerecho.interesado,
+        interesado_lc_agrupacioninteresados: objDerecho.agrupacion,
+        unidad: props.data ? props.data[0].t_id : "",
+        comienzo_vida_util_version: null,
+        fin_vida_util_version: null,
+        espacio_de_nombres: "Fusagasuga",
+        local_id: props.data ? props.data[0].Codigo_Homologado : "",
+      };
+      console.log("Json no contexto", json);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const url = import.meta.env.VITE_API_URL_FIRST + "derecho/local";
+      let raw = JSON.stringify(json);
+      console.log(raw);
+      let requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      try {
+        const response = await fetch(url, requestOptions);
+        if (response.ok) {
+          const result = await response.json();
+          console.log("Resultado", result.data);
+          ///Retornar Id y guardarlo
+          objDerecho.t_id = result.data.t_id;
+          setLoading(false);
+        } else {
+          const error = await response.json();
+          console.log("Error en la solicitud:", error);
+        }
+      } catch (error) {
+        console.log("Error", error);
+      }
       props.onClose();
     }
   };
@@ -185,7 +261,7 @@ const DerechoForm = (props, ref) => {
         <div className="flex flex-row w-full mt-2 items-center justify-center">
           <button
             onClick={sendData}
-            className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
+            className="p-2 mr-4 text-center rounded-md text-white bg-teal-500 text-lg"
           >
             Guardar
           </button>
@@ -211,14 +287,30 @@ export const ModalDerechoForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <DerechoForm contexto={true} dataid={dataId} onClose={closeModal} />
+      <DerechoForm
+        contexto={true}
+        dataid={dataId}
+        onClose={closeModal}
+        msj={props.msj}
+      />
     </Modal>
   );
 });
 export const NormalDerechoForm = React.forwardRef((props, ref) => {
+  console.log("Props de Normal Derecho", props);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-      <DerechoForm contexto={false} />
-    </div>
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <DerechoForm contexto={false} data={props.data} onClose={closeModal} />
+    </Modal>
   );
 });

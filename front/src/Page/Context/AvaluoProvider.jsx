@@ -25,6 +25,7 @@ const AvaluoProvider = ({ children }) => {
     console.log("entra a Contexto", dataAño);
     let año = dataAño;
     let tableData = data;
+    let avaluoterreno = "";
     console.log("data AÑo", dataAño);
     let keys = Object.keys(tableData);
     console.log("data tABLA", tableData);
@@ -48,11 +49,14 @@ const AvaluoProvider = ({ children }) => {
             item.ZHG = "0" + item.ZHG;
           }
           let newobj = {
+            t_id: currentItem.predio.t_id,
             zona: currentItem.Zona,
             area: item.area,
             zhg: item.ZHG,
             total: "",
           };
+
+          console.log("Nueevo Objeto Terreno", newobj);
 
           let url = "";
           if (currentItem.Zona == "00") {
@@ -1443,10 +1447,12 @@ const AvaluoProvider = ({ children }) => {
 
       let terminar = await calcularAvaluo();
       console.log("Terminar", terminar);
+      let terrenoavaluo = 0;
       if (terminar) {
         console.log("terreno 123", ArrayTerreno);
         console.log("Unidad", ArrayUnidad);
         console.log("Interesados", ArrayInteresado);
+
         function calculateAreatotal() {
           let sum = 0;
           ArrayTerreno.map((item, index) => {
@@ -1655,6 +1661,7 @@ const AvaluoProvider = ({ children }) => {
           let sum = 0;
           ArrayTerreno.map((item, index) => {
             sum += item.total;
+            terrenoavaluo += item.total;
           });
           ArrayUnidad.map((item, index) => {
             sum += item.total;
@@ -1691,6 +1698,7 @@ const AvaluoProvider = ({ children }) => {
           area_terreno: calculateAreatotal(),
           area_construida: calculateConstruida(),
           avaluo: calculateAvaluo(),
+          avaluo_terreno: terrenoavaluo,
           vigencia: "01/01/" + año,
           interesados: ArrayInteresado,
         };
@@ -1900,6 +1908,7 @@ const AvaluoProvider = ({ children }) => {
           let sum = 0;
           ArrayTerreno.map((item, index) => {
             sum += item.total;
+            terrenoavaluo += item.total;
           });
           ArrayUnidad.map((item, index) => {
             sum += item.total;
@@ -1929,6 +1938,7 @@ const AvaluoProvider = ({ children }) => {
           destinacion: calculateDestino(),
           area_terreno: calculateAreatotal(),
           area_construida: 0,
+          avaluo_terreno: terrenoavaluo,
           avaluo: calculateAvaluo(),
           vigencia: "01/01/" + año,
           interesados: ArrayInteresado,
@@ -1948,6 +1958,11 @@ const AvaluoProvider = ({ children }) => {
     let dataLiquid = [];
     let dataPredio = [];
     let dataInteresado = [];
+    let jsonInfoProvider = {
+      inscribe_datos_predio_nmero_catastral: [],
+      inscribe_propietarios_nmero_catastral: dataInteresado,
+      inscribe_liquidacion_nmero_catastral: [],
+    };
     //Preguntar valores de incrementos
     let requestOptions = {
       method: "GET",
@@ -1979,12 +1994,16 @@ const AvaluoProvider = ({ children }) => {
           }
         }
         let avaluoBase = items.avaluo;
+        let avaluoBaseTerreno = items.avaluo_terreno;
         arrayResult.sort((a, b) => a.vigencia - b.vigencia);
 
         for (const item of arrayResult) {
           let newDataCopy = { ...newdata };
           let valor_nuevo = avaluoBase * (1 + parseFloat(item.incremento));
+          let valor_nuevo_terreno =
+            avaluoBaseTerreno * (1 + parseFloat(item.incremento));
           newDataCopy.avaluo = redondear(valor_nuevo);
+          newDataCopy.avaluo_terreno = redondear(valor_nuevo_terreno);
           newDataCopy.concepto = item.concepto;
           avaluoBase = valor_nuevo;
           newDataCopy.vigencia = "01/01/" + item.vigencia;
@@ -2045,15 +2064,10 @@ const AvaluoProvider = ({ children }) => {
           dataPredio.push(item);
         }
       });
+
       console.log("Datos del Año Actual", dataPredio);
       console.log("datos Final liquidacion", dataLiquid);
       console.log("datos final de Interesados", dataInteresado);
-
-      let jsonInfoProvider = {
-        inscribe_datos_predio_nmero_catastral: [],
-        inscribe_propietarios_nmero_catastral: dataInteresado,
-        inscribe_liquidacion_nmero_catastral: [],
-      };
 
       dataPredio.map((item, index) => {
         let newData = {
@@ -2063,7 +2077,8 @@ const AvaluoProvider = ({ children }) => {
           inscribe_datos_predio_destino_económico: item.destinacion,
           inscribe_datos_predio_area_terreno: item.area_terreno,
           inscribe_datos_predio_area_construida: item.area_construida,
-          inscribe_datos_predio_avaluo: "$ " + item.avaluo.toLocaleString(),
+          inscribe_datos_predio_avaluo: item.avaluo,
+          inscribe_datos_predio_avaluo_terreno: item.avaluo_terreno,
           inscribe_datos_predio_vigencia: item.vigencia,
         };
         jsonInfoProvider.inscribe_datos_predio_nmero_catastral.push(newData);
@@ -2080,32 +2095,15 @@ const AvaluoProvider = ({ children }) => {
 
       console.log("Json Inscripcion", JSON.stringify(jsonInfoProvider));
       updateJsonInscribir(jsonInfoProvider);
-
-      /*dataLiquid.sort((a, b) => {
-        // Primero, ordena por "inscribe_liquidacion_nmero_catastral"
-        const comparacionCatastral =
-          a.inscribe_liquidacion_nmero_catastral.localeCompare(
-            b.inscribe_liquidacion_nmero_catastral
-          );
-
-        // Si los "inscribe_liquidacion_nmero_catastral" son iguales, ordena por "inscribe_liquidacion_fecha"
-        if (comparacionCatastral === 0) {
-          return (
-            new Date(a.inscribe_liquidacion_fecha) -
-            new Date(b.inscribe_liquidacion_fecha)
-          );
-        }
-
-        return comparacionCatastral;
-      });*/
     } catch (error) {
       console.log("Error:", error);
     }
 
-    return dataPredio;
+    return jsonInfoProvider;
   };
   function Load_Data_Desenglobe(newdata) {
     console.log("Entra Datos en Avaluo sobre Desenglobe", newdata);
+    console.log("Informacion de Info", JSON.stringify(newdata));
     setDataDesenglobe(newdata);
   }
   return (
