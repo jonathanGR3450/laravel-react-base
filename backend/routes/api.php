@@ -24,6 +24,7 @@ use App\Http\Controllers\DatosPHCondominio\StoreLocal AS StoreDatosCondominioLoc
 use App\Http\Controllers\PredioCopropiedad\StoreLocal AS StorePredioCopropiedadLocal;
 use App\Http\Controllers\RicPredio\StoreLocal AS StoreRicPredioLocal;
 use App\Http\Controllers\RicTramiteCatastral\StoreLocal AS StoreRicTramiteCatastralLocal;
+use App\Http\Controllers\RicPredioTramiteCatastral\StoreLocal AS StoreRicPredioTramiteCatastralLocal;
 use App\Http\Controllers\FuenteAdministrativa\StoreLocal AS StoreFuenteAdministrativaLocal;
 use App\Http\Controllers\Datosadicionaleslevantamientocatastral\StoreLocal AS StoreDatosadicionaleslevantamientocatastralLocal;
 use App\Http\Controllers\ContactoVisita\StoreLocal AS StoreContactoVisitaLocal;
@@ -54,6 +55,7 @@ use App\Http\Controllers\Predio\StoreNumeroHomologadosController;
 use App\Http\Controllers\Predio\StoreNumeroPredialController;
 use App\Http\Controllers\Predio\StoreNumeroPredialHomologadoController;
 use App\Http\Controllers\Predio\UpdateLcPredio;
+use App\Http\Controllers\RicTramiteCatastral\IndexLocal AS IndexLocalRicTramiteCatastral;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -130,7 +132,12 @@ Route::prefix('v1')->group(function () {
     Route::post('datos-condominio/local', StoreDatosCondominioLocal::class);
     Route::post('predio-copropiedad/local', StorePredioCopropiedadLocal::class);
     Route::post('ric-predio/local', StoreRicPredioLocal::class);
+
+    Route::get('ric-tramite-catastral/local/list', IndexLocalRicTramiteCatastral::class);
     Route::post('ric-tramite-catastral/local', StoreRicTramiteCatastralLocal::class);
+
+
+    Route::post('ric-predio-tramite-catastral/local', StoreRicPredioTramiteCatastralLocal::class);
     Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
 
     Route::prefix('terreno')->group(function () {
