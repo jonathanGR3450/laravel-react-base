@@ -10,6 +10,8 @@ class LcFuenteadministrativa extends Model
 {
     use HasFactory;
 
+    protected $connection = 'pgsqlcatastro';
+
     protected $table = 'lc_fuenteadministrativa';
     protected $primaryKey = 't_id';
     public $timestamps = false;
@@ -23,9 +25,10 @@ class LcFuenteadministrativa extends Model
         'tipo_principal',
         'fecha_documento_fuente',
         'espacio_de_nombres',
+        'local_id',
     ];
 
-    function colRrrFuente() : HasMany {
+    public function colRrrFuente() : HasMany {
         return $this->hasMany(ColRrrfuente::class, 't_id', 'fuente_administrativa');
     }
 

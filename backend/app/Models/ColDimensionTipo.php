@@ -27,11 +27,11 @@ class ColDimensionTipo extends Model
         'description',
     ];
 
-    function terreno() : HasMany {
+    public function terreno() : HasMany {
         return $this->hasMany(LcTerreno::class, 'dimension');
     }
 
-    function construccion() : HasMany {
+    public function construccion() : HasMany {
         return $this->hasMany(LcConstruccion::class, 'relacion_superficie');
     }
 }

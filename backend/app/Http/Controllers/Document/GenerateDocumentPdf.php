@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Document;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\Radicado\StoreRadicadoFormRequest;
 use App\Models\Local\RadicadosLocal;
+use App\Models\TramiteTipo;
 use App\Services\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -17,9 +18,11 @@ class GenerateDocumentPdf extends AppBaseController
     public function __invoke(StoreRadicadoFormRequest $request)
     {
         try {
+            $tramiteTipo = TramiteTipo::find($request->tramite_id);
+
             $path = "templates";
             $pathOutput = "documents";
-            $nameTemplate = "template.docx";
+            $nameTemplate = "{$tramiteTipo->descripcion}.docx";
             $data = $request->all();
             
             $document = new Document($path, $nameTemplate, $data, $pathOutput);

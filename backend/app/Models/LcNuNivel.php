@@ -27,7 +27,7 @@ class LcNuNivel extends Model
         'description',
     ];
 
-    function terreno() : HasMany {
+    public function terreno() : HasMany {
         return $this->hasMany(LcTerreno::class, 'nivel');
     }
 }

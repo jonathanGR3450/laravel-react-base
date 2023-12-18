@@ -33,11 +33,11 @@ class LcInteresadoLocal extends Model
         'local_id',
     ];
 
-    function colMiembros() : HasMany {
+    public function colMiembros() : HasMany {
         return $this->hasMany(ColMiembroLocal::class, 't_id', 'interesado_lc_interesado');
     }
 
-    function lcRestricion() : HasMany {
+    public function lcRestricion() : HasMany {
         return $this->hasMany(LcRestriccionLocal::class, 't_id', 'interesado_lc_interesado');
     }
 

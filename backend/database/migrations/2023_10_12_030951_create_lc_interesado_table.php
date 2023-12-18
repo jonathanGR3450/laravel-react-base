@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('documento_identidad', 50);
             $table->string('primer_nombre', 100)->nullable();
             $table->string('segundo_nombre', 100)->nullable();
-            $table->string('primer_apellido', 100);
+            $table->string('primer_apellido', 100)->nullable();
             $table->string('segundo_apellido', 100)->nullable();
-            $table->bigInteger('sexo')->unsigned();
-            $table->bigInteger('grupo_etnico')->unsigned();
+            $table->bigInteger('sexo')->nullable();
+            $table->bigInteger('grupo_etnico')->nullable();
             $table->string('razon_social', 255)->nullable();
-            $table->bigInteger('estado_civil')->unsigned();
+            $table->bigInteger('estado_civil')->nullable();
             $table->string('nombre', 255)->nullable();
             $table->timestamp('comienzo_vida_util_version')->nullable();
             $table->timestamp('fin_vida_util_version')->nullable();

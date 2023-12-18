@@ -27,10 +27,10 @@ class ColMiembroLocal extends Model
         return $this->belongsTo(LcInteresadoLocal::class, 'interesado_lc_interesado', 't_id');
     }
 
-    public function interesadoConservacion()
-    {
-        return $this->belongsTo(LcInteresado::class, 'interesado_lc_interesado_conservacion', 't_id');
-    }
+    // public function interesadoConservacion()
+    // {
+    //     return $this->belongsTo(LcInteresado::class, 'interesado_lc_interesado_conservacion', 't_id');
+    // }
 
     public function agrupacionInteresados()
     {

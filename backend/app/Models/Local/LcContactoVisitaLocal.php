@@ -31,10 +31,10 @@ class LcContactoVisitaLocal extends Model
         'autoriza_notificaciones' => 'boolean',
     ];
 
-    // public function datosAdicionales()
-    // {
-    //     return $this->belongsTo(LcDatosadicionaleslevantamientocatastralLocal::class, 'lc_datos_adicionales', 't_id');
-    // }
+    public function datosAdicionales()
+    {
+        return $this->belongsTo(LcDatosadicionaleslevantamientocatastralLocal::class, 'lc_datos_adicionales', 't_id');
+    }
 
     // public function tipoDocumento()
     // {

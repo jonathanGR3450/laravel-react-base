@@ -2,6 +2,7 @@
 
 namespace App\Models\Local;
 
+use App\Models\LcDerechoTipo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,6 +21,7 @@ class LcDerechoLocal extends Model
         'fecha_inicio_tenencia',
         'descripcion',
         'interesado_lc_interesado',
+        'interesado_lc_interesado_conservacion',
         'interesado_lc_agrupacioninteresados',
         'unidad',
         'comienzo_vida_util_version',
@@ -48,10 +50,10 @@ class LcDerechoLocal extends Model
     // // Relación con lc_predio (Unidad)
     public function predio()
     {
-        return $this->belongsTo(LcPredioLocal::class, 'unidad');
+        return $this->belongsTo(LcPredioLocal::class, 'unidad', 't_id');
     }
 
-    function colRrrFuente() : HasMany {
-        return $this->hasMany(ColRrrfuenteLocal::class, 't_id', 'rrr_lc_derecho');
+    public function colRrrFuente() : HasMany {
+        return $this->hasMany(ColRrrfuenteLocal::class, 'rrr_lc_derecho', 't_id');
     }
 }
