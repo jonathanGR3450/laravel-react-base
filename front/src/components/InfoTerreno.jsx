@@ -27,6 +27,10 @@ const InfoTerreno = () => {
     openTerreno();
     ////setEstInput((prevEstInput) => !prevEstInput);
   };
+  function updateData(newData) {
+    console.log("data", newData);
+    setAreaTerreno(newData.area_terreno);
+  }
   return (
     <>
       <div className=" text-center m-5 border ">Terreno</div>
@@ -83,7 +87,11 @@ const InfoTerreno = () => {
             Editar
           </button>
 
-          <NormalTerrenoForm data={Predio} ref={terrenoRef} />
+          <NormalTerrenoForm
+            data={Predio}
+            ref={terrenoRef}
+            update={updateData}
+          />
         </div>
       </form>
     </>

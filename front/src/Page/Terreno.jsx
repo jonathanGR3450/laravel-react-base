@@ -124,6 +124,8 @@ const TerrenoForm = (props, ref) => {
       const response = await fetch(url, requestOptions);
       if (response.ok) {
         const result = await response.json();
+        props.update(json);
+        props.onClose();
         console.log("Dataaaaa", result);
       }
     }
@@ -438,7 +440,12 @@ export const NormalTerrenoForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <TerrenoForm contexto={false} data={props.data} />
+      <TerrenoForm
+        contexto={false}
+        data={props.data}
+        onClose={closeModal}
+        update={props.update}
+      />
     </Modal>
   );
 });

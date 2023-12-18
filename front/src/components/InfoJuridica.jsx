@@ -65,9 +65,78 @@ const InfoJuridica = () => {
     if (name === "fuente_administrativa") {
       openFuente();
     }
-
     //setEstInput((prevEstInput) => !prevEstInput);
   };
+  function updateDerecho(newData) {}
+  function updateFuente(newData) {
+    console.log(newData);
+    let aux1 = newData;
+    let tipo_fuente = 0;
+    let texto_fuente = 0;
+    let tipo_principal = 0;
+    switch (aux1.tipo_fuente) {
+      case "45":
+        tipo_fuente = "Documento Publico";
+        break;
+      case "46":
+        tipo_fuente = "Documento Privado";
+        break;
+      case "50":
+        tipo_fuente = "Escritura Publica (Doc Publico)";
+        break;
+      case "51":
+        tipo_fuente = "Sentencia Judicial (Doc Publico)";
+        break;
+      case "52":
+        tipo_fuente = "Acto Administrativo (Doc Publico)";
+        break;
+      case "54":
+        tipo_fuente = "Sin Documento";
+        break;
+      default:
+        tipo_fuente = "Valor no reconocido";
+    }
+    switch (aux1.estado_disponibilidad) {
+      case "885":
+        texto_fuente = "Convertido";
+        break;
+      case "886":
+        texto_fuente = "Desconocido";
+        break;
+      case "887":
+        texto_fuente = "Disponible";
+        break;
+      default:
+        texto_fuente = "Valor no reconocido";
+    }
+    switch (aux1.tipo_principal) {
+      case "18":
+        tipo_principal = "Imagen";
+        break;
+      case "19":
+        tipo_principal = "Documento";
+        break;
+      case "20":
+        tipo_principal = "Mapa";
+        break;
+      case "21":
+        tipo_principal = "Video";
+        break;
+      case "22":
+        tipo_principal = "Otro";
+        break;
+      default:
+        tipo_principal = "Valor no reconocido";
+    }
+
+    setTipoFuenteAdmini(tipo_fuente);
+    setEnteEmisor(newData.ente_emisor);
+    setObservacionFuenteAdmini(newData.observacion);
+    setNumeroFuente(newData.numero_fuente);
+    setEstadoDisponibilidad(texto_fuente);
+    setTipoPrincipal(tipo_principal);
+    setFechaDocumentoFuente(newData.fecha_documento_fuente);
+  }
 
   return (
     <>
@@ -141,7 +210,11 @@ const InfoJuridica = () => {
               Editar
             </button>
 
-            <NormalDerechoForm data={Predio} ref={derechoRef} />
+            <NormalDerechoForm
+              data={Predio}
+              ref={derechoRef}
+              update={updateDerecho}
+            />
           </div>
         </div>
       </form>
@@ -257,7 +330,11 @@ const InfoJuridica = () => {
               Editar
             </button>
 
-            <NormalFuenteForm data={Predio} ref={fuenteAdministrativaRef} />
+            <NormalFuenteForm
+              data={Predio}
+              ref={fuenteAdministrativaRef}
+              update={updateFuente}
+            />
           </div>
         </div>
       </form>

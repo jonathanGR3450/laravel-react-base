@@ -25,7 +25,7 @@ const InfoProvider = ({ children }) => {
     }, 5000);
   };
   const submitInfoResolucion = async (infoResolucion) => {
-    console.log(infoResolucion);
+    console.log("Info Resolucion", JSON.stringify(infoResolucion));
     try {
       const config = {
         headers: {
@@ -38,7 +38,7 @@ const InfoProvider = ({ children }) => {
         config
       );
       setResultado(data);
-      console.log(data);
+      console.log("Resultado axios", data);
 
       setAlerta({
         msg: "Resolución Creada Correctamente",
@@ -81,6 +81,7 @@ const InfoProvider = ({ children }) => {
         resultado,
         submitInfoNumPredial,
         numPredial,
+        infoInscribir,
         updateJsonInscribir,
       }}
     >

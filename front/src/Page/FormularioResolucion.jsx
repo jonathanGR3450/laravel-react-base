@@ -1,6 +1,8 @@
 import { useState } from "react";
 import useInfo from "../hooks/useInfo";
 import Alerta from "../components/Alerta";
+import Inscripcion from "../Json/dataAvaluo.json";
+
 const FormularioResolucion = () => {
   const [serialResolucion, setSerialResolucion] = useState("");
   const [dia, setDia] = useState("");
@@ -27,8 +29,11 @@ const FormularioResolucion = () => {
   const [anioNotificacion, setAnioNotificacion] = useState("");
   const [nombreDirector, setnombreDirector] = useState("");
 
-  const { mostrarAlerta, alerta, submitInfoResolucion } = useInfo();
+  const { mostrarAlerta, alerta, submitInfoResolucion, infoInscribir } =
+    useInfo();
 
+  let auxinfoInscribir = Inscripcion;
+  console.log("info escribir", auxinfoInscribir);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -61,7 +66,7 @@ const FormularioResolucion = () => {
       return;
     }
     await submitInfoResolucion({
-      tramite_id: "001", //asociado al tipo de tramite ejem cambio de propietario
+      tramite_id: 1, //asociado al tipo de tramite ejem cambio de propietario
       no_resolucion: serialResolucion,
       dia: dia,
       mes: mes,
@@ -117,46 +122,12 @@ const FormularioResolucion = () => {
           cancela_propietarios_numero_documento: "9005943878",
         },
       ],
-      inscribe_datos_predio_nmero_catastral: [
-        {
-          inscribe_datos_predio_nmero_catastral:
-            "252900100000002150187000000000",
-          inscribe_datos_predio_matricula_inmobiliaria: "157-75298",
-          inscribe_datos_predio_Direccion: "Lo No 6",
-          inscribe_datos_predio_destino_económico: "R",
-          inscribe_datos_predio_area_terreno: 748,
-          inscribe_datos_predio_area_construida: 0,
-          inscribe_datos_predio_avaluo: "$ 336,600,000",
-          inscribe_datos_predio_vigencia: "01012023",
-        },
-      ],
-      inscribe_propietarios_nmero_catastral: [
-        {
-          inscribe_propietarios_nmero_catastral:
-            "252900100000002150187000000000",
-          inscribe_propietarios_numero_propietario: "1",
-          inscribe_propietarios_nombre_propietario:
-            "LA SOCIEDAD BERESNAJE COLOMBIA S",
-          inscribe_propietarios_tipo_documento: "N",
-          inscribe_propietarios_numero_documento: "9005943878",
-        },
-      ],
-      inscribe_liquidacion_nmero_catastral: [
-        {
-          inscribe_liquidacion_nmero_catastral:
-            "252900100000002150187000000000",
-          inscribe_liquidacion_concepto: "ACTUALIZACION CATASTRAL",
-          inscribe_liquidacion_avaluo: "$ 321,683,000",
-          inscribe_liquidacion_fecha: "1/1/2022",
-        },
-        {
-          inscribe_liquidacion_nmero_catastral:
-            "252900100000002150187000000000",
-          inscribe_liquidacion_concepto: "DECRETO 2653 /2022",
-          inscribe_liquidacion_avaluo: "$ 335,548,000",
-          inscribe_liquidacion_fecha: "1/1/2023",
-        },
-      ],
+      inscribe_datos_predio_nmero_catastral:
+        auxinfoInscribir.inscribe_datos_predio_nmero_catastral,
+      inscribe_propietarios_nmero_catastral:
+        auxinfoInscribir.inscribe_propietarios_nmero_catastral,
+      inscribe_liquidacion_nmero_catastral:
+        auxinfoInscribir.inscribe_liquidacion_nmero_catastral,
     });
     setSerialResolucion("");
     setDia("");

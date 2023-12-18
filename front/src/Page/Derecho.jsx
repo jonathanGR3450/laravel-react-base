@@ -168,6 +168,8 @@ const DerechoForm = (props, ref) => {
           ///Retornar Id y guardarlo
           objDerecho.t_id = result.data.t_id;
           setLoading(false);
+          props.update(json);
+          props.onClose();
         } else {
           const error = await response.json();
           console.log("Error en la solicitud:", error);
@@ -310,7 +312,12 @@ export const NormalDerechoForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <DerechoForm contexto={false} data={props.data} onClose={closeModal} />
+      <DerechoForm
+        contexto={false}
+        data={props.data}
+        onClose={closeModal}
+        update={props.update}
+      />
     </Modal>
   );
 });

@@ -52,7 +52,8 @@ const PredioForm = (props, ref) => {
       t_id: dataPredio.t_id,
       departamento: dataPredio.Departamento,
       municipio: dataPredio.Municipio,
-      id_operacion: dataPredio.Id_Operacion,
+      id_operacion:
+        dataPredio.Id_Operacion == null ? "" : dataPredio.Id_Operacion,
       tiene_fmi: dataPredio.Tiene_FMI,
       codigo_orip: dataPredio.Codigo_ORIP,
       matricula_inmobiliaria: dataPredio.Matricula_Inmobiliaria,
@@ -65,7 +66,9 @@ const PredioForm = (props, ref) => {
       avaluo_catastral: dataPredio.Avaluo_Catastral
         ? dataPredio.Avaluo_Catastral.toLocaleString()
         : null,
-      valor_referencia: dataPredio.Valor_Referencia,
+      valor_referencia: isNaN(parseFloat(dataPredio.Valor_Referencia))
+        ? 0
+        : parseFloat(dataPredio.Valor_Referencia),
       tipo: dataPredio.Tipo ? dataPredio.Tipo[0].t_id.toString() : null,
       condicion_predio: dataPredio.Condicion_Predio
         ? dataPredio.Condicion_Predio[0].t_id.toString()
@@ -208,7 +211,7 @@ const PredioForm = (props, ref) => {
       let json = {
         departamento: dataForm.departamento,
         municipio: dataForm.municipio,
-        id_operacion: dataForm.id_operacion,
+        id_operacion: dataForm.numero_predial,
         tiene_fmi: dataForm.tiene_fmi,
         codigo_orip: dataForm.codigo_orip,
         matricula_inmobiliaria: dataForm.matricula_inmobiliaria,
@@ -248,10 +251,9 @@ const PredioForm = (props, ref) => {
         const result = await response.json();
         if (result.success) {
           dataForm.t_id = result.data.t_id;
-          props.msj("Datos de Predio Guardado Satisfactoriamente");
+          props.update(json);
           props.onClose();
         } else {
-          props.msj("Error al guardar datos de Predio");
           alert("Error");
         }
         console.log("Rsultado Predio", result);
@@ -524,7 +526,12 @@ export const NormalPredioForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <PredioForm contexto={false} data={props.data} />
+      <PredioForm
+        contexto={false}
+        onClose={closeModal}
+        data={props.data}
+        update={props.update}
+      />
     </Modal>
   );
 });

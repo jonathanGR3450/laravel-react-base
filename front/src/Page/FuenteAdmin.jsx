@@ -148,7 +148,8 @@ const FuenteAdminForm = (props, ref) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
+        props.update(json);
+        props.onClose();
         const result = await response.json();
         console.log("Resultado Fuente", result);
       }
@@ -345,7 +346,12 @@ export const NormalFuenteForm = React.forwardRef((props, ref) => {
   }));
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <FuenteAdminForm contexto={false} data={props.data} />
+      <FuenteAdminForm
+        contexto={false}
+        data={props.data}
+        update={props.update}
+        onClose={closeModal}
+      />
     </Modal>
   );
 });

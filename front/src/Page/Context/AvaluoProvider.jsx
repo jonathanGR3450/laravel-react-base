@@ -2101,6 +2101,7 @@ const AvaluoProvider = ({ children }) => {
 
     return jsonInfoProvider;
   };
+
   function Load_Data_Desenglobe(newdata) {
     console.log("Entra Datos en Avaluo sobre Desenglobe", newdata);
     console.log("Informacion de Info", JSON.stringify(newdata));
