@@ -558,32 +558,22 @@ export const InteresadoResumeForm = React.forwardRef((props, ref) => {
   }));
 
   const mostrar = (data) => {
-    return data.map((item, index) => {
-      console.log(item);
-      return (
-        <div className="flex flex-col">
-          <table>
-            <thead>
-              <tr>
-                <th>Tipo Interesados</th>
-                <th>Primer Nombre</th>
-                <th> Segundo Nombre</th>
-                <th>Primer Apellido</th>
-                <th>Segundo Apellido</th>
-              </tr>
-            </thead>
-          </table>
-          <label> Interesado {index + 1}</label>
-          <div className="flex flex-row">
-            <div></div>
-            <label>
-              {item.tipo == 658 ? "Persona Natural" : "Persona Juridica"}
-            </label>
-            <label>{item.primer_nombre}</label>
-          </div>
-        </div>
-      );
-    });
+    return (
+      <div className="flex flex-col">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo Interesados</th>
+              <th>Primer Nombre</th>
+              <th> Segundo Nombre</th>
+              <th>Primer Apellido</th>
+              <th>Segundo Apellido</th>
+            </tr>
+          </thead>
+          <tbody>{data.map((item, index) => {})}</tbody>
+        </table>
+      </div>
+    );
   };
 
   return (

@@ -31,6 +31,7 @@ import { NormalInteresadoForm } from "../Page/Interesado";
 import { NormalFuenteForm } from "../Page/FuenteAdmin";
 import { NormalPredioForm } from "../Page/Predio";
 import { AvaluoProvider } from "../Page/Context/AvaluoProvider";
+import CreateTramite from "../Page/CTramite";
 const Ruta = () => {
   return (
     <InfoProvider>
@@ -91,6 +92,7 @@ const Ruta = () => {
             <Route path="/DataHom" element={<LoadCodHom />}></Route>
             <Route path="/Avaluo" element={<AvaluoForm />}></Route>
             <Route path="/Incremento" element={<IncrementoForm />}></Route>
+            <Route path="/CreateTramite" element={<CreateTramite />}></Route>
             <Route
               path="/Tramites"
               element={

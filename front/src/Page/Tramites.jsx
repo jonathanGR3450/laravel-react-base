@@ -13,7 +13,7 @@ const TramitesForm = () => {
   console.log("Data Desenglobe OBJ", dataDesenglobe);
   //console.log("Data Desenglobe OBJ", JSON.stringify(dataDesenglobe));
   const navigate = useNavigate();
-
+  const [estEstado, setEstEstado] = useState(false);
   const [vigenciaTipo, setVigenciaTipo] = useState(["2023", "2024", "2025"]);
   const [jsonValues, setJsonValues] = useState({
     incremento: 0,
@@ -38,6 +38,10 @@ const TramitesForm = () => {
   function handleEnviar(e) {
     navigate("/TramiteDetalle");
   }
+  function toggleEditar() {
+    setEstEstado((prevEstEstado) => !prevEstEstado);
+  }
+  function changeData(e) {}
   return (
     <>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 text-left">
@@ -67,10 +71,29 @@ const TramitesForm = () => {
                 <td>{tramite.radicacionFecha}</td>
                 <td>{tramite.predioTipo}</td>
                 <td>{tramite.npn}</td>
-                <td>{tramite.Estado}</td>
+                <td>
+                  {estEstado ? (
+                    <select onChange={changeData}>
+                      <option></option>
+                      <option>En Revision</option>
+                      <option>Aprobado</option>
+                      <option>Devuelto</option>
+                    </select>
+                  ) : (
+                    tramite.Estado
+                  )}
+                </td>
                 <td>{tramite.notificacionFecha}</td>
                 <td>{tramite.notificacionMetodo}</td>
-                <td>{tramite.observaciones}</td>
+                <td>
+                  {estEstado ? (
+                    <button className="p-2 mt-4 text-center rounded-md text-white bg-teal-500 text-lg mr-2">
+                      Agregar Observacion
+                    </button>
+                  ) : (
+                    tramite.observaciones
+                  )}
+                </td>
                 <td>
                   <div className="w-sm flex flex-col items-center justify-center mt-4">
                     <button
@@ -83,7 +106,7 @@ const TramitesForm = () => {
                   <div className="w-sm flex flex-col items-center justify-center mt-4">
                     <button
                       className="p-2 w-1/8 text-center  rounded-md  border-2  text-white bg-teal-500 "
-                      onClick={handleEnviar}
+                      onClick={toggleEditar}
                     >
                       Editar
                     </button>

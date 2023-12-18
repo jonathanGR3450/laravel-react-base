@@ -83,7 +83,11 @@ const TramiteDetalleForm = () => {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   function handleEnviar(e) {}
-
+  function handleInput(e) {
+    const { name, value } = e.target;
+    jsonValues.incremento = value;
+    console.log(value);
+  }
   return (
     <>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-opacity-80 text-left">
@@ -523,6 +527,86 @@ const TramiteDetalleForm = () => {
                   ))}
                 </tbody>
               </table>
+            </AccordionItemPanel>
+          </AccordionItem>
+          <AccordionItem className="bg-transparent bg-white bg-opacity-80">
+            <AccordionItemHeading>
+              <AccordionItemButton>Ric Tramite Catastral</AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+              <br />
+              <div className=" flex justify-center items-center w-full mb-3">
+                <div className="w-1/4 flex flex-col  ml-4 ">
+                  <label className="w-mid font-semibold">Id : </label>
+                  <input
+                    onChange={handleInput}
+                    type="text"
+                    className="border-2 p-2 rounded-lg text-center w-full"
+                    name="area1"
+                  ></input>
+                </div>
+                <div className="w-1/4 flex flex-col  ml-4 ">
+                  <label className="w-mid font-semibold">
+                    Clasificacion Mutacion :{" "}
+                  </label>
+                  <input
+                    onChange={handleInput}
+                    type="text"
+                    step="0.01"
+                    className="border-2 p-2 rounded-lg text-center w-full"
+                    name="area1"
+                  ></input>
+                </div>
+                <div className="w-1/4 flex flex-col  ml-4 ">
+                  <label className="w-mid font-semibold">
+                    Numero de Resolucion :{" "}
+                  </label>
+                  <input
+                    onChange={handleInput}
+                    type="text"
+                    step="0.01"
+                    className="border-2 p-2 rounded-lg text-center w-full"
+                    name="area1"
+                  ></input>
+                </div>
+              </div>
+              <div className=" flex justify-center items-center w-full mb-3">
+                <div className="w-1/4 flex flex-col  ml-4 ">
+                  <label className="w-mid font-semibold">
+                    Fecha Resolucion :{" "}
+                  </label>
+                  <input
+                    onChange={handleInput}
+                    type="text"
+                    step="0.01"
+                    className="border-2 p-2 rounded-lg text-center w-full"
+                    name="area1"
+                  ></input>
+                </div>
+                <div className="w-1/4 flex flex-col  ml-4 ">
+                  <label className="w-mid font-semibold">
+                    Fecha Radicación :{" "}
+                  </label>
+                  <input
+                    onChange={handleInput}
+                    type="text"
+                    step="0.01"
+                    className="border-2 p-2 rounded-lg text-center w-full"
+                    name="area1"
+                  ></input>
+                </div>
+                <div className="w-1/4 flex flex-col  ml-4 ">
+                  <label className="w-mid font-semibold">Ric Predio : </label>
+                  <input
+                    onChange={handleInput}
+                    type="text"
+                    step="0.01"
+                    className="border-2 p-2 rounded-lg text-center w-full"
+                    name="area1"
+                  ></input>
+                </div>
+              </div>
+              <br />
             </AccordionItemPanel>
           </AccordionItem>
         </Accordion>

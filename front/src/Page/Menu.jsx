@@ -46,6 +46,9 @@ const Menu = () => {
             <Link to="/Incremento">Incremento</Link>
           </li>
           <li className="ml-2 text-white">
+            <Link to="/CreateTramite">Crear Tramite </Link>
+          </li>
+          <li className="ml-2 text-white">
             <Link to="/Tramites">Tramites</Link>
           </li>
 
