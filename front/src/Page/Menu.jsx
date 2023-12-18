@@ -24,6 +24,10 @@ const Menu = () => {
             <Link to="/ConsultarPredio">Consultar Predio</Link>
           </li>
           <li className="ml-2 text-white">
+            {/* <Link to="/Consulta/Predio">Consultar Predio</Link> */}
+            <Link to="/InfoInspeccion">Informacion Inspeccion</Link>
+          </li>
+          <li className="ml-2 text-white">
             <Link to="/Ficha">Ficha Predial</Link>
           </li>
           <li className="ml-2 text-white">
