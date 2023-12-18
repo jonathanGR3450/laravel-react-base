@@ -27,11 +27,11 @@ class ColRelacionSuperficieTipo extends Model
         'description',
     ];
 
-    function terreno() : HasMany {
+    public function terreno() : HasMany {
         return $this->hasMany(LcTerreno::class, 'relacion_superficie');
     }
     
-    function construccion() : HasMany {
+    public function construccion() : HasMany {
         return $this->hasMany(LcConstruccion::class, 'relacion_superficie');
     }
 }

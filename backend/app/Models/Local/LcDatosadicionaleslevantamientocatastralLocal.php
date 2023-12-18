@@ -39,6 +39,11 @@ class LcDatosadicionaleslevantamientocatastralLocal extends Model
         return $this->belongsTo(LcPredioLocal::class, 'lc_predio', 't_id');
     }
 
+    public function contactoVisita()
+    {
+        return $this->hasMany(LcContactoVisitaLocal::class, 'lc_datos_adicionales', 't_id');
+    }
+
     // public function procedimientoCatastralRegistral()
     // {
     //     return $this->belongsTo(LcProcedimientoCatastralRegistraltipo::class, 'procedimiento_catastral_registral', 't_id');

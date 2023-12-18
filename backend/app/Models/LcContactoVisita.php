@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Models\Local;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LcContactoVisitaLocal extends Model
+class LcContactoVisita extends Model
 {
     use HasFactory;
 
+    protected $connection = 'pgsqlcatastro';
+    
     protected $table = 'lc_contactovisita';
     protected $primaryKey = 't_id';
     public $timestamps = false;
@@ -33,7 +35,7 @@ class LcContactoVisitaLocal extends Model
 
     public function datosAdicionales()
     {
-        return $this->belongsTo(LcDatosadicionaleslevantamientocatastralLocal::class, 'lc_datos_adicionales', 't_id');
+        return $this->belongsTo(LcDatosadicionaleslevantamientocatastral::class, 'lc_datos_adicionales', 't_id');
     }
 
     // public function tipoDocumento()

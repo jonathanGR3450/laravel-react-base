@@ -199,8 +199,12 @@ class PredioResource extends JsonResource
                                 "interesados" => $item->lcAgrupacionInteresados?->miembrosAgrupacion?->transform(function ($item) {
                                     return [
                                         't_id' => $item->interesado?->t_id,
-                                        'tipo' => $item->interesado?->tipo,
+                                        'tipo' => [
+                                            't_id' => $item->interesado?->tipo,
+                                            'dispname' => $item->interesado?->tipoInteresado->dispname,
+                                        ],
                                         'nombre' => $item->interesado?->nombre,
+                                        'documento_identidad' => $item->interesado?->documento_identidad,
                                         'comienzo_vida_util_version' => $item->interesado?->comienzo_vida_util_version,
                                         'fin_vida_util_version' => $item->interesado?->fin_vida_util_version,
                                         'espacio_de_nombres' => $item->interesado?->espacio_de_nombres,

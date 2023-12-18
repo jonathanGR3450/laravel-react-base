@@ -20,12 +20,14 @@ class LcTerreno extends Model
         'avaluo_terreno',
         'manzana_vereda_codigo',
         'dimension',
+        'geometria',
         'etiqueta',
         'relacion_superficie',
         'nivel',
         'comienzo_vida_util_version',
         'fin_vida_util_version',
         'espacio_de_nombres',
+        'local_id',
     ];
 
     public function lcdimension()

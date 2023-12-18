@@ -50,11 +50,11 @@ class LcDerecho extends Model
     // Relación con lc_predio (Unidad)
     public function lcPredio()
     {
-        return $this->belongsTo(LcPredio::class, 'unidad');
+        return $this->belongsTo(LcPredio::class, 'unidad', 't_id');
     }
 
     public function colRrrFuente()
     {
-        return $this->hasMany(ColRrrfuente::class, 'rrr_lc_derecho');
+        return $this->hasMany(ColRrrfuente::class, 'rrr_lc_derecho', 't_id');
     }
 }
