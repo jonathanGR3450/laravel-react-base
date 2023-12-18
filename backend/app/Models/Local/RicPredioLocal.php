@@ -57,7 +57,12 @@ class RicPredioLocal extends Model
 
     public function ricTramiteCatastral()
     {
-        return $this->hasMany(RicTramiteCatastralLocal::class, 'clasificacion_mutacion', 't_id');
+        return $this->hasMany(RicTramiteCatastralLocal::class, 'ric_predio', 't_id');
+    }
+
+    public function ricPredioTramiteCatastral()
+    {
+        return $this->hasMany(RicPredioTramiteCatastralLocal::class, 'ric_predio', 't_id');
     }
 
     public function lcPredio()
