@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useInfo from "../hooks/useInfo";
+import { NormalPredioForm } from "../Page/Predio";
 
 const InfoPredio = () => {
   const { numPredial } = useInfo();
-  console.log(numPredial);
   const { data: info } = numPredial;
-
   // Verificar si 'info' y 'Predio' existen antes de desestructurar
   const { Predio } = info || {};
-  console.log(Predio ? Predio[0] : null);
   const {
     Departamento,
     Municipio,
@@ -65,6 +63,246 @@ const InfoPredio = () => {
     useState(DestinacionEconomica);
   const [claseSuelo, setClaseSuelo] = useState(ClaseSuelo);
   const [categoriaSuelo, setCategoriaSuelo] = useState(CategoriaSuelo);
+  ///////
+  const [estInput, setEstInput] = useState(true);
+  const predioRef = useRef();
+  const openPredio = () => {
+    predioRef.current.openModal();
+  };
+  const editToggle = (e) => {
+    e.preventDefault();
+    //setEstInput((prevEstInput) => !prevEstInput);
+    openPredio();
+  };
+  function updateData(newData) {
+    console.log("nueva Data", newData);
+    let data = newData;
+    let aux1 = data;
+    let tipo_predio = "";
+    let condicion = "";
+    let destinacion_economica = "";
+    let clase_suelo = "";
+    let categoria_suelo = "";
+    //Tipo Predio
+    switch (aux1.tipo) {
+      case "888":
+        tipo_predio = "(Predio) (Público) Baldío";
+        break;
+      case "889":
+        tipo_predio = "(Predio) (Público) Fiscal";
+        break;
+      case "890":
+        tipo_predio = "(Predio) (Público) Patrimonial";
+        break;
+      case "891":
+        tipo_predio = "(Predio) (Público) Uso público";
+        break;
+      case "892":
+        tipo_predio = "(Predio) (Público) Ejido";
+        break;
+      case "893":
+        tipo_predio = "(Predio) Privado";
+        break;
+      case "894":
+        tipo_predio = "(Predio) Territorio colectivo";
+        break;
+      case "895":
+        tipo_predio = "(Predio) Vacante";
+        break;
+      case "896":
+        tipo_predio = "Ordenamiento territorial";
+        break;
+      case "897":
+        tipo_predio = "Servicios públicos";
+        break;
+      case "898":
+        tipo_predio = "Reservas naturales";
+        break;
+      case "899":
+        tipo_predio = "Parques naturales";
+        break;
+      case "900":
+        tipo_predio = "Amenazas de riesgos";
+        break;
+      case "901":
+        tipo_predio = "Servidumbre";
+        break;
+      case "902":
+        tipo_predio = "Superficies de agua";
+        break;
+      case "903":
+        tipo_predio = "Transporte";
+        break;
+      default:
+        tipo_predio = "Valor no reconocido";
+    }
+    //Condicion Predio
+    switch (aux1.condicion_predio) {
+      case "442":
+        condicion = "No propiedad horizontal";
+        break;
+      case "443":
+        condicion = "(Propiedad horizontal) Matriz";
+        break;
+      case "444":
+        condicion = "(Propiedad horizontal) Unidad Predial";
+        break;
+      case "445":
+        condicion = "(Condominio) Matriz";
+        break;
+      case "446":
+        condicion = "(Condominio) Unidad predial";
+        break;
+      case "447":
+        condicion = "(Parque cementerio) Matriz";
+        break;
+      case "448":
+        condicion = "(Parque Cementerio) Unidad predial";
+        break;
+      case "449":
+        condicion = "Vía";
+        break;
+      case "450":
+        condicion = "Informal";
+        break;
+      case "451":
+        condicion = "Bien de uso público";
+        break;
+      case "903":
+        condicion = "Mejora";
+        break;
+      default:
+        condicion = "Valor no reconocido";
+    }
+    switch (aux1.clase_suelo) {
+      case "84":
+        clase_suelo = "Urbano";
+        break;
+      case "85":
+        clase_suelo = "Rural";
+        break;
+      case "86":
+        clase_suelo = "Expansión urbana";
+        break;
+      default:
+        clase_suelo = "Valor no reconocido";
+    }
+    switch (aux1.categoria_suelo) {
+      case "777":
+        categoria_suelo = "Suburbano";
+        break;
+      case "778":
+        categoria_suelo = "Protección";
+        break;
+      default:
+        categoria_suelo = "Valor no reconocido";
+    }
+    switch (aux1.destinacion_economica) {
+      case "162":
+        destinacion_economica = "Acuícola";
+        break;
+      case "163":
+        destinacion_economica = "Agrícola";
+        break;
+      case "164":
+        destinacion_economica = "Agroindustrial";
+        break;
+      case "165":
+        destinacion_economica = "Agropecuario";
+        break;
+      case "166":
+        destinacion_economica = "Agroforestal";
+        break;
+      case "167":
+        destinacion_economica = "Comercial";
+        break;
+      case "168":
+        destinacion_economica = "Cultural";
+        break;
+      case "169":
+        destinacion_economica = "Educativo";
+        break;
+      case "170":
+        destinacion_economica = "Forestal";
+        break;
+      case "171":
+        destinacion_economica = "Habitacional";
+        break;
+      case "172":
+        destinacion_economica = "Industrial";
+        break;
+      case "173":
+        destinacion_economica =
+          "Infraestructura asociada a producción agropecuaria";
+        break;
+      case "174":
+        destinacion_economica = "Infraestructura hidráulica";
+        break;
+      case "175":
+        destinacion_economica = "Infraestructura de saneamiento básico";
+        break;
+      case "176":
+        destinacion_economica = "Infraestructura seguridad";
+        break;
+      case "177":
+        destinacion_economica = "Infraestructura transporte";
+        break;
+      case "178":
+        destinacion_economica = "Institucional";
+        break;
+      case "179":
+        destinacion_economica = "Minería e hidrocarburos";
+        break;
+      case "180":
+        destinacion_economica = "Lote urbanizable no urbanizado";
+        break;
+      case "181":
+        destinacion_economica = "Lote urbanizado no construido";
+        break;
+      case "182":
+        destinacion_economica = "Lote no urbanizable";
+        break;
+      case "183":
+        destinacion_economica = "Pecuario";
+        break;
+      case "184":
+        destinacion_economica = "Recreacional";
+        break;
+      case "185":
+        destinacion_economica = "Religioso";
+        break;
+      case "186":
+        destinacion_economica = "Salubridad";
+        break;
+      case "187":
+        destinacion_economica = "Servicios funerarios";
+        break;
+      case "188":
+        destinacion_economica = "Uso público";
+        break;
+      default:
+        destinacion_economica = "Valor no reconocido";
+    }
+    setDepartamento(data.departamento);
+    setMunicipio(data.municipio);
+    setIdOperacion(data.id_operacion);
+    setValorReferencia(data.valor_referencia);
+    setCodigoOrip(data.codigo_orip);
+    setMatriculaInmobiliaria(data.matricula_inmobiliaria);
+    setNumeroPredial(data.numero_predial);
+    setNumeroPredialAnterior(data.numero_predial_anterior);
+    setCodigoHomologado(data.codigo_homologado);
+    setNupre(data.nupre);
+    setAvaluoCatastral(data.avaluo_catastral);
+    setTieneFMI(data.tiene_fmi);
+    setTipo(tipo_predio);
+    setCondicionPredio(condicion);
+    setInterrelacionado(data.interrelacionado);
+    setCodigoHomologadoFMI(data.codigo_homologado_fmi);
+    setDestinacionEconomica(destinacion_economica);
+    setClaseSuelo(clase_suelo);
+    setCategoriaSuelo(categoria_suelo);
+  }
   return (
     <>
       <div className=" text-center m-5 border ">Predio</div>
@@ -77,7 +315,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="departamento"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full"
               placeholder=""
               value={departamento ? departamento : ""}
@@ -91,7 +329,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="municipio"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={municipio ? municipio : ""}
@@ -105,7 +343,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="idOperacion"
-              disabled
+              disabled={estInput}
               className=" border-2 rounded-lg text-center w-full "
               placeholder=""
               value={idOperacion ? idOperacion : ""}
@@ -121,7 +359,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="valorReferencia"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={valorReferencia ? valorReferencia : ""}
@@ -135,7 +373,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="codigoOrip"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={codigoOrip ? codigoOrip : ""}
@@ -149,7 +387,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="matriculaInmobiliaria"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={matriculaInmobiliaria ? matriculaInmobiliaria : ""}
@@ -165,7 +403,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="numeroPredial"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={numeroPredial ? numeroPredial : ""}
@@ -179,7 +417,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="numeroPredialAnterior"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={numeroPredialAnterior ? numeroPredialAnterior : ""}
@@ -193,7 +431,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="codigoHomologado"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={codigoHomologado ? codigoHomologado : ""}
@@ -209,7 +447,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="nupre"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={nupre ? nupre : ""}
@@ -223,7 +461,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="avaluoCatastral"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={avaluoCatastral ? avaluoCatastral : ""}
@@ -239,7 +477,7 @@ const InfoPredio = () => {
                 id="tieneFMI"
                 type="checkbox"
                 className=" border-2 checked:bg-blue-500 h-5 w-5 rounded-md mr-2 "
-                disabled
+                disabled={estInput}
                 checked={tieneFMI}
               />
               <label>¿Tiene fmi?</label>
@@ -263,7 +501,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="tipo"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full"
               placeholder=""
               value={tipo ? tipo : ""}
@@ -277,7 +515,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="condicionPredio"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={condicionPredio ? condicionPredio : ""}
@@ -293,7 +531,7 @@ const InfoPredio = () => {
                 id="interrelacionado"
                 type="checkbox"
                 className=" border-2 checked:bg-blue-500 h-5 w-5 rounded-md mr-2 "
-                disabled
+                disabled={estInput}
                 checked={interrelacionado}
               />
               <label>¿Es interrelacionado?</label>
@@ -319,7 +557,7 @@ const InfoPredio = () => {
                 id="codigoHomologadoFMI"
                 type="checkbox"
                 className=" border-2 checked:bg-blue-500 h-5 w-5 rounded-md mr-2 "
-                disabled
+                disabled={estInput}
                 checked={codigoHomologadoFMI}
               />
               <label>¿Tiene codigo homologado fmi?</label>
@@ -341,7 +579,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="destinacionEconomica"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={destinacionEconomica ? destinacionEconomica : ""}
@@ -355,7 +593,7 @@ const InfoPredio = () => {
             <input
               type="text"
               id="claseSuelo"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={claseSuelo ? claseSuelo : ""}
@@ -371,11 +609,24 @@ const InfoPredio = () => {
             <input
               type="text"
               id="categoriaSuelo"
-              disabled
+              disabled={estInput}
               className="  border-2 rounded-lg text-center w-full "
               placeholder=""
               value={categoriaSuelo ? categoriaSuelo : ""}
               onChange={(e) => setCategoriaSuelo(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-row w-2/3 ml-4">
+            <button
+              onClick={editToggle}
+              className="py-2 px-4 text-center rounded-md text-white bg-orange-700"
+            >
+              Editar
+            </button>
+            <NormalPredioForm
+              data={Predio}
+              ref={predioRef}
+              update={updateData}
             />
           </div>
         </div>

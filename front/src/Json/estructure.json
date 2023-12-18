@@ -555,7 +555,7 @@
               },
               {
                 "tipo_objeto_construccion": 128,
-                "Nombre": "ENCHAPES",
+                "Nombre": "PEQUEÑO",
                 "puntos": 1
               },
               {
@@ -721,7 +721,7 @@
               {
                 "tipo_objeto_construccion": 154,
                 "Nombre": "REGULAR",
-                "puntos": 2
+                "puntos": 3
               },
               {
                 "tipo_objeto_construccion": 155,
@@ -1035,7 +1035,7 @@
               {
                 "tipo_objeto_construccion": 154,
                 "Nombre": "REGULAR",
-                "puntos": 2
+                "puntos": 3
               },
               {
                 "tipo_objeto_construccion": 155,
@@ -1425,7 +1425,7 @@
             },
             {
               "t_id": 313,
-              "dispname": " Ramadas - Cobertizos - Caneyes"
+              "dispname": " Enramadas - Cobertizos - Caneyes"
             },
             {
               "t_id": 314,

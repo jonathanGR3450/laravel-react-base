@@ -2,7 +2,7 @@ import useInfo from "../hooks/useInfo";
 
 const TablaResoluciones = () => {
   const { resultado } = useInfo();
-  console.log(resultado);
+  console.log("Resultado", resultado);
   const { data: info } = resultado;
   const { radicado } = info;
   console.log(radicado);

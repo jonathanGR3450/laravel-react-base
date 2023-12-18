@@ -6,6 +6,7 @@ export const TableProvider = ({ children }) => {
   const [tableData, setTableData] = useState([]);
 
   const updateTableData = (newData) => {
+    console.log("Cargaron datos", newData);
     setTableData(newData);
   };
 

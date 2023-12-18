@@ -7,12 +7,12 @@
     "Comuna": "00",
     "Barrio": "00",
     "Manzana": "1212",
-    "Terreno": "0132",
+    "Terreno": "0135",
     "Condicion": "0",
     "Edificio": "00",
     "Piso": "00",
     "Unidad": "0000",
-    "Matricula": "658745896",
+    "Matricula": "21345656867",
     "Direccion": {
       "t_id": 0,
       "t_seq": null,
@@ -38,20 +38,20 @@
       "lc_unidadconstruccion_ext_direccion_id": null,
       "lc_servidumbretransito_ext_direccion_id": null
     },
-    "codigo_homologado": "BAF0008FNOB",
-    "idNumPredial": 184,
-    "id_codigo_homologado": 142,
+    "codigo_homologado": "BAF0008FNSC",
+    "idNumPredial": 187,
+    "id_codigo_homologado": 145,
     "predio": {
-      "t_id": 99,
+      "t_id": 102,
       "departamento": "25",
       "municipio": "290",
-      "id_operacion": "252900100000012120132000000000",
+      "id_operacion": "252900100000012120135000000000",
       "tiene_fmi": false,
       "codigo_orip": null,
-      "matricula_inmobiliaria": "658745896",
-      "numero_predial": "252900100000012120132000000000",
+      "matricula_inmobiliaria": "21345656867",
+      "numero_predial": "252900100000012120135000000000",
       "numero_predial_anterior": "",
-      "codigo_homologado": "BAF0008FNOB",
+      "codigo_homologado": "BAF0008FNSC",
       "interrelacionado": false,
       "codigo_homologado_fmi": false,
       "nupre": null,
@@ -59,79 +59,39 @@
       "valor_referencia": 0,
       "tipo": "889",
       "condicion_predio": "444",
-      "destinacion_economica": "166",
+      "destinacion_economica": "176",
       "clase_suelo": "86",
-      "categoria_suelo": "777",
+      "categoria_suelo": "778",
       "nombre": null,
       "comienzo_vida_util_version": "",
       "fin_vida_util_version": null,
       "espacio_de_nombres": "Fusagasuga",
-      "local_id": "BAF0008FNOB"
-    },
-    "interesados": [
-      {
-        "t_id": 395888,
-        "tipo": 658,
-        "tipo_documento": 529,
-        "documento_identidad": "26509237",
-        "primer_nombre": "GRACIELA",
-        "segundo_nombre": "DEL CARMEN",
-        "primer_apellido": "ABAONZA",
-        "segundo_apellido": "GOMEZ",
-        "sexo": null,
-        "grupo_etnico": null,
-        "razon_social": null,
-        "estado_civil": null,
-        "nombre": "ABAONZA GOMEZ GRACIELA DEL CARMEN",
-        "comienzo_vida_util_version": "2022-05-20 01:45:29.163023",
-        "fin_vida_util_version": null,
-        "espacio_de_nombres": "Fusagasuga",
-        "local_id": "18897",
-        "isTemporal": false
-      }
-    ],
-    "derecho": {
-      "t_id": 17,
-      "tipo_derecho": "48",
-      "tipo_restriccion": "801",
-      "inicio_tenencia": "2023-12-14",
-      "fraccion_derecho": "1",
-      "descripcion": "Prueba"
-    },
-    "fuente_administrativa": {
-      "t_id": 33,
-      "tipo": "46",
-      "ente_emisor": "Alcaldia",
-      "numero_fuente": "123",
-      "estado_disponibilidad": "885",
-      "tipo_principal": "19",
-      "fecha_documento_fuente": "2023-12-12",
-      "observacion": "Prueba"
+      "local_id": "BAF0008FNSC"
     },
     "terreno": {
-      "t_id": 133,
-      "area_terreno": "250",
+      "t_id": 136,
+      "area_terreno": "100",
       "codigo_manzana": "25290010000001212",
       "avaluo_terreno": "",
-      "ZHG": [{ "area": "250", "ZHG": "08" }],
+      "ZHG": [{ "area": "100", "ZHG": "04" }],
       "SantaMaria": false
     },
     "construccion": [
       {
-        "t_id": 35,
+        "t_id": 38,
         "identificador": "A",
         "tipo_construccion": "66",
         "tipo_dominio": "322",
         "num_pisos": "1",
         "num_sotanos": "1",
         "num_semisotanos": "1",
-        "num_mezanines": "11",
-        "anio_cons": "2005",
-        "area": "25",
+        "num_mezanines": "1",
+        "anio_cons": "2000",
+        "area": "50",
         "avaluo": "",
-        "valor_referencia": "1",
+        "valor_referencia": "",
         "altura": "",
-        "observacion": "1"
+        "observacion": "Prueba"
       }
     ],
     "unidad_construccion": [
@@ -139,9 +99,9 @@
         "identificador": "A",
         "planta_ubicacion": "1",
         "altura": "1",
-        "area_construida": "300",
-        "etiqueta": "Casa ",
-        "construccion": "35",
+        "area_construida": "25",
+        "etiqueta": "Prueba",
+        "construccion": "38",
         "caracteristicas": {
           "caracteristicas": {
             "identificador": "A",
@@ -153,56 +113,56 @@
             "total_habitaciones": "1",
             "total_banios": "1",
             "total_locales": "1",
-            "anio_construccion": "2000",
+            "anio_construccion": "2500",
             "uso": "231",
             "avaluo_unidad_construccion": "",
-            "area_construida": "1",
+            "area_construida": "25",
             "area_privada_construida": 0,
             "fin_vida_util_version": "",
             "espacio_de_nombres": "Fusagasuga",
             "local_id": "ABC",
-            "observaciones": "",
+            "observaciones": "100",
             "calificacionconvencional": [
               {
                 "tipo_calificar": 716,
-                "total_calificacion": 39,
+                "total_calificacion": 42,
                 "grupocalificacion": [
                   {
                     "clase_calificacion": 779,
-                    "conservacion": 1,
-                    "subtotal": 8,
+                    "conservacion": 2,
+                    "subtotal": 12,
                     "objetoconstruccion": [
-                      { "tipo_objeto_construccion": "95", "puntos": 1 },
-                      { "tipo_objeto_construccion": "100", "puntos": 1 },
+                      { "tipo_objeto_construccion": "96", "puntos": 2 },
+                      { "tipo_objeto_construccion": "101", "puntos": 2 },
                       { "tipo_objeto_construccion": "106", "puntos": 6 }
                     ]
                   },
                   {
                     "clase_calificacion": 780,
                     "conservacion": 2,
-                    "subtotal": 10,
+                    "subtotal": 14,
                     "objetoconstruccion": [
-                      { "tipo_objeto_construccion": "112", "puntos": 4 },
+                      { "tipo_objeto_construccion": "111", "puntos": 2 },
                       { "tipo_objeto_construccion": "116", "puntos": 1 },
-                      { "tipo_objeto_construccion": "122", "puntos": 3 }
+                      { "tipo_objeto_construccion": "126", "puntos": 9 }
                     ]
                   },
                   {
                     "clase_calificacion": 781,
-                    "conservacion": 3,
-                    "subtotal": 14,
+                    "conservacion": 2,
+                    "subtotal": 9,
                     "objetoconstruccion": [
-                      { "tipo_objeto_construccion": "128", "puntos": 1 },
-                      { "tipo_objeto_construccion": "134", "puntos": 3 },
-                      { "tipo_objeto_construccion": "139", "puntos": 6 }
+                      { "tipo_objeto_construccion": "130", "puntos": 3 },
+                      { "tipo_objeto_construccion": "132", "puntos": 1 },
+                      { "tipo_objeto_construccion": "138", "puntos": 3 }
                     ]
                   },
                   {
                     "clase_calificacion": 782,
-                    "conservacion": 2,
+                    "conservacion": 1,
                     "subtotal": 7,
                     "objetoconstruccion": [
-                      { "tipo_objeto_construccion": "142", "puntos": 0 },
+                      { "tipo_objeto_construccion": "144", "puntos": 2 },
                       { "tipo_objeto_construccion": "148", "puntos": 2 },
                       { "tipo_objeto_construccion": "154", "puntos": 3 }
                     ]
@@ -212,7 +172,7 @@
             ]
           },
           "lc_caracteristicasunidadconstruccion": {
-            "t_id": 179,
+            "t_id": 182,
             "identificador": "A",
             "tipo_construccion": { "t_id": 66, "dispname": "Convencional" },
             "tipo_dominio": { "t_id": 322, "dispname": "Común" },
@@ -225,46 +185,46 @@
             "total_habitaciones": 1,
             "total_banios": 1,
             "total_locales": 1,
-            "anio_construccion": 2000,
+            "anio_construccion": 2500,
             "uso": {
               "t_id": 231,
               "dispname": "(Residencial) Vivienda hasta 3 pisos"
             },
             "avaluo_unidad_construccion": null,
-            "area_construida": "1.0",
+            "area_construida": "25.0",
             "area_privada_construida": "0.0",
-            "comienzo_vida_util_version": "2023-12-14 19:43:17",
+            "comienzo_vida_util_version": "2023-12-15 22:01:52",
             "fin_vida_util_version": null,
             "espacio_de_nombres": "Fusagasuga",
             "local_id": "ABC",
-            "observaciones": null,
+            "observaciones": "100",
             "sync": false,
             "calificacionconvencional": [
               {
                 "tipo_calificar": { "t_id": 716, "dispname": "Residencial" },
-                "total_calificacion": 39,
+                "total_calificacion": 42,
                 "grupocalificacion": [
                   {
                     "clase_calificacion": {
                       "t_id": 779,
                       "dispname": "Estructura"
                     },
-                    "conservacion": { "t_id": 1, "dispname": "Malo" },
-                    "subtotal": 8,
+                    "conservacion": { "t_id": 2, "dispname": "Regular" },
+                    "subtotal": 12,
                     "objetoconstruccion": [
                       {
                         "tipo_objeto_construccion": {
-                          "t_id": 95,
-                          "dispname": "(Armazón) Prefabricado"
+                          "t_id": 96,
+                          "dispname": "(Armazón) Ladrillo, bloque"
                         },
-                        "puntos": 1
+                        "puntos": 2
                       },
                       {
                         "tipo_objeto_construccion": {
-                          "t_id": 100,
-                          "dispname": "(Muros) Bahareque, adobe, tapia"
+                          "t_id": 101,
+                          "dispname": "(Muros) Madera"
                         },
-                        "puntos": 1
+                        "puntos": 2
                       },
                       {
                         "tipo_objeto_construccion": {
@@ -281,14 +241,14 @@
                       "dispname": "Acabados principales"
                     },
                     "conservacion": { "t_id": 2, "dispname": "Regular" },
-                    "subtotal": 10,
+                    "subtotal": 14,
                     "objetoconstruccion": [
                       {
                         "tipo_objeto_construccion": {
-                          "t_id": 112,
-                          "dispname": "(Fachada) Regular"
+                          "t_id": 111,
+                          "dispname": "(Fachada) Sencilla"
                         },
-                        "puntos": 4
+                        "puntos": 2
                       },
                       {
                         "tipo_objeto_construccion": {
@@ -299,52 +259,52 @@
                       },
                       {
                         "tipo_objeto_construccion": {
-                          "t_id": 122,
-                          "dispname": "(Piso) Baldosa común de cemento, tablón de ladrillo"
+                          "t_id": 126,
+                          "dispname": "(Piso) Retal de mármol, mármol, otros lujosos"
                         },
-                        "puntos": 3
+                        "puntos": 9
                       }
                     ]
                   },
                   {
                     "clase_calificacion": { "t_id": 781, "dispname": "Baño" },
-                    "conservacion": { "t_id": 3, "dispname": "Bueno" },
-                    "subtotal": 14,
+                    "conservacion": { "t_id": 2, "dispname": "Regular" },
+                    "subtotal": 9,
                     "objetoconstruccion": [
                       {
                         "tipo_objeto_construccion": {
-                          "t_id": 128,
-                          "dispname": "(Tamaño de baño) Pequeño"
-                        },
-                        "puntos": 1
-                      },
-                      {
-                        "tipo_objeto_construccion": {
-                          "t_id": 134,
-                          "dispname": "(Enchape de baño) Baldosín decorado, papel fino"
+                          "t_id": 130,
+                          "dispname": "(Tamaño de baño) Grande"
                         },
                         "puntos": 3
                       },
                       {
                         "tipo_objeto_construccion": {
-                          "t_id": 139,
-                          "dispname": "(Mobiliario de baño) Regular"
+                          "t_id": 132,
+                          "dispname": "(Enchape de baño) Pañete, baldosa común de cemento"
                         },
-                        "puntos": 6
+                        "puntos": 1
+                      },
+                      {
+                        "tipo_objeto_construccion": {
+                          "t_id": 138,
+                          "dispname": "(Mobiliario de baño) Sencillo"
+                        },
+                        "puntos": 3
                       }
                     ]
                   },
                   {
                     "clase_calificacion": { "t_id": 782, "dispname": "Cocina" },
-                    "conservacion": { "t_id": 2, "dispname": "Regular" },
+                    "conservacion": { "t_id": 1, "dispname": "Malo" },
                     "subtotal": 7,
                     "objetoconstruccion": [
                       {
                         "tipo_objeto_construccion": {
-                          "t_id": 142,
-                          "dispname": "(Tamaño de cocina) Sin cocina"
+                          "t_id": 144,
+                          "dispname": "(Tamaño de cocina) Mediana"
                         },
-                        "puntos": 0
+                        "puntos": 2
                       },
                       {
                         "tipo_objeto_construccion": {
@@ -368,7 +328,7 @@
           }
         },
         "lc_caracteristicasunidadconstruccion": {
-          "t_id": 179,
+          "t_id": 182,
           "identificador": "A",
           "tipo_construccion": { "t_id": 66, "dispname": "Convencional" },
           "tipo_dominio": { "t_id": 322, "dispname": "Común" },
@@ -381,46 +341,46 @@
           "total_habitaciones": 1,
           "total_banios": 1,
           "total_locales": 1,
-          "anio_construccion": 2000,
+          "anio_construccion": 2500,
           "uso": {
             "t_id": 231,
             "dispname": "(Residencial) Vivienda hasta 3 pisos"
           },
           "avaluo_unidad_construccion": null,
-          "area_construida": "1.0",
+          "area_construida": "25.0",
           "area_privada_construida": "0.0",
-          "comienzo_vida_util_version": "2023-12-14 19:43:17",
+          "comienzo_vida_util_version": "2023-12-15 22:01:52",
           "fin_vida_util_version": null,
           "espacio_de_nombres": "Fusagasuga",
           "local_id": "ABC",
-          "observaciones": null,
+          "observaciones": "100",
           "sync": false,
           "calificacionconvencional": [
             {
               "tipo_calificar": { "t_id": 716, "dispname": "Residencial" },
-              "total_calificacion": 39,
+              "total_calificacion": 42,
               "grupocalificacion": [
                 {
                   "clase_calificacion": {
                     "t_id": 779,
                     "dispname": "Estructura"
                   },
-                  "conservacion": { "t_id": 1, "dispname": "Malo" },
-                  "subtotal": 8,
+                  "conservacion": { "t_id": 2, "dispname": "Regular" },
+                  "subtotal": 12,
                   "objetoconstruccion": [
                     {
                       "tipo_objeto_construccion": {
-                        "t_id": 95,
-                        "dispname": "(Armazón) Prefabricado"
+                        "t_id": 96,
+                        "dispname": "(Armazón) Ladrillo, bloque"
                       },
-                      "puntos": 1
+                      "puntos": 2
                     },
                     {
                       "tipo_objeto_construccion": {
-                        "t_id": 100,
-                        "dispname": "(Muros) Bahareque, adobe, tapia"
+                        "t_id": 101,
+                        "dispname": "(Muros) Madera"
                       },
-                      "puntos": 1
+                      "puntos": 2
                     },
                     {
                       "tipo_objeto_construccion": {
@@ -437,14 +397,14 @@
                     "dispname": "Acabados principales"
                   },
                   "conservacion": { "t_id": 2, "dispname": "Regular" },
-                  "subtotal": 10,
+                  "subtotal": 14,
                   "objetoconstruccion": [
                     {
                       "tipo_objeto_construccion": {
-                        "t_id": 112,
-                        "dispname": "(Fachada) Regular"
+                        "t_id": 111,
+                        "dispname": "(Fachada) Sencilla"
                       },
-                      "puntos": 4
+                      "puntos": 2
                     },
                     {
                       "tipo_objeto_construccion": {
@@ -455,52 +415,52 @@
                     },
                     {
                       "tipo_objeto_construccion": {
-                        "t_id": 122,
-                        "dispname": "(Piso) Baldosa común de cemento, tablón de ladrillo"
+                        "t_id": 126,
+                        "dispname": "(Piso) Retal de mármol, mármol, otros lujosos"
                       },
-                      "puntos": 3
+                      "puntos": 9
                     }
                   ]
                 },
                 {
                   "clase_calificacion": { "t_id": 781, "dispname": "Baño" },
-                  "conservacion": { "t_id": 3, "dispname": "Bueno" },
-                  "subtotal": 14,
+                  "conservacion": { "t_id": 2, "dispname": "Regular" },
+                  "subtotal": 9,
                   "objetoconstruccion": [
                     {
                       "tipo_objeto_construccion": {
-                        "t_id": 128,
-                        "dispname": "(Tamaño de baño) Pequeño"
-                      },
-                      "puntos": 1
-                    },
-                    {
-                      "tipo_objeto_construccion": {
-                        "t_id": 134,
-                        "dispname": "(Enchape de baño) Baldosín decorado, papel fino"
+                        "t_id": 130,
+                        "dispname": "(Tamaño de baño) Grande"
                       },
                       "puntos": 3
                     },
                     {
                       "tipo_objeto_construccion": {
-                        "t_id": 139,
-                        "dispname": "(Mobiliario de baño) Regular"
+                        "t_id": 132,
+                        "dispname": "(Enchape de baño) Pañete, baldosa común de cemento"
                       },
-                      "puntos": 6
+                      "puntos": 1
+                    },
+                    {
+                      "tipo_objeto_construccion": {
+                        "t_id": 138,
+                        "dispname": "(Mobiliario de baño) Sencillo"
+                      },
+                      "puntos": 3
                     }
                   ]
                 },
                 {
                   "clase_calificacion": { "t_id": 782, "dispname": "Cocina" },
-                  "conservacion": { "t_id": 2, "dispname": "Regular" },
+                  "conservacion": { "t_id": 1, "dispname": "Malo" },
                   "subtotal": 7,
                   "objetoconstruccion": [
                     {
                       "tipo_objeto_construccion": {
-                        "t_id": 142,
-                        "dispname": "(Tamaño de cocina) Sin cocina"
+                        "t_id": 144,
+                        "dispname": "(Tamaño de cocina) Mediana"
                       },
-                      "puntos": 0
+                      "puntos": 2
                     },
                     {
                       "tipo_objeto_construccion": {

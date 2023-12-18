@@ -9,9 +9,14 @@ const InfoProvider = ({ children }) => {
   const [alerta, setAlerta] = useState([]);
   const [resultado, setResultado] = useState({});
   const [numPredial, setNumPredial] = useState("");
+  const [infoInscribir, setInfoInscribir] = useState();
 
   const navigate = useNavigate();
 
+  function updateJsonInscribir(newdata) {
+    console.log("entraron datos de Avaluo");
+    setInfoInscribir(newdata);
+  }
   const mostrarAlerta = (alerta) => {
     setAlerta(alerta);
 
@@ -20,7 +25,7 @@ const InfoProvider = ({ children }) => {
     }, 5000);
   };
   const submitInfoResolucion = async (infoResolucion) => {
-    console.log(infoResolucion);
+    console.log("Info Resolucion", JSON.stringify(infoResolucion));
     try {
       const config = {
         headers: {
@@ -33,7 +38,7 @@ const InfoProvider = ({ children }) => {
         config
       );
       setResultado(data);
-      console.log(data);
+      console.log("Resultado axios", data);
 
       setAlerta({
         msg: "Resolución Creada Correctamente",
@@ -48,7 +53,7 @@ const InfoProvider = ({ children }) => {
     }
   };
 
-  const submitInfoNumPredial = async (tipoBusqueda,numPredial) => {
+  const submitInfoNumPredial = async (tipoBusqueda, numPredial) => {
     console.log(numPredial);
     try {
       const config = {
@@ -56,7 +61,10 @@ const InfoProvider = ({ children }) => {
           "Content-Type": "application/json",
         },
       };
-      const { data } = await clienteAxios(`/predio?${tipoBusqueda}=${numPredial}`, config);
+      const { data } = await clienteAxios(
+        `/predio?${tipoBusqueda}=${numPredial}`,
+        config
+      );
       setNumPredial(data);
       console.log(data);
     } catch (error) {
@@ -73,6 +81,8 @@ const InfoProvider = ({ children }) => {
         resultado,
         submitInfoNumPredial,
         numPredial,
+        infoInscribir,
+        updateJsonInscribir,
       }}
     >
       {children}

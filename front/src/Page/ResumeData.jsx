@@ -232,7 +232,6 @@ export const PredioResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const datos = props.datos;
-  console.log("datos predio", datos);
   const openModal = (aux) => {
     setIsModalOpen(true);
   };
@@ -245,7 +244,6 @@ export const PredioResumeForm = React.forwardRef((props, ref) => {
   const mostrar = (data) => {
     const aux = data;
     let aux1 = aux.predio;
-    console.log("valores aux10", aux1);
     let tipo_predio = "";
     let condicion = "";
     let destinacion_economica = "";
@@ -572,7 +570,6 @@ export const TerrenoResumeForm = React.forwardRef((props, ref) => {
   const mostrar = (data) => {
     const aux = data;
     let aux1 = aux.terreno;
-    console.log(aux1);
     return (
       <div className="w-full">
         <h2 className="text-3xl">Datos de Terreno</h2>
@@ -602,7 +599,6 @@ export const TerrenoResumeForm = React.forwardRef((props, ref) => {
 export const ConstruccionResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const datos = props.datos;
-  console.log("carga valores", datos);
   const openModal = (aux) => {
     setIsModalOpen(true);
   };
@@ -616,7 +612,6 @@ export const ConstruccionResumeForm = React.forwardRef((props, ref) => {
     const aux = data;
     let aux1 = aux.construccion;
 
-    console.log(aux1);
     return aux1.map((item, index) => {
       let tipo_con = "";
       let tipo_dom = "";
@@ -705,7 +700,6 @@ export const ConstruccionResumeForm = React.forwardRef((props, ref) => {
 export const UnidadConstruccionResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const datos = props.datos;
-  console.log("carga valores", datos);
   const openModal = (aux) => {
     setIsModalOpen(true);
   };
@@ -718,9 +712,7 @@ export const UnidadConstruccionResumeForm = React.forwardRef((props, ref) => {
   const mostrar = (data) => {
     const aux = data;
     let aux1 = aux.unidad_construccion;
-    console.log("Data aux", aux1);
     return aux1.map((item, index) => {
-      console.log(item);
       return (
         <div key={index} className="w-full">
           <h2 className="text-3xl">
@@ -754,7 +746,6 @@ export const UnidadConstruccionResumeForm = React.forwardRef((props, ref) => {
 export const CaracteristicasResumeForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const datos = props.datos;
-  console.log("carga valores", datos);
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -765,7 +756,6 @@ export const CaracteristicasResumeForm = React.forwardRef((props, ref) => {
     openModal,
   }));
   const mostrar = (data) => {
-    console.log("datos", data);
     return (
       <div className="w-full flex flex-col justify-center items-center ">
         <h2 className="text-4xl font-bold">
@@ -777,7 +767,6 @@ export const CaracteristicasResumeForm = React.forwardRef((props, ref) => {
         </div>
         <div className="w-full flex flex-col text-left justify-center items-center">
           {data[0].grupocalificacion.map((item, index) => {
-            console.log(item);
             return (
               <div
                 key={item.subtotal}
@@ -831,6 +820,267 @@ export const CaracteristicasResumeForm = React.forwardRef((props, ref) => {
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       {" "}
+      {mostrar(datos)}
+    </Modal>
+  );
+});
+export const PuntajeResumeForm = React.forwardRef((props, ref) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const datos = props.datos;
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+  function mostrar(datos) {
+    console.log("Datos", datos);
+    function nombreconservacion(num) {
+      console.log("Entra Conservacion");
+      let nomCon = "";
+      switch (num) {
+        case 0:
+          nomCon = "Malo";
+          break;
+        case 2:
+          nomCon = "Regular";
+          break;
+        case 4:
+          nomCon = "Bueno";
+          break;
+        case 5:
+          nomCon = "Excelente";
+          break;
+      }
+      return nomCon;
+    }
+    let sum = 0;
+    function nombreclase(valor) {
+      let categoria = 0;
+      switch (valor) {
+        case 779:
+          categoria = "Estructura";
+          break;
+        case 780:
+          categoria = "Acabados principales";
+          break;
+        case 781:
+          categoria = "Baño";
+          break;
+        case 782:
+          categoria = "Cocina";
+          break;
+        case 783:
+          categoria = "Complemento industria";
+          break;
+        default:
+          categoria = "Valor no reconocido";
+      }
+
+      return categoria;
+    }
+    function obtenerCategoria(valor) {
+      switch (parseInt(valor)) {
+        case 94:
+          return "(Armazón) Madera";
+        case 95:
+          return "(Armazón) Prefabricado";
+        case 96:
+          return "(Armazón) Ladrillo, bloque";
+        case 97:
+          return "(Armazón) Concreto hasta tres pisos";
+        case 98:
+          return "(Armazón) Concreto cuatro o más pisos";
+        case 99:
+          return "(Muros) Materiales de desecho, esterilla";
+        case 100:
+          return "(Muros) Bahareque, adobe, tapia";
+        case 101:
+          return "(Muros) Madera";
+        case 102:
+          return "(Muros) Concreto prefabricado";
+        case 103:
+          return "(Muros) Bloque, ladrillo";
+        case 104:
+          return "(Cubierta) Materiales de desecho, telas asfálticas";
+        case 105:
+          return "(Cubierta) Zinc, teja de barro, eternit rústico";
+        case 106:
+          return "(Cubierta) Entrepiso (cubierta provisional) prefabricado";
+        case 107:
+          return "(Cubierta) Eternit o teja de barro (cubierta sencilla)";
+        case 108:
+          return "(Cubierta) Azotea, aluminio, placa sencilla con eternit o teja de barro";
+        case 109:
+          return "(Cubierta) Placa impermeabilizada cubierta lujosa u ornamental";
+        case 134:
+          return "(Enchape de baño) Baldosín decorado, papel fino";
+        case 135:
+          return "(Enchape de baño) Cerámica cristanac, granito";
+        case 110:
+          return "(Fachada) Pobre";
+        case 111:
+          return "(Fachada) Sencilla";
+        case 112:
+          return "(Fachada) Regular";
+        case 113:
+          return "(Fachada) Buena";
+        case 114:
+          return "(Fachada) Lujosa";
+        case 115:
+          return "(Cubrimiento de muros) Sin cubrimiento";
+        case 116:
+          return "(Cubrimiento de muros) Pañete, papel común, ladrillo prensado";
+        case 117:
+          return "(Cubrimiento de muros) Estuco, cerámica, papel fino";
+        case 118:
+          return "(Cubrimiento de muros) Madera, piedra ornamental";
+        case 119:
+          return "(Cubrimiento de muros) Mármol, lujosos otros";
+        case 120:
+          return "(Piso) Tierra pisada";
+        case 121:
+          return "(Piso) Cemento, madera burda";
+        case 122:
+          return "(Piso) Baldosa común de cemento, tablón de ladrillo";
+        case 123:
+          return "(Piso) Listón machihembrado";
+        case 124:
+          return "(Piso) Tableta, caucho, acrílico, granito, baldosa fina";
+        case 125:
+          return "(Piso) Parquet, alfombra, retal de mármol (grano pequeño)";
+        case 126:
+          return "(Piso) Retal de mármol, mármol, otros lujosos";
+        case 127:
+          return "(Tamaño de baño) Sin baño";
+        case 128:
+          return "(Tamaño de baño) Pequeño";
+        case 129:
+          return "(Tamaño de baño) Mediano";
+        case 130:
+          return "(Tamaño de baño) Grande";
+        case 131:
+          return "(Enchape de baño) Sin cubrimiento";
+        case 132:
+          return "(Enchape de baño) Pañete, baldosa común de cemento";
+        case 133:
+          return "(Enchape de baño) Baldosín unicolor, papel común";
+        case 136:
+          return "(Enchape de baño) Mármol, enchape lujoso";
+        case 137:
+          return "(Mobiliario de baño) Pobre";
+        case 138:
+          return "(Mobiliario de baño) Sencillo";
+        case 139:
+          return "(Mobiliario de baño) Regular";
+        case 140:
+          return "(Mobiliario de baño) Bueno";
+        case 141:
+          return "(Mobiliario de baño) Lujoso";
+        case 142:
+          return "(Tamaño de cocina) Sin cocina";
+        case 143:
+          return "(Tamaño de cocina) Pequeña";
+        case 144:
+          return "(Tamaño de cocina) Mediana";
+        case 145:
+          return "(Tamaño de cocina) Grande";
+        case 146:
+          return "(Enchape de cocina) Sin cubrimiento";
+        case 147:
+          return "(Enchape de cocina) Pañete, baldosa de cemento";
+        case 148:
+          return "(Enchape de cocina) Baldosín unicolor, papel común";
+        case 149:
+          return "(Enchape de cocina) Baldosín decorado, papel fino";
+        case 150:
+          return "(Enchape de cocina) Cerámica cristanac, granito";
+        case 151:
+          return "(Enchape de cocina) Mármol, enchape lujoso";
+        case 152:
+          return "(Mobiliario de cocina) Pobre";
+        case 153:
+          return "(Mobiliario de cocina) Sencillo";
+        case 154:
+          return "(Mobiliario de cocina) Regular";
+        case 155:
+          return "(Mobiliario de cocina) Bueno";
+        case 156:
+          return "(Mobiliario de cocina) Lujoso";
+        case 157:
+          return "(Cerchas complemento industria) Madera";
+        case 158:
+          return "(Cerchas complemento industria) Metálica liviana";
+        case 159:
+          return "(Cerchas complemento industria) Metálica mediana";
+        case 160:
+          return "(Cerchas complemento industria) Metálica pesada";
+        case 161:
+          return "(Cerchas complemento industria) Altura";
+        default:
+          return "Categoría no encontrada";
+      }
+    }
+    return (
+      <div className="w-full text-center flex flex-col">
+        <h1 className="text-3xl">Resumen</h1>
+        <table className="text-center mt-2">
+          <tbody>
+            {datos.map((item, index) => {
+              sum += item.subtotal;
+
+              return (
+                <React.Fragment key={index}>
+                  <tr className="text-white bg-teal-600 p-2 text-xl">
+                    <th className="border-2">Clase Calificacion</th>
+                    <th className="border-2">Puntaje Conservacion</th>
+                    <th className="border-2">Subtotal</th>
+                  </tr>
+                  <tr>
+                    <td className="border-2">
+                      {nombreclase(item.clase_calificacion)}
+                    </td>
+                    <td className="border-2">
+                      {item.conservacion +
+                        " ( " +
+                        nombreconservacion(item.conservacion) +
+                        " )"}
+                    </td>
+                    <td className="border-2">{item.subtotal}</td>
+                  </tr>
+                  <tr className="font-semibold text-white bg-teal-500 p-2">
+                    <td colSpan="2" className="border-2 ">
+                      Tipo Objeto Construccion
+                    </td>
+                    <td colSpan="1" className="border-2">
+                      Puntaje
+                    </td>
+                  </tr>
+                  {item.objetoconstruccion.map((items, index1) => (
+                    <tr key={index1} className="text-left">
+                      <td colSpan="2" className="border-2">
+                        {obtenerCategoria(items.tipo_objeto_construccion)}
+                      </td>
+                      <td colSpan="1" className="border-2 text-center">
+                        {items.puntos}
+                      </td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <label className="text-3xl"> Total Calificacion: {sum}</label>
+      </div>
+    );
+  }
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
       {mostrar(datos)}
     </Modal>
   );

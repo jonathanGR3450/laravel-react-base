@@ -14,7 +14,7 @@ import Consulta from "../Json/prueba.json";
 import FichaPredial from "./FichaPredial";
 import Loader from "./Loader";
 import { CaracteristicasResumeForm } from "./ResumeData";
-/////////////////////////////////////////////
+/////////////////////////////////////////////Modal de Cargar y Crear Caracteristicas
 export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
   ///Datos del Modal
   function updateData(aux) {
@@ -24,7 +24,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
-    console.log("Abre Modal");
   };
   const closeModal = () => {
     setIsModalOpen(false);
@@ -66,7 +65,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
       }, [response]);
       function generarFilas() {
         if (response != undefined) {
-          console.log("response", response);
           dataResponse = response.data.data;
           const dataCheck = (e) => {
             let { value } = e.target;
@@ -179,8 +177,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
           tipo_planta: 680,
         });
       } else {
-        console.log("value", value);
-        console.log("value", name);
         setDataSearch({ ...dataSearch, [name]: parseInt(value) });
       }
     }
@@ -191,7 +187,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
       var params = new URLSearchParams(
         Object.entries(dataSearch).map(([key, value]) => [key, value])
       );
-      console.log(params.toString());
       const url =
         "http://localhost/api/v1/caracteristicasunidadconstruccion/convencional?" +
         params.toString();
@@ -205,7 +200,6 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
         const response = await fetch(url, requestOptions);
         if (response.ok) {
           const result = await response.json();
-          console.log(result);
           if (result.data.total == 0) {
             setMsjAll("No se Encontraron Datos");
             setEstDataTable(true);
@@ -229,8 +223,14 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
       }
     }
     function CaptureId() {
-      console.log(selectedId);
-      updateData(selectedId);
+      let newdata = response.data.data;
+      let newobj = [];
+      newdata.map((item, index) => {
+        if (selectedId == item.t_id) {
+          newobj = item;
+        }
+      });
+      props.onchangeData(newobj);
       closeModal();
     }
     return (
@@ -544,7 +544,7 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
                     <option value="311">(Anexo) Pista aeropuerto</option>
                     <option value="312">(Anexo) Pozos</option>
                     <option value="313">
-                      (Anexo) Ramadas - Cobertizos - Caneyes
+                      (Anexo) Enramadas - Cobertizos - Caneyes
                     </option>
                     <option value="314">(Anexo) Secaderos</option>
                     <option value="315">(Anexo) Silos</option>
@@ -597,23 +597,26 @@ export const LoadCaracteristicasForm = React.forwardRef((props, ref) => {
     </Modal>
   );
 });
+
 export const CreateCaracteristicasForm = React.forwardRef((props, ref) => {
+  console.log("PROPS Caracteristicas", props);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
-    console.log("Abre Modal");
   };
   const closeModal = () => {
     setIsModalOpen(false);
   };
   useImperativeHandle(ref, () => ({
     openModal,
+    closeModal,
   }));
+
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <h2 className="text-4xl">Crear Caracteristicas </h2>
       <div className="w-full flex flex-col items-center justify-center">
-        <FichaPredial />
+        <FichaPredial ident={props.dataIden} />
       </div>
     </Modal>
   );
