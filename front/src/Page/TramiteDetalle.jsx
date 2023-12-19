@@ -131,7 +131,7 @@ const TramiteDetalleForm = () => {
 
 
       <Accordion>
-            <AccordionItem>
+            <AccordionItem className="bg-transparent bg-white bg-opacity-80">
                 <AccordionItemHeading>
                     <AccordionItemButton>
                         Interesado
@@ -202,7 +202,7 @@ const TramiteDetalleForm = () => {
                     </table>
                 </AccordionItemPanel>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem className="bg-transparent bg-white bg-opacity-80">
                 <AccordionItemHeading>
                     <AccordionItemButton>
                         Predio
@@ -279,7 +279,7 @@ const TramiteDetalleForm = () => {
                     </table>                    
                 </AccordionItemPanel>
             </AccordionItem>  
-            <AccordionItem>
+            <AccordionItem className="bg-transparent bg-white bg-opacity-80">
                 <AccordionItemHeading>
                     <AccordionItemButton>
                         Información Jurídica
@@ -375,7 +375,7 @@ const TramiteDetalleForm = () => {
                     </table>
                 </AccordionItemPanel>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem className="bg-transparent bg-white bg-opacity-80">
                 <AccordionItemHeading>
                     <AccordionItemButton>
                         Terreno
@@ -410,7 +410,7 @@ const TramiteDetalleForm = () => {
                     </table>
                 </AccordionItemPanel>
             </AccordionItem>            
-            <AccordionItem>
+            <AccordionItem className="bg-transparent bg-white bg-opacity-80">
                 <AccordionItemHeading>
                     <AccordionItemButton>
                         Construcción
@@ -456,7 +456,7 @@ const TramiteDetalleForm = () => {
                     </table>
                 </AccordionItemPanel>
             </AccordionItem>                     
-            <AccordionItem>
+            <AccordionItem className="bg-transparent bg-white bg-opacity-80">
                 <AccordionItemHeading>
                     <AccordionItemButton>
                         Unidad de Construcción
@@ -493,7 +493,7 @@ const TramiteDetalleForm = () => {
                     </table>
                 </AccordionItemPanel>
             </AccordionItem>    
-            <AccordionItem>
+            <AccordionItem className="bg-transparent bg-white bg-opacity-80">
                 <AccordionItemHeading>
                     <AccordionItemButton>
                         Ric Tramite Catastral
