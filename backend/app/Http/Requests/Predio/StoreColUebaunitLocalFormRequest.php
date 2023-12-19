@@ -28,7 +28,12 @@ class StoreColUebaunitLocalFormRequest extends FormRequest
             'ue_lc_unidadconstruccion' => 'nullable|integer|exists:lc_unidadconstruccion,t_id',
             'ue_lc_construccion' => 'nullable|integer|exists:lc_construccion,t_id',
             'ue_lc_terreno' => 'nullable|integer|exists:lc_terreno,t_id',
-            'baunit' => 'required|integer|exists:lc_predio,t_id',
+            'nullable' => 'required|integer|exists:lc_predio,t_id',
+
+            'ue_lc_unidadconstruccion_conservacion' => 'nullable|integer|exists:pgsqlcatastro.lc_unidadconstruccion,t_id',
+            'ue_lc_construccion_conservacion' => 'nullable|integer|exists:pgsqlcatastro.lc_construccion,t_id',
+            'ue_lc_terreno_conservacion' => 'nullable|integer|exists:pgsqlcatastro.lc_terreno,t_id',
+            'nullable_conservacion' => 'required|integer|exists:pgsqlcatastro.lc_predio,t_id',
         ];
     }
 }
