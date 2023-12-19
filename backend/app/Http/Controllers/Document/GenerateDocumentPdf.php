@@ -23,8 +23,6 @@ class GenerateDocumentPdf extends AppBaseController
             $path = "templates";
             $pathOutput = "documents";
             $nameTemplate = "{$tramiteTipo->descripcion}.docx";
-            // $nameTemplate = "template.docx";
-            // dd($nameTemplate);
 
             $data = $request->all();
             
