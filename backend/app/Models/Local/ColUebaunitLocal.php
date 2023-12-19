@@ -18,6 +18,10 @@ class ColUebaunitLocal extends Model
         'ue_lc_construccion',
         'ue_lc_terreno',
         'baunit',
+        'ue_lc_unidadconstruccion_conservacion',
+        'ue_lc_construccion_conservacion',
+        'ue_lc_terreno_conservacion',
+        'baunit_conservacion',
     ];
 
     public function predio()

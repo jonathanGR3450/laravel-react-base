@@ -36,7 +36,9 @@ class StoreLocalFormRequest extends FormRequest
                 'exists:pgsqlcatastro.lc_interesado,t_id',
             ],
             'interesado_lc_agrupacioninteresados' => 'nullable|exists:lc_agrupacioninteresados,t_id',
+            'interesado_lc_agrupacioninteresados_conservacion' => 'nullable|exists:pgsqlcatastro.lc_agrupacioninteresados,t_id',
             'unidad' => 'nullable|exists:lc_predio,t_id',
+            'unidad_conservacion' => 'nullable|exists:pgsqlcatastro.lc_predio,t_id',
             'espacio_de_nombres' => 'required|string|max:255',
         ];
     }

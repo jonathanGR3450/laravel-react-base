@@ -27,6 +27,7 @@ class LcUnidadconstruccionLocal extends Model
         'fin_vida_util_version',
         'espacio_de_nombres',
         'local_id',
+        'lc_construccion_conservacion',
     ];
 
     public function caracteristicasunidadconstruccion()

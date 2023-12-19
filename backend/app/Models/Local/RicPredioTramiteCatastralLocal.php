@@ -5,25 +5,22 @@ namespace App\Models\Local;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RicTramiteCatastralLocal extends Model
+class RicPredioTramiteCatastralLocal extends Model
 {
     use HasFactory;
 
-    protected $table = 'ric_tramitecatastral';
+    protected $table = 'ric_predio_tramitecatastral';
     protected $primaryKey = 't_id';
     public $timestamps = false;
 
     protected $fillable = [
-        'clasificacion_mutacion',
-        'numero_resolucion',
-        'fecha_resolucion',
-        'fecha_radicacion',
+        'ric_tramite_catastral',
         'ric_predio',
     ];
 
-    public function ricPredioTramiteCatastral()
+    public function ricTramiteCatrastral()
     {
-        return $this->hasMany(RicPredioTramiteCatastralLocal::class, 'ric_tramite_catastral', 't_id');
+        return $this->belongsTo(RicTramiteCatastralLocal::class, 'ric_tramite_catastral', 't_id');
     }
 
     public function ricPredio()

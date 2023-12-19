@@ -26,12 +26,12 @@ class StoreLocalFormRequest extends FormRequest
     {
         return [
             'tipo' => 'required|exists:pgsqlcatastro.col_fuenteadministrativatipo,t_id',
-            'ente_emisor' => 'required|string|max:255',
-            'observacion' => 'string|max:255',
-            'numero_fuente' => 'string|max:150',
+            'ente_emisor' => 'nullable|string|max:255',
+            'observacion' => 'nullable|string|max:255',
+            'numero_fuente' => 'nullable|string|max:150',
             'estado_disponibilidad' => 'required|exists:pgsqlcatastro.col_estadodisponibilidadtipo,t_id',
-            'tipo_principal' => 'exists:pgsqlcatastro.ci_forma_presentacion_codigo,t_id',
-            'fecha_documento_fuente' => 'date',
+            'tipo_principal' => 'nullable|exists:pgsqlcatastro.ci_forma_presentacion_codigo,t_id',
+            'fecha_documento_fuente' => 'nullable|date',
             'espacio_de_nombres' => 'required|string|max:255',
             'local_id' => 'required|string|max:255',
         ];
