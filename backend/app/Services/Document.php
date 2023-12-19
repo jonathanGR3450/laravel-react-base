@@ -63,7 +63,7 @@ class Document
                     $templateProcessor->setValue($variable, $value);
                 }
             } else {
-                $templateProcessor->setValue($variable, "");
+                // $templateProcessor->setValue($variable, "");
             }
         }
 
