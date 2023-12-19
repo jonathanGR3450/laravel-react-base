@@ -13,17 +13,17 @@
         "Matricula_Inmobiliaria": "93582",
         "derechos": [
           {
-            "t_id": 568302,
+            "t_id": 568303,
             "tipo": {
               "t_id": 47,
               "dispname": "Dominio"
             },
-            "fraccion_derecho": "0.0000000000",
+            "fraccion_derecho": "1.0000000000",
             "fecha_inicio_tenencia": null,
             "descripcion": null,
             "fuenteadministrativa": [
               {
-                "t_id": 210696,
+                "t_id": 210697,
                 "tipo": {
                   "t_id": 54,
                   "dispname": "(Sin documento)"
@@ -44,11 +44,11 @@
               "t_id": 426667,
               "tipo": 658,
               "tipo_documento": 529,
-              "documento_identidad": "2105599",
-              "primer_nombre": "DIOSELINO",
+              "documento_identidad": "43555339",
+              "primer_nombre": "MANUEL",
               "segundo_nombre": null,
-              "primer_apellido": "OVALLE",
-              "segundo_apellido": "ARDILA",
+              "primer_apellido": "PEREZ",
+              "segundo_apellido": "ROA",
               "sexo": null,
               "grupo_etnico": null,
               "razon_social": null,

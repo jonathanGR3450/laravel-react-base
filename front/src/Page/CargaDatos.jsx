@@ -1,8 +1,8 @@
 import { useRef, useState, useContext, useEffect } from "react";
-import FuenteAdminForm from "./FuenteAdmin";
-import PredioForm from "./Predio";
-import DerechoForm from "./Derecho";
-import InteresadoForm from "./Interesado";
+import { ModalFuenteForm } from "./FuenteAdmin";
+import { ModalPredioForm } from "./Predio";
+import { ModalDerechoForm } from "./Derecho";
+import { ModalInteresadoForm } from "./Interesado";
 import { InteresadoProvider } from "../Page/Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
 import { DataContext } from "./Context/DataContext";
@@ -12,18 +12,21 @@ import {
   FuenteResumeForm,
   DerechoResumeForm,
   PredioResumeForm,
+  InteresadoResumeForm,
 } from "./ResumeData";
-
+import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 export const LoadDataForm = () => {
   const fuenteFormRef = useRef();
   const predioFormRef = useRef();
   const interesadoFormRef = useRef();
   const derechoFormRef = useRef();
-
+  const navigate = useNavigate();
   //const { ArrayFinal, updateArrayFinal } = useContext(ArrayFinalContext);
   const { dataAll, updateDataAll } = useContext(DataContext);
   const { tableData } = useContext(TableContext);
-
+  const [loading, setLoading] = useState(false);
+  const [msjLoading, setMsjLoading] = useState("Prueba");
   useEffect(() => {
     updateDataAll((prevValues) => ({
       ...prevValues,
@@ -33,13 +36,14 @@ export const LoadDataForm = () => {
   //Se Aceptan solo  Numeros
   function soloNumeros(event) {
     const input = event.target;
-    input.value = input.value.replace(/[^0-9.,]/g, "");
+    input.value = input.value.replace(/[^0-9.]/g, "");
   }
   const TableForm = () => {
     //ResumeForm
     const fuenteResumeForm = useRef();
     const derechoResumeForm = useRef();
     const predioResumeForm = useRef();
+    const interesadosResumeForm = useRef();
     //Resume
     const openfuenteResumeForm = () => {
       fuenteResumeForm.current.openModal();
@@ -50,8 +54,12 @@ export const LoadDataForm = () => {
     const openpredioResumeForm = () => {
       predioResumeForm.current.openModal();
     };
+    const openinteresadosResumeForm = () => {
+      interesadosResumeForm.current.openModal();
+    };
     const filas = Object.entries(tableData).map((items, index) => {
       let item = items[1];
+      console.log("existe predio", item.hasOwnProperty("predio"));
       return (
         <tr key={index}>
           <td className="border-2 rounded-xl p-2">{index + 1}</td>
@@ -64,7 +72,6 @@ export const LoadDataForm = () => {
             {item.hasOwnProperty("predio") ? (
               <div>
                 <button onClick={openpredioResumeForm}>
-                  {" "}
                   <FontAwesomeIcon icon={faSearch} />
                 </button>
                 <PredioResumeForm ref={predioResumeForm} datos={item} />
@@ -72,11 +79,17 @@ export const LoadDataForm = () => {
             ) : null}
           </td>
           <td className="border-2 rounded-xl p-2">
-            {item.hasOwnProperty("interesado") ? (
-              <button>
-                {" "}
-                <FontAwesomeIcon icon={faSearch} />
-              </button>
+            {item.hasOwnProperty("interesados") ? (
+              <div>
+                <button onClick={openinteresadosResumeForm}>
+                  <FontAwesomeIcon icon={faSearch} />
+                </button>
+                <InteresadoResumeForm
+                  ref={interesadosResumeForm}
+                  datos={item}
+                  id={index}
+                />
+              </div>
             ) : null}
           </td>
           <td className="border-2 rounded-xl p-2">
@@ -124,14 +137,10 @@ export const LoadDataForm = () => {
   };
 
   const ChangeData = () => {
-    let validNumbers = [];
-    const { updateIdArray } = useContext(DataContext);
     const [dataId, setDataId] = useState("");
     const [dataSelect, setDataSelect] = useState(0);
     const [inputId, setInputId] = useState("");
     const [estBtt, setEstBtt] = useState(true);
-    //SI el ID tiene  1= guion, 2=Coma o 3= esta solo
-    let [coma, setComa] = useState("");
     function validarid() {
       if (isNaN(dataId[0])) {
         setEstBtt(true);
@@ -145,18 +154,16 @@ export const LoadDataForm = () => {
 
     function NumComa(e) {
       let { value } = e.target;
+      let num = [];
       value = value.replace(/[^0-9,-]/g, "");
       // Elimina caracteres no numéricos
       if (value.includes("-")) {
-        setComa(1);
         if (value.split("-").length <= 2) {
           //setTamaño(3);
           let aux = value.split("-");
-          let numeros = aux.map((item) => {
-            return parseInt(item);
-          });
-          validNumbers = numeros;
-          setDataId(validNumbers);
+          for (let i = parseInt(aux[0]); i <= parseInt(aux[1]); i++) {
+            num.push(i);
+          }
         }
       } else {
         let aux = "";
@@ -166,21 +173,20 @@ export const LoadDataForm = () => {
           aux = value.split(",");
         }
         if (value.includes(",")) {
-          setComa(2);
           let numeros = aux.map((item) => {
             return parseInt(item);
           });
 
-          validNumbers = numeros;
-          setDataId(validNumbers);
+          num = numeros;
         } else {
-          setComa(3);
-          validNumbers = [parseInt(value)];
-          setDataId(validNumbers);
+          let aux = [parseInt(value)];
+          num = [aux];
         }
       }
+      setDataId(num);
       setInputId(value);
     }
+
     function Selectdata(e) {
       setDataSelect(e.target.value);
     }
@@ -242,7 +248,7 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <PredioForm ref={predioFormRef} />
+              <ModalPredioForm ref={predioFormRef} msj={setMsjLoading} />
             </div>
           ) : null}
           {dataSelect == 2 ? (
@@ -256,7 +262,10 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <InteresadoForm ref={interesadoFormRef} />
+              <ModalInteresadoForm
+                ref={interesadoFormRef}
+                msj={setMsjLoading}
+              />
             </div>
           ) : null}
           {dataSelect == 3 ? (
@@ -270,7 +279,7 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <DerechoForm ref={derechoFormRef} />
+              <ModalDerechoForm ref={derechoFormRef} msj={setMsjLoading} />
             </div>
           ) : null}
           {dataSelect == 4 ? (
@@ -284,27 +293,127 @@ export const LoadDataForm = () => {
               >
                 Carga
               </button>{" "}
-              <FuenteAdminForm ref={fuenteFormRef} />
+              <ModalFuenteForm ref={fuenteFormRef} msj={setMsjLoading} />
             </div>
           ) : null}
         </div>
       </div>
     );
   };
+  const sendData = async () => {
+    setMsjLoading("Guardando Datos");
+    setLoading(true);
+    const entries = Object.entries(tableData);
+    for (const [index, [key, item]] of entries.entries()) {
+      console.log(item);
+      let rr = await relRRRFuente(item);
+      if (rr) {
+        let uniFuente = await relUnidadFuente(item);
+        if (uniFuente) {
+          setLoading(false);
+          navigate("/LoadConstruccion");
+        } else {
+          setLoading(false);
+          console.log("Error  ");
+        }
+      } else {
+        setLoading(false);
+        console.log("Error  ");
+      }
+    }
+  };
+  async function relRRRFuente(item) {
+    console.log("Item RRRfuente", item);
+    let jsonRR = {
+      numeros_relacion: [
+        {
+          fuente_administrativa: item.fuente_administrativa.t_id,
+          rrr_lc_derecho: item.derecho.t_id,
+        },
+      ],
+    };
+    let raw = JSON.stringify(jsonRR);
+    console.log(raw);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const url =
+      import.meta.env.VITE_API_URL_FIRST +
+      "rrrfuente/fuente-administrativa/derecho";
+    console.log("Url RRRfUENTE", url);
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    const response = await fetch(url, requestOptions);
+    const result = await response.json();
+    console.log("Resultado Relacion RRRFuente", result);
 
+    if (result.success) {
+      //si sale bien
+      return true;
+    } else {
+      //Si no Sale bien
+      return false;
+    }
+  }
+  async function relUnidadFuente(item) {
+    console.log("Item Unidad Fuente", item);
+    let jsonUnidadFuente = {
+      fuente_administrativa: item.fuente_administrativa.t_id,
+      unidad: item.predio.t_id,
+    };
+    let raw = JSON.stringify(jsonUnidadFuente);
+    console.log(raw);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const url = import.meta.env.VITE_API_URL_FIRST + "predio/unidadfuente";
+    console.log("Url Unidad Fuente", url);
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    const response = await fetch(url, requestOptions);
+    const result = await response.json();
+    console.log("Resultado Relacion Unidad Funete", result);
+    if (result.success) {
+      //si sale mal
+      return true;
+    } else {
+      //Si no Sale bien
+      return false;
+    }
+  }
   return (
     <InteresadoProvider>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-        <h1 className="text-2xl">Creacion de Predios</h1>
+        <h1 className="text-2xl">Datos Iniciales</h1>
         <div className="mt-4 w-full">
           <ChangeData />
           <TableForm />
+        </div>
+        <div className="mt-4 w-full flex flex-col justify-center items-center">
+          <button
+            onClick={sendData}
+            className={` w-1/5 p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
+          >
+            Siguiente
+          </button>
+          <label className="text-xl font-semibold">{msjLoading} </label>
+          {loading ? <Loader /> : null}
         </div>
       </div>
     </InteresadoProvider>
   );
 };
-/*    <div>
+/*
+ onClick={sendData}
+            disabled={estBtt}
+<div>
+
             <button className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2">
               Cargar Numeros Prediales
             </button>

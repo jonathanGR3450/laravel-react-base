@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import useInfo from "../hooks/useInfo";
 import Alerta from "./Alerta";
+import Loader from "../Page/Loader";
 
 const FormConsultaPredio = () => {
   const [numeroPredial, setNumeroPredial] = useState("");
@@ -10,6 +11,7 @@ const FormConsultaPredio = () => {
   const { mostrarAlerta, alerta, submitInfoNumPredial, numPredial } = useInfo();
   console.log(numPredial);
   const { data: info } = numPredial;
+  const [loading, setLoading] = useState(false);
 
   // Verificar si 'info' y 'Predio' existen antes de desestructurar
   const { Predio } = info || {};
@@ -22,6 +24,7 @@ const FormConsultaPredio = () => {
   } = Predio ? Predio[0] : {};
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     if ([numeroPredial].includes("")) {
@@ -43,6 +46,7 @@ const FormConsultaPredio = () => {
     }
     await submitInfoNumPredial(tipoBusqueda, numeroPredial);
     setNumeroPredial("");
+    setLoading(false);
   };
 
   const { msg } = alerta;
@@ -90,6 +94,7 @@ const FormConsultaPredio = () => {
       hover:bg-teal-700 transition-colors uppercase "
           />
         </div>
+        {loading ? <Loader /> : null}
       </form>
 
       {Predio ? (

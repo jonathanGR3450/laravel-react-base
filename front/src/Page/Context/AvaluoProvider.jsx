@@ -1,293 +1,34 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import React, { useRef, useState, useContext, useEffect } from "react";
-import { TableContext } from "./Context/Context";
-import { DataContext } from "./Context/DataContext";
-import { LoadDataForm } from "./CargaDatos";
-import { ModalUniConForm } from "./Uniconstruccion";
-import { ModalTerrenoForm } from "./Terreno";
-import { ModalConstruccionForm } from "./Construccion";
-import {
-  TerrenoResumeForm,
-  UnidadConstruccionResumeForm,
-  ConstruccionResumeForm,
-} from "./ResumeData";
-//import { AvaluoContext } from "./Context/AvaluoProvider";
-import useAvaluo from "../hooks/useAvaluo";
-import dataAvaluo from "../Json/dataAvaluo.json";
-import Loader from "./Loader";
+import { useNavigate } from "react-router-dom";
+import { useState, createContext, useEffect } from "react";
+import useInfo from "../../hooks/useInfo";
 
-export const LoadDataConstruccion = () => {
-  const uniConstruccionRef = useRef();
-  const terrenoRef = useRef();
-  const construccionRef = useRef();
+const AvaluoContext = createContext();
 
+const AvaluoProvider = ({ children }) => {
+  const { updateJsonInscribir } = useInfo();
+  console.log("Informacion de Info", updateJsonInscribir);
+
+  const [avaluo, setAvaluo] = useState();
+  const [dataDesenglobe, setDataDesenglobe] = useState();
   const fechaActual = new Date();
+
   let añoActual = fechaActual.getFullYear();
-  const [loading, setLoading] = useState(false);
-  const [msjLoading, setMsjLoading] = useState("Prueba");
-  const { tableData } = useContext(TableContext);
-  const { createAvaluo, Load_Data_Desenglobe } = useAvaluo();
-  const [dataSelect, setDataSelect] = useState(0);
-  const [dataTotal, setDataTotal] = useState("");
-  const [estDataTotal, setEstDataTotal] = useState(false);
-  const [DataLiq, setDataLiq] = useState("");
-  const [añoBase, setAñoBase] = useState();
-  console.log("adas", añoActual);
-  function soloNumeros(event) {
-    const input = event.target;
-    input.value = input.value.replace(/[^0-9.]/g, "");
+  function redondear(numero) {
+    console.log("Numero a Redondear", numero.toLocaleString());
+    const resto = numero % 1000;
+    console.log("asdasd", resto);
+    const redondeo = resto >= 500 ? 1000 - resto : -resto;
+    console.log("redondeo", redondeo);
+    return numero + redondeo;
   }
-  useEffect(() => {
-    zonaYear();
-  }, []);
-
-  function zonaYear() {
-    tableData.map((item, index) => {
-      console.log("zona Año", item.Zona);
-      if (item.Zona != "00") {
-        setAñoBase(2022);
-      } else {
-        setAñoBase(2023);
-      }
-    });
-  }
-
-  const TableForm = () => {
-    const terrenoResumeForm = useRef();
-    const unidadConstruccionResumeForm = useRef();
-    const construccionResumeForm = useRef();
-    //Aperturas
-    const openterrenoResumeForm = () => {
-      terrenoResumeForm.current.openModal();
-    };
-    const openunidadconstruccionResumeForm = () => {
-      unidadConstruccionResumeForm.current.openModal();
-    };
-    const openconstruccionResumeForm = () => {
-      construccionResumeForm.current.openModal();
-    };
-
-    const filas = Object.entries(tableData).map((items, index) => {
-      let item = items[1];
-      // console.log("Prueba", item);
-      // onClick={openpredioResumeForm}  <PredioResumeForm ref={predioResumeForm} datos={item} />
-      return (
-        <tr key={index}>
-          <td className="border-2 rounded-xl p-2">{index + 1}</td>
-          <td className="border-2 rounded-xl p-2">
-            {item.Dpto}-{item.Mpio}-{item.Zona}-{item.Sector}-{item.Comuna}-
-            {item.Barrio}-{item.Manzana}-{item.Terreno}-{item.Condicion}-
-            {item.Edificio}-{item.Piso}-{item.Unidad}
-          </td>
-          <td className="border-2 rounded-xl p-2">
-            {item.hasOwnProperty("terreno") ? (
-              <div>
-                <button onClick={openterrenoResumeForm}>
-                  {" "}
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-                <TerrenoResumeForm ref={terrenoResumeForm} datos={item} />
-              </div>
-            ) : null}
-          </td>
-          <td className="border-2 rounded-xl p-2">
-            {item.hasOwnProperty("construccion") ? (
-              <div>
-                <button onClick={openconstruccionResumeForm}>
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-                <ConstruccionResumeForm
-                  ref={construccionResumeForm}
-                  datos={item}
-                />
-              </div>
-            ) : null}
-          </td>
-          <td className="border-2 rounded-xl p-2">
-            {item.hasOwnProperty("unidad_construccion") ? (
-              <div>
-                <button onClick={openunidadconstruccionResumeForm}>
-                  {" "}
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-                <UnidadConstruccionResumeForm
-                  ref={unidadConstruccionResumeForm}
-                  datos={item}
-                />
-              </div>
-            ) : null}
-          </td>
-        </tr>
-      );
-    });
-
-    return (
-      <div className="w-full">
-        <table className="w-full text-center">
-          <thead className="uppercase border-2  bg-teal-500 text-base text-white">
-            <tr>
-              <th className="border-2 rounded-xl p-2">ID</th>
-              <th className="border-2 rounded-xl p-2">Número Predial</th>
-              <th className="border-2 rounded-xl p-2">Terreno</th>
-              <th className="border-2 rounded-xl p-2">Construccion</th>
-              <th className="border-2 rounded-xl p-2">Unidad Construccion</th>
-            </tr>
-          </thead>
-          <tbody>{filas}</tbody>
-        </table>
-      </div>
-    );
-  };
-
-  const ChangeData = () => {
-    const [dataId, setDataId] = useState("");
-    const [inputId, setInputId] = useState("");
-    const [estBtt, setEstBtt] = useState(true);
-    function validarid() {
-      if (isNaN(dataId[0])) {
-        setEstBtt(true);
-      } else {
-        setEstBtt(false);
-      }
-    }
-    useEffect(() => {
-      validarid();
-    }, [dataId]);
-
-    function NumComa(e) {
-      let { value } = e.target;
-      let num = [];
-      value = value.replace(/[^0-9,-]/g, "");
-      // Elimina caracteres no numéricos
-      if (value.includes("-")) {
-        if (value.split("-").length <= 2) {
-          //setTamaño(3);
-          let aux = value.split("-");
-          for (let i = parseInt(aux[0]); i <= parseInt(aux[1]); i++) {
-            num.push(i);
-          }
-        }
-      } else {
-        let aux = "";
-        if (value.length === 0) {
-          aux = 0;
-        } else {
-          aux = value.split(",");
-        }
-        if (value.includes(",")) {
-          let numeros = aux.map((item) => {
-            return parseInt(item);
-          });
-
-          num = numeros;
-        } else {
-          let aux = [parseInt(value)];
-          num = [aux];
-        }
-      }
-      setDataId(num);
-      setInputId(value);
-    }
-    function Selectdata(e) {
-      setDataSelect(e.target.value);
-    }
-
-    const openUniConstruccionForm = () => {
-      uniConstruccionRef.current.openModal(dataId);
-    };
-    const openTerrenoForm = () => {
-      terrenoRef.current.openModal(dataId);
-    };
-    const openConstruccionForm = () => {
-      construccionRef.current.openModal(dataId);
-    };
-    return (
-      <div className="w-full flex flex-row border-2 p-2 mt-4 mb-4 rounded-xl">
-        <div className="w-1/3 flex flex-col text-center ">
-          <div className="w-full">
-            <label className="font-semibold">Datos para Agregar</label>
-          </div>
-          <div className="w-full flex flex-col ">
-            <select
-              className="border-2 rounded-lg text-center m-1"
-              onChange={Selectdata}
-              value={dataSelect}
-            >
-              <option value={0}></option>
-              <option value={1}>Terreno</option>
-              <option value={2}>Construccion</option>
-              <option value={3}>Unidad de Construccion</option>
-            </select>
-          </div>
-        </div>
-        <div className="w-1/3 flex flex-col items-center">
-          <label className="font-semibold">SELECCIONAR ID</label>
-          <div className="flex flex-row items-center justify-center">
-            <input
-              type="text"
-              className="border-2 rounded-lg w-full p-1"
-              onChange={NumComa}
-              value={inputId}
-            ></input>
-          </div>
-        </div>
-        <div className="w-1/3 flex flex-col text-center">
-          <label className="font-semibold">CARGA FORMULARIO</label>
-          {dataSelect == 1 ? (
-            <div className="w-full flex flex-col items-center">
-              <button
-                className={`${
-                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
-                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
-                onClick={openTerrenoForm}
-              >
-                Carga
-              </button>{" "}
-              <ModalTerrenoForm ref={terrenoRef} msj={setMsjLoading} />
-            </div>
-          ) : null}
-          {dataSelect == 2 ? (
-            <div className="w-full flex flex-col items-center">
-              <button
-                className={`${
-                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
-                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
-                onClick={openConstruccionForm}
-              >
-                Carga
-              </button>{" "}
-              <ModalConstruccionForm
-                ref={construccionRef}
-                msj={setMsjLoading}
-              />
-            </div>
-          ) : null}
-          {dataSelect == 3 ? (
-            <div className="w-full flex flex-col items-center">
-              <button
-                className={`${
-                  estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
-                }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
-                onClick={openUniConstruccionForm}
-              >
-                Carga
-              </button>
-              {loading ? <Loader /> : null}
-              <ModalUniConForm ref={uniConstruccionRef} msj={setMsjLoading} />
-            </div>
-          ) : null}
-        </div>
-      </div>
-    );
-  };
-
-  async function Avaluo(dataAño) {
-    console.log("No Entra COntexto");
-    setDataLiq("");
+  const createAvaluo = async (dataAño, data) => {
+    console.log("entra a Contexto", dataAño);
     let año = dataAño;
+    let tableData = data;
+    let avaluoterreno = "";
     console.log("data AÑo", dataAño);
     let keys = Object.keys(tableData);
+    console.log("data tABLA", tableData);
     //Recorrer Numeros Prediales
     let ArrayTotal = [];
     for (let key in keys) {
@@ -295,6 +36,7 @@ export const LoadDataConstruccion = () => {
       console.log("current item", currentItem);
       let ArrayTerreno = [];
       let ArrayUnidad = [];
+      let ArrayInteresado = [];
       async function TerrenoCalculate() {
         let aux = "";
         let zonasData = currentItem.terreno.ZHG;
@@ -307,11 +49,14 @@ export const LoadDataConstruccion = () => {
             item.ZHG = "0" + item.ZHG;
           }
           let newobj = {
+            t_id: currentItem.predio.t_id,
             zona: currentItem.Zona,
             area: item.area,
             zhg: item.ZHG,
             total: "",
           };
+
+          console.log("Nueevo Objeto Terreno", newobj);
 
           let url = "";
           if (currentItem.Zona == "00") {
@@ -372,15 +117,13 @@ export const LoadDataConstruccion = () => {
         }
         return aux;
       }
-
       async function calcularAvaluo() {
         console.log("Inicia Avaluo", año);
         try {
+          ArrayInteresado.push(currentItem.interesados);
           let boolterreno = await TerrenoCalculate();
-
           if (boolterreno) {
-            let dataCorrect = [];
-            //Rural
+            let dataCorrect = []; //Rural
 
             if (currentItem.Zona == "00") {
               console.log("terreno Rural", currentItem);
@@ -1703,11 +1446,13 @@ export const LoadDataConstruccion = () => {
       }
 
       let terminar = await calcularAvaluo();
-
       console.log("Terminar", terminar);
+      let terrenoavaluo = 0;
       if (terminar) {
         console.log("terreno 123", ArrayTerreno);
         console.log("Unidad", ArrayUnidad);
+        console.log("Interesados", ArrayInteresado);
+
         function calculateAreatotal() {
           let sum = 0;
           ArrayTerreno.map((item, index) => {
@@ -1916,6 +1661,7 @@ export const LoadDataConstruccion = () => {
           let sum = 0;
           ArrayTerreno.map((item, index) => {
             sum += item.total;
+            terrenoavaluo += item.total;
           });
           ArrayUnidad.map((item, index) => {
             sum += item.total;
@@ -1952,13 +1698,16 @@ export const LoadDataConstruccion = () => {
           area_terreno: calculateAreatotal(),
           area_construida: calculateConstruida(),
           avaluo: calculateAvaluo(),
+          avaluo_terreno: terrenoavaluo,
           vigencia: "01/01/" + año,
+          interesados: ArrayInteresado,
         };
         console.log("entra valores", newobj);
         ArrayTotal.push(newobj);
       } else {
-        console.log("terreno Error Unidades", ArrayTerreno);
+        console.log("terreno SIn Unidades", ArrayTerreno);
         console.log("Unidad 1 1", ArrayUnidad);
+        console.log("Interesados 11", ArrayInteresado);
         function calculateAreatotal() {
           let sum = 0;
           ArrayTerreno.map((item, index) => {
@@ -2159,6 +1908,7 @@ export const LoadDataConstruccion = () => {
           let sum = 0;
           ArrayTerreno.map((item, index) => {
             sum += item.total;
+            terrenoavaluo += item.total;
           });
           ArrayUnidad.map((item, index) => {
             sum += item.total;
@@ -2188,352 +1938,183 @@ export const LoadDataConstruccion = () => {
           destinacion: calculateDestino(),
           area_terreno: calculateAreatotal(),
           area_construida: 0,
+          avaluo_terreno: terrenoavaluo,
           avaluo: calculateAvaluo(),
-          vigencia: "01/01/2023",
+          vigencia: "01/01/" + año,
+          interesados: ArrayInteresado,
         };
         ArrayTotal.push(newobj);
       }
 
       //Recorrer Numeros Prediales DATA
     }
-
-    setEstDataTotal(true);
+    ///Mostrar valores base
     console.log("ArrayTotal", ArrayTotal);
+
     let dataTotal = [];
-    ArrayTotal.map((item, index) => {
-      let newobj = {
-        zona: item.zona,
-        num_predial: item.num_predial,
-        avaluo: redondear(item.avaluo),
-        año: año,
-      };
-      dataTotal.push(newobj);
-    });
 
-    setDataTotal(ArrayTotal);
-    return dataTotal;
-  }
+    let arrayResult = "";
+    ///Datos donde se guardaran las liquidaciones
+    let dataLiquid = [];
+    let dataPredio = [];
+    let dataInteresado = [];
+    let jsonInfoProvider = {
+      inscribe_datos_predio_nmero_catastral: [],
+      inscribe_propietarios_nmero_catastral: dataInteresado,
+      inscribe_liquidacion_nmero_catastral: [],
+    };
+    //Preguntar valores de incrementos
+    let requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    let url =
+      import.meta.env.VITE_API_URL_FIRST +
+      "avaluo-catastral/list/incrementos?limit=1500";
+    console.log("Url", url);
+    try {
+      const response = await fetch(url, requestOptions);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const result = await response.json();
+      arrayResult = result.data.data;
+      //let dataBase = {};
 
-  function redondear(numero) {
-    console.log("Numero a Redondear", numero.toLocaleString());
-    const resto = numero % 1000;
-    console.log("asdasd", resto);
-    const redondeo = resto >= 500 ? 1000 - resto : -resto;
-    console.log("redondeo", redondeo);
-    return numero + redondeo;
-  }
+      ArrayTotal.map((items, index) => {
+        let newdata = { ...items };
 
-  async function loadAvaluoBase(año, data) {
-    let result = await createAvaluo(año, data);
-    console.log("Resultado Contexto", JSON.stringify(result));
-    //result = dataAvaluo;
-    setDataTotal(result);
-    setEstDataTotal(true);
-    Load_Data_Desenglobe(tableData);
-  }
-  const AllTableForm = () => {
-    console.log("Datos Totales", dataTotal);
-    const predioFilas = dataTotal.inscribe_datos_predio_nmero_catastral.map(
-      (item, index) => {
-        console.log(item);
-        return (
-          <tr key={index}>
-            <td className="border-2 rounded-xl p-2">{index + 1}</td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_datos_predio_nmero_catastral}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_datos_predio_matricula_inmobiliaria}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_datos_predio_Direccion}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_datos_predio_destino_económico}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_datos_predio_area_terreno}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_datos_predio_area_construida}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              $ {item.inscribe_datos_predio_avaluo_terreno.toLocaleString()}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              $ {item.inscribe_datos_predio_avaluo.toLocaleString()}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_datos_predio_vigencia}
-            </td>
-          </tr>
-        );
-      }
-    );
-    const interesadoFilas = dataTotal.inscribe_propietarios_nmero_catastral.map(
-      (item, index) => {
-        console.log(item);
-        return (
-          <tr key={index}>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_propietarios_nmero_catastral}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_propietarios_numero_propietario}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_propietarios_nombre_propietario}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_propietarios_tipo_documento}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_propietarios_numero_documento}
-            </td>
-          </tr>
-        );
-      }
-    );
-    const liquidacionFilas = dataTotal.inscribe_liquidacion_nmero_catastral.map(
-      (item, index) => {
-        console.log(item);
-        return (
-          <tr key={index}>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_liquidacion_nmero_catastral}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_liquidacion_concepto}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_liquidacion_fecha}
-            </td>
-            <td className="border-2 rounded-xl p-2">
-              {item.inscribe_liquidacion_avaluo}
-            </td>
-          </tr>
-        );
-      }
-    );
-    return (
-      <div className="w-full flex flex-col mt-4 ">
-        <table className="w-full text-center">
-          <thead className="uppercase border-y-2  bg-teal-500 text-base text-white">
-            <tr>
-              <th className="border-b-2   w-2/12 p-2 " colSpan={10}>
-                Inscribe Predio
-              </th>
-            </tr>
-            <tr>
-              <th className=" rounded-es-lg w-1/12 p-2">ID</th>
-              <th className="border-x-2  w-2/12 p-2">Número Catastral</th>
-              <th className="border-x-2 w-1/12 p-2">Matricula Inmobiliaria</th>
-              <th className="border-x-2  w-1/12 p-2">Direccion del Predio</th>
-              <th className="border-x-2  w-1/12 p-2">Destinacion</th>
-              <th className="border-x-2  w-1/12 p-2">Area Terreno (mt2)</th>
-              <th className="border-x-2  w-1/12 p-2">Area Construida(mt2)</th>
-              <th className="border-x-2  w-2/12 p-2">Avaluo Terreno</th>
-              <th className="border-x-2  w-2/12 p-2">Avaluo Total</th>
-              <th className="rounded-ee-lg w-1/12 p-2">Vigencia</th>
-            </tr>
-          </thead>
-          <tbody>{predioFilas}</tbody>
-        </table>
-        <table className="w-full text-center">
-          <thead className="uppercase   bg-teal-500 text-base text-white">
-            <tr>
-              <th className="border-b-2   w-2/12 p-2 " colSpan={10}>
-                Inscribe Propietario
-              </th>
-            </tr>
-            <tr>
-              <th className=" rounded-es-lg w-4/12 p-2">Número Catastral</th>
-              <th className="border-x-2  w-1/12 p-2"># Propietario</th>
-              <th className="border-x-2  w-3/12 p-2">Nombre Propietario</th>
-              <th className="border-x-2  w-1/12 p-2">Tipo Documento</th>
-              <th className="rounded-ee-lg w-3/12 p-2">Numero Documento</th>
-            </tr>
-          </thead>
-          <tbody>{interesadoFilas}</tbody>
-        </table>
-        <table className="w-full text-center">
-          <thead className="uppercase  bg-teal-500 text-base text-white">
-            <tr>
-              <th className="border-b-2   w-2/12 p-2 " colSpan={4}>
-                Liquidacion Predio
-              </th>
-            </tr>
-            <tr>
-              <th className=" rounded-es-lg w-4/12 p-2">Número Catastral</th>
-              <th className="border-x-2  w-1/12 p-2">Concepto</th>
-              <th className="border-x-2  w-3/12 p-2">Fecha</th>
-              <th className="rounded-ee-lg w-3/12 p-2">Avaluo</th>
-            </tr>
-          </thead>
-          <tbody>{liquidacionFilas}</tbody>
-        </table>
-      </div>
-    );
+        console.log("neuva data", newdata);
+        if (items.zona != "00") {
+          if (items.vigencia == "01/01/2022") {
+            console.log("Entra uRBANO");
+            newdata.concepto = "ACTUALIZACION CATASTRAL";
+            newdata.avaluo = redondear(newdata.avaluo);
+            dataLiquid.push({ ...newdata });
+          }
+        }
+        let avaluoBase = items.avaluo;
+        let avaluoBaseTerreno = items.avaluo_terreno;
+        arrayResult.sort((a, b) => a.vigencia - b.vigencia);
+
+        for (const item of arrayResult) {
+          let newDataCopy = { ...newdata };
+          let valor_nuevo = avaluoBase * (1 + parseFloat(item.incremento));
+          let valor_nuevo_terreno =
+            avaluoBaseTerreno * (1 + parseFloat(item.incremento));
+          newDataCopy.avaluo = redondear(valor_nuevo);
+          newDataCopy.avaluo_terreno = redondear(valor_nuevo_terreno);
+          newDataCopy.concepto = item.concepto;
+          avaluoBase = valor_nuevo;
+          newDataCopy.vigencia = "01/01/" + item.vigencia;
+
+          dataLiquid.push(newDataCopy);
+        }
+        console.log("Info de Interesados", items.interesados);
+        items.interesados[0].map((item, index) => {
+          console.log("item de interesado", item);
+          let nombre = "";
+          if (item.tipo == 659) {
+            nombre = item.razon_social;
+          } else {
+            nombre = item.nombre;
+          }
+          let nom_documento = "";
+
+          switch (item.tipo_documento) {
+            case 529:
+              nom_documento = "C.C.";
+              break;
+            case 530:
+              nom_documento = "C.E.";
+              break;
+            case 531:
+              nom_documento = "NIT";
+              break;
+            case 532:
+              nom_documento = "T.I.";
+              break;
+            case 533:
+              nom_documento = "Registro Civil";
+              break;
+            case 534:
+              nom_documento = "Secuencial";
+              break;
+            case 535:
+              nom_documento = "Pasaporte";
+              break;
+            default:
+              nom_documento = "Vacio";
+              break;
+          }
+          let interesado = {
+            inscribe_propietarios_nmero_catastral: items.num_predial,
+            inscribe_propietarios_numero_propietario: index + 1,
+            inscribe_propietarios_nombre_propietario: nombre,
+            inscribe_propietarios_tipo_documento: nom_documento,
+            inscribe_propietarios_numero_documento: item.documento_identidad,
+          };
+          dataInteresado.push(interesado);
+        });
+      });
+      dataLiquid.map((item, index) => {
+        if (item.vigencia == "01/01/" + añoActual) {
+          console.log("Vigencias", item.vigencia);
+          console.log("Año ACTUAL", añoActual);
+          dataPredio.push(item);
+        }
+      });
+
+      console.log("Datos del Año Actual", dataPredio);
+      console.log("datos Final liquidacion", dataLiquid);
+      console.log("datos final de Interesados", dataInteresado);
+
+      dataPredio.map((item, index) => {
+        let newData = {
+          inscribe_datos_predio_nmero_catastral: item.num_predial,
+          inscribe_datos_predio_matricula_inmobiliaria: item.matricula,
+          inscribe_datos_predio_Direccion: item.direccion,
+          inscribe_datos_predio_destino_económico: item.destinacion,
+          inscribe_datos_predio_area_terreno: item.area_terreno,
+          inscribe_datos_predio_area_construida: item.area_construida,
+          inscribe_datos_predio_avaluo: item.avaluo,
+          inscribe_datos_predio_avaluo_terreno: item.avaluo_terreno,
+          inscribe_datos_predio_vigencia: item.vigencia,
+        };
+        jsonInfoProvider.inscribe_datos_predio_nmero_catastral.push(newData);
+      });
+      dataLiquid.map((item, index) => {
+        let newData = {
+          inscribe_liquidacion_nmero_catastral: item.num_predial,
+          inscribe_liquidacion_concepto: item.concepto,
+          inscribe_liquidacion_fecha: item.vigencia,
+          inscribe_liquidacion_avaluo: "$ " + item.avaluo.toLocaleString(),
+        };
+        jsonInfoProvider.inscribe_liquidacion_nmero_catastral.push(newData);
+      });
+
+      console.log("Json Inscripcion", JSON.stringify(jsonInfoProvider));
+      updateJsonInscribir(jsonInfoProvider);
+    } catch (error) {
+      console.log("Error:", error);
+    }
+
+    return jsonInfoProvider;
   };
-  //  onClick={0}
 
-  async function update_Data(data) {
-    try {
-      let dataAux = data;
-      let dataPredio = dataTotal.inscribe_datos_predio_nmero_catastral;
-      console.log("data axu", dataAux);
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      let url = "";
-      for (const [index, predio] of dataAux.entries()) {
-        let jsonTerreno = {
-          avaluo_terreno:
-            dataPredio[index].inscribe_datos_predio_avaluo_terreno,
-        };
-        let jsonPredio = {
-          avaluo_catastral: dataPredio[index].inscribe_datos_predio_avaluo,
-        };
-        let requestOptionsTerrreno = {
-          method: "PUT",
-          headers: myHeaders,
-          body: JSON.stringify(jsonTerreno),
-          redirect: "follow",
-        };
-        let requestOptionsPredio = {
-          method: "PUT",
-          headers: myHeaders,
-          body: JSON.stringify(jsonPredio),
-          redirect: "follow",
-        };
-        let urlTerreno =
-          import.meta.env.VITE_API_URL_FIRST +
-          "terreno/local/" +
-          predio.terreno.t_id;
-        let urlPredio =
-          import.meta.env.VITE_API_URL_FIRST + "predio/" + predio.predio.t_id;
-        setMsjLoading("Actualizando Valores de Avaluo de Terreno");
-        const responseTerreno = await fetch(urlTerreno, requestOptionsTerrreno);
-        setMsjLoading("Actualizando Valores de Avaluo de Predio");
-        const responsePredio = await fetch(urlPredio, requestOptionsPredio);
-        setMsjLoading("Datos Guardados");
-        const resultTerreno = await responseTerreno.json();
-        const resultPredio = await responsePredio.json();
-        console.log("Predio", predio);
-        console.log("Index", index);
-        console.log("123", dataPredio[index]);
-        console.log("Predio", urlTerreno);
-        console.log("Predio", urlPredio);
-      }
-    } catch (error) {
-      setMsjLoading("Error " + error);
-      console.log(error);
-    }
-  }
-  async function send_data() {
-    try {
-      console.log("Datos Totales", dataTotal);
-      let data = tableData;
-      await update_Data(data);
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      var raw = "";
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-      };
-      let url = import.meta.env.VITE_API_URL_FIRST + "predio/uebaunit";
-
-      for (const predio of data) {
-        console.log("item Predio", predio);
-        let prediojson = {
-          ue_lc_unidadconstruccion: "",
-          ue_lc_construccion: "",
-          ue_lc_terreno: predio.terreno.t_id,
-          baunit: predio.predio.t_id,
-        };
-
-        raw = JSON.stringify(prediojson);
-        var requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          body: raw,
-          redirect: "follow",
-        };
-        console.log("raw predio", raw);
-        let prediofetch = await fetch(url, requestOptions);
-        console.log("Datos de Predio fetch", prediofetch);
-        console.log("Predio Json", prediojson);
-
-        for (const unidad of predio.unidad_construccion) {
-          let unidadjson = {
-            ue_lc_unidadconstruccion: unidad.t_id,
-            ue_lc_construccion: "",
-            ue_lc_terreno: "",
-            baunit: predio.predio.t_id,
-          };
-          raw = JSON.stringify(unidadjson);
-          var requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow",
-          };
-          let unidadfetch = await fetch(url, requestOptions);
-          console.log("Datos de Unidad fetch", unidadfetch);
-          console.log("Unidad Json", unidadjson);
-        }
-
-        for (const construccion of predio.construccion) {
-          let construccionjson = {
-            ue_lc_unidadconstruccion: "",
-            ue_lc_construccion: construccion.t_id,
-            ue_lc_terreno: "",
-            baunit: predio.predio.t_id,
-          };
-          raw = JSON.stringify(construccionjson);
-          var requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow",
-          };
-          let construccionfetch = await fetch(url, requestOptions);
-          console.log("Datos de Construccion fetch", construccionfetch);
-          console.log("Construccion Json", construccionjson);
-        }
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
+  function Load_Data_Desenglobe(newdata) {
+    console.log("Entra Datos en Avaluo sobre Desenglobe", newdata);
+    console.log("Informacion de Info", JSON.stringify(newdata));
+    setDataDesenglobe(newdata);
   }
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start">
-      <h1 className="text-2xl">Datos Construccion</h1>
-      <div className="mt-4 w-full">
-        <ChangeData />
-        <TableForm />
-      </div>
-      <div className="mt-4 w-full flex flex-row justify-center">
-        <button
-          onClick={() => loadAvaluoBase(añoBase, tableData)}
-          className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
-        >
-          Calcular Avaluo
-        </button>
-        {estDataTotal ? (
-          <button
-            onClick={() => update_Data(tableData)}
-            className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
-          >
-            Guardar Avaluo
-          </button>
-        ) : null}
-        <label className="ml-4 font-semibold text-lg">{msjLoading}</label>
-      </div>
-
-      {estDataTotal ? <AllTableForm /> : null}
-    </div>
+    <AvaluoContext.Provider
+      value={{ createAvaluo, avaluo, Load_Data_Desenglobe, dataDesenglobe }}
+    >
+      {children}
+    </AvaluoContext.Provider>
   );
 };
+
+export { AvaluoProvider };
+export default AvaluoContext;
