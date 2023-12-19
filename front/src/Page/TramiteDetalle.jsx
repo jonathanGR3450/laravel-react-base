@@ -482,55 +482,6 @@ const TramiteDetalleForm = () => {
           </AccordionItem>
           <AccordionItem className="bg-transparent bg-white bg-opacity-80">
             <AccordionItemHeading>
-              <AccordionItemButton>Detalles</AccordionItemButton>
-            </AccordionItemHeading>
-            <AccordionItemPanel>
-              <table className="w-full text-center">
-                <thead className="uppercase border-2  bg-teal-500 text-base text-white">
-                  <tr>
-                    <th className="border-2 rounded-xl p-2">Radicado</th>
-                    <th className="border-2 rounded-xl p-2">Id</th>
-                    <th className="border-2 rounded-xl p-2">Tipo de Tramite</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tramites.Tramites.map((tramite, key) => (
-                    <tr value={key}>
-                      <td>{tramite.Radicado}</td>
-                      <td>{tramite.id}</td>
-                      <td>
-                        <div className="w-sm flex flex-col items-center justify-center mt-4">
-                          <Popup
-                            trigger={
-                              <button className="p-2 w-1/8 text-center  rounded-md  border-2  text-white bg-teal-500 ">
-                                {" "}
-                                Detalles{" "}
-                              </button>
-                            }
-                            modal
-                            nested
-                          >
-                            {(close) => (
-                              <div className="modal">
-                                <div className="content">Welcome to GFG!!!</div>
-                                <div>
-                                  <button onClick={() => close()}>
-                                    Close modal
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                          </Popup>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </AccordionItemPanel>
-          </AccordionItem>
-          <AccordionItem className="bg-transparent bg-white bg-opacity-80">
-            <AccordionItemHeading>
               <AccordionItemButton>Ric Tramite Catastral</AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
