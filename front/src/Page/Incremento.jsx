@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import ZonaGeo from "../Json/zonaGeoEconomica.json";
 import TablaCatastral from "../Json/prueba.json";
 import TablaVivienda from "../Json/vivienda.json";
@@ -19,6 +19,9 @@ const IncrementoForm = () => {
     
     
     const Vigencia = vigenciaTipo.map(Vigencia => Vigencia )
+    const ref = useRef(null);
+    const ref1 = useRef(null);
+    const ref2 = useRef(null);
     
     async function postJSON(data) {
       try {
@@ -45,10 +48,16 @@ const IncrementoForm = () => {
     }
     function handleEnviar(e) {    
       console.log("Enviando ...");
+      if(!ref.current.value || !ref1.current.value || !ref2.current.value){
+        alert("Por favor llene todos los campos");
+      return false
+      }
+    else{
       const jsonEnviar={"vigencia":jsonValues.vigencia,"incremento":jsonValues.incremento,"tablas": ["tab_anexos_urbana_rural"]}
       console.log(jsonEnviar)
       console.log(jsonValues)
       postJSON(jsonEnviar);
+     }
     }
     function handleInput(e) {    
       
@@ -88,6 +97,7 @@ const IncrementoForm = () => {
               step="0.01"
               className="border-2 p-2 rounded-lg text-center w-full"
               name="area1"
+              ref={ref}
               
             ></input>
         </div>
@@ -99,6 +109,7 @@ const IncrementoForm = () => {
               className="border-2 p-2 rounded-lg text-center w-full"
               name="area"
               hint="d0001"
+              ref={ref1}
             ></input>
         </div>
         <br/>
@@ -106,6 +117,7 @@ const IncrementoForm = () => {
         < select
         onChange={e => handleVigenciaTipoChange(e)}
         defaultValue="2023"
+        ref={ref2}
         className="border-2 p-2 w-mid rounded-lg text-center " >
         {
           Vigencia.map((address, key) => <option value={key}>{address}</option>)

@@ -1,0 +1,491 @@
+{
+  "success": true,
+  "data": {
+    "Predio": [
+      {
+        "t_id": 61612,
+        "coeficiente": null,
+        "Departamento": "25",
+        "Municipio": "290",
+        "Id_Operacion": null,
+        "Tiene_FMI": true,
+        "Codigo_ORIP": "157",
+        "Matricula_Inmobiliaria": "93582",
+        "derechos": [
+          {
+            "t_id": 568303,
+            "tipo": {
+              "t_id": 47,
+              "dispname": "Dominio"
+            },
+            "fraccion_derecho": "1.0000000000",
+            "fecha_inicio_tenencia": null,
+            "descripcion": null,
+            "fuenteadministrativa": [
+              {
+                "t_id": 210697,
+                "tipo": {
+                  "t_id": 54,
+                  "dispname": "(Sin documento)"
+                },
+                "ente_emisor": null,
+                "observacion": null,
+                "numero_fuente": null,
+                "estado_disponibilidad": {
+                  "t_id": 886,
+                  "dispname": "Desconocido"
+                },
+                "tipo_principal": null,
+                "fecha_documento_fuente": null,
+                "espacio_de_nombres": "Fusagasuga"
+              }
+            ],
+            "interesado_lc_interesado": {
+              "t_id": 426667,
+              "tipo": 658,
+              "tipo_documento": 529,
+              "documento_identidad": "43555339",
+              "primer_nombre": "MANUEL",
+              "segundo_nombre": null,
+              "primer_apellido": "PEREZ",
+              "segundo_apellido": "ROA",
+              "sexo": null,
+              "grupo_etnico": null,
+              "razon_social": null,
+              "estado_civil": null,
+              "nombre": "OVALLE ARDILA DIOSELINO",
+              "comienzo_vida_util_version": "2022-05-20 01:45:29.163023",
+              "fin_vida_util_version": null,
+              "espacio_de_nombres": "Fusagasuga",
+              "local_id": "79275"
+            },
+            "interesado_lc_agrupacioninteresados": {
+              "t_id": null,
+              "tipo": null,
+              "nombre": null,
+              "comienzo_vida_util_version": null,
+              "fin_vida_util_version": null,
+              "espacio_de_nombres": null,
+              "local_id": null,
+              "interesados": null
+            },
+            "unidad": 61612,
+            "comienzo_vida_util_version": "2022-05-20 01:51:11.085911",
+            "fin_vida_util_version": null,
+            "espacio_de_nombres": "Fusagasuga"
+          }
+        ],
+        "construccion": [
+          {
+            "t_id": null,
+            "identificador": null,
+            "tipo_construccion": {
+              "t_id": null,
+              "dispname": null
+            },
+            "tipo_dominio": {
+              "t_id": null,
+              "dispname": null
+            },
+            "numero_pisos": null,
+            "numero_sotanos": null,
+            "numero_mezanines": null,
+            "numero_semisotanos": null,
+            "anio_construccion": null,
+            "avaluo_construccion": null,
+            "valor_referencia_construccion": null,
+            "area_construccion": null,
+            "altura": null,
+            "observaciones": null,
+            "dimension": {
+              "t_id": null,
+              "dispname": null
+            },
+            "etiqueta": null,
+            "relacion_superficie": {
+              "t_id": null,
+              "dispname": null
+            },
+            "nivel": {
+              "t_id": null,
+              "dispname": null
+            },
+            "comienzo_vida_util_version": null,
+            "fin_vida_util_version": null,
+            "espacio_de_nombres": null
+          },
+          {
+            "t_id": 1034234,
+            "identificador": "A",
+            "tipo_construccion": {
+              "t_id": 66,
+              "dispname": "Convencional"
+            },
+            "tipo_dominio": {
+              "t_id": 323,
+              "dispname": "Privado"
+            },
+            "numero_pisos": 1,
+            "numero_sotanos": 0,
+            "numero_mezanines": 0,
+            "numero_semisotanos": 0,
+            "anio_construccion": null,
+            "avaluo_construccion": null,
+            "valor_referencia_construccion": null,
+            "area_construccion": "72.0",
+            "altura": null,
+            "observaciones": null,
+            "dimension": {
+              "t_id": null,
+              "dispname": null
+            },
+            "etiqueta": null,
+            "relacion_superficie": {
+              "t_id": null,
+              "dispname": null
+            },
+            "nivel": {
+              "t_id": null,
+              "dispname": null
+            },
+            "comienzo_vida_util_version": "2022-09-29 06:19:13.425445",
+            "fin_vida_util_version": null,
+            "espacio_de_nombres": "Fusagasugá"
+          },
+          {
+            "t_id": null,
+            "identificador": null,
+            "tipo_construccion": {
+              "t_id": null,
+              "dispname": null
+            },
+            "tipo_dominio": {
+              "t_id": null,
+              "dispname": null
+            },
+            "numero_pisos": null,
+            "numero_sotanos": null,
+            "numero_mezanines": null,
+            "numero_semisotanos": null,
+            "anio_construccion": null,
+            "avaluo_construccion": null,
+            "valor_referencia_construccion": null,
+            "area_construccion": null,
+            "altura": null,
+            "observaciones": null,
+            "dimension": {
+              "t_id": null,
+              "dispname": null
+            },
+            "etiqueta": null,
+            "relacion_superficie": {
+              "t_id": null,
+              "dispname": null
+            },
+            "nivel": {
+              "t_id": null,
+              "dispname": null
+            },
+            "comienzo_vida_util_version": null,
+            "fin_vida_util_version": null,
+            "espacio_de_nombres": null
+          },
+          {
+            "t_id": null,
+            "identificador": null,
+            "tipo_construccion": {
+              "t_id": null,
+              "dispname": null
+            },
+            "tipo_dominio": {
+              "t_id": null,
+              "dispname": null
+            },
+            "numero_pisos": null,
+            "numero_sotanos": null,
+            "numero_mezanines": null,
+            "numero_semisotanos": null,
+            "anio_construccion": null,
+            "avaluo_construccion": null,
+            "valor_referencia_construccion": null,
+            "area_construccion": null,
+            "altura": null,
+            "observaciones": null,
+            "dimension": {
+              "t_id": null,
+              "dispname": null
+            },
+            "etiqueta": null,
+            "relacion_superficie": {
+              "t_id": null,
+              "dispname": null
+            },
+            "nivel": {
+              "t_id": null,
+              "dispname": null
+            },
+            "comienzo_vida_util_version": null,
+            "fin_vida_util_version": null,
+            "espacio_de_nombres": null
+          }
+        ],
+        "unidad_construccion": [
+          {
+            "t_id": null,
+            "area_construida": null,
+            "lc_caracteristicasunidadconstruccion": {
+              "identificador": null,
+              "tipo_construccion": {
+                "t_id": null,
+                "dispname": null
+              },
+              "tipo_unidad_construccion": {
+                "t_id": null,
+                "dispname": null
+              },
+              "uso": {
+                "t_id": null,
+                "dispname": null
+              },
+              "calificacionconvencional": {
+                "t_id": null,
+                "total_calificacion": null
+              },
+              "calificacionnoconvencional": {
+                "tipo_anexo": {
+                  "t_id": null,
+                  "dispname": null
+                }
+              }
+            }
+          },
+          {
+            "t_id": null,
+            "area_construida": null,
+            "lc_caracteristicasunidadconstruccion": {
+              "identificador": null,
+              "tipo_construccion": {
+                "t_id": null,
+                "dispname": null
+              },
+              "tipo_unidad_construccion": {
+                "t_id": null,
+                "dispname": null
+              },
+              "uso": {
+                "t_id": null,
+                "dispname": null
+              },
+              "calificacionconvencional": {
+                "t_id": null,
+                "total_calificacion": null
+              },
+              "calificacionnoconvencional": {
+                "tipo_anexo": {
+                  "t_id": null,
+                  "dispname": null
+                }
+              }
+            }
+          },
+          {
+            "t_id": 1272188,
+            "area_construida": "62.0",
+            "lc_caracteristicasunidadconstruccion": {
+              "identificador": "A",
+              "tipo_construccion": {
+                "t_id": 66,
+                "dispname": "Convencional"
+              },
+              "tipo_unidad_construccion": {
+                "t_id": 539,
+                "dispname": "Residencial"
+              },
+              "uso": {
+                "t_id": 231,
+                "dispname": "(Residencial) Vivienda hasta 3 pisos"
+              },
+              "calificacionconvencional": {
+                "t_id": 1477737,
+                "total_calificacion": 36
+              },
+              "calificacionnoconvencional": {
+                "tipo_anexo": {
+                  "t_id": null,
+                  "dispname": null
+                }
+              }
+            }
+          },
+          {
+            "t_id": 1272189,
+            "area_construida": "10.0",
+            "lc_caracteristicasunidadconstruccion": {
+              "identificador": "B",
+              "tipo_construccion": {
+                "t_id": 67,
+                "dispname": "No convencional"
+              },
+              "tipo_unidad_construccion": {
+                "t_id": 543,
+                "dispname": "Anexo"
+              },
+              "uso": {
+                "t_id": 306,
+                "dispname": "(Anexo) Marquesinas - Patios cubiertos"
+              },
+              "calificacionconvencional": {
+                "t_id": null,
+                "total_calificacion": null
+              },
+              "calificacionnoconvencional": {
+                "tipo_anexo": {
+                  "t_id": null,
+                  "dispname": null
+                }
+              }
+            }
+          }
+        ],
+        "terreno": {
+          "t_id": 915719,
+          "area_terreno": "72.0",
+          "avaluo_terreno": null,
+          "manzana_vereda_codigo": "25290010000001212",
+          "dimension": {
+            "t_id": null,
+            "dispname": null
+          },
+          "etiqueta": null,
+          "relacion_superficie": {
+            "t_id": null,
+            "dispname": null
+          },
+          "nivel": {
+            "t_id": null,
+            "dispname": null
+          },
+          "comienzo_vida_util_version": "2022-09-29 04:59:36.688262",
+          "fin_vida_util_version": null,
+          "espacio_de_nombres": "Fusagasuga"
+        },
+        "Referencia_Registral_Sistema_Antiguo": {
+          "t_id": null,
+          "Tipo_Refencia": null,
+          "Oficina": null,
+          "Libro": null,
+          "Tomo": null,
+          "Pagina": null,
+          "Numero": null,
+          "Dia": null,
+          "Mes": null,
+          "Anio": null,
+          "Matricula": null
+        },
+        "Numero_Predial": "252900100000012120038000000000",
+        "Numero_Predial_Anterior": "25290010012120038000",
+        "Codigo_Homologado": "BAF0006DOXD",
+        "interrelacionado": false,
+        "interrelacionado_FMI": false,
+        "NUPRE": null,
+        "Avaluo_Catastral": "60472000.0",
+        "Valor_Referencia": null,
+        "Tipo": [
+          {
+            "t_id": 893,
+            "itfcode": 5,
+            "ilicode": "Predio.Privado",
+            "dispname": "(Predio) Privado",
+            "description": "Es aquel que ha salido del patrimonio del estado, cuenta con un propietario inscrito en el folio de matrícula y se considera propiedad privada en los términos del artículo 48 de la Ley 160 de 1993."
+          }
+        ],
+        "Condicion_Predio": [
+          {
+            "t_id": 442,
+            "itfcode": 0,
+            "ilicode": "NPH",
+            "dispname": "No propiedad horizontal",
+            "description": "Predio no sometido al régimen de propiedad horizontal."
+          }
+        ],
+        "Direccion": [
+          {
+            "t_id": 130680,
+            "Tipo_Direccion": {
+              "t_id": 219,
+              "itfcode": 1,
+              "ilicode": "No_Estructurada",
+              "dispname": "No estructurada"
+            },
+            "Es_Direccion_Principal": false,
+            "Localizacion": "01010000A0A1240000EBE3CBCA8A7B5241B7204542F2153F410000000000000000",
+            "Codigo_Postal": null,
+            "Clase_Via_Principal": null,
+            "Valor_Via_Principal": null,
+            "Letra_Via_Principal": null,
+            "sector_ciudad": {
+              "t_id": null,
+              "itfcode": null,
+              "ilicode": null,
+              "dispname": null
+            },
+            "valor_via_generadora": null,
+            "letra_via_generadora": null,
+            "Numero_Predio": null,
+            "Sector_Predio": null,
+            "Complemento": null,
+            "Nombre_Predio": "Mz C Cs 38"
+          }
+        ],
+        "Destinacion_Economica": [
+          {
+            "t_id": 171,
+            "itfcode": 9,
+            "ilicode": "Habitacional",
+            "dispname": "Habitacional",
+            "description": "Se califica con destino habitacional, aquellos predios de uso residencial cuya finalidad es la vivienda habitual de las personas. Incluye los parqueaderos, garajes y depósitos dentro de propiedad horizontal como también los predios rurales de vivienda campestre."
+          }
+        ],
+        "Clase_Suelo": [
+          {
+            "t_id": 84,
+            "itfcode": 0,
+            "ilicode": "Urbano",
+            "dispname": "Urbano",
+            "description": "Constituyen el suelo urbano, las áreas del territorio distrital o municipal destinadas a usos urbanos por el plan de ordenamiento, que cuenten con infraestructura vial y redes primarias de energía, acueducto y alcantarillado, posibilitándose su urbanización y edificación, según sea el caso. Podrán pertenecer a esta categoría aquellas zonas con procesos de urbanización incompletos, comprendidos en áreas consolidadas con edificación, que se definan como áreas de mejoramiento integral en los planes de ordenamiento territorial.\n\nLas áreas que conforman el suelo urbano serán delimitadas por perímetros y podrán incluir los centros poblados de los corregimientos. En ningún caso el perímetro urbano podrá ser mayor que el denominado perímetro de servicios públicos o sanitario. (Artículo 31, Ley 388 de 1997)"
+          }
+        ],
+        "Categoria_Suelo": [
+          {
+            "t_id": null,
+            "itfcode": null,
+            "ilicode": null,
+            "dispname": null,
+            "description": null
+          }
+        ]
+      }
+    ],
+    "Datos_Adicionales_Levantamiento_Catastral": [
+      {
+        "t_id": null,
+        "Tiene_Area_Registral": null,
+        "Area_Registral_M2": null,
+        "Procedimiento_Catastral_Registral": [
+          {
+            "t_id": null,
+            "itfcode": null,
+            "ilicode": null,
+            "dispname": null,
+            "description": null
+          }
+        ],
+        "Novedad_Numeros_Prediales": null,
+        "Novedad_FMI": null,
+        "Observaciones": null,
+        "Fecha_Visita_predial": null
+      }
+    ]
+  },
+  "message": "lc predio obtenido correctamente"
+}

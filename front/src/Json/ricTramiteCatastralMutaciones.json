@@ -1,0 +1,15 @@
+{
+    "mutacion":[
+    {"t_id" : 153, "dispname" : "Mutaciones de primera clase"},
+    {"t_id" : 154, "dispname" : "Mutaciones de segunda clase"},
+    {"t_id" : 155, "dispname" : "Mutaciones de tercera clase"},
+    {"t_id" : 156, "dispname" : "Mutaciones de cuarta clase"},
+    {"t_id" : 157, "dispname" : "Mutaciones de quinta clase"},
+    {"t_id" : 158, "dispname" : "Rectificaciones"},
+    {"t_id" : 159, "dispname" : "Complementación de la información catastral"},
+    {"t_id" : 160, "dispname" : "Cancelación de inscripciones catastrales"},
+    {"t_id" : 161, "dispname" : "Modificación a la inscripción catastral"},
+    {"t_id" : 162, "dispname" : "Revisión de avalúo"},
+    {"t_id" : 163, "dispname" : "Autoestimación del avalúo"}
+    ]
+}
