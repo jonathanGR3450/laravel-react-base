@@ -6,6 +6,7 @@ import Loader from "./Loader";
 import Popup from "reactjs-popup";
 import mutacionJson from "../Json/ricTramiteCatastralMutaciones.json";
 import "reactjs-popup/dist/index.css";
+import { useLocation } from "react-router-dom";
 ////acordeon
 //import Accordion from '../../node_modules/react-bootstrap/Accordion/package.json';
 //import {Accordion} from 'react-bootstrap/Accordion/package.json';
@@ -20,7 +21,7 @@ import "react-accessible-accordion/dist/fancy-example.css";
 import tramites from "../Json/tramites.json";
 import predioPrueba from "../Json/predioPrueba.json";
 import inscribe from "../Json/predioPruebaInscribe.json";
-import cancela from "../Json/predioPruebaCancela.json";
+//import cancela from "../Json/predioPruebaCancela.json";
 import "../Styles/TramiteDetalle.css";
 import "reactjs-popup/dist/index.css";
 import JsonDesenglobe from "../Json/JsonPrueba.json";
@@ -41,7 +42,14 @@ const TramiteDetalleForm = () => {
       ric_predio: 1
     }
   );
-
+  const location = useLocation();
+  const predioCancela2 = location.state.predio;
+  console.log(location);  
+  //const test = predioGet(npn);
+  console.log("aa")
+  console.log(predioCancela2);
+  var cancela = predioCancela2;
+  
   /*const interesado = Array(
     Object(predioPrueba.data.Predio[0].derechos[0].interesado_lc_interesado)
   );*/ let interesado = [];//inscribe
@@ -150,6 +158,30 @@ const TramiteDetalleForm = () => {
       //console.log(value);           
       console.log(ref4.current.value);  
     }                        
+    
+    
+    async function predioGet(data) {
+        try {
+          const response = await fetch("http://localhost/api/v1/predio?numero_predial="+npn, {
+            method: "GET", // or 'PUT'
+            headers: {
+              //"Content-Type": "application/json",
+            },
+            //body: JSON.stringify(data),
+            //body:data
+            
+            
+          });
+      
+          const result = await response.json();
+          console.log("SuccessNpn:", result);
+          cancela=result;
+          return result;
+        } catch (error) {
+          console.error("ErrorNpn:", error);
+        }
+      }
+
     async function postJSON(data) {
       try {
         const response = await fetch("http://localhost/api/v1/ric-tramite-catastral/local", {

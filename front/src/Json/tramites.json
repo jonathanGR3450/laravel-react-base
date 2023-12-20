@@ -16,16 +16,15 @@
     { 
         "Radicado":"r002",
         "tramiteTipo":"Cambio de Propietario",
-        "radicacionFecha":"2023-12-06",
-        "predioTipo":"Urbano",
-        "npn":"252900100000012120039000000000",
+        "radicacionFecha":"2023-12-07",
+        "predioTipo":"Rural",
+        "npn":"252900000000012120029000000000",
         "Estado":"En revision",
-        "notificacionFecha":"2023-12-07",
+        "notificacionFecha":"2023-12-08",
         "notificacionMetodo":"Correo",
         "observaciones":"Na",
         "id": 20, 
         "valor": 1260000 
       }
-    ],
-    "var2":[{"id" :2}]
+    ]
   }

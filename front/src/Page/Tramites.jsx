@@ -22,7 +22,7 @@ const TramitesForm = () => {
   });
 
   //console.log(tramites.Tramites[0].id)
-  const data = Object(tramites.Tramites);
+  /*const data = Object(tramites.Tramites);
   console.log("Desenglobe data", data);
   let texto = "";
   if (dataDesenglobe[0].predio.tipo == "889") {
@@ -33,14 +33,38 @@ const TramitesForm = () => {
   data.map((item, index) => {
     item.predioTipo = texto;
     item.npn = dataDesenglobe[0].predio.numero_predial;
-  });
-
+  });*/
+  var npn="252900100000012120038000000000";
   function handleEnviar(e) {
-    navigate("/TramiteDetalle");
+    //navigate("/TramiteDetalle",{state:{npn:"252900100000012120038000000000"}});//tiene que ser state
+    predioGet(npn);
   }
   function toggleEditar() {
     setEstEstado((prevEstEstado) => !prevEstEstado);
   }
+  async function predioGet(data) {
+    console.log("Consultando ...");
+    alert("Consultando Informacion del predio ...");
+    try {
+      const response = await fetch("http://localhost/api/v1/predio?numero_predial="+npn, {
+        method: "GET", // or 'PUT'
+        headers: {
+          //"Content-Type": "application/json",
+        },
+        //body: JSON.stringify(data),
+        //body:data
+        
+        
+      });
+  
+      const result = await response.json();
+      navigate("/TramiteDetalle",{state:{predio:result}});//tiene que ser state
+      console.log("SuccessNpn:", result);
+      return result;
+    } catch (error) {
+      console.error("ErrorNpn:", error);
+    }
+  }  
   function changeData(e) {}
   return (
     <>
