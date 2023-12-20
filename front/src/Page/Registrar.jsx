@@ -10,7 +10,8 @@ const RegistrarForm = () => {
     
     
     const [jsonValues,setJsonValues] = useState(  
-      {
+      { 
+        name:"aa@a.com",
         email:"aa@a.com",
         password:"password"
       }
@@ -21,7 +22,7 @@ const RegistrarForm = () => {
     
     async function postJSON(data) {
       try {
-        const response = await fetch("http://localhost/api/login", {
+        const response = await fetch("http://localhost/api/register", {
           method: "POST", // or 'PUT'
           headers: {
             "Content-Type": "application/json"
@@ -48,34 +49,51 @@ const RegistrarForm = () => {
     function handleEnviar(e) {    
       console.log("Enviando ...");
       console.log(cookies)
-      const jsonEnviar={"email":jsonValues.email,"password":jsonValues.password}
+      const jsonEnviar={"name":jsonValues.name,email:jsonValues.email,"password":jsonValues.password}
       console.log(jsonEnviar)
       console.log(jsonValues)
       postJSON(jsonEnviar);
     }
-    function handleInput(e) {    
+    function handleInput0(e) {    
+      
+      const {name, value} = e.target;
+      jsonValues.name=value
+      console.log(value);
+      
+    }
+    function handleInput1(e) {    
       
       const {name, value} = e.target;
       jsonValues.email=value
       console.log(value);
       
-    }
+    }    
     function handleInput2(e) {    
       
-      const {name, value} = e.target;
-      jsonValues.password=value
-      console.log(value);
-      
-    }    
+        const {name, value} = e.target;
+        jsonValues.password=value
+        console.log(value);
+        
+      }        
 
     return (
       
       <>
         <br/>
         <div className="w-1/4 flex flex-col  ml-4">
-            <label className="w-mid font-semibold">Usuario : </label>
+            <label className="w-mid font-semibold">Nombre : </label>
             <input
-              onChange={handleInput}
+              onChange={handleInput0}
+              type="email"
+              className="border-2 p-2 rounded-lg text-center w-full"
+              name="area"
+              hint="d0001"
+            ></input>
+        </div>        
+        <div className="w-1/4 flex flex-col  ml-4">
+            <label className="w-mid font-semibold">Correo : </label>
+            <input
+              onChange={handleInput1}
               type="email"
               className="border-2 p-2 rounded-lg text-center w-full"
               name="area"

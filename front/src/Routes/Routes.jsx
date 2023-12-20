@@ -1,10 +1,14 @@
 import { Routes, Route } from "react-router-dom";
+import  Cookies  from "universal-cookie";
+import useAuth from '../hooks//useAuth';
 import Tablero from "../Page/Dashboard";
 import Menu from "../Page/Menu";
 import Consulta from "../Page/Consulta";
 import FichaPredial from "../Page/FichaPredial";
 import UniconstForm from "../Page/Uniconst";
 import IncrementoForm from "../Page/Incremento";
+import LoginForm from "../Page/Login";
+import RegistrarForm from "../Page/Registrar";
 import { ResumenForm } from "../Page/Resume";
 import { NumPredialForm } from "../Page/NumPredial";
 import { LoadCodHom } from "../Page/LoadCodHom";
@@ -25,7 +29,10 @@ import AvaluoForm from "../Page/Avaluo";
 
 import Resolucion from "../Page/Resolucion";
 import Resoluciones from "../Page/Resoluciones";
+import ProtectedRoute from "../components/ProtectedRoute";
+
 const Ruta = () => {
+  const { isAuthenticated, loading } = useAuth();
   return (
     <InfoProvider>
       <Routes>
@@ -71,8 +78,10 @@ const Ruta = () => {
             }
           ></Route>
           <Route path="/DataHom" element={<LoadCodHom />}></Route>
-          <Route path="/Avaluo" element={<AvaluoForm />}></Route>
-        <Route path="/Incremento" element={<IncrementoForm />}></Route>
+          <Route path="/Avaluo" element={<ProtectedRoute element={AvaluoForm} />}></Route>
+          <Route path="/Incremento" element={<ProtectedRoute element={IncrementoForm} />}></Route>
+        <Route path="/Login" element={<LoginForm />}></Route>
+        <Route path="/Registrar" element={<RegistrarForm />}></Route>
         
           <Route path="/Resolucion" element={<Resolucion />}></Route>
           <Route path="/Resoluciones" element={<Resoluciones />}></Route>
@@ -83,6 +92,9 @@ const Ruta = () => {
 };
 
 export default Ruta;
+//<Route path="/Avaluo" element={<AvaluoForm />}></Route>
+//<Route path="/Incremento" element={<IncrementoForm />}></Route>
+//<Route path="/Incremento" element={<ProtectedRoute Component={IncrementoForm} />}></Route>
 //<Route path="/Dash"  Component = {LoginForm} />
 //<Route path="/AddPredio" element={<PredioForm />}></Route>
 /* <Route

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import  Cookies  from "universal-cookie";
+import useAuth from '../hooks//useAuth';
 import ZonaGeo from "../Json/zonaGeoEconomica.json";
 import TablaCatastral from "../Json/prueba.json";
 import TablaVivienda from "../Json/vivienda.json";
@@ -15,17 +17,18 @@ const IncrementoForm = () => {
         vigencia:"2023"
       }
     )
-    
+    const cookies = new Cookies();
     
     
     const Vigencia = vigenciaTipo.map(Vigencia => Vigencia )
     
-    async function postJSON(data) {
+    async function postJSON(data,token) {
       try {
         const response = await fetch("http://localhost/api/v1/avaluo-catastral/calcular/incremento", {
           method: "POST", // or 'PUT'
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
           },
           body: JSON.stringify(data),
           
@@ -45,16 +48,20 @@ const IncrementoForm = () => {
     }
     function handleEnviar(e) {    
       console.log("Enviando ...");
-      const jsonEnviar={"vigencia":jsonValues.vigencia,"incremento":jsonValues.incremento,"tablas": ["tab_anexos_urbana_rural"]}
+      var jsonEnviar={"vigencia":jsonValues.vigencia,"incremento":jsonValues.incremento,"concepto": jsonValues.decreto}
+      jsonEnviar={"vigencia":jsonValues.vigencia}//para pruebas de token
       console.log(jsonEnviar)
       console.log(jsonValues)
-      postJSON(jsonEnviar);
+      var token = cookies.get('tk')
+      //token = 'aaaa'
+      postJSON(jsonEnviar,token);
     }
     function handleInput(e) {    
       
       const {name, value} = e.target;
       jsonValues.incremento=value
       console.log(value);
+      console.log(cookies.get('tk'));
       
     }
     function handleInput2(e) {    
@@ -76,9 +83,16 @@ const IncrementoForm = () => {
         <input type="submit" value="Submit" />
       </>
       );
+
+    const { isAuthenticated, loading } = useAuth();
+    //console.log("auth2 : "+isAuthenticated)
     return (
       
       <>
+        <br/>
+        {//isAuthenticated ? 
+        <>
+        
         <br/>
         <div className="w-1/4 flex flex-col  ml-4">
             <label className="w-mid font-semibold">Incremento : </label>
@@ -119,7 +133,9 @@ const IncrementoForm = () => {
             Guardar Incremento
           </button>
         </div>
-
+        </>
+        // : 'No autenticado'
+        }
       </>      
       
       );
