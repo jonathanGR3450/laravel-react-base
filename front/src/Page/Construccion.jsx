@@ -57,7 +57,9 @@ const ConstruccionForm = (props, ref) => {
         <CreateConstruction
           key={i}
           index={i}
+          est={true}
           onDataChange={actualizarDatosConstruccion}
+          data={construccionData}
         />
       );
     }
@@ -72,219 +74,6 @@ const ConstruccionForm = (props, ref) => {
       return newDataArray;
     });
   };
-  const CreateConstruction = (index) => {
-    console.log(index);
-    console.log("1231", String.fromCharCode(65 + index.index));
-    let [estMsj, setEstMsj] = useState();
-    const [construccionData, setConstruccionData] = useState({
-      t_id: "",
-      identificador: String.fromCharCode(65 + index.index),
-      tipo_construccion: "",
-      tipo_dominio: "",
-      num_pisos: "",
-      num_sotanos: "",
-      num_semisotanos: "",
-      num_mezanines: "",
-      anio_cons: "",
-      area: "",
-      avaluo: "",
-      valor_referencia: "",
-      altura: "",
-      observacion: "",
-    });
-    const Load_Data = (e) => {
-      const { name, value } = e.target;
-
-      if (name == "anio_cons") {
-        if (parseInt(value) < 1600) {
-          setEstMsj(true);
-        } else {
-          setEstMsj(false);
-        }
-      }
-      setConstruccionData((prevValues) => ({ ...prevValues, [name]: value }));
-      console.log("name", construccionData);
-      console.log("value", value);
-    };
-    useEffect(() => {
-      index.onDataChange(index.index, construccionData);
-      console.log("Actualizacion datos", construccionData);
-    }, [construccionData]);
-
-    return (
-      <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
-        {" "}
-        <h1 className="text-3xl">
-          Caracteristicas de Construccion #{index.index + 1}
-        </h1>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/3   flex flex-col ">
-            <label>Identificador</label>
-            <input
-              name="identificador"
-              value={construccionData.identificador}
-              onChange={Load_Data}
-              type="text"
-              disabled
-              className="border-2 p-1 rounded-md w-full text-center"
-            ></input>
-          </div>
-          <div className="w-1/3 flex flex-col ml-4">
-            <label>Tipo de Construccion</label>
-            <select
-              name="tipo_construccion"
-              value={construccionData.tipo_construccion}
-              onChange={Load_Data}
-              className="border-2 p-1 rounded-md w-full"
-            >
-              <option></option>
-              <option value={66}>Convencional</option>
-              <option value={67}>No Convencional</option>
-            </select>
-          </div>
-          <div className="w-1/3 ml-4  flex flex-col">
-            <label>Tipo de Dominio</label>
-            <select
-              name="tipo_dominio"
-              value={construccionData.tipo_dominio}
-              onChange={Load_Data}
-              className="border-2 p-1 rounded-md w-full"
-            >
-              <option></option>
-              <option value={322}>Común</option>
-              <option value={323}>Privado</option>
-            </select>
-          </div>
-        </div>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/3   flex flex-col">
-            <label>Numero Pisos</label>
-            <input
-              name="num_pisos"
-              value={construccionData.num_pisos}
-              onChange={Load_Data}
-              type="number"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-          </div>
-          <div className="w-1/3  ml-4 flex flex-col">
-            <label>Numero Sotanos</label>
-            <input
-              name="num_sotanos"
-              value={construccionData.num_sotanos}
-              onChange={Load_Data}
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-          </div>
-          <div className="w-1/3 ml-4  flex flex-col">
-            <label>Numero de Semisotanos</label>
-            <input
-              name="num_semisotanos"
-              value={construccionData.num_semisotanos}
-              onChange={Load_Data}
-              type="number"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-          </div>
-        </div>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/3  flex flex-col">
-            <label>Numero de Mezanines</label>
-            <input
-              name="num_mezanines"
-              value={construccionData.num_mezanines}
-              onChange={Load_Data}
-              type="number"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-          </div>
-          <div className="w-1/3 ml-4   flex flex-col">
-            <label>Año de Construccion</label>
-            <input
-              name="anio_cons"
-              value={construccionData.anio_cons}
-              onChange={Load_Data}
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-            {estMsj ? (
-              <label className="text-red-600">
-                "Año debe ser Mayor a 1600"
-              </label>
-            ) : null}
-          </div>
-          <div className="w-1/3 ml-4  flex flex-col">
-            <label>Area de Construccion</label>
-            <input
-              name="area"
-              value={construccionData.area}
-              onInput={soloNumeros}
-              onChange={Load_Data}
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-          </div>
-        </div>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-1/3   flex flex-col">
-            <label>Avaluo Construccion</label>
-            <input
-              name="avaluo"
-              value={construccionData.avaluo}
-              disabled
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-          </div>
-          <div className="w-1/3  flex flex-col ml-4">
-            <label>Valor Referencia</label>
-            <input
-              name="valor_referencia"
-              value={construccionData.valor_referencia}
-              onChange={Load_Data}
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-          </div>
-          <div className="w-1/3 ml-4   flex flex-col">
-            <label>Altura</label>
-            <input
-              name="altura"
-              value={construccionData.altura}
-              onInput={soloNumeros}
-              onChange={Load_Data}
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-          </div>
-        </div>
-        <div className="w-full flex flex-row items-center justify-center">
-          <div className="w-full  flex flex-col">
-            <label>Observaciones</label>
-            <input
-              name="observacion"
-              value={construccionData.observacion}
-              onChange={Load_Data}
-              type="text"
-              className="border-2 p-1 rounded-md w-full"
-            ></input>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  //Se Aceptan solo  Numeros
-  function soloNumeros(event) {
-    const input = event.target;
-    input.value = input.value.replace(/[^0-9.]/g, "");
-  }
-  //Se Aceptan solo Letras
-  function soloLetras(event) {
-    const input = event.target;
-    input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
-  }
 
   const sendData = async () => {
     setLoading(true);
@@ -404,6 +193,252 @@ const ConstruccionForm = (props, ref) => {
     </div>
   );
 };
+//Se Aceptan solo  Numeros
+function soloNumeros(event) {
+  const input = event.target;
+  input.value = input.value.replace(/[^0-9.]/g, "");
+}
+//Se Aceptan solo Letras
+function soloLetras(event) {
+  const input = event.target;
+  input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
+}
+
+export const CreateConstruction = (props) => {
+  console.log("create props", props);
+  let [estMsj, setEstMsj] = useState();
+  let aux = "";
+  if (props.est) {
+    aux = {
+      t_id: "",
+      identificador: String.fromCharCode(65 + props.index),
+      tipo_construccion: "",
+      tipo_dominio: "",
+      num_pisos: "",
+      num_sotanos: "",
+      num_semisotanos: "",
+      num_mezanines: "",
+      anio_cons: "",
+      area: "",
+      avaluo: "",
+      valor_referencia: "",
+      altura: "",
+      observacion: "",
+    };
+  } else {
+    let data = props.data[props.id];
+    aux = {
+      t_id: data.t_id,
+      identificador: data.identificador,
+      tipo_construccion: data.tipo_construccion.t_id,
+      tipo_dominio: data.tipo_dominio.t_id,
+      num_pisos: data.numero_pisos,
+      num_sotanos: data.numero_sotanos,
+      num_semisotanos: data.numero_semisotanos,
+      num_mezanines: data.numero_mezanines,
+      anio_cons: data.anio_construccion,
+      area: data.area_construccion,
+      avaluo: data.avaluo_construccion,
+      valor_referencia: data.valor_referencia_construccion,
+      altura: data.altura,
+      observacion: data.observaciones,
+    };
+  }
+  const [construccionData, setConstruccionData] = useState(aux);
+  const Load_Data = (e) => {
+    const { name, value } = e.target;
+    if (name == "anio_cons") {
+      if (parseInt(value) < 1600) {
+        setEstMsj(true);
+      } else {
+        setEstMsj(false);
+      }
+    }
+    setConstruccionData((prevValues) => ({ ...prevValues, [name]: value }));
+    console.log("name", construccionData);
+    console.log("value", value);
+  };
+  useEffect(() => {
+    if (props.est) {
+      index.onDataChange(index.index, construccionData);
+    }
+
+    console.log("Actualizacion datos", construccionData);
+  }, [construccionData]);
+  function send_data() {
+    console.log(construccionData);
+  }
+  return (
+    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
+      {" "}
+      <h1 className="text-3xl">
+        Caracteristicas de Construccion{" "}
+        {props.est ? "#" + props.index + 1 : null}
+      </h1>
+      <div className="w-full flex flex-row items-center justify-center">
+        <div className="w-1/3   flex flex-col ">
+          <label>Identificador</label>
+          <input
+            name="identificador"
+            value={construccionData.identificador}
+            onChange={Load_Data}
+            type="text"
+            disabled
+            className="border-2 p-1 rounded-md w-full text-center"
+          ></input>
+        </div>
+        <div className="w-1/3 flex flex-col ml-4">
+          <label>Tipo de Construccion</label>
+          <select
+            name="tipo_construccion"
+            value={construccionData.tipo_construccion}
+            onChange={Load_Data}
+            className="border-2 p-1 rounded-md w-full"
+          >
+            <option></option>
+            <option value={66}>Convencional</option>
+            <option value={67}>No Convencional</option>
+          </select>
+        </div>
+        <div className="w-1/3 ml-4  flex flex-col">
+          <label>Tipo de Dominio</label>
+          <select
+            name="tipo_dominio"
+            value={construccionData.tipo_dominio}
+            onChange={Load_Data}
+            className="border-2 p-1 rounded-md w-full"
+          >
+            <option></option>
+            <option value={322}>Común</option>
+            <option value={323}>Privado</option>
+          </select>
+        </div>
+      </div>
+      <div className="w-full flex flex-row items-center justify-center">
+        <div className="w-1/3   flex flex-col">
+          <label>Numero Pisos</label>
+          <input
+            name="num_pisos"
+            value={construccionData.num_pisos}
+            onChange={Load_Data}
+            type="number"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+        </div>
+        <div className="w-1/3  ml-4 flex flex-col">
+          <label>Numero Sotanos</label>
+          <input
+            name="num_sotanos"
+            value={construccionData.num_sotanos}
+            onChange={Load_Data}
+            type="text"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+        </div>
+        <div className="w-1/3 ml-4  flex flex-col">
+          <label>Numero de Semisotanos</label>
+          <input
+            name="num_semisotanos"
+            value={construccionData.num_semisotanos}
+            onChange={Load_Data}
+            type="number"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+        </div>
+      </div>
+      <div className="w-full flex flex-row items-center justify-center">
+        <div className="w-1/3  flex flex-col">
+          <label>Numero de Mezanines</label>
+          <input
+            name="num_mezanines"
+            value={construccionData.num_mezanines}
+            onChange={Load_Data}
+            type="number"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+        </div>
+        <div className="w-1/3 ml-4   flex flex-col">
+          <label>Año de Construccion</label>
+          <input
+            name="anio_cons"
+            value={construccionData.anio_cons}
+            onChange={Load_Data}
+            type="text"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+          {estMsj ? (
+            <label className="text-red-600">"Año debe ser Mayor a 1600"</label>
+          ) : null}
+        </div>
+        <div className="w-1/3 ml-4  flex flex-col">
+          <label>Area de Construccion</label>
+          <input
+            name="area"
+            value={construccionData.area}
+            onInput={soloNumeros}
+            onChange={Load_Data}
+            type="text"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+        </div>
+      </div>
+      <div className="w-full flex flex-row items-center justify-center">
+        <div className="w-1/3   flex flex-col">
+          <label>Avaluo Construccion</label>
+          <input
+            name="avaluo"
+            value={construccionData.avaluo}
+            disabled
+            type="text"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+        </div>
+        <div className="w-1/3  flex flex-col ml-4">
+          <label>Valor Referencia</label>
+          <input
+            name="valor_referencia"
+            value={construccionData.valor_referencia}
+            onChange={Load_Data}
+            type="text"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+        </div>
+        <div className="w-1/3 ml-4   flex flex-col">
+          <label>Altura</label>
+          <input
+            name="altura"
+            value={construccionData.altura}
+            onInput={soloNumeros}
+            onChange={Load_Data}
+            type="text"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+        </div>
+      </div>
+      <div className="w-full flex flex-row items-center justify-center">
+        <div className="w-full  flex flex-col items-center justify-center text-center">
+          <label>Observaciones</label>
+          <input
+            name="observacion"
+            value={construccionData.observacion}
+            onChange={Load_Data}
+            type="text"
+            className="border-2 p-1 rounded-md w-full"
+          ></input>
+          {!props.est ? (
+            <button
+              onClick={send_data}
+              className=" w-1/5 p-2 text-center font-normal rounded-md text-white bg-teal-500 text-lg mt-4"
+            >
+              Actualizar Datos
+            </button>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const ModalConstruccionForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   console.log("props modal construccion", props);

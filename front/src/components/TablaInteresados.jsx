@@ -1,5 +1,7 @@
 import { faL } from "@fortawesome/free-solid-svg-icons";
-
+import React, { useRef, useImperativeHandle, useState } from "react";
+import { Modal } from "../Page/Modal";
+import { ValidarInteresado } from "../Page/Interesado";
 const TablaInteresados = (props) => {
   console.log("props tabla interesado", props);
   let derechos = props.data;
@@ -7,17 +9,20 @@ const TablaInteresados = (props) => {
   const { interesado_lc_agrupacioninteresados } = derechos ? derechos[0] : {};
   let estData = "";
   {
-    derechos == undefined
+    derechos != undefined
       ? interesado_lc_interesado &&
         (interesado_lc_interesado.t_id == null
           ? (estData = true)
           : (estData = false))
       : null;
   }
-  let dataInteresado = estData
-    ? interesado_lc_agrupacioninteresados.interesados
-    : interesado_lc_interesado;
+  const [dataInteresado, setDataInteresado] = useState(
+    estData
+      ? interesado_lc_agrupacioninteresados.interesados
+      : interesado_lc_interesado
+  );
   console.log("interedaso data", dataInteresado);
+
   let nom_documento = "";
   if (!estData && derechos != undefined) {
     switch (dataInteresado.tipo_documento) {
@@ -47,18 +52,25 @@ const TablaInteresados = (props) => {
         break;
     }
   }
+  const interesadoRef = useRef();
+  const openUniInteresado = (e) => {
+    e.preventDefault();
+    interesadoRef.current.openModal();
+  };
 
   return (
     <div>
       <table className="min-w-full font-normal bg-white border border-gray-300 mt-4 text-center">
         <thead>
           <tr>
+            <th className="py-2 px-4 border-b">Tipo Interesado</th>
             <th className="py-2 px-4 border-b">Tipo de Documento</th>
             <th className="py-2 px-4 border-b">Numero de Documento</th>
             <th className="py-2 px-4 border-b">Nombre/Razon Social</th>
             {estData ? (
               <th className="py-2 px-4 border-b">Participacion</th>
             ) : null}
+            <th className="py-2 px-4 border-b">Accion</th>
           </tr>
         </thead>
         <tbody>
@@ -97,15 +109,29 @@ const TablaInteresados = (props) => {
               }
               return (
                 <tr key={index}>
+                  <td>{item.tipo.dispname}</td>
                   <td>{nom_documento}</td>
-                  <td>1</td>
+                  <td>{item.documento_identidad}</td>
                   <td>{item.nombre}</td>
                   <td></td>
+                  <td>
+                    <button
+                      onClick={openUniInteresado}
+                      className="py-2 px-4 text-center rounded-md text-white bg-orange-700"
+                    >
+                      Editar
+                    </button>
+                  </td>
                 </tr>
               );
             })
           ) : (
             <tr>
+              <td>
+                {dataInteresado.tipo == 658
+                  ? "PERSONA NATURAL"
+                  : "PERSONA JURIDICA"}
+              </td>
               <td>{nom_documento}</td>
               <td>{dataInteresado.documento_identidad}</td>
               <td>
@@ -113,14 +139,45 @@ const TablaInteresados = (props) => {
                   ? dataInteresado.nombre
                   : dataInteresado.razon_social}
               </td>
+              <td>
+                <button
+                  onClick={openUniInteresado}
+                  className="py-2 px-4 m-1 text-center rounded-md text-white bg-orange-700"
+                >
+                  Cambiar Propietario
+                </button>
+              </td>
             </tr>
           )}
         </tbody>
       </table>
+      <ModalUniInteresado ref={interesadoRef} update={setDataInteresado} />
     </div>
   );
 };
+const ModalUniInteresado = React.forwardRef((props, ref) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  useImperativeHandle(ref, () => ({
+    openModal,
+  }));
+  return (
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <ValidarInteresado
+        est={false}
+        update={props.update}
+        onClose={closeModal}
+      />
+    </Modal>
+  );
+});
 export default TablaInteresados;
 /*   {datosUnidadConstruccion?.map((unidad, index) => (
             <tr key={index}>

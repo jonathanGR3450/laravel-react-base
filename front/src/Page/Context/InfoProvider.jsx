@@ -9,6 +9,7 @@ const InfoProvider = ({ children }) => {
   const [alerta, setAlerta] = useState([]);
   const [resultado, setResultado] = useState({});
   const [numPredial, setNumPredial] = useState("");
+
   const [infoInscribir, setInfoInscribir] = useState();
 
   const navigate = useNavigate();

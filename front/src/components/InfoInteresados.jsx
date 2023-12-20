@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { NormalInteresadoForm } from "../Page/Interesado";
 import useInfo from "../hooks/useInfo";
 import TablaInteresados from "./TablaInteresados";
@@ -21,20 +21,22 @@ const InfoInteresados = () => {
           : (estData = false))
       : null;
   }
-  let dataInteresado = estData
-    ? interesado_lc_agrupacioninteresados.interesados
-    : interesado_lc_interesado;
-  console.log("interedaso data", dataInteresado);
 
-  const interesadoRef = useRef();
+  const [dataInteresado, setDataInteresado] = useState(
+    estData
+      ? interesado_lc_agrupacioninteresados.interesados
+      : interesado_lc_interesado
+  );
+  const interesadosRef = useRef();
   const openInteresado = () => {
-    interesadoRef.current.openModal();
+    interesadosRef.current.openModal();
   };
   const editToggle = (e) => {
     e.preventDefault();
     //setEstInput((prevEstInput) => !prevEstInput);
     openInteresado();
   };
+
   return (
     <>
       <div className="w-full text-center">Interesados</div>
@@ -44,18 +46,20 @@ const InfoInteresados = () => {
       <div className="flex flex-row w-full  justify-center items-center mt-4 ml-4">
         <button
           onClick={editToggle}
-          className="py-2 px-4 text-center rounded-md text-white bg-orange-700"
+          className="py-2 px-4 text-center rounded-md text-white bg-teal-500"
         >
-          Editar
+          Crear Interesados
         </button>
 
         <NormalInteresadoForm
-          ref={interesadoRef}
+          ref={interesadosRef}
           est={estData}
           data={dataInteresado}
+          update={setDataInteresado}
         />
       </div>
     </>
   );
 };
+
 export default InfoInteresados;

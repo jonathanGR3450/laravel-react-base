@@ -21,6 +21,7 @@ const CreateTramite = () => {
     metodo: "",
   });
   console.log(tramite);
+
   useEffect(() => {
     loadTipo_Tramite();
   }, []);

@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ZonaGeo from "../Json/zonaGeoEconomica.json";
 import TablaCatastral from "../Json/prueba.json";
@@ -7,6 +7,7 @@ import Loader from "./Loader";
 import tramites from "../Json/tramites.json";
 import JsonDesenglobe from "../Json/JsonPrueba.json";
 import useAvaluo from "../hooks/useAvaluo";
+import Observaciones from "./Observaciones";
 const TramitesForm = () => {
   //const { dataDesenglobe } = useAvaluo();
   let dataDesenglobe = JsonDesenglobe;
@@ -41,7 +42,32 @@ const TramitesForm = () => {
   function toggleEditar() {
     setEstEstado((prevEstEstado) => !prevEstEstado);
   }
-  function changeData(e) {}
+  function changeData(e) {
+    data.map((item, index) => {
+      if (index == e.target.name) {
+        let nom = "";
+        switch (parseInt(e.target.value)) {
+          case 1:
+            nom = "En Revision";
+            break;
+          case 2:
+            nom = "Aprobado";
+            break;
+          case 3:
+            nom = "Devuelto";
+            break;
+          default:
+            break;
+        }
+        item.Estado = nom;
+      }
+    });
+  }
+
+  const observacionFormRef = useRef();
+  const openObservacion = (e) => {
+    observacionFormRef.current.openModal(e.target.name);
+  };
   return (
     <>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 text-left">
@@ -73,11 +99,15 @@ const TramitesForm = () => {
                 <td>{tramite.npn}</td>
                 <td>
                   {estEstado ? (
-                    <select onChange={changeData}>
-                      <option></option>
-                      <option>En Revision</option>
-                      <option>Aprobado</option>
-                      <option>Devuelto</option>
+                    <select
+                      className="border-2 p-2 rounded-md w-full"
+                      name={key}
+                      onChange={(e) => changeData(e, key)}
+                    >
+                      <option value={0}></option>
+                      <option value={1}>En Revision</option>
+                      <option value={2}>Aprobado</option>
+                      <option value={3}>Devuelto</option>
                     </select>
                   ) : (
                     tramite.Estado
@@ -87,9 +117,20 @@ const TramitesForm = () => {
                 <td>{tramite.notificacionMetodo}</td>
                 <td>
                   {estEstado ? (
-                    <button className="p-2 mt-4 text-center rounded-md text-white bg-teal-500 text-lg mr-2">
-                      Agregar Observacion
-                    </button>
+                    <div>
+                      <button
+                        name={key}
+                        onClick={openObservacion}
+                        className="p-2 mt-4 text-center rounded-md text-white bg-teal-500 text-lg mr-2"
+                      >
+                        Agregar Observacion
+                      </button>
+                      <Observaciones
+                        ref={observacionFormRef}
+                        data={data}
+                        index={key}
+                      />
+                    </div>
                   ) : (
                     tramite.observaciones
                   )}

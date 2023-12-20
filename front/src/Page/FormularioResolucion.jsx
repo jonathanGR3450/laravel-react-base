@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useInfo from "../hooks/useInfo";
 import Alerta from "../components/Alerta";
 import Inscripcion from "../Json/dataAvaluo.json";
@@ -29,10 +29,30 @@ const FormularioResolucion = () => {
   const [anioNotificacion, setAnioNotificacion] = useState("");
   const [nombreDirector, setnombreDirector] = useState("");
   const [documentosAdjuntados, setDocumentosAdjuntados] = useState([]);
-
+  const [tipoTramite, setTipoTramite] = useState("");
+  let [response, setResponse] = useState(0);
   const { mostrarAlerta, alerta, submitInfoResolucion, infoInscribir } =
     useInfo();
 
+  useEffect(() => {
+    loadTipo_Tramite();
+  }, []);
+  async function loadTipo_Tramite() {
+    try {
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      let url =
+        import.meta.env.VITE_API_URL_FIRST + "document/list/tipo-tramite";
+      let response = await fetch(url, requestOptions);
+      if (response.ok) {
+        const result = await response.json();
+        console.log("reso", result.data.data);
+        setResponse(result.data.data);
+      }
+    } catch (error) {}
+  }
   const adjuntarDocumentos = (e) => {
     const valorOpcion = e.target.value;
     // Verificar si la opción ya está seleccionada
@@ -53,6 +73,7 @@ const FormularioResolucion = () => {
     e.preventDefault();
     if (
       [
+        tipoTramite,
         serialResolucion,
         dia,
         mes,
@@ -174,6 +195,24 @@ const FormularioResolucion = () => {
       onSubmit={handleSubmit}
     >
       {msg && <Alerta alerta={alerta} />}
+      <div className=" flex flex-col  mb-3">
+        <label className="font-semibold m-2" htmlFor="serialResolucion">
+          Tipo Resolucion
+        </label>
+        <select
+          name="tipo_tramite"
+          className="border-2 rounded-lg text-center m-1"
+          value={tipoTramite}
+          onChange={() => setTipoTramite(e.target.value)}
+        >
+          <option></option>
+          {response != 0
+            ? response.map((item, index) => {
+                return <option value={item.t_id}>{item.nombre}</option>;
+              })
+            : null}
+        </select>
+      </div>
       <div className="  mb-3">
         <label className="font-semibold m-2" htmlFor="serialResolucion">
           Serial Resolución
@@ -187,7 +226,7 @@ const FormularioResolucion = () => {
           onChange={(e) => setSerialResolucion(e.target.value)}
         />
       </div>
-     {/*  <div className="  mb-3">
+      {/*  <div className="  mb-3">
         <label className="font-semibold m-2 " htmlFor="dia">
           Día
         </label>
