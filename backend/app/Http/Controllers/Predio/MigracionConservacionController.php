@@ -108,17 +108,20 @@ class MigracionConservacionController extends AppBaseController
                         $interesadoData['comienzo_vida_util_version'] = Carbon::now();
                         $interesadoConservacion = LcInteresado::create($interesadoData);
                         $interesadoConservacionId = $interesadoConservacion->t_id;
-                    } else {
+                    } else if ($interesadoLocal->interesado_lc_interesado_conservacion) {
                         $interesadoConservacionId = $interesadoLocal->interesado_lc_interesado_conservacion;
                     }
 
                     // lc_agrupacioninteresados
                     $agrupacionInteresadosLocal = $derechoLocal->agrupacionInteresados;
-                    $agrupacionInteresadosConservacion = null;
+                    $agrupacionInteresadosConservacionId = null;
                     if ($agrupacionInteresadosLocal) {
                         $agrupacionInteresadosData = $agrupacionInteresadosLocal->makeHidden(['t_id'])->toArray();
                         $agrupacionInteresadosData['comienzo_vida_util_version'] = Carbon::now();
                         $agrupacionInteresadosConservacion = LcAgrupacionInteresados::create($agrupacionInteresadosData);
+                        $agrupacionInteresadosConservacionId = $agrupacionInteresadosConservacion->t_id;
+                    } else if ($derechoLocal->interesado_lc_agrupacioninteresados_conservacion) {
+                        $agrupacionInteresadosConservacionId = $derechoLocal->interesado_lc_agrupacioninteresados_conservacion;
                     }
 
                     // col_miembros
@@ -127,6 +130,7 @@ class MigracionConservacionController extends AppBaseController
                         foreach ($colMiembroLocal as $miembro) {
                             // crear o actualizar interesado
                             $interesado = $miembro->interesadoConservacion;
+                            $interesadoCrearActualizarId = null;
                             if ($miembro->interesado_lc_interesado) {
                                 $interesadoData = $interesado->makeHidden(['t_id'])->toArray();
                                 $interesadoCrearActualizar = LcInteresado::updateOrCreate(
@@ -137,20 +141,20 @@ class MigracionConservacionController extends AppBaseController
                                     $interesadoData
                                 );
                                 $interesadoCrearActualizarId = $interesadoCrearActualizar->t_id;
-                            } else {
+                            } else if ($miembro->interesado_lc_interesado_conservacion) {
                                 $interesadoCrearActualizarId = $miembro->interesado_lc_interesado_conservacion;
                             }
                             $colMiembroData = $miembro->makeHidden(['t_id', 'interesado_lc_interesado_conservacion'])->toArray();
                             $colMiembroData['interesado_lc_interesado'] = $interesadoCrearActualizarId;
-                            $colMiembroData['interesado_lc_agrupacioninteresados'] = $agrupacionInteresadosConservacion->t_id;
-                            $colMiembroData['agrupacion'] = $agrupacionInteresadosConservacion->t_id;
+                            $colMiembroData['interesado_lc_agrupacioninteresados'] = $agrupacionInteresadosConservacionId;
+                            $colMiembroData['agrupacion'] = $agrupacionInteresadosConservacionId;
                             $colMiembroConservacion = ColMiembro::create($colMiembroData);
                         }
                     }
 
                     $lcDerechosData = $derechoLocal->makeHidden(['t_id'])->toArray();
                     $lcDerechosData['interesado_lc_interesado'] = $interesadoConservacionId;
-                    $lcDerechosData['interesado_lc_agrupacioninteresados'] = $agrupacionInteresadosConservacion?->t_id;
+                    $lcDerechosData['interesado_lc_agrupacioninteresados'] = $agrupacionInteresadosConservacionId;
                     $lcDerechosData['comienzo_vida_util_version'] = Carbon::now();
                     $lcDerechosData['local_id'] = $predioConservacion->local_id;
                     $lcDerechosData['unidad'] = $predioConservacion->t_id;
