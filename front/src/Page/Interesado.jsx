@@ -18,6 +18,7 @@ const InteresadoForm = (props, ref) => {
   let contextTableData, contextUpdateTableData;
   let auxDataForm = {};
   let [loading, setLoading] = useState(false);
+
   const [numInteresados, setNumInteresados] = useState();
   const [interesados, setInteresados] = useState([]);
   const [interesadosData, setInteresadosData] = useState();
@@ -51,6 +52,7 @@ const InteresadoForm = (props, ref) => {
       fin_vida_util_version: "",
       espacio_de_nombres: "Fusagasuga",
       local_id: "",
+      participacion: "",
     }));
     setInteresadosData(newInteresadosData);
   };
@@ -269,9 +271,63 @@ const InteresadoForm = (props, ref) => {
       return newDataArray;
     });
   };
+  function validadData(tam) {
+    let cont = 0;
+    let sum = 0;
+    if (tam) {
+      interesadosData.map((item, index) => {
+        sum += parseFloat(item.participacion);
+        console.log("validar participacion", item);
+        if (
+          item.tipo == 0 ||
+          item.tipo_documento == 0 ||
+          item.documento_identidad == ""
+        ) {
+          cont++;
+        }
+      });
+      console.log(sum > 1);
+
+      if (cont >= 1) {
+        setEstBtt(true);
+      } else {
+        if (sum > 1 || isNaN(sum)) {
+          setEstBtt(true);
+        } else {
+          setEstBtt(false);
+        }
+      }
+    } else {
+      interesadosData.map((item, index) => {
+        sum += parseFloat(item.participacion);
+        if (
+          item.tipo == 0 ||
+          item.tipo_documento == 0 ||
+          item.documento_identidad == ""
+        ) {
+          cont++;
+        }
+      });
+      console.log(sum);
+
+      if (cont >= 1) {
+        setEstBtt(true);
+      } else {
+        setEstBtt(false);
+      }
+      console.log("validar No participacion");
+    }
+  }
 
   useEffect(() => {
-    console.log("datos Array Completo actualizado", interesadosData);
+    console.log("datos Array Completo actualizado", interesadosData.length);
+    let tam = "";
+    if (interesadosData.length != 1) {
+      tam = true;
+    } else {
+      tam = false;
+    }
+    validadData(tam);
   }, [interesadosData]);
 
   //Formulario
@@ -298,8 +354,11 @@ const InteresadoForm = (props, ref) => {
       <div className="w-full">{interesados}</div>
       <div className="w-full flex flex-col">
         <button
+          disabled={estBtt}
+          className={`${
+            estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+          }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mt-4`}
           onClick={Send_Data}
-          className="p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2 mt-2"
         >
           Guardar
         </button>

@@ -72,6 +72,9 @@ const InfoProvider = ({ children }) => {
       console.log(error);
     }
   };
+  async function updateNumPredial(newdata) {
+    console.log("Actualiza num predial", newdata);
+  }
   return (
     <InfoContext.Provider
       value={{
@@ -82,6 +85,7 @@ const InfoProvider = ({ children }) => {
         resultado,
         submitInfoNumPredial,
         numPredial,
+        updateNumPredial,
         infoInscribir,
         updateJsonInscribir,
       }}

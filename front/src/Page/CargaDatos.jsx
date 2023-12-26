@@ -59,7 +59,7 @@ export const LoadDataForm = () => {
     };
     const filas = Object.entries(tableData).map((items, index) => {
       let item = items[1];
-      console.log("existe predio", item.hasOwnProperty("predio"));
+      console.log("existe predio", item.hasOwnProperty("interesados"));
       return (
         <tr key={index}>
           <td className="border-2 rounded-xl p-2">{index + 1}</td>

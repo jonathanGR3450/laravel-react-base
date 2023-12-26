@@ -614,7 +614,6 @@ export const NumPredialForm = (props) => {
     }
     setEstFilas(Math.random());
   }
-
   //Formularios
   // 1 Formulario  para el cambio de datos de Tabla
   const ChangeDataForm = () => {
@@ -631,6 +630,7 @@ export const NumPredialForm = (props) => {
     const [estInputId, setEstInputId] = useState(false);
     //Data Id
     const [dataId, setDataId] = useState([]);
+
     useEffect(() => {
       if (inputId.length === 0) {
         setEstInputId(false);
@@ -745,6 +745,7 @@ export const NumPredialForm = (props) => {
     //Datos de Matricula Inmobiliaria
     const [rdata, setRdata] = useState("");
     const [estBttRdata, setEstBttRdata] = useState(true);
+
     useEffect(() => {
       if (rdata.length == 0) {
         setEstBttRdata(true);
@@ -822,97 +823,59 @@ export const NumPredialForm = (props) => {
       setDataId(num);
       setInputId(input.value);
     }
-
-    // Validad si el numero final es mayor al primero y que no sea mayor al tamaño
-    //Funcion para cargar los valores de los ID
-
-    ////////////
-    ///////////////
-
     ///////////////////////////Procesode numero Predial
-    const IdFormOne = () => {
-      const { tableData } = useContext(TableContext);
-      const { updateNumPredial } = useContext(NumPreContext);
-      const { ArrayFinal } = useContext(ArrayFinalContext);
-      const [uniqueData, setUniqueData] = useState("");
 
-      function shownumData(e) {
-        setUniqueData(e.target.value);
-        numID = e.target.value;
-      }
-      function Load_Data() {
-        let aux = tableData;
-        let num = uniqueData - 1;
-
-        Object.entries(aux).map((item, index) => {
-          if (index == num) {
-            updateNumPredial(item[1]);
-          }
-        });
-      }
-      return (
-        <div
-          id="SeleccionarID"
-          className="w-2/5 border-2 text-center flex flex-col items-center p-2"
-        >
-          <h2 className=" text-lg font-bold border-b pb-2">Seleccionar ID</h2>
-          <div className="flex flex-row items-center justify-center mt-2 p-2">
-            <input
-              name="unique"
-              type="text"
-              className="border-2 rounded-lg w-2/3 p-1"
-              onChange={shownumData}
-              onInput={soloNumeros}
-              value={uniqueData}
-            ></input>
-            <button
-              className=" p-1 w-1/3 text-center rounded-md text-white bg-teal-500 text-lg ml-2"
-              onClick={Load_Data}
-            >
-              Cargar
-            </button>
-          </div>
-        </div>
-      );
-    };
     //1.1 Formulario para Editar Numero Predial
     const NumPredialForm = () => {
-      const { numPredial } = useContext(NumPreContext);
+      //const { numPredial } = useContext(NumPreContext);
       const { tableData } = useContext(TableContext);
+      console.log("Data Id", dataId[0]);
+      let unidata = "";
+      tableData.map((item, index) => {
+        if (index == dataId[0] - 1) {
+          console.log("data ", item);
+          unidata = item;
+        }
+      });
+      console.log("123 123", unidata);
       const [inputValues, setInputValues] = useState({
-        Dpto: numPredial.Dpto || "",
-        Mpio: numPredial.Mpio || "",
-        Zona: numPredial.Zona || "",
-        Sector: numPredial.Sector || "",
-        Comuna: numPredial.Comuna || "",
-        Barrio: numPredial.Barrio || "",
-        Manzana: numPredial.Manzana || "",
-        Terreno: numPredial.Terreno || "",
-        Condicion: numPredial.Condicion || "",
-        Edificio: numPredial.Edificio || "",
-        Piso: numPredial.Piso || "",
-        Unidad: numPredial.Unidad || "",
+        Dpto: unidata.Dpto || "",
+        Mpio: unidata.Mpio || "",
+        Zona: unidata.Zona || "",
+        Sector: unidata.Sector || "",
+        Comuna: unidata.Comuna || "",
+        Barrio: unidata.Barrio || "",
+        Manzana: unidata.Manzana || "",
+        Terreno: unidata.Terreno || "",
+        Condicion: unidata.Condicion || "",
+        Edificio: unidata.Edificio || "",
+        Piso: unidata.Piso || "",
+        Unidad: unidata.Unidad || "",
       });
       useEffect(() => {
         setInputValues({
-          Dpto: numPredial.Dpto || "",
-          Mpio: numPredial.Mpio || "",
-          Zona: numPredial.Zona || "",
-          Sector: numPredial.Sector || "",
-          Comuna: numPredial.Comuna || "",
-          Barrio: numPredial.Barrio || "",
-          Manzana: numPredial.Manzana || "",
-          Terreno: numPredial.Terreno || "",
-          Condicion: numPredial.Condicion || "",
-          Edificio: numPredial.Edificio || "",
-          Piso: numPredial.Piso || "",
-          Unidad: numPredial.Unidad || "",
+          Dpto: unidata.Dpto || "",
+          Mpio: unidata.Mpio || "",
+          Zona: unidata.Zona || "",
+          Sector: unidata.Sector || "",
+          Comuna: unidata.Comuna || "",
+          Barrio: unidata.Barrio || "",
+          Manzana: unidata.Manzana || "",
+          Terreno: unidata.Terreno || "",
+          Condicion: unidata.Condicion || "",
+          Edificio: unidata.Edificio || "",
+          Piso: unidata.Piso || "",
+          Unidad: unidata.Unidad || "",
         });
-      }, [numPredial]);
+      }, [unidata]);
 
-      if (numPredial.length != 0) {
+      if (unidata.length != 0) {
+        console.log("Entra a Num Predial");
+
         function aux(e) {
           const { name, value } = e.target;
+          console.log("entra name ", name);
+          console.log("entra 123 ", value);
           setInputValues((prevValues) => ({
             ...prevValues,
             [name]: value,
@@ -920,14 +883,13 @@ export const NumPredialForm = (props) => {
         }
         const handleUpdateTable = (data) => {
           // Lógica para actualizar la tabla
-          const newData = { ...data }; // You may replace this with your logic to update data
-          updateTableData(newData);
+          // You may replace this with your logic to update data
+          updateTableData(data);
         };
         function ReloadData() {
           const clonetable = tableData;
-          Object.entries(clonetable).map((items, index) => {
-            let item = items[1];
-            if (numID - 1 == index) {
+          clonetable.map((item, index) => {
+            if (dataId[0] - 1 == index) {
               item.Dpto = inputValues.Dpto;
               item.Mpio = inputValues.Mpio;
               item.Zona = inputValues.Zona;
@@ -942,22 +904,25 @@ export const NumPredialForm = (props) => {
               item.Unidad = inputValues.Unidad;
             }
           });
+          console.log("123  ss ", clonetable);
           handleUpdateTable(clonetable);
+          setEstFilas(Math.random());
         }
         return (
           <div
             id="NumPredial"
-            className="flex flex-col p-2  w-full border-2 text-center"
+            className="flex flex-col  w-full border-2 text-center"
           >
-            <h2 className="uppercase text-lg font-bold border-b pb-2">
+            <h2 className=" p-2 text-lg font-bold   pb-2 w-full text-white bg-teal-500">
               Modificar Numero Predial
             </h2>
-            <div>
+            <div className="p-4">
               <div>
                 <input
                   name="Dpto"
                   className="w-8 border-2  rounded-md text-center mr-2"
                   type="text"
+                  disabled
                   onChange={aux}
                   value={inputValues["Dpto"]}
                   maxLength={2}
@@ -966,6 +931,7 @@ export const NumPredialForm = (props) => {
                   name="Mpio"
                   className="w-12 border-2 rounded-md text-center mr-2"
                   type="text"
+                  disabled
                   onChange={aux}
                   value={inputValues["Mpio"]}
                   maxLength={3}
@@ -974,6 +940,7 @@ export const NumPredialForm = (props) => {
                   name="Zona"
                   className="w-8 border-2 rounded-md text-center mr-2"
                   type="text"
+                  disabled
                   onChange={aux}
                   value={inputValues["Zona"]}
                   maxLength={2}
@@ -982,6 +949,7 @@ export const NumPredialForm = (props) => {
                   name="Sector"
                   className="w-8 border-2  rounded-md text-center mr-2"
                   type="text"
+                  disabled
                   onChange={aux}
                   value={inputValues["Sector"]}
                   maxLength={2}
@@ -990,6 +958,7 @@ export const NumPredialForm = (props) => {
                   name="Comuna"
                   className="w-8 border-2  rounded-md text-center mr-2"
                   type="text"
+                  disabled
                   onChange={aux}
                   value={inputValues["Comuna"]}
                   maxLength={2}
@@ -998,6 +967,7 @@ export const NumPredialForm = (props) => {
                   name="Barrio"
                   className="w-8 border-2  rounded-md text-center mr-2"
                   type="text"
+                  disabled
                   onChange={aux}
                   value={inputValues["Barrio"]}
                   maxLength={2}
@@ -1006,6 +976,7 @@ export const NumPredialForm = (props) => {
                   name="Manzana"
                   className="w-16 border-2  rounded-md text-center mr-2"
                   type="text"
+                  disabled
                   onChange={aux}
                   value={inputValues["Manzana"]}
                   maxLength={4}
@@ -1014,6 +985,7 @@ export const NumPredialForm = (props) => {
                   name="Terreno"
                   className="w-16 border-2  rounded-md text-center mr-2"
                   type="text"
+                  disabled
                   onChange={aux}
                   value={inputValues["Terreno"]}
                   maxLength={4}
@@ -1046,17 +1018,20 @@ export const NumPredialForm = (props) => {
                   name="Unidad"
                   className="w-16 border-2  rounded-md text-center mr-2"
                   type="text"
+                  disabled
                   onChange={aux}
                   value={inputValues["Unidad"]}
                   maxLength={4}
                 ></input>
               </div>
-              <button
-                className="text-xl border-2 rounded-xl  w-1/5 bg-teal-500 text-white"
-                onClick={ReloadData}
-              >
-                Guardar
-              </button>
+              <div className="pt-4">
+                <button
+                  className="text-xl border-2 rounded-xl  w-1/5 bg-teal-500 text-white"
+                  onClick={ReloadData}
+                >
+                  Guardar
+                </button>
+              </div>
             </div>
           </div>
         );
@@ -1107,7 +1082,6 @@ export const NumPredialForm = (props) => {
                 </div>
               </div>
               <div className="flex flex-row w-2/5">
-                {numP == "1" && estInputId ? <NumPredialForm /> : null}
                 {numP == "2" && estInputId ? (
                   <div className="flex flex-col  w-full border-2 text-center">
                     <div className="w-full">
@@ -1168,6 +1142,7 @@ export const NumPredialForm = (props) => {
                 ) : null}
               </div>
             </div>
+            {numP == "1" && estInputId ? <NumPredialForm /> : null}
             {(dir == 218 || dir == 219) && numP == 2 && estInputId ? (
               <div className="w-full flex-col border-2 ">
                 <div className="w-full p2">

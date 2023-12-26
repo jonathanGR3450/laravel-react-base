@@ -8,10 +8,6 @@ const InfoUnidadConstruccion = () => {
   const { data: info } = numPredial;
   const { Predio } = info || {};
   const { unidad_construccion } = Predio ? Predio[0] : {};
-
-  console.log(numPredial);
-  console.log(info);
-  console.log(unidad_construccion);
   const uniConstRef = useRef();
   const openUniCons = () => {
     uniConstRef.current.openModal();
@@ -23,7 +19,9 @@ const InfoUnidadConstruccion = () => {
   };
   return (
     <>
-      <TablaUnidadConstruccion datosUnidadConstruccion={unidad_construccion} />
+      <div className="w-full">
+        <TablaUnidadConstruccion data={Predio ? Predio[0] : {}} />
+      </div>
       <div className="flex flex-row w-full ml-4 items-center mt-4 justify-center">
         <button
           name="fuente_administrativa"
@@ -32,10 +30,10 @@ const InfoUnidadConstruccion = () => {
         >
           Editar
         </button>
-        <NormalUniConForm data={Predio} ref={uniConstRef} />
+        <NormalUniConForm data={Predio ? Predio[0] : {}} ref={uniConstRef} />
       </div>
     </>
   );
 };
-
+//datosUnidadConstruccion={unidad_construccion}
 export default InfoUnidadConstruccion;

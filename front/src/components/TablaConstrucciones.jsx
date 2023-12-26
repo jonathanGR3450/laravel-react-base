@@ -4,7 +4,14 @@ import { CreateConstruction } from "../Page/Construccion";
 
 const TablaConstrucciones = (props) => {
   console.log("props tabla Construcciones", props);
-  let [construccion, setConstruccion] = useState(props.data);
+  let alldata = props.data;
+  const dataNoNull = [];
+  props.data.construccion.map((item, index) => {
+    if (item.t_id != null) {
+      dataNoNull.push(item);
+    }
+  });
+  let [construccion, setConstruccion] = useState(dataNoNull);
 
   const construccionRef = useRef();
   const openConstruccion = (e) => {
@@ -34,7 +41,13 @@ const TablaConstrucciones = (props) => {
               return (
                 <tr key={index}>
                   <td>{item.identificador}</td>
-                  <td>{item.tipo_construccion.dispname}</td>
+                  <td>
+                    {item.tipo_construccion.dispname
+                      ? item.tipo_construccion.dispname
+                      : item.tipo_construccion == 66
+                      ? "Convencional"
+                      : "No Convencional"}
+                  </td>
                   <td>{item.avaluo_construccion}</td>
                   <td>{item.area_construccion}</td>
                   <td>
@@ -56,7 +69,7 @@ const TablaConstrucciones = (props) => {
       <ModalUniConstrucion
         ref={construccionRef}
         update={setConstruccion}
-        data={construccion}
+        data={alldata}
       />
     </div>
   );
@@ -82,8 +95,8 @@ const ModalUniConstrucion = React.forwardRef((props, ref) => {
         est={false}
         update={props.update}
         onClose={closeModal}
-        data={props.data}
         id={id}
+        data={props.data}
       />
     </Modal>
   );

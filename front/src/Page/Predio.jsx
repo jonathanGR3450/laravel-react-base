@@ -458,7 +458,7 @@ const PredioForm = (props, ref) => {
         </div>
         <div className="w-full flex flex-row">
           <div className="w-1/3 flex flex-col ">
-            <label className="font-semibold">Categoria Suelo* :</label>
+            <label className="font-semibold">Categoria Suelo :</label>
             <select
               onChange={Load_Data}
               name="categoria_suelo"

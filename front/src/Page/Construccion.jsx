@@ -9,6 +9,7 @@ import React, {
 import { InteresadoContext } from "./Context/InteresadoContext";
 import { TableContext } from "./Context/Context";
 import Loader from "./Loader";
+import useInfo from "../hooks/useInfo";
 
 const ConstruccionForm = (props, ref) => {
   console.log("Props Construccion", props);
@@ -16,6 +17,7 @@ const ConstruccionForm = (props, ref) => {
   let updateTableData = () => {};
   let contextTableData, contextUpdateTableData;
   let [loading, setLoading] = useState(false);
+  let [estBtt, setEstBtt] = useState(true);
   let auxDataForm = {};
   if (props.contexto) {
     ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
@@ -25,7 +27,7 @@ const ConstruccionForm = (props, ref) => {
   /**/
   const [numConstruccion, setNumConstruccion] = useState();
   const [construccion, setConstruccion] = useState([]);
-  const [construccionData, setConstruccionData] = useState();
+  const [construccionData, setConstruccionData] = useState([]);
 
   const Load_Num = (e) => {
     const newValue = parseInt(e.target.value);
@@ -89,36 +91,37 @@ const ConstruccionForm = (props, ref) => {
           for (const items of dataId) {
             if (items - 1 === index) {
               console.log("Construccion Data123 ", items);
-
               for (const [currentIndex, item] of construccionData.entries()) {
                 console.log("itessss", item);
                 let newobj = {
                   identificador: item.identificador,
                   tipo_construccion: parseInt(item.tipo_construccion),
                   tipo_dominio: item.tipo_dominio,
-                  numero_pisos: parseInt(item.num_pisos),
-                  numero_sotanos: parseInt(item.num_sotanos),
-                  numero_mezanines: parseInt(item.num_mezanines),
-                  numero_semisotanos: parseInt(item.num_semisotanos),
-                  anio_construccion: parseInt(item.anio_cons),
-                  avaluo_construccion: item.avaluo
-                    ? parseFloat(item.avaluo)
+                  numero_pisos: parseInt(item.numero_pisos),
+                  numero_sotanos: parseInt(item.numero_sotanos),
+                  numero_mezanines: parseInt(item.numero_mezanines),
+                  numero_semisotanos: parseInt(item.numero_semisotanos),
+                  anio_construccion: parseInt(item.anio_construccion),
+                  avaluo_construccion: item.avaluo_construccion
+                    ? parseFloat(item.avaluo_construccion)
                     : null,
-                  valor_referencia_construccion: item.valor_referencia
-                    ? parseFloat(item.valor_referencia)
-                    : null,
-                  area_construccion: parseFloat(item.area),
+                  valor_referencia_construccion:
+                    item.valor_referencia_construccion
+                      ? parseFloat(item.valor_referencia_construccion)
+                      : null,
+                  area_construccion: parseFloat(item.area_construccion),
                   altura: parseFloat(item.altura),
-                  observaciones: item.observacion,
+                  observaciones: item.observaciones,
                   dimension: null,
                   etiqueta: null,
                   relacion_superficie: null,
                   nivel: null,
                   comienzo_vida_util_version: "",
                   fin_vida_util_version: null,
-                  espacio_de_nombres: item1.codigo_homologado,
+                  espacio_de_nombres: "Fusagasuga",
+                  local_id: item1.codigo_homologado,
                 };
-
+                console.log("Data Json contex", newobj);
                 let myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/json");
                 let raw = JSON.stringify(newobj);
@@ -160,7 +163,23 @@ const ConstruccionForm = (props, ref) => {
       }
     }
   };
-
+  function validarData() {
+    console.log("123 Validar", construccionData);
+    let cont = 0;
+    construccionData.map((item, index) => {
+      if (item.numero_pisos == "" || item.area_construccion == "") {
+        cont++;
+      }
+    });
+    if (cont >= 1) {
+      setEstBtt(true);
+    } else {
+      setEstBtt(false);
+    }
+  }
+  useEffect(() => {
+    validarData();
+  }, [construccionData]);
   return (
     <div>
       <h1 className="text-2xl">Datos Generales del Construcciones</h1>
@@ -184,7 +203,10 @@ const ConstruccionForm = (props, ref) => {
       <div className="w-full flex flex-col  mt-4">
         <button
           onClick={sendData}
-          className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
+          className={`${
+            estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+          } p-2 text-center rounded-md text-white bg-teal-500 text-lg mr-2`}
+          disabled={estBtt}
         >
           Guardar Todo
         </button>
@@ -206,48 +228,78 @@ function soloLetras(event) {
 
 export const CreateConstruction = (props) => {
   console.log("create props", props);
+  const { updateNumPredial } = useInfo();
   let [estMsj, setEstMsj] = useState();
   let aux = "";
+  let cod_homo = "";
+  let dataNoNull = [];
   if (props.est) {
+    console.log("entra");
     aux = {
       t_id: "",
       identificador: String.fromCharCode(65 + props.index),
-      tipo_construccion: "",
+      tipo_construccion: 0,
       tipo_dominio: "",
-      num_pisos: "",
-      num_sotanos: "",
-      num_semisotanos: "",
-      num_mezanines: "",
-      anio_cons: "",
-      area: "",
-      avaluo: "",
-      valor_referencia: "",
+      numero_pisos: "",
+      numero_sotanos: "",
+      numero_mezanines: "",
+      numero_semisotanos: "",
+      anio_construccion: "",
+      avaluo_construccion: "",
+      valor_referencia_construccion: "",
+      area_construccion: "",
       altura: "",
-      observacion: "",
+      observaciones: "",
+      dimension: "",
+      etiqueta: "",
+      relacion_superficie: "",
+      nivel: "",
+      comienzo_vida_util_version: "",
+      fin_vida_util_version: "null",
+      espacio_de_nombres: "Fusagasuga",
+      local_id: "",
     };
   } else {
-    let data = props.data[props.id];
+    props.data.construccion.map((item, index) => {
+      if (item.t_id != null) {
+        dataNoNull.push(item);
+      }
+    });
+    cod_homo = props.data.Codigo_Homologado;
+    let data = dataNoNull[props.id];
     aux = {
       t_id: data.t_id,
       identificador: data.identificador,
-      tipo_construccion: data.tipo_construccion.t_id,
-      tipo_dominio: data.tipo_dominio.t_id,
-      num_pisos: data.numero_pisos,
-      num_sotanos: data.numero_sotanos,
+      tipo_construccion: data.tipo_construccion.t_id
+        ? data.tipo_construccion.t_id
+        : data.tipo_construccion,
+      tipo_dominio: data.tipo_dominio.t_id
+        ? data.tipo_dominio.t_id
+        : data.tipo_dominio,
+      numero_pisos: data.numero_pisos,
+      numero_sotanos: data.numero_sotanos,
       num_semisotanos: data.numero_semisotanos,
       num_mezanines: data.numero_mezanines,
-      anio_cons: data.anio_construccion,
-      area: data.area_construccion,
-      avaluo: data.avaluo_construccion,
-      valor_referencia: data.valor_referencia_construccion,
+      anio_construccion: data.anio_construccion,
+      area_construccion: data.area_construccion,
+      avaluo_construccion: data.avaluo_construccion,
+      valor_referencia_construccion: data.valor_referencia_construccion,
       altura: data.altura,
-      observacion: data.observaciones,
+      etiqueta: data.etiqueta,
+      nivel: data.nivel ? data.nivel.dispname : data.nivel,
+      dimension: data.dimension ? data.dimension.dispname : data.dimension,
+      relacion_superficie: data.relacion_superficie
+        ? data.relacion_superficie.dispname
+        : data.relacion_superficie,
+      observaciones: data.observaciones,
+      local_id: cod_homo,
     };
+    console.log("Llegan datos", aux);
   }
   const [construccionData, setConstruccionData] = useState(aux);
   const Load_Data = (e) => {
     const { name, value } = e.target;
-    if (name == "anio_cons") {
+    if (name == "anio_construccion") {
       if (parseInt(value) < 1600) {
         setEstMsj(true);
       } else {
@@ -260,13 +312,84 @@ export const CreateConstruction = (props) => {
   };
   useEffect(() => {
     if (props.est) {
-      index.onDataChange(index.index, construccionData);
+      props.onDataChange(props.index, construccionData);
     }
-
     console.log("Actualizacion datos", construccionData);
   }, [construccionData]);
-  function send_data() {
-    console.log(construccionData);
+
+  async function send_data() {
+    try {
+      let item = construccionData;
+      console.log("data 123", item);
+      let json = {
+        identificador: item.identificador,
+        tipo_construccion: isNaN(parseInt(item.tipo_construccion))
+          ? 0
+          : parseInt(item.tipo_construccion),
+        tipo_dominio: item.tipo_dominio,
+        numero_pisos: isNaN(parseInt(item.numero_pisos))
+          ? 0
+          : parseInt(item.numero_pisos),
+        numero_sotanos: isNaN(parseInt(item.numero_sotanos))
+          ? 0
+          : parseInt(item.numero_sotanos),
+        numero_mezanines: isNaN(parseInt(item.numero_mezanines))
+          ? 0
+          : parseInt(item.numero_mezanines),
+        numero_semisotanos: isNaN(parseInt(item.numero_semisotanos))
+          ? 0
+          : parseInt(item.numero_semisotanos),
+        anio_construccion: isNaN(parseInt(item.anio_construccion))
+          ? " "
+          : parseInt(item.anio_construccion),
+        avaluo_construccion: item.avaluo
+          ? isNaN(parseFloat(item.avaluo))
+            ? 0
+            : parseFloat(item.avaluo)
+          : null,
+        valor_referencia_construccion: item.valor_referencia_construccion
+          ? isNaN(parseFloat(item.valor_referencia_construccion))
+            ? 0
+            : parseFloat(item.valor_referencia_construccion)
+          : null,
+        area_construccion: isNaN(parseFloat(item.area_construccion))
+          ? 0
+          : parseFloat(item.area_construccion),
+        altura: isNaN(parseFloat(item.altura)) ? 0 : parseFloat(item.altura),
+        observaciones: item.observaciones,
+        dimension: null,
+        etiqueta: null,
+        relacion_superficie: null,
+        nivel: null,
+        espacio_de_nombres: "Fusagasuga",
+        local_id: item.local_id,
+      };
+
+      console.log("12asd3555", json);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      let requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(json),
+        redirect: "follow",
+      };
+      let url = import.meta.env.VITE_API_URL_FIRST + "construccion/local";
+      //let url = "";
+      const response = await fetch(url, requestOptions);
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data result", result.data);
+        dataNoNull[props.id] = result.data;
+        props.data.construccion = dataNoNull;
+        props.update(dataNoNull);
+        props.onClose();
+        updateNumPredial(props.data);
+        console.log(props.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
@@ -277,7 +400,7 @@ export const CreateConstruction = (props) => {
       </h1>
       <div className="w-full flex flex-row items-center justify-center">
         <div className="w-1/3   flex flex-col ">
-          <label>Identificador</label>
+          <label>Identificador*</label>
           <input
             name="identificador"
             value={construccionData.identificador}
@@ -316,10 +439,10 @@ export const CreateConstruction = (props) => {
       </div>
       <div className="w-full flex flex-row items-center justify-center">
         <div className="w-1/3   flex flex-col">
-          <label>Numero Pisos</label>
+          <label>Numero Pisos*</label>
           <input
-            name="num_pisos"
-            value={construccionData.num_pisos}
+            name="numero_pisos"
+            value={construccionData.numero_pisos}
             onChange={Load_Data}
             type="number"
             className="border-2 p-1 rounded-md w-full"
@@ -328,8 +451,8 @@ export const CreateConstruction = (props) => {
         <div className="w-1/3  ml-4 flex flex-col">
           <label>Numero Sotanos</label>
           <input
-            name="num_sotanos"
-            value={construccionData.num_sotanos}
+            name="numero_sotanos"
+            value={construccionData.numero_sotanos}
             onChange={Load_Data}
             type="text"
             className="border-2 p-1 rounded-md w-full"
@@ -338,8 +461,8 @@ export const CreateConstruction = (props) => {
         <div className="w-1/3 ml-4  flex flex-col">
           <label>Numero de Semisotanos</label>
           <input
-            name="num_semisotanos"
-            value={construccionData.num_semisotanos}
+            name="numero_semisotanos"
+            value={construccionData.numero_semisotanos}
             onChange={Load_Data}
             type="number"
             className="border-2 p-1 rounded-md w-full"
@@ -350,8 +473,8 @@ export const CreateConstruction = (props) => {
         <div className="w-1/3  flex flex-col">
           <label>Numero de Mezanines</label>
           <input
-            name="num_mezanines"
-            value={construccionData.num_mezanines}
+            name="numero_mezanines"
+            value={construccionData.numero_mezanines}
             onChange={Load_Data}
             type="number"
             className="border-2 p-1 rounded-md w-full"
@@ -360,8 +483,8 @@ export const CreateConstruction = (props) => {
         <div className="w-1/3 ml-4   flex flex-col">
           <label>Año de Construccion</label>
           <input
-            name="anio_cons"
-            value={construccionData.anio_cons}
+            name="anio_construccion"
+            value={construccionData.anio_construccion}
             onChange={Load_Data}
             type="text"
             className="border-2 p-1 rounded-md w-full"
@@ -371,10 +494,10 @@ export const CreateConstruction = (props) => {
           ) : null}
         </div>
         <div className="w-1/3 ml-4  flex flex-col">
-          <label>Area de Construccion</label>
+          <label>Area de Construccion*</label>
           <input
-            name="area"
-            value={construccionData.area}
+            name="area_construccion"
+            value={construccionData.area_construccion}
             onInput={soloNumeros}
             onChange={Load_Data}
             type="text"
@@ -386,8 +509,8 @@ export const CreateConstruction = (props) => {
         <div className="w-1/3   flex flex-col">
           <label>Avaluo Construccion</label>
           <input
-            name="avaluo"
-            value={construccionData.avaluo}
+            name="avaluo_construccion"
+            value={construccionData.avaluo_construccion}
             disabled
             type="text"
             className="border-2 p-1 rounded-md w-full"
@@ -396,8 +519,8 @@ export const CreateConstruction = (props) => {
         <div className="w-1/3  flex flex-col ml-4">
           <label>Valor Referencia</label>
           <input
-            name="valor_referencia"
-            value={construccionData.valor_referencia}
+            name="valor_referencia_construccion"
+            value={construccionData.valor_referencia_construccion}
             onChange={Load_Data}
             type="text"
             className="border-2 p-1 rounded-md w-full"
@@ -419,8 +542,8 @@ export const CreateConstruction = (props) => {
         <div className="w-full  flex flex-col items-center justify-center text-center">
           <label>Observaciones</label>
           <input
-            name="observacion"
-            value={construccionData.observacion}
+            name="observaciones"
+            value={construccionData.observaciones}
             onChange={Load_Data}
             type="text"
             className="border-2 p-1 rounded-md w-full"

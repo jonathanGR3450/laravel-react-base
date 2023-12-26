@@ -16,6 +16,7 @@ const TerrenoForm = (props, ref) => {
   let contextTableData, contextUpdateTableData;
   let auxDataForm = {};
   let [loading, setLoading] = useState(false);
+  const [estBtt, setEstBtt] = useState(true);
   if (props.contexto) {
     auxDataForm = {
       t_id: "",
@@ -43,7 +44,7 @@ const TerrenoForm = (props, ref) => {
 
   let [terrenoData, setTerrenoData] = useState(auxDataForm);
   const isAnyValueEmpty = () => {
-    if (terrenoData.area_terreno !== "" && terrenoData.ZHG !== "") {
+    if (terrenoData.area_terreno != "" && terrenoData.ZHG != "") {
       setEstBtt(false);
     } else {
       setEstBtt(true);
@@ -53,8 +54,6 @@ const TerrenoForm = (props, ref) => {
   useEffect(() => {
     isAnyValueEmpty();
   }, [terrenoData]);
-
-  const [estBtt, setEstBtt] = useState(true);
 
   function soloNumeros(event) {
     const input = event.target;
@@ -329,53 +328,59 @@ const TerrenoForm = (props, ref) => {
   };
   console.log(terrenoData);
   return (
-    <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 ">
+    <div className="p-4 w-full flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 ">
       <h1 className="text-3xl ">Caracteristicas de Terreno</h1>
-      <div className="w-full flex flex-row mt-4 mb-4">
-        <label
-          htmlFor="terreno-checkbox"
-          className="flex items-center text-xl w-2/3"
-        >
-          <input
-            name="SantaMaria"
-            onChange={Load_Data}
-            type="checkbox"
-            id="terreno-checkbox"
-            className="mr-2"
-          />
-          El terreno pertenece a Santa Maria de los Angeles
-        </label>
-        <div className="w-1/3 flex flex-col ml-4">
-          <label>Area Total Terreno (mt2)</label>
+      <div className="w-full flex flex-row ml-4">
+        <div className="w-full flex flex-row mt-4 mb-4">
+          <label
+            htmlFor="terreno-checkbox"
+            className="flex items-center text-lg w-2/3"
+          >
+            <input
+              name="SantaMaria"
+              onChange={Load_Data}
+              type="checkbox"
+              id="terreno-checkbox"
+              className="mr-2"
+            />
+            El terreno pertenece a Santa Maria de los Angeles
+          </label>
+        </div>
+      </div>
+      <div className="w-full flex flex-row my-2 items-center justify-center ">
+        <div className="w-2/6 flex flex-col ">
+          <label className="w-full text-white font-semibold bg-teal-500 text-lg p-2 rounded-t-lg">
+            Area Total Terreno (mt2)
+          </label>
           <input
             name="area_terreno"
             type="text"
-            className="border-2 p-1 rounded-md w-full"
+            className="border-2 p-1 rounded-b-lg w-full text-center"
             value={terrenoData.area_terreno}
             onInput={soloNumeros}
             onChange={Load_Data}
           ></input>
         </div>
-      </div>
-      <div className="w-full flex flex-row items-center justify-center">
-        <div className="w-full ml-4 flex flex-row items-center ">
-          <label className="w-2/4">
+        <div className="w-4/6 flex flex-col items-center justify-start text-center ml-2">
+          <label className="w-full text-white font-semibold bg-teal-500 text-lg p-2 rounded-t-lg">
             Cuantas Zonas Geoeconomicas tiene este Terreno
           </label>
           <input
             name="avaluo_terreno"
             type="number"
-            className="border-2 p-1 rounded-md w-1/4"
+            className="border-2 p-1 rounded-b-lg w-full text-center"
             value={numZonas}
             onChange={load_tamaño}
           ></input>
-          <button
-            onClick={agregarZonas}
-            className="p-2 text-center rounded-md text-white bg-teal-500 text-lg ml-4 mr-2"
-          >
-            Cargar Zonas
-          </button>
         </div>
+      </div>
+      <div className="w-full flex flex-row mb-4 items-center justify-center">
+        <button
+          onClick={agregarZonas}
+          className="p-2 text-center rounded-md text-white bg-teal-500 text-lg w-1/4 "
+        >
+          Cargar Zonas
+        </button>
       </div>
       {zonas}
       <div className="w-full flex flex-col mt-4 justify-center items-center">

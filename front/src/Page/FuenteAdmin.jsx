@@ -105,7 +105,7 @@ const FuenteAdminForm = (props, ref) => {
                 props.msj("Error Datos Fuente Adminsitrativa ");
                 throw new Error(`HTTP error! Status: ${response.status}`);
               }
-              props.msj("Datos Fuente Administrativa Guardado Correctamente");
+
               const result = await response.json();
               console.log("Resultado Fuente", result);
 
@@ -114,7 +114,7 @@ const FuenteAdminForm = (props, ref) => {
             }
           }
         }
-
+        props.msj("Datos Fuente Administrativa Guardado Correctamente");
         updateTableData(tableData);
         props.onClose();
       } else {
@@ -160,9 +160,7 @@ const FuenteAdminForm = (props, ref) => {
   };
 
   function validar() {
-    let val = Object.values(objFuente).some((value) => value === "");
-    console.log(val);
-    if (val) {
+    if (objFuente.tipo == "" || objFuente.estado_disponibilidad == "") {
       setEstBtt(true);
     } else {
       setEstBtt(false);
@@ -205,7 +203,7 @@ const FuenteAdminForm = (props, ref) => {
             </select>
           </div>
           <div className="w-1/2 flex flex-col ml-4 mb-4">
-            <h3 className="font-semibold">Ente Emisor* :</h3>
+            <h3 className="font-semibold">Ente Emisor :</h3>
             <input
               onChange={Load_Data}
               value={objFuente.ente_emisor}
@@ -217,14 +215,13 @@ const FuenteAdminForm = (props, ref) => {
         </div>
         <div id="NumFuente" className="w-full flex flex-row">
           <div className="w-1/2 flex flex-col mb-4">
-            <h3 className="font-semibold">Numero Fuente* : </h3>
+            <h3 className="font-semibold">Numero Fuente : </h3>
             <input
               onChange={Load_Data}
               value={objFuente.numero_fuente}
               name="numero_fuente"
               type="text"
               className="border-2 p-2 rounded-md w-full"
-              onInput={soloNumeros}
             ></input>
           </div>
           <div className="w-1/2 flex flex-col ml-4 mb-4">
@@ -244,7 +241,7 @@ const FuenteAdminForm = (props, ref) => {
         </div>
         <div id="Tipo_Principal" className="w-full flex flex-row">
           <div className="w-1/2 flex flex-col mb-4">
-            <h3 className="font-semibold">Tipo Principal* : </h3>
+            <h3 className="font-semibold">Tipo Principal : </h3>
             <select
               name="tipo_principal"
               type="text"
@@ -261,7 +258,7 @@ const FuenteAdminForm = (props, ref) => {
             </select>
           </div>
           <div className="w-1/2 flex flex-col mb-4 ml-4">
-            <h3 className="font-semibold">Fecha Documento Fuente* :</h3>
+            <h3 className="font-semibold">Fecha Documento Fuente :</h3>
             <input
               name="fecha_documento_fuente"
               type="date"
