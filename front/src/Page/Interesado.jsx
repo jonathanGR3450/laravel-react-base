@@ -21,11 +21,12 @@ const InteresadoForm = (props, ref) => {
 
   const [numInteresados, setNumInteresados] = useState();
   const [interesados, setInteresados] = useState([]);
-  const [interesadosData, setInteresadosData] = useState();
+  let [interesadosData, setInteresadosData] = useState();
   if (props.contexto) {
     ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
       useContext(TableContext));
   } else {
+    console.log("props sin context", props);
   }
 
   const [estBtt, setEstBtt] = useState(true);
@@ -108,13 +109,14 @@ const InteresadoForm = (props, ref) => {
     const result = await response.json();
     console.log(result);
     return result.data.t_id;
-  }
-  /////////////////////////////////////////////
+  } /////////////////////////////////////////////
   async function createInteresado() {
     try {
       let auxId = [];
       let est = "";
-      console.log("Data ", interesadosData);
+      console.log(" 123 Data ", interesadosData);
+      console.log("123 props", props.data);
+      interesadosData = interesadosData.concat(props.data);
       for (const [index, item] of interesadosData.entries()) {
         if (item.t_id == 0) {
           console.log("Toca Crear");
@@ -174,9 +176,9 @@ const InteresadoForm = (props, ref) => {
         interesado_lc_interesado_conservacion: "",
         interesado_lc_agrupacioninteresados: agrupacion,
         agrupacion: agrupacion,
-        participacion: item.participacion,
+        participacion: item.participacion ? item.participacion : 0,
       };
-      console.log("Es temporal", item.isTemporal);
+      console.log("Es temporal", item);
       if (item.isTemporal) {
         json.interesado_lc_interesado = interesado[index];
         json.interesado_lc_interesado_conservacion = null;
@@ -238,6 +240,8 @@ const InteresadoForm = (props, ref) => {
         props.onClose();
         updateTableData(tableData);
       } else {
+        props.update(interesadosData);
+        props.onClose();
       }
       setLoading(false);
       console.log("Data interesado", interesadosData);
@@ -320,14 +324,17 @@ const InteresadoForm = (props, ref) => {
   }
 
   useEffect(() => {
-    console.log("datos Array Completo actualizado", interesadosData.length);
-    let tam = "";
-    if (interesadosData.length != 1) {
-      tam = true;
+    if (props.contexto) {
+      let tam = "";
+      if (interesadosData.length != 1) {
+        tam = true;
+      } else {
+        tam = false;
+      }
+      validadData(tam);
     } else {
-      tam = false;
+      setEstBtt(false);
     }
-    validadData(tam);
   }, [interesadosData]);
 
   //Formulario
@@ -376,8 +383,12 @@ function soloNumeros(event) {
   const input = event.target;
   input.value = input.value.replace(/[^0-9.]/g, "");
 }
+
 export const ValidarInteresado = (props) => {
   console.log("validadr", props);
+
+  let aux = "";
+  console.log("1234567", aux);
   const [stateInput, setStateInput] = useState();
   const [dataState, setDataState] = useState(false);
   const [msjResult, setMsjResult] = useState();
@@ -400,7 +411,7 @@ export const ValidarInteresado = (props) => {
     fin_vida_util_version: "",
     espacio_de_nombres: "Fusagasuga",
     local_id: "",
-    participacion: "",
+    participacion: 0,
   });
   const [estFormData, setEstFormData] = useState(false);
 
@@ -424,7 +435,7 @@ export const ValidarInteresado = (props) => {
       fin_vida_util_version: "",
       espacio_de_nombres: "Fusagasuga",
       local_id: "",
-      participacion: "",
+      participacion: 0,
     }));
   };
   ///Consultar Datos
@@ -517,12 +528,21 @@ export const ValidarInteresado = (props) => {
     }
     console.log("Actualizacion datos", dataInteresado);
   }, [dataInteresado]);
+
   function Send_Data() {
-    console.log(dataInteresado);
-    props.update(dataInteresado);
+    console.log("123", dataInteresado);
+    console.log("12345", props.data[0].length);
+    let nuevoInteresado = props.data[0];
+    nuevoInteresado.map((item, index) => {
+      if (index == props.id) {
+        item = dataInteresado;
+        console.log("1", item);
+      }
+    });
+    console.log("123456", nuevoInteresado);
+    props.update(nuevoInteresado);
     props.onClose();
   }
-
   ////////////////////////////////////////////Form o mostrar valores
   ////////////////////////////////////////////Form Validar Interesado
   return (
@@ -596,7 +616,7 @@ export const ValidarInteresado = (props) => {
                 {dataInteresado.tipo != 659 ? (
                   <div className="w-full flex flex-row">
                     <div className="w-1/4">
-                      <label className="font-semibold">Primer Nombre*:</label>
+                      <label className="font-semibold">Primer Nombre:</label>
                       <input
                         name="primer_nombre"
                         type="text"
@@ -608,7 +628,7 @@ export const ValidarInteresado = (props) => {
                       ></input>
                     </div>
                     <div className="w-1/4 ml-4">
-                      <label className="font-semibold">Segundo Nombre*:</label>
+                      <label className="font-semibold">Segundo Nombre:</label>
                       <input
                         name="segundo_nombre"
                         onChange={Load_Data}
@@ -620,7 +640,7 @@ export const ValidarInteresado = (props) => {
                       ></input>
                     </div>
                     <div className="w-1/4 ml-4">
-                      <label className="font-semibold">Primer Apellido*:</label>
+                      <label className="font-semibold">Primer Apellido:</label>
                       <input
                         name="primer_apellido"
                         type="text"
@@ -690,7 +710,7 @@ export const ValidarInteresado = (props) => {
                   </div>
                   {dataInteresado.tipo != 659 ? (
                     <div className="w-1/4 ml-4">
-                      <label className="font-semibold">Estado Civil*:</label>
+                      <label className="font-semibold">Estado Civil:</label>
                       <select
                         type="text"
                         name="estado_civil"
@@ -715,7 +735,7 @@ export const ValidarInteresado = (props) => {
                   ) : null}
                   {dataInteresado.tipo != 659 ? (
                     <div className="w-1/4 ml-4">
-                      <label className="font-semibold">Grupo Etnico*:</label>
+                      <label className="font-semibold">Grupo Etnico:</label>
                       <select
                         type="text"
                         name="grupo_etnico"
@@ -737,7 +757,7 @@ export const ValidarInteresado = (props) => {
                 <div className="w-full flex flex-row">
                   {dataInteresado.tipo != 659 ? (
                     <div className="w-1/4">
-                      <label className="font-semibold">Genero*:</label>
+                      <label className="font-semibold">Genero:</label>
                       <select
                         name="sexo"
                         type="text"
@@ -755,7 +775,7 @@ export const ValidarInteresado = (props) => {
                   ) : null}
                   {dataInteresado.tipo == 659 ? (
                     <div className="w-1/4 ">
-                      <label className="font-semibold">Razon Social*:</label>
+                      <label className="font-semibold">Razon Social:</label>
                       <input
                         name="razon_social"
                         type="text"
@@ -771,7 +791,7 @@ export const ValidarInteresado = (props) => {
                       dataInteresado.tipo != 659 ? " w-2/4 ml-4" : "w-3/4 ml-4"
                     } `}
                   >
-                    <label className="font-semibold">Nombre*:</label>
+                    <label className="font-semibold">Nombre:</label>
                     <input
                       name="nombre"
                       type="text"
@@ -833,7 +853,7 @@ export const ModalInteresadoForm = React.forwardRef((props, ref) => {
 export const NormalInteresadoForm = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
+  const openModal = (aux) => {
     setIsModalOpen(true);
   };
 
@@ -847,7 +867,13 @@ export const NormalInteresadoForm = React.forwardRef((props, ref) => {
 
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
-      <InteresadoForm contexto={false} est={props.est} data={props.data} />
+      <InteresadoForm
+        contexto={false}
+        est={props.est}
+        data={props.data}
+        update={props.update}
+        onClose={closeModal}
+      />
     </Modal>
   );
 });

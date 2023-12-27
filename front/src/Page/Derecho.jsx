@@ -38,6 +38,7 @@ const DerechoForm = (props, ref) => {
       inicio_tenencia: dataDerecho.derechos[0].fecha_inicio_tenencia,
       fraccion_derecho: dataDerecho.derechos[0].fraccion_derecho,
       descripcion: dataDerecho.derechos[0].descripcion,
+      unidad: dataDerecho.derechos[0].unidad,
     };
     console.log(auxDataForm);
   }
@@ -141,7 +142,7 @@ const DerechoForm = (props, ref) => {
         descripcion: objDerecho.descripcion,
         interesado_lc_interesado_conservacion: objDerecho.interesado,
         interesado_lc_agrupacioninteresados: objDerecho.agrupacion,
-        unidad: props.data ? props.data[0].t_id : "",
+        unidad_conservacion: objDerecho.unidad,
         comienzo_vida_util_version: null,
         fin_vida_util_version: null,
         espacio_de_nombres: "Fusagasuga",
@@ -185,7 +186,8 @@ const DerechoForm = (props, ref) => {
     console.log("obj", objDerecho.tipo_derecho.length);
     if (
       objDerecho.tipo_derecho.length == 0 ||
-      objDerecho.fraccion_derecho.length == 0
+      objDerecho.fraccion_derecho.length == 0 ||
+      objDerecho.fraccion_derecho > 1
     ) {
       console.log("esta vacio");
       setEstBtt(true);

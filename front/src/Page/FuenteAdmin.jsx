@@ -148,10 +148,12 @@ const FuenteAdminForm = (props, ref) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        props.update(json);
-        props.onClose();
+
         const result = await response.json();
         console.log("Resultado Fuente", result);
+        json.t_id = result.data.t_id;
+        props.update(json);
+        props.onClose();
       }
       setLoading(false);
     } catch (error) {

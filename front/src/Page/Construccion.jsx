@@ -364,7 +364,6 @@ export const CreateConstruction = (props) => {
         espacio_de_nombres: "Fusagasuga",
         local_id: item.local_id,
       };
-
       console.log("12asd3555", json);
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");

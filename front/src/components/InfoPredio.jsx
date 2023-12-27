@@ -3,10 +3,10 @@ import useInfo from "../hooks/useInfo";
 import { NormalPredioForm } from "../Page/Predio";
 
 const InfoPredio = () => {
-  const { numPredial } = useInfo();
+  const { numPredial, updateNumPredial } = useInfo();
   const { data: info } = numPredial;
   // Verificar si 'info' y 'Predio' existen antes de desestructurar
-  const { Predio } = info || {};
+  let { Predio } = info || {};
   const {
     Departamento,
     Municipio,
@@ -34,7 +34,7 @@ const InfoPredio = () => {
   const { dispname: CategoriaSuelo } = Predio
     ? Predio[0].Categoria_Suelo[0]
     : {};
-
+  console.log("123 act", Predio);
   const [departamento, setDepartamento] = useState(Departamento);
   const [municipio, setMunicipio] = useState(Municipio);
   const [idOperacion, setIdOperacion] = useState(Id_Operacion);
@@ -302,6 +302,59 @@ const InfoPredio = () => {
     setDestinacionEconomica(destinacion_economica);
     setClaseSuelo(clase_suelo);
     setCategoriaSuelo(categoria_suelo);
+    const nuevoPredio = { ...numPredial.data.Predio[0] };
+    // Modificando los datos deseados
+    nuevoPredio.Departamento = departamento;
+    nuevoPredio.Municipio = municipio;
+    nuevoPredio.Id_Operacion = idOperacion;
+    nuevoPredio.Valor_Referencia = valorReferencia;
+    nuevoPredio.Codigo_ORIP = codigoOrip;
+    nuevoPredio.Matricula_Inmobiliaria = matriculaInmobiliaria;
+    nuevoPredio.Numero_Predial = numeroPredial;
+    nuevoPredio.Numero_Predial_Anterior = numeroPredialAnterior;
+    nuevoPredio.Codigo_Homologado = codigoHomologado;
+    nuevoPredio.NUPRE = nupre;
+    nuevoPredio.Avaluo_Catastral = avaluoCatastral;
+    nuevoPredio.Tiene_FMI = tieneFMI;
+    nuevoPredio.Codigo_Homologado_FMI = codigoHomologadoFMI;
+
+    // Actualizando el array Tipo
+    nuevoPredio.Tipo = [
+      {
+        t_id: aux1.tipo,
+        dispname: tipo_predio,
+      },
+    ];
+    // Actualizando el array Condicion_Predio
+    nuevoPredio.Condicion_Predio = [
+      {
+        t_id: aux1.condicion_predio,
+        dispname: condicion,
+      },
+    ];
+    // Actualizando el array Destinacion_Economica
+    nuevoPredio.Destinacion_Economica = [
+      {
+        t_id: aux1.destinacion_economica,
+        dispname: destinacion_economica,
+      },
+    ];
+    nuevoPredio.Clase_Suelo = [
+      {
+        t_id: aux1.clase_suelo,
+        dispname: clase_suelo,
+      },
+    ];
+    // Actualizando el array Categoria_Suelo
+    nuevoPredio.Categoria_Suelo = [
+      {
+        t_id: aux1.categoria_suelo,
+        dispname: categoria_suelo,
+      },
+    ];
+    // Modificando el objeto original
+    numPredial.data.Predio[0] = nuevoPredio;
+    updateNumPredial(numPredial);
   }
   return (
     <>

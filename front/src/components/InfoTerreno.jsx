@@ -28,8 +28,12 @@ const InfoTerreno = () => {
     ////setEstInput((prevEstInput) => !prevEstInput);
   };
   function updateData(newData) {
-    console.log("data", newData);
+    console.log("123", newData);
     setAreaTerreno(newData.area_terreno);
+    let nuevoTerreno = { ...numPredial.data.Predio[0].terreno };
+    nuevoTerreno = newData;
+    numPredial.data.Predio[0].terreno = nuevoTerreno;
+    console.log("1234", numPredial.data.Predio[0].terreno);
   }
   return (
     <>

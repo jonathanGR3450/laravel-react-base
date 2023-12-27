@@ -216,7 +216,7 @@ const PredioForm = (props, ref) => {
         codigo_orip: dataForm.codigo_orip,
         matricula_inmobiliaria: dataForm.matricula_inmobiliaria,
         numero_predial: dataForm.numero_predial,
-        numero_predial_anterior: "0",
+        numero_predial_anterior: dataForm.numero_predial_anterior,
         codigo_homologado: dataForm.codigo_homologado,
         interrelacionado: dataForm.interrelacionado,
         codigo_homologado_fmi: false,

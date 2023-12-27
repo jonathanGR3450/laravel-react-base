@@ -76,9 +76,9 @@ const TablaConstrucciones = (props) => {
 };
 const ModalUniConstrucion = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  let id = 0;
+  let [unid, setUnid] = useState();
   const openModal = (data) => {
-    id = data;
+    setUnid(data);
     setIsModalOpen(true);
   };
 
@@ -95,7 +95,7 @@ const ModalUniConstrucion = React.forwardRef((props, ref) => {
         est={false}
         update={props.update}
         onClose={closeModal}
-        id={id}
+        id={unid}
         data={props.data}
       />
     </Modal>

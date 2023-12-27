@@ -67,47 +67,82 @@ const InfoJuridica = () => {
     }
     //setEstInput((prevEstInput) => !prevEstInput);
   };
-  function updateDerecho(newData) {}
+
+  function updateDerecho(newData) {
+    console.log("Cambios Derecho", newData);
+    let aux1 = newData;
+    let auxtipo = "";
+    switch (parseInt(newData.tipo)) {
+      case 47:
+        auxtipo = "Dominio";
+        break;
+      case 48:
+        auxtipo = "Ocupacion";
+        break;
+      case 49:
+        auxtipo = "Posesion";
+        break;
+      default:
+        auxtipo = "";
+        break;
+    }
+
+    let newTipo = {
+      t_id: newData.tipo,
+      dispname: auxtipo,
+    };
+    setTipoDerecho(newTipo);
+    setFechaInicioTenencia(newData.fecha_inicio_tenencia);
+    setFraccionDerecho(newData.fraccion_derecho);
+    setDescripcionDerecho(newData.descripcion);
+    let nuevoDerecho = { ...Predio[0].derechos[0] };
+    nuevoDerecho.tipo = newTipo;
+    nuevoDerecho.fecha_inicio_tenencia = newData.fecha_inicio_tenencia;
+    nuevoDerecho.fraccion_derecho = newData.fraccion_derecho;
+    nuevoDerecho.descripcion = newData.descripcion;
+    Predio[0].derechos[0] = nuevoDerecho;
+  }
+
   function updateFuente(newData) {
-    console.log(newData);
+    console.log("Cambios Fuente", newData);
     let aux1 = newData;
     let tipo_fuente = 0;
     let texto_fuente = 0;
     let tipo_principal = 0;
-    switch (aux1.tipo_fuente) {
-      case "45":
+    switch (aux1.tipo) {
+      case 45:
         tipo_fuente = "Documento Publico";
         break;
-      case "46":
+      case 46:
         tipo_fuente = "Documento Privado";
         break;
-      case "50":
+      case 50:
         tipo_fuente = "Escritura Publica (Doc Publico)";
         break;
-      case "51":
+      case 51:
         tipo_fuente = "Sentencia Judicial (Doc Publico)";
         break;
-      case "52":
+      case 52:
         tipo_fuente = "Acto Administrativo (Doc Publico)";
         break;
-      case "54":
+      case 54:
         tipo_fuente = "Sin Documento";
         break;
       default:
-        tipo_fuente = "Valor no reconocido";
+        tipo_fuente = "";
     }
     switch (aux1.estado_disponibilidad) {
-      case "885":
+      case 885:
         texto_fuente = "Convertido";
         break;
-      case "886":
+      case 886:
         texto_fuente = "Desconocido";
         break;
-      case "887":
+      case 887:
         texto_fuente = "Disponible";
         break;
       default:
-        texto_fuente = "Valor no reconocido";
+        texto_fuente = "";
     }
     switch (aux1.tipo_principal) {
       case "18":
@@ -126,16 +161,38 @@ const InfoJuridica = () => {
         tipo_principal = "Otro";
         break;
       default:
-        tipo_principal = "Valor no reconocido";
+        tipo_principal = "";
     }
-
-    setTipoFuenteAdmini(tipo_fuente);
+    console.log("cambios", tipo_principal);
+    let newobj = {
+      t_id: aux1.tipo,
+      dispname: tipo_fuente,
+    };
+    setTipoFuenteAdmini(newobj);
     setEnteEmisor(newData.ente_emisor);
     setObservacionFuenteAdmini(newData.observacion);
     setNumeroFuente(newData.numero_fuente);
-    setEstadoDisponibilidad(texto_fuente);
+    let newEstado = {
+      t_id: aux1.estado_disponibilidad,
+      dispname: texto_fuente,
+    };
+    setEstadoDisponibilidad(newEstado);
     setTipoPrincipal(tipo_principal);
     setFechaDocumentoFuente(newData.fecha_documento_fuente);
+    const nuevaFuente = {
+      ...numPredial.data.Predio[0].derechos[0].fuenteadministrativa[0],
+    };
+    nuevaFuente.ente_emisor = newData.ente_emisor;
+    nuevaFuente.estado_disponibilidad = newEstado;
+    nuevaFuente.fecha_documento_fuente = newData.fecha_documento_fuente;
+    nuevaFuente.numero_fuente = newData.numero_fuente;
+    nuevaFuente.observacion = newData.observacion;
+    nuevaFuente.t_id = aux1.t_id;
+    nuevaFuente.tipo = newobj;
+    nuevaFuente.tipo_principal = tipo_principal;
+
+    numPredial.data.Predio[0].derechos[0].fuenteadministrativa[0] = nuevaFuente;
+    console.log("cambios datos", nuevaFuente);
   }
 
   return (

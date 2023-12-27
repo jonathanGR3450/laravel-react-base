@@ -123,6 +123,7 @@ const TerrenoForm = (props, ref) => {
       const response = await fetch(url, requestOptions);
       if (response.ok) {
         const result = await response.json();
+        json.t_id = result.data.t_id;
         props.update(json);
         props.onClose();
         console.log("Dataaaaa", result);
