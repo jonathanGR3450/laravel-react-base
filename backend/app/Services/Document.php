@@ -14,12 +14,17 @@ class Document
     private string $nameFile;
     private array $data;
     private string $nameFileOutput;
+    private $processor;
 
     public function __construct(string $path, string $nameFile, array $data, string $pathOutput) {
         $this->path = $path;
         $this->nameFile = $nameFile;
         $this->data = $data;
         $this->pathOutput = $pathOutput;
+
+        $templatePath = public_path("{$this->path}/{$this->nameFile}");
+
+        $this->processor = new TemplateProcessor($templatePath);
     }
 
     public function generateNameFileOutput(): void {
@@ -38,41 +43,53 @@ class Document
     }
 
     function generateWordDocument(): string {
-        $templatePath = public_path("{$this->path}/{$this->nameFile}");
+        
+        $templateVariable    = $this->processor->getVariables();
+        $TemplateInformation = $this->data;
 
-        $templateProcessor = new TemplateProcessor($templatePath);
-        $templateVariable    = $templateProcessor->getVariables();
-
-        // 
-        // $resultado = array_diff($templateVariable, array_keys($this->data));
-
-        foreach ($this->data as $variable => $value) {
-            if (in_array($variable, $templateVariable)) {
+        foreach ($templateVariable as $variable) {
+            if (array_key_exists($variable, $TemplateInformation)) {
+                $value = $TemplateInformation[$variable];
                 if (is_array($value)) {
-                    $templateProcessor->cloneRow($variable, sizeof($value));  // Clonar.
-                    // dd($value, $variable);
+                    $this->processor->cloneRow($variable, sizeof($value));  // Clonar.
                     $i = 1;
                     foreach ($value as $k => $v) {
                         foreach ($v as $llave => $valor) {
-                            // obtener el tipo de variable
-                            $templateProcessor->setValue($llave . '#' . $i, $valor);
+                            $this->print($llave . '#' . $i, $valor, 1);
                         }
                         $i++;
                     }
                 } else {
-                    $templateProcessor->setValue($variable, $value);
+                    $this->print($variable, $value, 1);
                 }
             } else {
-                $templateProcessor->setValue($variable, "");
+                $this->print($variable, '', 1);
             }
         }
 
         $nameFileOutput = "{$this->nameFileOutput}.docx";
         $outputPath = storage_path("app/public/{$this->pathOutput}/$nameFileOutput");
-        $templateProcessor->saveAs($outputPath);
+        $this->processor->saveAs($outputPath);
 
         return $outputPath;
     }
+
+    public function print($variable, $texto, $tipo)
+    {
+        if (is_null($texto)) {
+            $this->processor->setValue($variable, '');
+            return;
+        }
+        switch ($tipo) {
+            case '1':
+                $this->processor->setValue($variable, $texto);
+                break;
+            default:
+                $this->processor->setValue($variable, '');
+                break;
+        }
+    }
+    
 
     public function convertToPdf(string $filePath): string {
         $nameFileOutput = str_replace('.docx', '.pdf', $filePath);

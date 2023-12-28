@@ -24,6 +24,7 @@ use App\Http\Controllers\DatosPHCondominio\StoreLocal AS StoreDatosCondominioLoc
 use App\Http\Controllers\PredioCopropiedad\StoreLocal AS StorePredioCopropiedadLocal;
 use App\Http\Controllers\RicPredio\StoreLocal AS StoreRicPredioLocal;
 use App\Http\Controllers\RicTramiteCatastral\StoreLocal AS StoreRicTramiteCatastralLocal;
+use App\Http\Controllers\RicPredioTramiteCatastral\StoreLocal AS StoreRicPredioTramiteCatastralLocal;
 use App\Http\Controllers\FuenteAdministrativa\StoreLocal AS StoreFuenteAdministrativaLocal;
 use App\Http\Controllers\Datosadicionaleslevantamientocatastral\StoreLocal AS StoreDatosadicionaleslevantamientocatastralLocal;
 use App\Http\Controllers\ContactoVisita\StoreLocal AS StoreContactoVisitaLocal;
@@ -32,6 +33,8 @@ use App\Http\Controllers\Terreno\UpdateLocal AS UpdateTerrenoLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
 use App\Http\Controllers\Construccion\UpdateLocal AS UpdateConstruccionLocal;
 use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccionLocal;
+use App\Http\Controllers\TramiteRadicado\StoreLocal AS StoreTramiteRadicadoLocal;
+use App\Http\Controllers\TramiteRadicado\IndexLocal AS IndexLocalTramiteRadicadoLocal;
 use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\Document\ListRadicadoController;
 use App\Http\Controllers\Document\ListTipoTramiteController;
@@ -54,6 +57,7 @@ use App\Http\Controllers\Predio\StoreNumeroHomologadosController;
 use App\Http\Controllers\Predio\StoreNumeroPredialController;
 use App\Http\Controllers\Predio\StoreNumeroPredialHomologadoController;
 use App\Http\Controllers\Predio\UpdateLcPredio;
+use App\Http\Controllers\RicTramiteCatastral\IndexLocal AS IndexLocalRicTramiteCatastral;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -130,7 +134,12 @@ Route::prefix('v1')->group(function () {
     Route::post('datos-condominio/local', StoreDatosCondominioLocal::class);
     Route::post('predio-copropiedad/local', StorePredioCopropiedadLocal::class);
     Route::post('ric-predio/local', StoreRicPredioLocal::class);
+
+    Route::get('ric-tramite-catastral/local/list', IndexLocalRicTramiteCatastral::class);
     Route::post('ric-tramite-catastral/local', StoreRicTramiteCatastralLocal::class);
+
+
+    Route::post('ric-predio-tramite-catastral/local', StoreRicPredioTramiteCatastralLocal::class);
     Route::post('fuente-administrativa/local', StoreFuenteAdministrativaLocal::class);
 
     Route::prefix('terreno')->group(function () {
@@ -155,4 +164,8 @@ Route::prefix('v1')->group(function () {
         Route::get('list/radicados', ListRadicadoController::class);
     });
 
+    Route::prefix('tramite-radicado')->group(function () {
+        Route::post('', StoreTramiteRadicadoLocal::class);
+        Route::get('', IndexLocalTramiteRadicadoLocal::class);
+    });
 });

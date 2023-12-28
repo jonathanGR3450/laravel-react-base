@@ -27,6 +27,8 @@ class LcDerechoLocal extends Model
         'comienzo_vida_util_version',
         'fin_vida_util_version',
         'espacio_de_nombres',
+        'interesado_lc_agrupacioninteresados_conservacion',
+        'unidad_conservacion',
     ];
 
     // Relación con lc_derechotipo
