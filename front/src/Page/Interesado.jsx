@@ -28,9 +28,7 @@ const InteresadoForm = (props, ref) => {
   } else {
     console.log("props sin context", props);
   }
-
   const [estBtt, setEstBtt] = useState(true);
-
   //Se Aceptan solo Letras
 
   const Load_Num = (e) => {
@@ -57,156 +55,6 @@ const InteresadoForm = (props, ref) => {
     }));
     setInteresadosData(newInteresadosData);
   };
-  /////////////////////////////////////////////////////Enviar Datos
-  async function LoadAgrupacionTipo() {
-    let tipo = "";
-    let agrupacioncivil = "";
-    let agrupacionempresarial = "";
-    for (const [index, item] of interesadosData.entries()) {
-      agrupacioncivil = interesadosData.every((item) => item.tipo == 658);
-      agrupacionempresarial = interesadosData.every((item) => item.tipo == 659);
-
-      // Verificar el tipo de Agrupación
-    }
-    if (agrupacioncivil) {
-      tipo = 34;
-    } else {
-      if (agrupacionempresarial) {
-        console.log("Es empresarial ");
-        tipo = 35;
-      } else {
-        console.log("Es Mixta");
-        tipo = 37;
-      }
-    }
-    return tipo;
-  }
-  async function createAgrupacion(data) {
-    let json = {
-      tipo: data,
-      nombre: "Prueba",
-      comienzo_vida_util_version: "",
-      fin_vida_util_version: null,
-      espacio_de_nombres: "Fusagasuga",
-      local_id: "Preuba",
-    };
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    let raw = JSON.stringify(json);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-
-    let url =
-      import.meta.env.VITE_API_URL_FIRST + "interesados/agrupacioninteresados";
-
-    const response = await fetch(url, requestOptions);
-    const result = await response.json();
-    console.log(result);
-    return result.data.t_id;
-  } /////////////////////////////////////////////
-  async function createInteresado() {
-    try {
-      let auxId = [];
-      let est = "";
-      console.log(" 123 Data ", interesadosData);
-      console.log("123 props", props.data);
-      interesadosData = interesadosData.concat(props.data);
-      for (const [index, item] of interesadosData.entries()) {
-        if (item.t_id == 0) {
-          console.log("Toca Crear");
-          let json = {
-            tipo: item.tipo,
-            tipo_documento: item.tipo_documento,
-            documento_identidad: item.documento_identidad,
-            primer_nombre: item.primer_nombre,
-            segundo_nombre: item.segundo_nombre,
-            primer_apellido: item.primer_apellido,
-            segundo_apellido: item.segundo_apellido,
-            sexo: item.sexo,
-            grupo_etnico: item.grupo_etnico,
-            razon_social: item.razon_social,
-            estado_civil: item.estado_civil,
-            nombre: item.nombre,
-            comienzo_vida_util_version: "",
-            fin_vida_util_version: null,
-            espacio_de_nombres: "Fusagasuga",
-            local_id: "0",
-          };
-          console.log("Json", json);
-          var myHeaders = new Headers();
-          myHeaders.append("Content-Type", "application/json");
-          let raw = JSON.stringify(json);
-          let requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow",
-          };
-          let url =
-            import.meta.env.VITE_API_URL_FIRST + "interesados/interesado";
-          const response = await fetch(url, requestOptions);
-          const result = await response.json();
-          console.log("Resultado interesado", result);
-          item.t_id = result.data.interesado.t_id;
-          item.isTemporal = true;
-          auxId.push(result.data.interesado.t_id);
-        } else {
-          item.isTemporal = false;
-          auxId.push(item.t_id);
-          console.log("guardo id");
-        }
-      }
-
-      return auxId;
-    } catch (error) {
-      console.log("error: " + error);
-    }
-  }
-  async function createColMiembros(agrupacion, interesado) {
-    console.log("interesado Entrando", interesado);
-    for (const [index, item] of interesadosData.entries()) {
-      let json = {
-        interesado_lc_interesado: "",
-        interesado_lc_interesado_conservacion: "",
-        interesado_lc_agrupacioninteresados: agrupacion,
-        agrupacion: agrupacion,
-        participacion: item.participacion ? item.participacion : 0,
-      };
-      console.log("Es temporal", item);
-      if (item.isTemporal) {
-        json.interesado_lc_interesado = interesado[index];
-        json.interesado_lc_interesado_conservacion = null;
-      } else {
-        json.interesado_lc_interesado_conservacion = interesado[index];
-        json.interesado_lc_interesado = null;
-      }
-
-      console.log(json);
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      let raw = JSON.stringify(json);
-
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-      };
-      console.log("Json Col Interesado", raw);
-      let url = import.meta.env.VITE_API_URL_FIRST + "interesados/miembros";
-
-      const response = await fetch(url, requestOptions);
-      const result = await response.json();
-      console.log("Resul Col_Miembros", result);
-    }
-  }
   async function Send_Data() {
     ////////////////Capturar valores Tabledata para Datos Homologados
     ///////////////////////////////////////////////////////////////
@@ -214,15 +62,27 @@ const InteresadoForm = (props, ref) => {
     try {
       let id_agrupacion = "";
       let id_interesado = "";
-      ////Crear Agrupaciones
-      id_interesado = await createInteresado();
+      ////Crear Interesados y devuelve ID
+      if (props.est) {
+        interesadosData = interesadosData.concat(props.data);
+      }
+      console.log("interesados data", interesadosData);
+      id_interesado = await createInteresado(interesadosData);
       console.log("Idssss", id_interesado);
       ///////////////////////////////////////////
+      //Crea Agrupacion si cumple condicion
       if (interesadosData.length >= 2) {
-        let tipoInteresado = await LoadAgrupacionTipo();
-        id_agrupacion = await createAgrupacion(tipoInteresado);
+        let tipoInteresado = await LoadAgrupacionTipo(interesadosData);
+        //retorna el tipo de Agrupacion
+        id_agrupacion = await createAgrupacion(
+          tipoInteresado,
+          props.cod,
+          props.context
+        );
+        //retorna el id de la agrupacion
         console.log("Id Agrupacion", id_agrupacion);
-        createColMiembros(id_agrupacion, id_interesado);
+        //se crea Colmiembros
+        createColMiembros(id_agrupacion, id_interesado, interesadosData);
       }
       if (props.contexto) {
         tableData = contextTableData;
@@ -247,7 +107,7 @@ const InteresadoForm = (props, ref) => {
       console.log("Data interesado", interesadosData);
       //Guardar
     } catch (error) {
-      props.msj("Error al Guardar Datos de Interesado");
+      console.log("error", error);
     }
   }
 
@@ -337,8 +197,6 @@ const InteresadoForm = (props, ref) => {
     }
   }, [interesadosData]);
 
-  //Formulario
-
   return (
     <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-start ">
       <h1 className="text-2xl">Datos Generales del Interesado</h1>
@@ -374,6 +232,170 @@ const InteresadoForm = (props, ref) => {
     </div>
   );
 };
+/////////////////////////////////////////////////////Enviar Datos
+async function LoadAgrupacionTipo(data) {
+  let interesadosData = data;
+
+  let tipo = "";
+  let agrupacioncivil = "";
+  let agrupacionempresarial = "";
+  for (const [index, item] of interesadosData.entries()) {
+    agrupacioncivil = interesadosData.every((item) => item.tipo == 658);
+    agrupacionempresarial = interesadosData.every((item) => item.tipo == 659);
+
+    // Verificar el tipo de Agrupación
+  }
+  if (agrupacioncivil) {
+    tipo = 34;
+  } else {
+    if (agrupacionempresarial) {
+      console.log("Es empresarial ");
+      tipo = 35;
+    } else {
+      console.log("Es Mixta");
+      tipo = 37;
+    }
+  }
+  return tipo;
+}
+async function createAgrupacion(data, cod, est) {
+  let json = "";
+  if (est) {
+    json = {
+      tipo: data,
+      nombre: "Prueba",
+      comienzo_vida_util_version: "",
+      fin_vida_util_version: null,
+      espacio_de_nombres: "Fusagasuga",
+      local_id: "Preuba",
+    };
+  } else {
+    json = {
+      tipo: data,
+      nombre: cod,
+      comienzo_vida_util_version: "",
+      fin_vida_util_version: null,
+      espacio_de_nombres: "Fusagasuga",
+      local_id: cod,
+    };
+  }
+  console.log("Json agrupacion", json);
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  let raw = JSON.stringify(json);
+
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+
+  let url =
+    import.meta.env.VITE_API_URL_FIRST + "interesados/agrupacioninteresados";
+
+  const response = await fetch(url, requestOptions);
+  const result = await response.json();
+  console.log(result);
+  return result.data.t_id;
+} /////////////////////////////////////////////
+async function createInteresado(info) {
+  try {
+    let interesadosData = info;
+    console.log("informacion", interesadosData);
+    let auxId = [];
+    let est = "";
+    for (const [index, item] of interesadosData.entries()) {
+      if (item.t_id == 0) {
+        console.log("Toca Crear");
+        let json = {
+          tipo: item.tipo,
+          tipo_documento: item.tipo_documento,
+          documento_identidad: item.documento_identidad,
+          primer_nombre: item.primer_nombre,
+          segundo_nombre: item.segundo_nombre,
+          primer_apellido: item.primer_apellido,
+          segundo_apellido: item.segundo_apellido,
+          sexo: item.sexo,
+          grupo_etnico: item.grupo_etnico,
+          razon_social: item.razon_social,
+          estado_civil: item.estado_civil,
+          nombre: item.nombre,
+          comienzo_vida_util_version: "",
+          fin_vida_util_version: null,
+          espacio_de_nombres: "Fusagasuga",
+          local_id: "0",
+        };
+        console.log("Json", json);
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        let raw = JSON.stringify(json);
+        let requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+        let url = import.meta.env.VITE_API_URL_FIRST + "interesados/interesado";
+        const response = await fetch(url, requestOptions);
+        const result = await response.json();
+        console.log("Resultado interesado", result);
+        item.t_id = result.data.interesado.t_id;
+        item.isTemporal = true;
+        auxId.push(result.data.interesado.t_id);
+      } else {
+        item.isTemporal = false;
+        auxId.push(item.t_id);
+        console.log("guardo id");
+      }
+    }
+
+    return auxId;
+  } catch (error) {
+    console.log("error: " + error);
+  }
+}
+async function createColMiembros(agrupacion, interesado, data) {
+  console.log("interesado Entrando", interesado);
+  let interesadosData = data;
+  for (const [index, item] of interesadosData.entries()) {
+    let json = {
+      interesado_lc_interesado: "",
+      interesado_lc_interesado_conservacion: "",
+      interesado_lc_agrupacioninteresados: agrupacion,
+      agrupacion: agrupacion,
+      participacion: item.participacion ? item.participacion : 0,
+    };
+    console.log("Es temporal", item);
+    if (item.isTemporal) {
+      json.interesado_lc_interesado = interesado[index];
+      json.interesado_lc_interesado_conservacion = null;
+    } else {
+      json.interesado_lc_interesado_conservacion = interesado[index];
+      json.interesado_lc_interesado = null;
+    }
+
+    console.log(json);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    let raw = JSON.stringify(json);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    console.log("Json Col Interesado", raw);
+    let url = import.meta.env.VITE_API_URL_FIRST + "interesados/miembros";
+
+    const response = await fetch(url, requestOptions);
+    const result = await response.json();
+    console.log("Resul Col_Miembros", result);
+  }
+}
 function soloLetras(event) {
   const input = event.target;
   input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
@@ -386,7 +408,6 @@ function soloNumeros(event) {
 
 export const ValidarInteresado = (props) => {
   console.log("validadr", props);
-
   let aux = "";
   console.log("1234567", aux);
   const [stateInput, setStateInput] = useState();
@@ -414,7 +435,6 @@ export const ValidarInteresado = (props) => {
     participacion: 0,
   });
   const [estFormData, setEstFormData] = useState(false);
-
   const handleReset = () => {
     console.log("reset");
     setDataInteresado((prevData) => ({
@@ -529,19 +549,27 @@ export const ValidarInteresado = (props) => {
     console.log("Actualizacion datos", dataInteresado);
   }, [dataInteresado]);
 
-  function Send_Data() {
-    console.log("123", dataInteresado);
-    console.log("12345", props.data[0].length);
-    let nuevoInteresado = props.data[0];
-    nuevoInteresado.map((item, index) => {
-      if (index == props.id) {
-        item = dataInteresado;
-        console.log("1", item);
-      }
-    });
-    console.log("123456", nuevoInteresado);
-    props.update(nuevoInteresado);
-    props.onClose();
+  async function Send_Data() {
+    console.log("12345", props);
+    let nuevoInteresado = props.data;
+    if (!Array.isArray(nuevoInteresado)) {
+      nuevoInteresado = dataInteresado;
+      await createInteresado([dataInteresado]);
+      props.update(nuevoInteresado);
+      props.onClose();
+    } else {
+      let id = await createInteresado([dataInteresado]);
+      nuevoInteresado[props.id] = dataInteresado;
+      let auxId = [];
+      nuevoInteresado.map((item, index) => {
+        auxId.push(item.t_id);
+      });
+      let tipo = await LoadAgrupacionTipo(nuevoInteresado);
+      let id_agrupacion = await createAgrupacion(tipo, props.cod, false);
+      await createColMiembros(id_agrupacion, auxId, nuevoInteresado);
+      props.update(nuevoInteresado);
+      props.onClose();
+    }
   }
   ////////////////////////////////////////////Form o mostrar valores
   ////////////////////////////////////////////Form Validar Interesado
@@ -873,6 +901,7 @@ export const NormalInteresadoForm = React.forwardRef((props, ref) => {
         data={props.data}
         update={props.update}
         onClose={closeModal}
+        cod={props.cod}
       />
     </Modal>
   );

@@ -73,7 +73,9 @@ const InfoProvider = ({ children }) => {
     }
   };
 
-  async function updateNumPredial(newdata) {}
+  async function updateNumPredial(newdata) {
+    console.log("nuevo Data Context", newdata);
+  }
   return (
     <InfoContext.Provider
       value={{
