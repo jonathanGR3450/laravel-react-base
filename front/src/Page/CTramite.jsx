@@ -1,21 +1,20 @@
 import React, { useRef, useState, useContext, useEffect } from "react";
+import Loader from "./Loader";
 
 const CreateTramite = () => {
   let [response, setResponse] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [msjLoading, setMsjLoading] = useState("");
+  const [estBtt, setEstBtt] = useState(true);
   let fecha_actual = new Date();
   console.log(fecha_actual.getDay());
   let [tramite, setTramite] = useState({
-    radicado: 0,
-    id: 0,
-    tipo_tramite: 0,
-    fecha_radicacion:
-      fecha_actual.getFullYear() +
-      "- " +
-      (fecha_actual.getMonth() + 1) +
-      "- " +
-      fecha_actual.getDate(),
-    tipo_predio: 0,
-    NPN: 0,
+    radicado: "",
+    id: "",
+    tipo_tramite: "",
+    fecha_radicacion: "",
+    tipo_predio: "",
+    NPN: "",
     estado_tramite: "",
     fecha_notificacion: "",
     metodo: "",
@@ -25,6 +24,26 @@ const CreateTramite = () => {
   useEffect(() => {
     loadTipo_Tramite();
   }, []);
+  useEffect(() => {
+    validar();
+  }, [tramite]);
+  function validar() {
+    const algunCampoVacio = Object.values(tramite).some(
+      (value) => value === ""
+    );
+
+    // Establecer el estado en true si algún campo está vacío, de lo contrario, en false.
+    setEstBtt(algunCampoVacio);
+    // Si no encuentra campos vacíos, devuelve true
+    let camposVacios = [];
+    for (const key in tramite) {
+      if (tramite.hasOwnProperty(key) && tramite[key] === "") {
+        console.error();
+        camposVacios.push(`El campo ${key} no puede estar vacío.`);
+      }
+    }
+    setMsjLoading(camposVacios);
+  }
   async function loadTipo_Tramite() {
     try {
       var requestOptions = {
@@ -45,6 +64,41 @@ const CreateTramite = () => {
     const { name, value } = e.target;
     setTramite((prevValues) => ({ ...prevValues, [name]: value }));
   }
+  async function sendData() {
+    setLoading(true);
+    setMsjLoading("Guardando Datos");
+    try {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      let raw = {
+        radicado: tramite.radicado,
+        id: tramite.id,
+        tipo_tramite: tramite.tipo_tramite,
+        fecha_radicado: tramite.fecha_radicacion,
+        tipo_predio: tramite.tipo_predio,
+        numero_predial: tramite.NPN,
+        estado: tramite.estado_tramite,
+        fecha_notificacion: tramite.fecha_notificacion,
+        metodo_notificacion: tramite.metodo,
+        observaciones: tramite.observaciones,
+      };
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(raw),
+        redirect: "follow",
+      };
+      console.log(JSON.stringify(raw));
+      let url = import.meta.env.VITE_API_URL_FIRST + "tramite-radicado";
+      const response = await fetch(url, requestOptions);
+      setLoading(false);
+      setMsjLoading("Datos Guardados");
+    } catch (error) {
+      console.log("error", error);
+      setMsjLoading("error " + error);
+    }
+  }
+
   return (
     <div className="p-4 w-8/12 flex flex-col overflow-auto bg-transparent text-center h-full bg-white bg-opacity-80 items-start">
       <h1 className="text-2xl w-full">Crear Tramite</h1>
@@ -81,7 +135,11 @@ const CreateTramite = () => {
               <option></option>
               {response != 0
                 ? response.map((item, index) => {
-                    return <option value={item.t_id}>{item.nombre}</option>;
+                    return (
+                      <option key={index} value={item.t_id}>
+                        {item.nombre}
+                      </option>
+                    );
                   })
                 : null}
             </select>
@@ -91,11 +149,10 @@ const CreateTramite = () => {
           <div className="flex flex-col w-1/3">
             <label>Fecha Radicacion</label>
             <input
-              disabled
               onChange={handleInput}
               name="fecha_radicacion"
               className="border-2 rounded-lg text-center m-1"
-              type=" text"
+              type="date"
               value={tramite.fecha_radicacion}
             ></input>
           </div>
@@ -104,7 +161,7 @@ const CreateTramite = () => {
             <select
               name="tipo_predio"
               className="border-2 rounded-lg text-center m-1"
-              type=" text"
+              type="text"
               onChange={handleInput}
               value={tramite.tipo_predio}
             >
@@ -118,7 +175,7 @@ const CreateTramite = () => {
             <input
               name="NPN"
               className="border-2 rounded-lg text-center m-1"
-              type=" text"
+              type="text"
               onChange={handleInput}
               value={tramite.NPN}
             ></input>
@@ -128,14 +185,14 @@ const CreateTramite = () => {
           <div className="flex flex-col w-1/3">
             <label>Estado Tramite</label>
             <select
-              disabled
               name="estado_tramite"
               className="border-2 rounded-lg text-center m-1"
               type=" text"
               onChange={handleInput}
               value={tramite.estado_tramite}
             >
-              <option>En Revision</option>
+              <option></option>
+              <option value="1">En Revision</option>
             </select>
           </div>
           <div className="flex flex-col w-1/3">
@@ -163,11 +220,28 @@ const CreateTramite = () => {
             </select>
           </div>
         </div>
-        <button className="w-1/3 p-2 mt-4 text-center rounded-md text-white bg-teal-500 text-lg mr-2">
+        <button
+          onClick={sendData}
+          disabled={estBtt}
+          className={`${
+            estBtt ? "opacity-50 cursor-not-allowed" : "opacity-100"
+          }  w-full p-2 text-center rounded-md text-white bg-teal-500 text-lg mt-4`}
+        >
           Crear
         </button>
+        {loading ? <Loader /> : null}
+        <div className="flex flex-col">
+          {Array.isArray(msjLoading) ? (
+            msjLoading.map((item, index) => {
+              return <label>{item}</label>;
+            })
+          ) : (
+            <label>{msjLoading}</label>
+          )}
+        </div>
       </div>
     </div>
   );
 };
+
 export default CreateTramite;
