@@ -264,6 +264,7 @@ class PredioResource extends JsonResource
                             "t_id" => $item?->unidadConstruccion?->t_id,
                             "area_construida" => $item?->unidadConstruccion?->area_construida,
                             "lc_construccion" => [
+                                't_id' => $item->unidadConstruccion?->construccion?->t_id,
                                 'identificador' => $item->unidadConstruccion?->construccion?->identificador,
                                 'tipo_construccion' => $item->unidadConstruccion?->construccion?->tipo_construccion,
                                 'tipo_dominio' => $item->unidadConstruccion?->construccion?->tipo_dominio,
