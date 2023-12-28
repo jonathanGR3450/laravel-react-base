@@ -1,3 +1,4 @@
+import { Routes, Route } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ZonaGeo from "../Json/zonaGeoEconomica.json";
@@ -7,6 +8,7 @@ import Loader from "./Loader";
 import tramites from "../Json/tramites.json";
 import JsonDesenglobe from "../Json/JsonPrueba.json";
 import useAvaluo from "../hooks/useAvaluo";
+var a = 0;
 const TramitesForm = () => {
   //const { dataDesenglobe } = useAvaluo();
   let dataDesenglobe = JsonDesenglobe;
@@ -20,6 +22,7 @@ const TramitesForm = () => {
     decreto: "Na",
     vigencia: "2023",
   });
+  var tramiteList=tramites.Tramites;
 
   //console.log(tramites.Tramites[0].id)
   /*const data = Object(tramites.Tramites);
@@ -36,15 +39,51 @@ const TramitesForm = () => {
   });*/
   var npn="252900100000012120038000000000";
   function handleEnviar(e) {
-    //navigate("/TramiteDetalle",{state:{npn:"252900100000012120038000000000"}});//tiene que ser state
     predioGet(npn);
   }
   function toggleEditar() {
     setEstEstado((prevEstEstado) => !prevEstEstado);
   }
+var ab;
+const [tramitesU, setTramitesU] = useState(tramites);
+console.log(tramitesU);
+  async function tramitesGet(data) {
+    console.log("Consultando ...");
+    
+    setTimeout("alert('Consultando Informacion de tramites ...');", 1);    
+      console.log("antes de")
+      const promise = fetch("http://localhost/api/v1/tramite-radicado", {
+      //  const promise =  fetch("http://localhost:81/FusaCatastro/codigosHomologados/php/tramite.php?fnpn=12340", {
+        method: "GET", // or 'PUT'
+        headers: {
+          //"Content-Type": "application/json",
+        },
+        //body: JSON.stringify(data),
+        //body:data        
+      });
+      var ac;
+      await promise.then((response)=>response.json())
+      .then((responseJson)=>{ac= responseJson});
+      console.log("despues de");
+      return ac;
+  }
+
+  async function tramitesGetSync(){
+    const json =  await tramitesGet();
+    ab = Object(json);
+    setTramitesU(ab);
+    console.log(ab);
+  }
+  //console.log(a);
+  if(a<=0){
+  tramitesGetSync();
+  a++;  
+  }  
+
   async function predioGet(data) {
     console.log("Consultando ...");
-    alert("Consultando Informacion del predio ...");
+    
+    setTimeout("alert('Consultando Informacion del predio ...');", 1);    
     try {
       const response = await fetch("http://localhost/api/v1/predio?numero_predial="+npn, {
         method: "GET", // or 'PUT'
@@ -52,9 +91,7 @@ const TramitesForm = () => {
           //"Content-Type": "application/json",
         },
         //body: JSON.stringify(data),
-        //body:data
-        
-        
+        //body:data        
       });
   
       const result = await response.json();
@@ -62,12 +99,15 @@ const TramitesForm = () => {
       console.log("SuccessNpn:", result);
       return result;
     } catch (error) {
+      setTimeout("alert('Error de red');", 1);
       console.error("ErrorNpn:", error);
+
     }
   }  
   function changeData(e) {}
   return (
     <>
+
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 text-left">
         <pre> </pre>
         <table className="w-full text-center">
@@ -87,28 +127,17 @@ const TramitesForm = () => {
             </tr>
           </thead>
           <tbody>
-            {tramites.Tramites.map((tramite, key) => (
+            {tramitesU.data.data.map((tramite, key) => (
               <tr value={key}>
-                <td>{tramite.Radicado}</td>
+                <td>{tramite.radicado}</td>
                 <td>{tramite.id}</td>
-                <td>{tramite.tramiteTipo}</td>
-                <td>{tramite.radicacionFecha}</td>
-                <td>{tramite.predioTipo}</td>
-                <td>{tramite.npn}</td>
-                <td>
-                  {estEstado ? (
-                    <select onChange={changeData}>
-                      <option></option>
-                      <option>En Revision</option>
-                      <option>Aprobado</option>
-                      <option>Devuelto</option>
-                    </select>
-                  ) : (
-                    tramite.Estado
-                  )}
-                </td>
-                <td>{tramite.notificacionFecha}</td>
-                <td>{tramite.notificacionMetodo}</td>
+                <td>{tramite.tipo_tramite}</td>
+                <td>{tramite.fecha_radicado}</td>
+                <td>{tramite.tipo_predio}</td>
+                <td>{tramite.numero_predial}</td>
+                <td>{tramite.estado}</td>
+                <td>{tramite.fecha_notificacion}</td>
+                <td>{tramite.metodo_notificacion}</td>
                 <td>
                   {estEstado ? (
                     <button className="p-2 mt-4 text-center rounded-md text-white bg-teal-500 text-lg mr-2">
@@ -140,7 +169,9 @@ const TramitesForm = () => {
             ))}
           </tbody>
         </table>
+        
       </div>
+
     </>
   );
 };

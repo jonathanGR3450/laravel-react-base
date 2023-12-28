@@ -49,7 +49,7 @@ const Menu = () => {
             <Link to="/CreateTramite">Crear Tramite </Link>
           </li>
           <li className="ml-2 text-white">
-            <Link to="/Tramites">Tramites</Link>
+            <a href="/Tramites">Tramites</a>
           </li>
 
           <li className="ml-2 text-white">

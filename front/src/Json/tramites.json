@@ -1,30 +1,33 @@
 {
-    "Tramites": [
-      { 
-      "Radicado":"r001",
-      "tramiteTipo":"Cambio de Propietario",
-      "radicacionFecha":"2023-12-06",
-      "predioTipo":"Urbano",
-      "npn":"252900100000012120038000000000",
-      "Estado":"En revision",
-      "notificacionFecha":"2023-12-07",
-      "notificacionMetodo":"Correo",
-      "observaciones":"Na",
-      "id": 10, 
-      "valor": 1260000 
-    },
-    { 
-        "Radicado":"r002",
-        "tramiteTipo":"Cambio de Propietario",
-        "radicacionFecha":"2023-12-07",
-        "predioTipo":"Rural",
-        "npn":"252900000000012120029000000000",
-        "Estado":"En revision",
-        "notificacionFecha":"2023-12-08",
-        "notificacionMetodo":"Correo",
-        "observaciones":"Na",
-        "id": 20, 
-        "valor": 1260000 
-      }
-    ]
-  }
+  "success": true,
+  "data": {
+      "total": 1,
+      "per_page": 15,
+      "current_page": 1,
+      "last_page": 1,
+      "from": 1,
+      "to": 1,
+      "first_page_url": "http://localhost/api/v1/tramite-radicado?page=1",
+      "self": "http://localhost/api/v1/tramite-radicado?page=1",
+      "last_page_url": "http://localhost/api/v1/tramite-radicado?page=1",
+      "next_page_url": null,
+      "prev_page_url": null,
+      "path": "http://localhost/api/v1/tramite-radicado",
+      "data": [
+          {
+              "t_id": null,
+              "radicado": "",
+              "id": "",
+              "tipo_tramite": "",
+              "fecha_radicado": "",
+              "tipo_predio": "",
+              "numero_predial": "",
+              "estado": "",
+              "fecha_notificacion": "",
+              "metodo_notificacion": "",
+              "observaciones": ""
+          }
+      ]
+  },
+  "message": "tramite radicado get successfull"
+}
