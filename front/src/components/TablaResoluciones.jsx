@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import useInfo from "../hooks/useInfo";
 
 const TablaResoluciones = () => {
@@ -16,7 +17,6 @@ const TablaResoluciones = () => {
       url: url,
     },
   ];
-
   const openPdfInNewTab = (url) => {
     window.open(url, "_blank");
   };

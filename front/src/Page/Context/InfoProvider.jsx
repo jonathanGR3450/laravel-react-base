@@ -26,7 +26,7 @@ const InfoProvider = ({ children }) => {
     }, 5000);
   };
   const submitInfoResolucion = async (infoResolucion) => {
-    console.log("Info Resolucion", JSON.stringify(infoResolucion));
+    console.log("Info Resolucion", infoResolucion);
     try {
       const config = {
         headers: {
@@ -45,10 +45,10 @@ const InfoProvider = ({ children }) => {
         msg: "Resolución Creada Correctamente",
         error: false,
       });
-      setTimeout(() => {
+      /*  setTimeout(() => {
         setAlerta({});
         navigate("/resoluciones");
-      }, 3000);
+      }, 3000);*/
     } catch (error) {
       console.log(error);
     }

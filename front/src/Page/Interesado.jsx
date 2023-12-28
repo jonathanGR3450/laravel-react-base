@@ -21,7 +21,7 @@ const InteresadoForm = (props, ref) => {
 
   const [numInteresados, setNumInteresados] = useState();
   const [interesados, setInteresados] = useState([]);
-  let [interesadosData, setInteresadosData] = useState();
+  let [interesadosData, setInteresadosData] = useState([]);
   if (props.contexto) {
     ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
       useContext(TableContext));
@@ -184,7 +184,8 @@ const InteresadoForm = (props, ref) => {
   }
 
   useEffect(() => {
-    if (props.contexto) {
+    console.log("123 ", interesadosData);
+    if (props.contexto && interesadosData.length != undefined) {
       let tam = "";
       if (interesadosData.length != 1) {
         tam = true;
@@ -235,7 +236,6 @@ const InteresadoForm = (props, ref) => {
 /////////////////////////////////////////////////////Enviar Datos
 async function LoadAgrupacionTipo(data) {
   let interesadosData = data;
-
   let tipo = "";
   let agrupacioncivil = "";
   let agrupacionempresarial = "";

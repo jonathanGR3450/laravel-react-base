@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ZonaGeo from "../Json/zonaGeoEconomica.json";
 import TablaCatastral from "../Json/prueba.json";
@@ -47,7 +47,7 @@ const TramitesForm = () => {
   }
   var ab;
   const [tramitesU, setTramitesU] = useState(tramites);
-  console.log(tramitesU);
+  console.log("data tramite", tramitesU);
   async function tramitesGet(data) {
     console.log("Consultando ...");
 
@@ -110,7 +110,34 @@ const TramitesForm = () => {
       console.error("ErrorNpn:", error);
     }
   }
-  function changeData(e) {}
+  function changeData(e) {
+    console.log("Entra", e.target.name);
+    tramitesU.data.data.map((item, index) => {
+      if (index == e.target.name) {
+        let nom = "";
+        switch (parseInt(e.target.value)) {
+          case 1:
+            nom = "En Revision";
+            break;
+          case 2:
+            nom = "Aprobado";
+            break;
+          case 3:
+            nom = "Devuelto";
+            break;
+          default:
+            break;
+        }
+        console.log("item", item);
+        item.estado = nom;
+      }
+    });
+  }
+
+  const observacionFormRef = useRef();
+  const openObservacion = (e) => {
+    observacionFormRef.current.openModal(e.target.name);
+  };
   return (
     <>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 text-left">
@@ -118,52 +145,63 @@ const TramitesForm = () => {
         <table className="w-full text-center">
           <thead className="uppercase border-2  bg-teal-500 text-base text-white">
             <tr>
-              <th className="border-2 rounded-xl p-2">Radicado</th>
-              <th className="border-2 rounded-xl p-2">Id</th>
-              <th className="border-2 rounded-xl p-2">Tipo de Tramite</th>
-              <th className="border-2 rounded-xl p-2">Fecha Radicaion</th>
-              <th className="border-2 rounded-xl p-2">Tipo de Predio</th>
-              <th className="border-2 rounded-xl p-2">NPN</th>
-              <th className="border-2 rounded-xl p-2">Estado</th>
-              <th className="border-2 rounded-xl p-2">Fecha Notificación</th>
-              <th className="border-2 rounded-xl p-2">Metodo Notificación</th>
-              <th className="border-2 rounded-xl p-2">Observaciones</th>
-              <th className="border-2 rounded-xl p-2">Acciones</th>
+              <th className="border-2 rounded-s-lg p-2">Radicado</th>
+              <th className="border-2  p-2">Id</th>
+              <th className="border-2  p-2">Tipo de Tramite</th>
+              <th className="border-2  p-2">Fecha Radicacion</th>
+              <th className="border-2  p-2">Tipo de Predio</th>
+              <th className="border-2  p-2">NPN</th>
+              <th className="border-2  p-2">Estado</th>
+              <th className="border-2  p-2">Fecha Notificación</th>
+              <th className="border-2  p-2">Metodo Notificación</th>
+              <th className="border-2  p-2">Observaciones</th>
+              <th className="border-2  rounded-e-lg p-2">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {tramitesU.data.data.map((tramite, key) => (
               <tr value={key}>
-                <td>{tramite.radicado}</td>
-                <td>{tramite.id}</td>
-                <td>{tramite.tramiteTipo}</td>
-                <td>{tramite.radicacionFecha}</td>
-                <td>{tramite.predioTipo}</td>
-                <td>{tramite.npn}</td>
-                <td>
+                <td className="border-2">{tramite.radicado}</td>
+                <td className="border-2">{tramite.id}</td>
+                <td className="border-2">{tramite.tipo_tramite}</td>
+                <td className="border-2">{tramite.fecha_radicado}</td>
+                <td className="border-2">{tramite.tipo_predio}</td>
+                <td className="border-2">{tramite.numero_predial}</td>
+                <td className="border-2">
                   {estEstado ? (
-                    <select onChange={changeData}>
+                    <select name={key} onChange={changeData}>
                       <option></option>
-                      <option>En Revision</option>
-                      <option>Aprobado</option>
-                      <option>Devuelto</option>
+                      <option value={1}>En Revision</option>
+                      <option value={2}>Aprobado</option>
+                      <option value={3}>Devuelto</option>
                     </select>
                   ) : (
-                    tramite.Estado
+                    tramite.estado
                   )}
                 </td>
-                <td>{tramite.notificacionFecha}</td>
-                <td>{tramite.notificacionMetodo}</td>
-                <td>
+                <td className="border-2">{tramite.fecha_notificacion}</td>
+                <td className="border-2">{tramite.metodo_notificacion}</td>
+                <td className="border-2">
                   {estEstado ? (
-                    <button className="p-2 mt-4 text-center rounded-md text-white bg-teal-500 text-lg mr-2">
-                      Agregar Observacion
-                    </button>
+                    <div>
+                      <button
+                        name={key}
+                        onClick={openObservacion}
+                        className="p-2 mt-4 text-center rounded-md text-white bg-teal-500 text-lg mr-2"
+                      >
+                        Agregar Observacion
+                      </button>
+                      <Observaciones
+                        ref={observacionFormRef}
+                        data={tramitesU.data.data}
+                        index={key}
+                      />
+                    </div>
                   ) : (
                     tramite.observaciones
                   )}
                 </td>
-                <td>
+                <td className="border-2">
                   <div className="w-sm flex flex-col items-center justify-center mt-4">
                     <button
                       className="p-2 w-1/8 text-center  rounded-md  border-2  text-white bg-teal-500 "

@@ -55,8 +55,10 @@ const UniConstruccionForm = (props, ref) => {
           key={i}
           index={i}
           est={true}
+          contexto={props.contexto}
           onDataChange={actualizarDatosUnidad}
           data={unidadData}
+          construccion={props.construccion}
         />
       );
     }
@@ -179,6 +181,7 @@ const UniConstruccionForm = (props, ref) => {
     </div>
   );
 };
+
 function soloNumeros(event) {
   const input = event.target;
   input.value = input.value.replace(/[^0-9.]/g, "");
@@ -344,6 +347,7 @@ export const CreateUnidad = (props) => {
       props.onDataChange(props.index, dataUnidad);
     }
   }, [dataUnidad]);
+  console.log("123", props.construccion);
   return (
     <CaraContext.Provider value={{ updateCaracteristicas }}>
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
@@ -363,14 +367,15 @@ export const CreateUnidad = (props) => {
             >
               <option></option>
               {props.contexto
-                ? Object.entries(props.construccion).map((item, index) => {
+                ? props.construccion.map((item, index) => {
+                    console.log("CARGA CONSTRUCCION");
                     return (
-                      <option value={props.construccion[index].t_id}>
+                      <option key={index} value={item.t_id}>
                         Construccion {index + 1}{" "}
                       </option>
                     );
                   })
-                : null}
+                : console.log("no carga")}
             </select>
           </div>
 
@@ -454,6 +459,8 @@ export const ModalUniConForm = React.forwardRef((props, ref) => {
         }
       });
     });
+    console.log("1234", newobj);
+    construcciones = newobj;
     setConstrucciones(newobj);
     setDataId(aux);
     setIsModalOpen(true);
