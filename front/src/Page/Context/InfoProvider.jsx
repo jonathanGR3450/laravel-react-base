@@ -44,10 +44,10 @@ const InfoProvider = ({ children }) => {
         msg: "Resolución Creada Correctamente",
         error: false,
       });
-      setTimeout(() => {
+      /* setTimeout(() => {
         setAlerta({});
         navigate("/resoluciones");
-      }, 3000);
+      }, 3000); */
     } catch (error) {
       console.log(error);
     }
