@@ -1,10 +1,12 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import ZonaGeo from "../Json/zonaGeoEconomica.json";
 import TablaCatastral from "../Json/prueba.json";
 import TablaVivienda from "../Json/vivienda.json";
 import Loader from "./Loader";
 import Popup from "reactjs-popup";
+import mutacionJson from "../Json/ricTramiteCatastralMutaciones.json";
 import "reactjs-popup/dist/index.css";
+import { useLocation } from "react-router-dom";
 ////acordeon
 //import Accordion from '../../node_modules/react-bootstrap/Accordion/package.json';
 //import {Accordion} from 'react-bootstrap/Accordion/package.json';
@@ -19,49 +21,96 @@ import "react-accessible-accordion/dist/fancy-example.css";
 import tramites from "../Json/tramites.json";
 import predioPrueba from "../Json/predioPrueba.json";
 import inscribe from "../Json/predioPruebaInscribe.json";
+//import cancela from "../Json/predioPruebaCancela.json";
 import "../Styles/TramiteDetalle.css";
 import "reactjs-popup/dist/index.css";
 import JsonDesenglobe from "../Json/JsonPrueba.json";
 //////////////////
 import useAvaluo from "../hooks/useAvaluo";
+import { Form } from "react-router-dom";
 const TramiteDetalleForm = () => {
   //const { dataDesenglobe } = useAvaluo();
   let dataDesenglobe = JsonDesenglobe;
   console.log("Data Desenglobe OBJ", dataDesenglobe);
   const [vigenciaTipo, setVigenciaTipo] = useState(["2023", "2024", "2025"]);
   const [jsonValues, setJsonValues] = useState({
-    incremento: 0,
-    decreto: "Na",
-    vigencia: "2023",
+    clasificacion_mutacion: 153,
+    numero_resolucion: "res 0002",
+    fecha_resolucion: "2023-12-06",
+    fecha_radicacion: "2023-11-06",
+    ric_predio: 1,
   });
+  const location = useLocation();
+  const predioCancela2 = location.state.predio;
+  console.log(location);
+  //const test = predioGet(npn);
+  console.log("aa");
+  console.log(predioCancela2);
+  var cancela = predioCancela2;
 
   /*const interesado = Array(
     Object(predioPrueba.data.Predio[0].derechos[0].interesado_lc_interesado)
-  );*/ let interesado = [];
-  dataDesenglobe[0].interesados.map((item, index) => {
-    interesado.push(item);
-  });
+  );*/ let interesado = []; //inscribe
+  // dataDesenglobe[0].interesados.map((item, index) => {    interesado.push(item);  });
+  for (let i = 0; i < dataDesenglobe.length; i++) {
+    for (var j = 0; j < dataDesenglobe[i].interesados.length; j++) {
+      interesado.push(dataDesenglobe[i].interesados[j]);
+    }
+  }
   console.log("desenglobe interesado", interesado);
   //Se convierte a array porque en Json no es array
-  const interesadoInscribe = Array(
-    Object(inscribe.data.Predio[0].derechos[0].interesado_lc_interesado)
-  );
+  const interesadoCancela = [];
+  for (let i = 0; i < cancela.data.Predio.length; i++) {
+    for (var j = 0; j < cancela.data.Predio[i].derechos.length; j++) {
+      interesadoCancela.push(
+        cancela.data.Predio[i].derechos[j].interesado_lc_interesado
+      );
+    }
+  }
+  //const interesadoCancela = Array(    Object(cancela.data.Predio[0].derechos[0].interesado_lc_interesado)  );
+
   let predio = dataDesenglobe[0].predio;
+
   //const predio = Object(predioPrueba.data.Predio);
   console.log("desenglobe predio", predio);
 
   //const derecho = Object(predioPrueba.data.Predio[0].derechos);
-  let derecho = dataDesenglobe[0].derecho;
-
-  const derechoInscribe = Object(inscribe.data.Predio[0].derechos);
+  //let derecho = dataDesenglobe[0].derecho;//inscribe
+  let derecho = [];
+  for (let i = 0; i < dataDesenglobe.length; i++) {
+    derecho.push(dataDesenglobe[i].derecho);
+  }
+  //  const derechoCancela = Object(cancela.data.Predio[0].derechos);
+  const derechoCancela = [];
+  for (let i = 0; i < cancela.data.Predio.length; i++) {
+    for (var j = 0; j < cancela.data.Predio[i].derechos.length; j++) {
+      derechoCancela.push(cancela.data.Predio[i].derechos[j]);
+    }
+  }
   /*const fuenteAdministrativa = Object(
     predioPrueba.data.Predio[0].derechos[0].fuenteadministrativa
   );*/
-  let fuenteAdministrativa = dataDesenglobe[0].fuente_administrativa;
+  //  let fuenteAdministrativa = dataDesenglobe[0].fuente_administrativa;
+  let fuenteAdministrativa = [];
+  for (let i = 0; i < dataDesenglobe.length; i++) {
+    fuenteAdministrativa.push(dataDesenglobe[i].fuente_administrativa);
+  }
 
-  const fuenteAdministrativaInscribe = Object(
-    inscribe.data.Predio[0].derechos[0].fuenteadministrativa
-  );
+  //const fuenteAdministrativaCancela = Object(    cancela.data.Predio[0].derechos[0].fuenteadministrativa  );
+  const fuenteAdministrativaCancela = [];
+  for (let i = 0; i < cancela.data.Predio.length; i++) {
+    for (var j = 0; j < cancela.data.Predio[i].derechos.length; j++) {
+      for (
+        var k = 0;
+        k < cancela.data.Predio[i].derechos[j].fuenteadministrativa.length;
+        k++
+      ) {
+        fuenteAdministrativaCancela.push(
+          cancela.data.Predio[i].derechos[j].fuenteadministrativa[k]
+        );
+      }
+    }
+  }
   //const terreno = Array(Object(predioPrueba.data.Predio[0].terreno));
   let terreno = dataDesenglobe[0].terreno;
   Object.entries(terreno).map((item, index) => {});
@@ -82,11 +131,106 @@ const TramiteDetalleForm = () => {
   //
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
-  function handleEnviar(e) {}
+  const ref = useRef(null);
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const ref4 = useRef(null);
   function handleInput(e) {
     const { name, value } = e.target;
-    jsonValues.incremento = value;
+    jsonValues.clasificacion_mutacion = parseInt(value);
     console.log(value);
+  }
+  function handleInput1(e) {
+    const { name, value } = e.target;
+    jsonValues.numero_resolucion = value;
+    console.log(value);
+  }
+  function handleInput2(e) {
+    const { name, value } = e.target;
+    jsonValues.fecha_resolucion = value;
+    console.log(ref2.current.value);
+    //console.log(value);
+  }
+  function handleInput3(e) {
+    const { name, value } = e.target;
+    jsonValues.fecha_radicacion = value;
+    //console.log(value);
+    console.log(ref3.current.value);
+  }
+  function handleInput4(e) {
+    const { name, value } = e.target;
+    jsonValues.ric_predio = parseInt(value);
+    //console.log(value);
+    console.log(ref4.current.value);
+  }
+
+  async function predioGet(data) {
+    try {
+      const response = await fetch(
+        "http://localhost/api/v1/predio?numero_predial=" + npn,
+        {
+          method: "GET", // or 'PUT'
+          headers: {
+            //"Content-Type": "application/json",
+          },
+          //body: JSON.stringify(data),
+          //body:data
+        }
+      );
+
+      const result = await response.json();
+      console.log("SuccessNpn:", result);
+      cancela = result;
+      return result;
+    } catch (error) {
+      console.error("ErrorNpn:", error);
+    }
+  }
+
+  async function postJSON(data) {
+    try {
+      const response = await fetch(
+        "http://localhost/api/v1/ric-tramite-catastral/local",
+        {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+      console.log("Success:", result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  function handleEnviar(e) {
+    if (
+      !ref.current.value ||
+      !ref1.current.value ||
+      !ref2.current.value ||
+      !ref3.current.value ||
+      !ref4.current.value
+    ) {
+      alert("Por favor registre todos los datos");
+      return false;
+    } else {
+      console.log("Enviando ...");
+      const jsonEnviar = {
+        clasificacion_mutacion: jsonValues.clasificacion_mutacion,
+        numero_resolucion: jsonValues.numero_resolucion,
+        fecha_resolucion: jsonValues.fecha_resolucion,
+        ric_predio: jsonValues.ric_predio,
+      };
+      console.log(jsonEnviar);
+      console.log(jsonValues);
+      postJSON(jsonEnviar);
+      return false;
+    }
   }
   return (
     <>
@@ -150,10 +294,10 @@ const TramiteDetalleForm = () => {
                       <td className="border-x-2  p-2">
                         {registro.estado_civil}
                       </td>
-                      <td className="border-x-2  p-2">Cancela</td>
+                      <td className="border-x-2  p-2">Inscribe</td>
                     </tr>
                   ))}
-                  {interesadoInscribe.map((registro, key) => (
+                  {interesadoCancela.map((registro, key) => (
                     <tr className="border-2" value={key}>
                       <td className="border-x-2  p-2">{registro.t_id}</td>
                       <td className="border-x-2  p-2">{registro.tipo}</td>
@@ -185,7 +329,7 @@ const TramiteDetalleForm = () => {
                       <td className="border-x-2  p-2">
                         {registro.estado_civil}
                       </td>
-                      <td className="border-x-2  p-2">Inscribe</td>
+                      <td className="border-x-2  p-2">Cancela</td>
                     </tr>
                   ))}
                 </tbody>
@@ -289,22 +433,25 @@ const TramiteDetalleForm = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr value={0}>
-                    <td>{derecho.t_id}</td>
-                    <td>{derecho.tipo_derecho}</td>
-                    <td>{derecho.fraccion_derecho}</td>
-                    <td>{derecho.inicio_tenencia}</td>
+                  {derecho.map((registro, key) => (
+                    <tr value={key}>
+                      <td>{registro.t_id}</td>
+                      <td>{registro.tipo_derecho}</td>
+                      <td>{registro.fraccion_derecho}</td>
+                      <td>{registro.inicio_tenencia}</td>
 
-                    <td>Cancela</td>
-                  </tr>
-                  <tr value={1}>
-                    <td>{derechoInscribe[0].t_id}</td>
-                    <td>{derechoInscribe[0].tipo}</td>
-                    <td>{derechoInscribe[0].fraccion_derecho}</td>
-                    <td>{derechoInscribe[0].fecha_inicio_tenencia}</td>
-
-                    <td>Inscribe</td>
-                  </tr>
+                      <td>Inscribe</td>
+                    </tr>
+                  ))}
+                  {derechoCancela.map((registro, key) => (
+                    <tr value={key}>
+                      <td>{registro.t_id}</td>
+                      <td>{registro.tipo.dispname}</td>
+                      <td>{registro.fraccion_derecho}</td>
+                      <td>{registro.fecha_inicio_tenencia}</td>
+                      <td>Cancela</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
               <h3>
@@ -334,19 +481,7 @@ const TramiteDetalleForm = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr value={1}>
-                    <td>{fuenteAdministrativa.t_id}</td>
-                    <td>{fuenteAdministrativa.tipo}</td>
-                    <td>{fuenteAdministrativa.ente_emisor}</td>
-                    <td>{fuenteAdministrativa.observacion}</td>
-                    <td>{fuenteAdministrativa.numero_fuente}</td>
-                    <td>{fuenteAdministrativa.estado_disponibilidad}</td>
-                    <td>{fuenteAdministrativa.tipo_principal}</td>
-                    <td>{fuenteAdministrativa.fecha_documento_fuente}</td>
-                    <td>{fuenteAdministrativa.espacio_de_nombres}</td>
-                    <td>Cancela</td>
-                  </tr>
-                  {fuenteAdministrativaInscribe.map((registro, key) => (
+                  {fuenteAdministrativa.map((registro, key) => (
                     <tr value={key}>
                       <td>{registro.t_id}</td>
                       <td>{registro.tipo}</td>
@@ -358,6 +493,20 @@ const TramiteDetalleForm = () => {
                       <td>{registro.fecha_documento_fuente}</td>
                       <td>{registro.espacio_de_nombres}</td>
                       <td>Inscribe</td>
+                    </tr>
+                  ))}
+                  {fuenteAdministrativaCancela.map((registro, key) => (
+                    <tr value={key}>
+                      <td>{registro.t_id}</td>
+                      <td>{registro.tipo.dispname}</td>
+                      <td>{registro.ente_emisor}</td>
+                      <td>{registro.observacion}</td>
+                      <td>{registro.numero_fuente}</td>
+                      <td>{registro.estado_disponibilidad.dispname}</td>
+                      <td>{registro.tipo_principal}</td>
+                      <td>{registro.fecha_documento_fuente}</td>
+                      <td>{registro.espacio_de_nombres}</td>
+                      <td>Cancela</td>
                     </tr>
                   ))}
                 </tbody>
@@ -480,85 +629,103 @@ const TramiteDetalleForm = () => {
               </table>
             </AccordionItemPanel>
           </AccordionItem>
-
           <AccordionItem className="bg-transparent bg-white bg-opacity-80">
             <AccordionItemHeading>
               <AccordionItemButton>Ric Tramite Catastral</AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
               <br />
-              <div className=" flex justify-center items-center w-full mb-3">
-                <div className="w-1/4 flex flex-col  ml-4 ">
-                  <label className="w-mid font-semibold">Id : </label>
-                  <input
-                    onChange={handleInput}
-                    type="text"
-                    className="border-2 p-2 rounded-lg text-center w-full"
-                    name="area1"
-                  ></input>
+              <form>
+                <div className=" flex justify-center items-center w-full mb-3">
+                  <div className="w-1/4 flex flex-col  ml-4 ">
+                    <label className="w-mid font-semibold">
+                      Clasificacion Mutacion :{" "}
+                    </label>
+                    <select
+                      onChange={handleInput}
+                      className="border-2 p-2 rounded-lg text-center w-full"
+                      name="area1"
+                      required
+                      ref={ref}
+                    >
+                      {mutacionJson.mutacion.map((registro, key) => (
+                        <option value={registro.t_id}>
+                          {registro.dispname}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="w-1/4 flex flex-col  ml-4 ">
+                    <label className="w-mid font-semibold">
+                      Numero de Resolucion :{" "}
+                    </label>
+                    <input
+                      onChange={handleInput1}
+                      type="text"
+                      step="0.01"
+                      className="border-2 p-2 rounded-lg text-center w-full"
+                      name="area1"
+                      required
+                      ref={ref1}
+                    ></input>
+                  </div>
                 </div>
-                <div className="w-1/4 flex flex-col  ml-4 ">
-                  <label className="w-mid font-semibold">
-                    Clasificacion Mutacion :{" "}
-                  </label>
-                  <input
-                    onChange={handleInput}
-                    type="text"
-                    step="0.01"
-                    className="border-2 p-2 rounded-lg text-center w-full"
-                    name="area1"
-                  ></input>
+                <div className=" flex justify-center items-center w-full mb-3">
+                  <div className="w-1/4 flex flex-col  ml-4 ">
+                    <label className="w-mid font-semibold">
+                      Fecha Resolucion :{" "}
+                    </label>
+                    <input
+                      onChange={handleInput2}
+                      type="date"
+                      step="0.01"
+                      className="border-2 p-2 rounded-lg text-center w-full"
+                      name="area1"
+                      required
+                      ref={ref2}
+                    ></input>
+                  </div>
+                  <div className="w-1/4 flex flex-col  ml-4 ">
+                    <label className="w-mid font-semibold">
+                      Fecha Radicación :{" "}
+                    </label>
+                    <input
+                      onChange={handleInput3}
+                      type="date"
+                      step="0.01"
+                      className="border-2 p-2 rounded-lg text-center w-full"
+                      name="area1"
+                      required
+                      ref={ref3}
+                    ></input>
+                  </div>
+                  <div className="w-1/4 flex flex-col  ml-4 ">
+                    <label className="w-mid font-semibold">Ric Predio : </label>
+                    <input
+                      onChange={handleInput4}
+                      type="number"
+                      step="1"
+                      className="border-2 p-2 rounded-lg text-center w-full"
+                      name="area1"
+                      required
+                      ref={ref4}
+                      id="box"
+                    ></input>
+                  </div>
                 </div>
-                <div className="w-1/4 flex flex-col  ml-4 ">
-                  <label className="w-mid font-semibold">
-                    Numero de Resolucion :{" "}
-                  </label>
-                  <input
-                    onChange={handleInput}
-                    type="text"
-                    step="0.01"
-                    className="border-2 p-2 rounded-lg text-center w-full"
-                    name="area1"
-                  ></input>
+                <br />
+                <div className="w-full flex flex-col items-center justify-center mt-4">
+                  <button
+                    className="p-2 w-1/4 text-center  rounded-md  border-2  text-white bg-teal-500 "
+                    type="button"
+                    return
+                    false
+                    onClick={handleEnviar}
+                  >
+                    Guardar Tramite
+                  </button>
                 </div>
-              </div>
-              <div className=" flex justify-center items-center w-full mb-3">
-                <div className="w-1/4 flex flex-col  ml-4 ">
-                  <label className="w-mid font-semibold">
-                    Fecha Resolucion :{" "}
-                  </label>
-                  <input
-                    onChange={handleInput}
-                    type="text"
-                    step="0.01"
-                    className="border-2 p-2 rounded-lg text-center w-full"
-                    name="area1"
-                  ></input>
-                </div>
-                <div className="w-1/4 flex flex-col  ml-4 ">
-                  <label className="w-mid font-semibold">
-                    Fecha Radicación :{" "}
-                  </label>
-                  <input
-                    onChange={handleInput}
-                    type="text"
-                    step="0.01"
-                    className="border-2 p-2 rounded-lg text-center w-full"
-                    name="area1"
-                  ></input>
-                </div>
-                <div className="w-1/4 flex flex-col  ml-4 ">
-                  <label className="w-mid font-semibold">Ric Predio : </label>
-                  <input
-                    onChange={handleInput}
-                    type="text"
-                    step="0.01"
-                    className="border-2 p-2 rounded-lg text-center w-full"
-                    name="area1"
-                  ></input>
-                </div>
-              </div>
-              <br />
+              </form>
             </AccordionItemPanel>
           </AccordionItem>
         </Accordion>
@@ -567,53 +734,3 @@ const TramiteDetalleForm = () => {
   );
 };
 export default TramiteDetalleForm;
-/* 
-   <AccordionItem className="bg-transparent bg-white bg-opacity-80">
-            <AccordionItemHeading>
-              <AccordionItemButton>Detalles</AccordionItemButton>
-            </AccordionItemHeading>
-            <AccordionItemPanel>
-              <table className="w-full text-center">
-                <thead className="uppercase border-2  bg-teal-500 text-base text-white">
-                  <tr>
-                    <th className="border-2 rounded-xl p-2">Radicado</th>
-                    <th className="border-2 rounded-xl p-2">Id</th>
-                    <th className="border-2 rounded-xl p-2">Tipo de Tramite</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tramites.Tramites.map((tramite, key) => (
-                    <tr value={key}>
-                      <td>{tramite.Radicado}</td>
-                      <td>{tramite.id}</td>
-                      <td>
-                        <div className="w-sm flex flex-col items-center justify-center mt-4">
-                          <Popup
-                            trigger={
-                              <button className="p-2 w-1/8 text-center  rounded-md  border-2  text-white bg-teal-500 ">
-                                {" "}
-                                Detalles{" "}
-                              </button>
-                            }
-                            modal
-                            nested
-                          >
-                            {(close) => (
-                              <div className="modal">
-                                <div className="content">Welcome to GFG!!!</div>
-                                <div>
-                                  <button onClick={() => close()}>
-                                    Close modal
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                          </Popup>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </AccordionItemPanel>
-          </AccordionItem>*/
