@@ -70,8 +70,8 @@ const FormularioResolucion = () => {
     }
   };
 
-  let auxinfoInscribir = Inscripcion;
-
+  //let auxinfoInscribir = Inscripcion;
+  let auxinfoInscribir = infoInscribir;
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("info escribir", auxinfoInscribir);

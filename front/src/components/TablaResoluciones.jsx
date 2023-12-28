@@ -18,7 +18,7 @@ const TablaResoluciones = () => {
           },
         };
         const { data } = await clienteAxios(
-          "/document/list/radicados?direction=DESC",
+          "/document/list/radicados?direction=DESC?limit=2000",
           config
         );
         const { data: info } = data;
