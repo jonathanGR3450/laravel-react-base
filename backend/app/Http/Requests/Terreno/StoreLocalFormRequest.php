@@ -35,6 +35,7 @@ class StoreLocalFormRequest extends FormRequest
             'fin_vida_util_version' => 'nullable|date',
             'espacio_de_nombres' => 'required|string|max:255',
             'local_id' => 'required|string|max:255',
+            't_id_conservacion' => 'nullable|integer|exists:pgsqlcatastro.lc_terreno,t_id',
         ];
     }
 }

@@ -18,6 +18,7 @@ class LcUnidadconstruccionLocal extends Model
         'area_construida',
         'altura',
         'lc_caracteristicasunidadconstruccion',
+        'lc_caracteristicasunidadconstruccion_conservacion',
         'lc_construccion',
         'dimension',
         'etiqueta',
@@ -28,6 +29,7 @@ class LcUnidadconstruccionLocal extends Model
         'espacio_de_nombres',
         'local_id',
         'lc_construccion_conservacion',
+        't_id_conservacion',
     ];
 
     public function caracteristicasunidadconstruccion()

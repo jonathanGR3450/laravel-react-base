@@ -33,6 +33,7 @@ use App\Http\Controllers\Terreno\UpdateLocal AS UpdateTerrenoLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
 use App\Http\Controllers\Construccion\UpdateLocal AS UpdateConstruccionLocal;
 use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccionLocal;
+use App\Http\Controllers\UnidadConstruccion\MigrarLocal AS MigrarUnidadConstruccionLocal;
 use App\Http\Controllers\TramiteRadicado\StoreLocal AS StoreTramiteRadicadoLocal;
 use App\Http\Controllers\TramiteRadicado\UpdateLocal AS UpdateTramiteRadicadoLocal;
 use App\Http\Controllers\TramiteRadicado\IndexLocal AS IndexLocalTramiteRadicadoLocal;
@@ -60,6 +61,7 @@ use App\Http\Controllers\Predio\StoreNumeroPredialController;
 use App\Http\Controllers\Predio\StoreNumeroPredialHomologadoController;
 use App\Http\Controllers\Predio\UpdateLcPredio;
 use App\Http\Controllers\RicTramiteCatastral\IndexLocal AS IndexLocalRicTramiteCatastral;
+use App\Http\Controllers\Terreno\MigrateLocal;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -146,6 +148,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('terreno')->group(function () {
         Route::post('local', StoreTerrenoLocal::class);
+        Route::post('local/migrar', MigrateLocal::class);
         Route::put('local/{id}', UpdateTerrenoLocal::class);
     });
 
@@ -154,6 +157,7 @@ Route::prefix('v1')->group(function () {
     Route::post('contacto-visita/local', StoreContactoVisitaLocal::class);
 
     Route::post('unidad/construccion/local', StoreUnidadConstruccionLocal::class);
+    Route::post('unidad/construccion/local/migrar', MigrarUnidadConstruccionLocal::class);
     Route::post('construccion/local', StoreConstruccionLocal::class);
     Route::put('construccion/local/{id}', UpdateConstruccionLocal::class);
     Route::post('construccion/documentos', StoreDocuments::class);
