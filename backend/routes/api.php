@@ -64,6 +64,7 @@ use App\Http\Controllers\Predio\UpdateLcPredio;
 use App\Http\Controllers\RicTramiteCatastral\IndexLocal AS IndexLocalRicTramiteCatastral;
 use App\Http\Controllers\Terreno\MigrateLocal;
 use App\Http\Controllers\Clasificacion\MigrateLocal AS MigrateCareacteristicasLocal;
+use App\Http\Controllers\Construccion\MigrateLocal AS MigrateConstruccionLocal;
 use App\Http\Controllers\Clasificacion\StoreCalificacionConvencionalLocal;
 use App\Http\Controllers\Clasificacion\StoreCalificacionNoConvencionalLocal;
 use Illuminate\Support\Facades\Route;
@@ -170,6 +171,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('unidad/construccion/local', StoreUnidadConstruccionLocal::class);
     Route::post('unidad/construccion/local/migrar', MigrarUnidadConstruccionLocal::class);
+    Route::post('construccion/local/migrar', MigrateConstruccionLocal::class);
     Route::post('construccion/local', StoreConstruccionLocal::class);
     Route::put('construccion/local/{id}', UpdateConstruccionLocal::class);
     Route::post('construccion/documentos', StoreDocuments::class);
