@@ -20,6 +20,7 @@ class LcCalificacionConvencional extends Model
         'tipo_calificar',
         'total_calificacion',
         'lc_unidad_construccion',
+        'lc_unidad_construccion_conservacion',
     ];
 
     public function tipoCalificar()

@@ -275,8 +275,11 @@ class MigracionConservacionController extends AppBaseController
                             if ($calificacionConvencional->count() > 0) {
                                 foreach ($calificacionConvencional as $convencional) {
 
-                                    $calificacionConvencionalData = $convencional->makeHidden(['t_id'])->toArray();
+                                    $calificacionConvencionalData = $convencional->makeHidden(['t_id', 'lc_unidad_construccion_conservacion'])->toArray();
                                     $calificacionConvencionalData['lc_unidad_construccion'] = $lcCaracteristicasunidadconstruccion->t_id;
+                                    if ($convencional->lc_unidad_construccion_conservacion) {
+                                        $calificacionConvencionalData['lc_unidad_construccion'] = $convencional->lc_unidad_construccion_conservacion;
+                                    }
                                     $calificacionConvencionalConservacion = LcCalificacionConvencional::create($calificacionConvencionalData);
                                     
                                     // lc_grupocalificacion
@@ -311,8 +314,11 @@ class MigracionConservacionController extends AppBaseController
                             $calificacionNoConvencionalConservacion = null;
                             if ($calificacionNoConvencional->count() > 0) {
                                 foreach ($calificacionNoConvencional as $convencional) {
-                                    $calificacionNoConvencionalData = $convencional->makeHidden(['t_id'])->toArray();
+                                    $calificacionNoConvencionalData = $convencional->makeHidden(['t_id', 'lc_unidad_construccion_conservacion'])->toArray();
                                     $calificacionNoConvencionalData['lc_unidad_construccion'] = $lcCaracteristicasunidadconstruccion->t_id;
+                                    if ($convencional->lc_unidad_construccion_conservacion) {
+                                        $calificacionNoConvencionalData['lc_unidad_construccion'] = $convencional->lc_unidad_construccion_conservacion;
+                                    }
                                     $calificacionNoConvencionalConservacion = LcCalificacionNoConvencional::create($calificacionNoConvencionalData);
                                 }
                             }
