@@ -65,6 +65,8 @@ use App\Http\Controllers\RicTramiteCatastral\IndexLocal AS IndexLocalRicTramiteC
 use App\Http\Controllers\Terreno\MigrateLocal;
 use App\Http\Controllers\Clasificacion\MigrateLocal AS MigrateCareacteristicasLocal;
 use App\Http\Controllers\Construccion\MigrateLocal AS MigrateConstruccionLocal;
+use App\Http\Controllers\Derecho\MigrateLocal AS MigrateDerechoLocal;
+use App\Http\Controllers\Predio\MigrateLocal AS MigratePredioLocal;
 use App\Http\Controllers\Clasificacion\StoreCalificacionConvencionalLocal;
 use App\Http\Controllers\Clasificacion\StoreCalificacionNoConvencionalLocal;
 use Illuminate\Support\Facades\Route;
@@ -95,6 +97,9 @@ Route::prefix('v1')->group(function () {
         Route::get('', GetPredioController::class);
         Route::put('{id}', UpdateLcPredio::class);
         Route::post('uebaunit', StoreColUebaunitLocal::class);
+        Route::post('uebaunit/local/migrar', MigratePredioLocal::class);
+
+
         Route::post('unidadfuente', StoreColUnidadfuenteLocal::class);
         Route::get('numero-predial', GetPredioNumeroPredialController::class);
         Route::post('numeros-prediales/numeros-homologados', StoreNumeroPredialHomologadoController::class);
@@ -148,6 +153,8 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::post('derecho/local', StoreDerechoLocal::class);
+    Route::post('derecho/local/migrar', MigrateDerechoLocal::class);
+
     Route::post('datos-condominio/local', StoreDatosCondominioLocal::class);
     Route::post('predio-copropiedad/local', StorePredioCopropiedadLocal::class);
     Route::post('ric-predio/local', StoreRicPredioLocal::class);
