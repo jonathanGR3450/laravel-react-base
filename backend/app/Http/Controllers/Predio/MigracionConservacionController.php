@@ -331,7 +331,7 @@ class MigracionConservacionController extends AppBaseController
 
                         $unidadConstruccionData = $unidadConstruccion->makeHidden(['t_id', 'caracteristicasunidadconstruccion'])->toArray();
                         $unidadConstruccionData['lc_caracteristicasunidadconstruccion'] = $lcCaracteristicasunidadconstruccionId;
-                        $unidadConstruccionData['lc_construccion'] = $lcConstruccion?->t_id;
+                        $unidadConstruccionData['lc_construccion'] = $lcConstruccionId;
                         if ($unidadConstruccion->lc_construccion_conservacion) {
                             $unidadConstruccionData['lc_construccion'] = $unidadConstruccion->lc_construccion_conservacion;
                         }
