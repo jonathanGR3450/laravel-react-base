@@ -97,7 +97,7 @@ const AvaluoProvider = ({ children }) => {
                   newobj.total
               );
               console.log(
-                "data Area urbano " +
+                "data Area rural " +
                   parseFloat(newobj.area) +
                   " dataValor " +
                   parseFloat(result.data[0].valor_m2) +
@@ -154,7 +154,7 @@ const AvaluoProvider = ({ children }) => {
                         if (currentItem.terreno.SantaMaria) {
                           url =
                             import.meta.env.VITE_API_URL_FIRST +
-                            "avaluo-catastral/urbano/santa-maria?puntos=" +
+                            "avaluo-catastral/tipo/santa-maria?puntos=" +
                             puntos +
                             "&vigencia=" +
                             año;
@@ -234,62 +234,37 @@ const AvaluoProvider = ({ children }) => {
                           method: "GET",
                           redirect: "follow",
                         };
-                        //Rangos para que sean Comercial Gneral
-                        async function ComGeneral(valor) {
-                          let rangos = [
-                            { inicio: 235, fin: 236 },
-                            { inicio: 237, fin: 243 },
-                            { inicio: 245, fin: 237 },
-                            { inicio: 238, fin: 238 },
-                          ];
-
-                          let sum = 0;
-                          for (const rango of rangos) {
-                            if (valor >= rango.inicio && valor <= rango.fin) {
-                              sum++;
-                            }
-                          }
-                          console.log("sum", sum);
-                          if (sum != 0) {
-                            return true;
-                          } else {
-                            return false;
-                          }
-                        }
                         let url = "";
                         //Varia URL para cada Condicional
                         console.log("Carga Url COmercial", url);
-                        if (await ComGeneral(uso)) {
+                        if (uso >= 235 && uso <= 236) {
+                          //bodega
                           url =
                             import.meta.env.VITE_API_URL_FIRST +
-                            "avaluo-catastral/tipo/tab-com?puntos=" +
+                            "avaluo-catastral/tipo/tab-bod?puntos=" +
                             puntos +
                             "&vigencia=" +
                             año +
                             "&tipo=RURAL";
                         } else {
-                          if (uso >= 235 && uso <= 236) {
-                            //bodega
+                          if (uso >= 244 && uso <= 245) {
+                            //Hotel
                             url =
                               import.meta.env.VITE_API_URL_FIRST +
-                              "avaluo-catastral/tipo/tab-bod?puntos=" +
+                              "avaluo-catastral/tipo/tab-hot?puntos=" +
                               puntos +
                               "&vigencia=" +
                               año +
                               "&tipo=RURAL";
                           } else {
-                            if (uso >= 244 && uso <= 245) {
-                              //Hotel
-                              url =
-                                import.meta.env.VITE_API_URL_FIRST +
-                                "avaluo-catastral/tipo/tab-hot?puntos=" +
-                                puntos +
-                                "&vigencia=" +
-                                año +
-                                "&tipo=RURAL";
-                            } else {
-                              console.log("Tabla sin Valores");
-                            }
+                            url =
+                              import.meta.env.VITE_API_URL_FIRST +
+                              "avaluo-catastral/tipo/tab-com?puntos=" +
+                              puntos +
+                              "&vigencia=" +
+                              año +
+                              "&tipo=RURAL";
+                            console.log("Tabla sin Valores", uso);
                           }
                         }
 
@@ -803,7 +778,7 @@ const AvaluoProvider = ({ children }) => {
                           console.log("Usa URL santamaria");
                           url =
                             import.meta.env.VITE_API_URL_FIRST +
-                            "avaluo-catastral/urbano/santa-maria?puntos=" +
+                            "avaluo-catastral/tipo/santa-maria?puntos=" +
                             puntos +
                             "&vigencia=" +
                             año;
@@ -871,7 +846,7 @@ const AvaluoProvider = ({ children }) => {
                       );
 
                       console.log("ENTRA COMERCIAL");
-
+                      console.log("Uso", uso);
                       async function ComercialCalculate() {
                         console.log("Calculando");
                         let aux = "";
@@ -883,76 +858,49 @@ const AvaluoProvider = ({ children }) => {
                           method: "GET",
                           redirect: "follow",
                         };
-                        //Rangos para que sean Comercial Gneral
-                        async function ComGeneral(valor) {
-                          let rangos = [
-                            { inicio: 235, fin: 236 },
-                            { inicio: 237, fin: 243 },
-                            { inicio: 245, fin: 237 },
-                            { inicio: 238, fin: 238 },
-                          ];
-
-                          let sum = 0;
-                          for (const rango of rangos) {
-                            if (valor >= rango.inicio && valor <= rango.fin) {
-                              sum++;
-                            }
-                          }
-                          console.log("sum", sum);
-                          if (sum != 0) {
-                            return true;
-                          } else {
-                            return false;
-                          }
-                        }
                         let url = "";
-                        //Varia URL para cada Condicional
-                        console.log("Carga Url COmercial", url);
-                        if (await ComGeneral(uso)) {
+                        if (uso >= 235 && uso <= 236) {
+                          //bodega
                           url =
                             import.meta.env.VITE_API_URL_FIRST +
-                            "avaluo-catastral/tipo/tab-com?puntos=" +
+                            "avaluo-catastral/tipo/tab-bod?puntos=" +
                             puntos +
                             "&vigencia=" +
                             año +
                             "&tipo=URBANA";
                         } else {
-                          if (uso >= 235 && uso <= 236) {
-                            //bodega
+                          if (uso >= 237 && uso <= 238) {
+                            //Centro Comercial
                             url =
                               import.meta.env.VITE_API_URL_FIRST +
-                              "avaluo-catastral/tipo/tab-bod?puntos=" +
+                              "avaluo-catastral/tipo/tab-cc-f03?puntos=" +
                               puntos +
-                              "&vigencia=" +
+                              "&vigencia" +
                               año +
                               "&tipo=URBANA";
                           } else {
-                            if (uso >= 237 && uso <= 238) {
-                              //Centro Comercial
+                            if (uso >= 244 && uso <= 245) {
+                              //Hotel
                               url =
                                 import.meta.env.VITE_API_URL_FIRST +
-                                "avaluo-catastral/tipo/tab-cc-f03?puntos=" +
+                                "avaluo-catastral/tipo/tab-hot?puntos=" +
                                 puntos +
-                                "&vigencia" +
+                                "&vigencia=" +
                                 año +
                                 "&tipo=URBANA";
                             } else {
-                              if (uso >= 244 && uso <= 245) {
-                                //Hotel
-                                url =
-                                  import.meta.env.VITE_API_URL_FIRST +
-                                  "avaluo-catastral/tipo/tab-hot?puntos=" +
-                                  puntos +
-                                  "&vigencia=" +
-                                  año +
-                                  "&tipo=URBANA";
-                              } else {
-                                console.log("Tabla sin Valores");
-                              }
+                              url =
+                                import.meta.env.VITE_API_URL_FIRST +
+                                "avaluo-catastral/tipo/tab-com?puntos=" +
+                                puntos +
+                                "&vigencia=" +
+                                año +
+                                "&tipo=URBANA";
                             }
                           }
                         }
 
+                        console.log("Carga Url COmercial", url);
                         try {
                           const response = await fetch(url, requestOptions);
                           if (response.ok) {
@@ -1460,99 +1408,100 @@ const AvaluoProvider = ({ children }) => {
           });
           return sum;
         }
-        function calculateDestino() {
+        function calculateDestino(inde) {
           let destino = "";
-          console.log("Entra Destino", tableData);
-          tableData.map((item, index) => {
-            switch (parseInt(item.predio.destinacion_economica)) {
-              case 162:
-                destino = "M (PECUARIO) -ACUICOLA";
-                break;
-              case 163:
-                destino = "L (AGRICOLA)";
-                break;
-              case 164:
-                destino = "N (AGROINDUSTRIAL)";
-                break;
-              case 165:
-                destino = "D (AGROPECUARIO)";
-                break;
-              case 166:
-                destino =
-                  "L - O - M (AGRICOLA O PECUARIO, FORESTAL) - AGROFORESTAL";
-                break;
-              case 167:
-                destino = "C (COMERCIAL)";
-                break;
-              case 168:
-                destino = "F (CULTURAL)";
-                break;
-              case 169:
-                destino = "J (EDUCATIVO)";
-                break;
-              case 170:
-                destino = "O (FORESTAL)";
-                break;
-              case 171:
-                destino = "A (HABITACIONAL)";
-                break;
-              case 172:
-                destino = "B (INDUSTRIAL)";
-                break;
-              case 173:
-                destino =
-                  "N (Infraestructura asociada a producción agropecuaria) AGROINDUSTRIAL";
-                break;
-              case 174:
-                destino = "Infraestructura hidráulica ";
-                break;
-              case 175:
-                destino = "Infraestructura de saneamiento básico";
-                break;
-              case 176:
-                destino = "Infraestructura seguridad";
-                break;
-              case 177:
-                destino = "Infraestructura transporte";
-                break;
-              case 178:
-                destino = "I (INSTITUCIONAL)";
-                break;
-              case 179:
-                destino = "E (MINERO)";
-                break;
-              case 180:
-                destino = "Q (LOTE NO URBANIZABLE NO URBANIZADO)";
-                break;
-              case 181:
-                destino = "R (LOTE URBANIZADO NO CONSTRUIDO)";
-                break;
-              case 182:
-                destino = "S (LOTE NO RUBANIZABLE)";
-                break;
-              case 183:
-                destino = "M (PECUARIO)";
-                break;
-              case 184:
-                destino = "G (RECREACIONAL)";
-                break;
-              case 185:
-                destino = "K (RELIGIOSO)";
-                break;
-              case 186:
-                destino = "H (SALUBRIDAD)";
-                break;
-              case 187:
-                destino = "T (SERVICIOS ESPECIALES) Servicios funerarios";
-                break;
-              case 188:
-                destino = "P (USO PUBLICO)";
-                break;
-              default:
-                destino = ""; // O cualquier valor por defecto
-                break;
-            }
-          });
+          let aux = inde;
+          console.log("Entra Destino", inde);
+          switch (parseInt(aux.predio.destinacion_economica)) {
+            case 162:
+              destino = "M (PECUARIO) -ACUICOLA";
+              break;
+            case 163:
+              destino = "L (AGRICOLA)";
+              break;
+            case 164:
+              destino = "N (AGROINDUSTRIAL)";
+              break;
+            case 165:
+              destino = "D (AGROPECUARIO)";
+              break;
+            case 166:
+              destino =
+                "L - O - M (AGRICOLA O PECUARIO, FORESTAL) - AGROFORESTAL";
+              break;
+            case 167:
+              destino = "C (COMERCIAL)";
+              break;
+            case 168:
+              destino = "F (CULTURAL)";
+              break;
+            case 169:
+              destino = "J (EDUCATIVO)";
+              break;
+            case 170:
+              destino = "O (FORESTAL)";
+              break;
+            case 171:
+              destino = "A (HABITACIONAL)";
+              break;
+            case 172:
+              destino = "B (INDUSTRIAL)";
+              break;
+            case 173:
+              destino =
+                "N (Infraestructura asociada a producción agropecuaria) AGROINDUSTRIAL";
+              break;
+            case 174:
+              destino = "Infraestructura hidráulica ";
+              break;
+            case 175:
+              destino = "Infraestructura de saneamiento básico";
+              break;
+            case 176:
+              destino = "Infraestructura seguridad";
+              break;
+            case 177:
+              destino = "Infraestructura transporte";
+              break;
+            case 178:
+              destino = "I (INSTITUCIONAL)";
+              break;
+            case 179:
+              destino = "E (MINERO)";
+              break;
+            case 180:
+              destino = "Q (LOTE NO URBANIZABLE NO URBANIZADO)";
+              break;
+            case 181:
+              destino = "R (LOTE URBANIZADO NO CONSTRUIDO)";
+              break;
+            case 182:
+              destino = "S (LOTE NO RUBANIZABLE)";
+              break;
+            case 183:
+              destino = "M (PECUARIO)";
+              break;
+            case 184:
+              destino = "G (RECREACIONAL)";
+              break;
+            case 185:
+              destino = "K (RELIGIOSO)";
+              break;
+            case 186:
+              destino = "H (SALUBRIDAD)";
+              break;
+            case 187:
+              destino = "T (SERVICIOS ESPECIALES) Servicios funerarios";
+              break;
+            case 188:
+              destino = "P (USO PUBLICO)";
+              break;
+            default:
+              destino = ""; // O cualquier valor por defecto
+              break;
+          }
+
+          aux = destino;
           return destino;
         }
         function calculateConstruida() {
@@ -1694,7 +1643,7 @@ const AvaluoProvider = ({ children }) => {
           num_predial: num,
           matricula: 157 + " - " + currentItem.Matricula,
           direccion: calculateDireccion(),
-          destinacion: calculateDestino(),
+          destinacion: calculateDestino(currentItem),
           area_terreno: calculateAreatotal(),
           area_construida: calculateConstruida(),
           avaluo: calculateAvaluo(),
@@ -1808,99 +1757,100 @@ const AvaluoProvider = ({ children }) => {
           }
           return direccion;
         }
-        function calculateDestino() {
+        function calculateDestino(inde) {
           let destino = "";
-          console.log("Entra Destino", tableData);
-          tableData.map((item, index) => {
-            switch (parseInt(item.predio.destinacion_economica)) {
-              case 162:
-                destino = "M (PECUARIO) -ACUICOLA";
-                break;
-              case 163:
-                destino = "L (AGRICOLA)";
-                break;
-              case 164:
-                destino = "N (AGROINDUSTRIAL)";
-                break;
-              case 165:
-                destino = "D (AGROPECUARIO)";
-                break;
-              case 166:
-                destino =
-                  "L - O - M (AGRICOLA O PECUARIO, FORESTAL) - AGROFORESTAL";
-                break;
-              case 167:
-                destino = "C (COMERCIAL)";
-                break;
-              case 168:
-                destino = "F (CULTURAL)";
-                break;
-              case 169:
-                destino = "J (EDUCATIVO)";
-                break;
-              case 170:
-                destino = "O (FORESTAL)";
-                break;
-              case 171:
-                destino = "A (HABITACIONAL)";
-                break;
-              case 172:
-                destino = "B (INDUSTRIAL)";
-                break;
-              case 173:
-                destino =
-                  "N (Infraestructura asociada a producción agropecuaria) AGROINDUSTRIAL";
-                break;
-              case 174:
-                destino = "Infraestructura hidráulica ";
-                break;
-              case 175:
-                destino = "Infraestructura de saneamiento básico";
-                break;
-              case 176:
-                destino = "Infraestructura seguridad";
-                break;
-              case 177:
-                destino = "Infraestructura transporte";
-                break;
-              case 178:
-                destino = "I (INSTITUCIONAL)";
-                break;
-              case 179:
-                destino = "E (MINERO)";
-                break;
-              case 180:
-                destino = "Q (LOTE NO URBANIZABLE NO URBANIZADO)";
-                break;
-              case 181:
-                destino = "R (LOTE URBANIZADO NO CONSTRUIDO)";
-                break;
-              case 182:
-                destino = "S (LOTE NO RUBANIZABLE)";
-                break;
-              case 183:
-                destino = "M (PECUARIO)";
-                break;
-              case 184:
-                destino = "G (RECREACIONAL)";
-                break;
-              case 185:
-                destino = "K (RELIGIOSO)";
-                break;
-              case 186:
-                destino = "H (SALUBRIDAD)";
-                break;
-              case 187:
-                destino = "T (SERVICIOS ESPECIALES) Servicios funerarios";
-                break;
-              case 188:
-                destino = "P (USO PUBLICO)";
-                break;
-              default:
-                destino = ""; // O cualquier valor por defecto
-                break;
-            }
-          });
+          let aux = inde;
+          console.log("Entra Destino", inde);
+          switch (parseInt(aux.predio.destinacion_economica)) {
+            case 162:
+              destino = "M (PECUARIO) -ACUICOLA";
+              break;
+            case 163:
+              destino = "L (AGRICOLA)";
+              break;
+            case 164:
+              destino = "N (AGROINDUSTRIAL)";
+              break;
+            case 165:
+              destino = "D (AGROPECUARIO)";
+              break;
+            case 166:
+              destino =
+                "L - O - M (AGRICOLA O PECUARIO, FORESTAL) - AGROFORESTAL";
+              break;
+            case 167:
+              destino = "C (COMERCIAL)";
+              break;
+            case 168:
+              destino = "F (CULTURAL)";
+              break;
+            case 169:
+              destino = "J (EDUCATIVO)";
+              break;
+            case 170:
+              destino = "O (FORESTAL)";
+              break;
+            case 171:
+              destino = "A (HABITACIONAL)";
+              break;
+            case 172:
+              destino = "B (INDUSTRIAL)";
+              break;
+            case 173:
+              destino =
+                "N (Infraestructura asociada a producción agropecuaria) AGROINDUSTRIAL";
+              break;
+            case 174:
+              destino = "Infraestructura hidráulica ";
+              break;
+            case 175:
+              destino = "Infraestructura de saneamiento básico";
+              break;
+            case 176:
+              destino = "Infraestructura seguridad";
+              break;
+            case 177:
+              destino = "Infraestructura transporte";
+              break;
+            case 178:
+              destino = "I (INSTITUCIONAL)";
+              break;
+            case 179:
+              destino = "E (MINERO)";
+              break;
+            case 180:
+              destino = "Q (LOTE NO URBANIZABLE NO URBANIZADO)";
+              break;
+            case 181:
+              destino = "R (LOTE URBANIZADO NO CONSTRUIDO)";
+              break;
+            case 182:
+              destino = "S (LOTE NO RUBANIZABLE)";
+              break;
+            case 183:
+              destino = "M (PECUARIO)";
+              break;
+            case 184:
+              destino = "G (RECREACIONAL)";
+              break;
+            case 185:
+              destino = "K (RELIGIOSO)";
+              break;
+            case 186:
+              destino = "H (SALUBRIDAD)";
+              break;
+            case 187:
+              destino = "T (SERVICIOS ESPECIALES) Servicios funerarios";
+              break;
+            case 188:
+              destino = "P (USO PUBLICO)";
+              break;
+            default:
+              destino = ""; // O cualquier valor por defecto
+              break;
+          }
+
+          aux = destino;
           return destino;
         }
         function calculateAvaluo() {
@@ -1935,10 +1885,10 @@ const AvaluoProvider = ({ children }) => {
           zona: currentItem.Zona,
           matricula: 157 + " - " + currentItem.Matricula,
           direccion: calculateDireccion(),
-          destinacion: calculateDestino(),
+          destinacion: calculateDestino(currentItem),
           area_terreno: calculateAreatotal(),
           area_construida: 0,
-          avaluo_terreno: terrenoavaluo,
+          avaluo_terreno: calculateAvaluo(),
           avaluo: calculateAvaluo(),
           vigencia: "01/01/" + año,
           interesados: ArrayInteresado,
@@ -1988,6 +1938,13 @@ const AvaluoProvider = ({ children }) => {
         if (items.zona != "00") {
           if (items.vigencia == "01/01/2022") {
             console.log("Entra uRBANO");
+            newdata.concepto = "ACTUALIZACION CATASTRAL";
+            newdata.avaluo = redondear(newdata.avaluo);
+            dataLiquid.push({ ...newdata });
+          }
+        } else {
+          if (items.vigencia == "01/01/2023") {
+            console.log("Entra Rural");
             newdata.concepto = "ACTUALIZACION CATASTRAL";
             newdata.avaluo = redondear(newdata.avaluo);
             dataLiquid.push({ ...newdata });

@@ -116,9 +116,9 @@ const DerechoForm = (props, ref) => {
                 console.log("Resultado", result.data);
                 ///Retornar Id y guardarlo
                 objDerecho.t_id = result.data.t_id;
-                props.msj("Datos Derecho Guardado Correctamente");
+                props.msj(Math.random());
               } else {
-                props.msj("Error Datos Derecho ");
+                props.msj(Math.random());
                 const error = await response.json();
                 console.log("Error en la solicitud:", error);
               }

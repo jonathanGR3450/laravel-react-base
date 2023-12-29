@@ -25,7 +25,7 @@ export const LoadDataConstruccion = () => {
   const fechaActual = new Date();
   let añoActual = fechaActual.getFullYear();
   const [loading, setLoading] = useState(false);
-  const [msjLoading, setMsjLoading] = useState("Prueba");
+  const [msjLoading, setMsjLoading] = useState(true);
   const { tableData } = useContext(TableContext);
   const { createAvaluo, Load_Data_Desenglobe } = useAvaluo();
   const [dataSelect, setDataSelect] = useState(0);
@@ -273,7 +273,7 @@ export const LoadDataConstruccion = () => {
               >
                 Carga
               </button>
-              {loading ? <Loader /> : null}
+
               <ModalUniConForm ref={uniConstruccionRef} msj={setMsjLoading} />
             </div>
           ) : null}
@@ -2224,9 +2224,11 @@ export const LoadDataConstruccion = () => {
   }
 
   async function loadAvaluoBase(año, data) {
+    setLoading(true);
     let result = await createAvaluo(año, data);
     console.log("Resultado Contexto", JSON.stringify(result));
     //result = dataAvaluo;
+    setLoading(false);
     setDataTotal(result);
     setEstDataTotal(true);
     Load_Data_Desenglobe(tableData);
@@ -2379,6 +2381,7 @@ export const LoadDataConstruccion = () => {
 
   async function update_Data(data) {
     try {
+      setLoading(true);
       let dataAux = data;
       let dataPredio = dataTotal.inscribe_datos_predio_nmero_catastral;
       console.log("data axu", dataAux);
@@ -2416,6 +2419,7 @@ export const LoadDataConstruccion = () => {
         setMsjLoading("Actualizando Valores de Avaluo de Predio");
         const responsePredio = await fetch(urlPredio, requestOptionsPredio);
         setMsjLoading("Datos Guardados");
+        setLoading(false);
         const resultTerreno = await responseTerreno.json();
         const resultPredio = await responsePredio.json();
         console.log("Predio", predio);
@@ -2515,7 +2519,7 @@ export const LoadDataConstruccion = () => {
         <ChangeData />
         <TableForm />
       </div>
-      <div className="mt-4 w-full flex flex-row justify-center">
+      <div className="mt-4 w-full flex flex-row justify-center items-center">
         <button
           onClick={() => loadAvaluoBase(añoBase, tableData)}
           className=" p-1 text-center rounded-md text-white bg-teal-500 text-lg ml-4"
@@ -2530,7 +2534,9 @@ export const LoadDataConstruccion = () => {
             Guardar Avaluo
           </button>
         ) : null}
-        <label className="ml-4 font-semibold text-lg">{msjLoading}</label>
+      </div>
+      <div className="mt-4 w-full flex flex-row justify-center items-center">
+        {loading ? <Loader /> : null}
       </div>
 
       {estDataTotal ? <AllTableForm /> : null}

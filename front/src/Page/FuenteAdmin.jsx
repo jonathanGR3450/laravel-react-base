@@ -102,7 +102,7 @@ const FuenteAdminForm = (props, ref) => {
               const response = await fetch(url, requestOptions);
 
               if (!response.ok) {
-                props.msj("Error Datos Fuente Adminsitrativa ");
+                props.msj(Math.random());
                 throw new Error(`HTTP error! Status: ${response.status}`);
               }
 
@@ -114,7 +114,7 @@ const FuenteAdminForm = (props, ref) => {
             }
           }
         }
-        props.msj("Datos Fuente Administrativa Guardado Correctamente");
+        props.msj(Math.random());
         updateTableData(tableData);
         props.onClose();
       } else {

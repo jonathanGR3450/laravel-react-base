@@ -22,7 +22,7 @@ const PredioForm = (props, ref) => {
       municipio: "290",
       id_operacion: "",
       tiene_fmi: false,
-      codigo_orip: null,
+      codigo_orip: 157,
       matricula_inmobiliaria: null,
       numero_predial: "",
       numero_predial_anterior: "",
@@ -190,10 +190,10 @@ const PredioForm = (props, ref) => {
               if (result.success) {
                 dataForm.t_id = result.data.t_id;
                 item.predio = dataForm;
-                props.msj("Datos de Predio Guardado Satisfactoriamente");
+                props.msj(Math.random());
                 props.onClose();
               } else {
-                props.msj("Error al guardar datos de Predio");
+                props.msj(Math.random());
                 alert("Error");
               }
               console.log("Rsultado Predio", result);

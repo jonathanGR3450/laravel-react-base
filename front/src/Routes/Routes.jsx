@@ -37,87 +37,75 @@ const Ruta = () => {
   return (
     <InfoProvider>
       <AvaluoProvider>
-        <Routes>
-          <Route path="/" element={<Menu />}>
-            <Route path="/Tablero" element={<Tablero />}></Route>
-            <Route
-              path="/ConsultarPredio"
-              element={<ConsultarPredio />}
-            ></Route>
-            <Route
-              path="/InfoInspeccion"
-              element={<InfoInspeccion/>}
-            ></Route>
-            <Route path="/DetallesPredio" element={<DetallesPredio />}></Route>
-            <Route
-              path="/Interesado"
-              element={<NormalInteresadoForm />}
-            ></Route>
-            <Route path="/FuenteAdmin" element={<NormalFuenteForm />}></Route>
-            <Route path="/Predio" element={<NormalPredioForm />}></Route>
-            <Route path="/Consulta/:data" element={<Consulta />} />
-            <Route path="/Ficha" element={<FichaPredial />}>
-              <Route path="Uniconst/:info" element={<UniconstForm />}></Route>
-            </Route>
-            <Route path="/Resumen" element={<ResumenForm />}></Route>
-            <Route
-              path="/NumPredial"
-              element={
-                <ArrayFinalProvider>
-                  <TableProvider>
-                    <NumPredialForm />{" "}
-                  </TableProvider>
-                </ArrayFinalProvider>
-              }
-            ></Route>
-            <Route
-              path="/LoadData"
-              element={
-                <ArrayFinalProvider>
-                  <TableProvider>
+        <ArrayFinalProvider>
+          <TableProvider>
+            <Routes>
+              <Route path="/" element={<Menu />}>
+                <Route path="/Tablero" element={<Tablero />}></Route>
+                <Route
+                  path="/ConsultarPredio"
+                  element={<ConsultarPredio />}
+                ></Route>
+                <Route
+                  path="/InfoInspeccion"
+                  element={<InfoInspeccion />}
+                ></Route>
+                <Route
+                  path="/DetallesPredio"
+                  element={<DetallesPredio />}
+                ></Route>
+                <Route
+                  path="/Interesado"
+                  element={<NormalInteresadoForm />}
+                ></Route>
+                <Route
+                  path="/FuenteAdmin"
+                  element={<NormalFuenteForm />}
+                ></Route>
+                <Route path="/Predio" element={<NormalPredioForm />}></Route>
+                <Route path="/Consulta/:data" element={<Consulta />} />
+                <Route path="/Ficha" element={<FichaPredial />}>
+                  <Route
+                    path="Uniconst/:info"
+                    element={<UniconstForm />}
+                  ></Route>
+                </Route>
+                <Route path="/Resumen" element={<ResumenForm />}></Route>
+                <Route path="/NumPredial" element={<NumPredialForm />}></Route>
+                <Route
+                  path="/LoadData"
+                  element={
                     <DataProvider>
                       <LoadDataForm />
                     </DataProvider>
-                  </TableProvider>
-                </ArrayFinalProvider>
-              }
-            ></Route>
-            <Route
-              path="/LoadConstruccion"
-              element={
-                <ArrayFinalProvider>
-                  <TableProvider>
+                  }
+                ></Route>
+                <Route
+                  path="/LoadConstruccion"
+                  element={
                     <DataProvider>
                       <LoadDataConstruccion />
                     </DataProvider>
-                  </TableProvider>
-                </ArrayFinalProvider>
-              }
-            ></Route>
-            <Route path="/DataHom" element={<LoadCodHom />}></Route>
-            <Route path="/Avaluo" element={<AvaluoForm />}></Route>
-            <Route path="/Incremento" element={<IncrementoForm />}></Route>
-            <Route path="/CreateTramite" element={<CreateTramite />}></Route>
-            <Route
-              path="/Tramites"
-              element={
-                <TableProvider>
-                  <TramitesForm />
-                </TableProvider>
-              }
-            ></Route>
-            <Route
-              path="/TramiteDetalle"
-              element={
-                <TableProvider>
-                  <TramiteDetalleForm />
-                </TableProvider>
-              }
-            ></Route>
-            <Route path="/Resolucion" element={<Resolucion />}></Route>
-            <Route path="/Resoluciones" element={<Resoluciones />}></Route>
-          </Route>
-        </Routes>
+                  }
+                ></Route>
+                <Route path="/DataHom" element={<LoadCodHom />}></Route>
+                <Route path="/Avaluo" element={<AvaluoForm />}></Route>
+                <Route path="/Incremento" element={<IncrementoForm />}></Route>
+                <Route
+                  path="/CreateTramite"
+                  element={<CreateTramite />}
+                ></Route>
+                <Route path="/Tramites" element={<TramitesForm />}></Route>
+                <Route
+                  path="/TramiteDetalle"
+                  element={<TramiteDetalleForm />}
+                ></Route>
+                <Route path="/Resolucion" element={<Resolucion />}></Route>
+                <Route path="/Resoluciones" element={<Resoluciones />}></Route>
+              </Route>
+            </Routes>
+          </TableProvider>
+        </ArrayFinalProvider>
       </AvaluoProvider>
     </InfoProvider>
   );

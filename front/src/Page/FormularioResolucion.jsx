@@ -34,6 +34,7 @@ const FormularioResolucion = () => {
   const [opcionesSeleccionadas, setOpcionesSeleccionadas] = useState([]);
   const {
     numPredial,
+    numPredialOriginal,
     mostrarAlerta,
     alerta,
     submitInfoResolucion,
@@ -46,6 +47,9 @@ const FormularioResolucion = () => {
   const { Numero_Predial } = Predio ? Predio[0] : {};
   const { terreno } = Predio ? Predio[0] : {};
   const { unidad_construccion } = Predio ? Predio[0] : {};
+  const { data: infoOri } = numPredialOriginal ? numPredialOriginal : {};
+  const PredioOri = infoOri ? infoOri.Predio[0] : {};
+
   console.log("data predio", Predio);
   useEffect(() => {
     loadTipo_Tramite();
@@ -82,9 +86,10 @@ const FormularioResolucion = () => {
     }
   };
 
-  let auxinfoInscribir = Inscripcion;
-  //let auxinfoInscribir = infoInscribir;
+  //let auxinfoInscribir = Inscripcion;
+  let auxinfoInscribir = infoInscribir;
   console.log("info escribir", auxinfoInscribir);
+  console.log("123 data ", PredioOri);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -125,7 +130,101 @@ const FormularioResolucion = () => {
     opcionesSeleccionadas.map((item, index) => {
       documentos += " " + item + ", ";
     });
-    console.log("sum ", sum);
+    let uniNoNull = [];
+    let sumatoriaAreaConstruida = 0;
+    PredioOri.unidad_construccion.map((item, index) => {
+      if (item.t_id != null) {
+        uniNoNull.push(item);
+        sumatoriaAreaConstruida += parseFloat(item.area_construida);
+      }
+    });
+    let interesados = [];
+    if (
+      Array.isArray(
+        PredioOri.derechos[0].interesado_lc_agrupacioninteresados.interesados
+      )
+    ) {
+      PredioOri.derechos[0].interesado_lc_agrupacioninteresados.interesados.map(
+        (item, index) => {
+          let nom_documento = "";
+          switch (item.tipo_documento) {
+            case 529:
+              nom_documento = "C.C.";
+              break;
+            case 530:
+              nom_documento = "C.E.";
+              break;
+            case 531:
+              nom_documento = "NIT";
+              break;
+            case 532:
+              nom_documento = "T.I.";
+              break;
+            case 533:
+              nom_documento = "Registro Civil";
+              break;
+            case 534:
+              nom_documento = "Secuencial";
+              break;
+            case 535:
+              nom_documento = "Pasaporte";
+              break;
+            default:
+              nom_documento = "Vacio";
+              break;
+          }
+          let aux = {
+            cancela_propietarios_nmero_catastral: PredioOri.Numero_Predial,
+            cancela_propietarios_numero_propietario: index + 1,
+            cancela_propietarios_nombre_propietario: item.nombre,
+            cancela_propietarios_tipo_documento: nom_documento,
+            cancela_propietarios_numero_documento: item.documento_identidad,
+          };
+          interesados.push(aux);
+        }
+      );
+    } else {
+      let item = PredioOri.derechos[0].interesado_lc_interesado;
+      let nom_documento = "";
+      switch (item.tipo_documento) {
+        case 529:
+          nom_documento = "C.C.";
+          break;
+        case 530:
+          nom_documento = "C.E.";
+          break;
+        case 531:
+          nom_documento = "NIT";
+          break;
+        case 532:
+          nom_documento = "T.I.";
+          break;
+        case 533:
+          nom_documento = "Registro Civil";
+          break;
+        case 534:
+          nom_documento = "Secuencial";
+          break;
+        case 535:
+          nom_documento = "Pasaporte";
+          break;
+        default:
+          nom_documento = "Vacio";
+          break;
+      }
+      let aux = {
+        cancela_propietarios_nmero_catastral: PredioOri.Numero_Predial,
+        cancela_propietarios_numero_propietario: 1,
+        cancela_propietarios_nombre_propietario: item.nombre,
+        cancela_propietarios_tipo_documento: nom_documento,
+        cancela_propietarios_numero_documento: item.documento_identidad,
+      };
+      interesados.push(aux);
+    }
+    console.log("123 uni nonnull", uniNoNull);
+    console.log("123 sum ", sumatoriaAreaConstruida);
+    console.log("123 interesados", interesados);
+
     await submitInfoResolucion({
       englobe_texto: "iii) Plano de englobe",
       no_propiedad_horizontal: "005656",
@@ -178,6 +277,7 @@ const FormularioResolucion = () => {
         "(y a asignar el puntaje que esté acorde con lo estipulado en la ficha de calificación de construcciones adoptado por el Gestor Catastral. SÓLO SI MODIFICA TAMBIEN CALIFICACIÓN) ",
       unidad_construccion: [
         {
+          //Valores del Modificado numpredial
           unidad_construccion: "PISCINA",
           area_construida: "1",
         },
@@ -212,14 +312,19 @@ const FormularioResolucion = () => {
       no_radicado: numeroRadicado,
       asociado_id: idAasociado,
       numero_predial: Numero_Predial,
-      matricula_inmobiliaria: "1212212112",
-      zona_ubicacion: "Rural",
+      matricula_inmobiliaria: PredioOri.Matricula_Inmobiliaria + " ",
+      zona_ubicacion: PredioOri.Clase_Suelo[0].dispname,
       escritura_publica: numeroEscritura,
       fecha_now: fechaEscritutra,
       no_notaria: notaria,
       ciudad: ciudadNotaria,
-      extension_desde: "157-00000",
-      extension_hasta: "157-99999",
+      extension_desde:
+        auxinfoInscribir.inscribe_datos_predio_nmero_catastral[0]
+          .inscribe_datos_predio_matricula_inmobiliaria,
+      extension_hasta:
+        auxinfoInscribir.inscribe_datos_predio_nmero_catastral[
+          auxinfoInscribir.inscribe_datos_predio_nmero_catastral.length - 1
+        ].inscribe_datos_predio_matricula_inmobiliaria,
       ingrese_imagen: "INGRESAR IMÁGEN LEGIBLE Y CENTRADA",
       dia_now_letra: diaNotificacionLetra,
       dia_now_numero: diaNotificacion,
@@ -235,28 +340,19 @@ const FormularioResolucion = () => {
       reviso_aprobo_cargo: "Aux. Administrativo",
       cancela_datos_predio_nmero_catastral: [
         {
-          cancela_datos_predio_nmero_catastral:
-            "252900100000002150187000000000",
-          cancela_datos_predio_matricula_inmobiliaria: "157-75298",
-          cancela_datos_predio_direccion: "Lo No 6",
-          cancela_datos_predio_destino_economico: "R",
-          cancela_datos_predio_area_terreno: 748,
-          cancela_datos_predio_area_construida: 0,
-          cancela_datos_predio_avaluo: "$ 336,600,000",
-          cancela_datos_predio_vigencia: "01012023",
+          cancela_datos_predio_nmero_catastral: PredioOri.Numero_Predial,
+          cancela_datos_predio_matricula_inmobiliaria:
+            PredioOri.Matricula_Inmobiliaria,
+          cancela_datos_predio_direccion: PredioOri.Direccion[0].Nombre_Predio,
+          cancela_datos_predio_destino_economico:
+            PredioOri.Destinacion_Economica[0].dispname,
+          cancela_datos_predio_area_terreno: PredioOri.terreno.area_terreno,
+          cancela_datos_predio_area_construida: sumatoriaAreaConstruida,
+          cancela_datos_predio_avaluo: PredioOri.Avaluo_Catastral,
+          cancela_datos_predio_vigencia: "01/01/" + new Date().getFullYear(),
         },
       ],
-      cancela_propietarios_nmero_catastral: [
-        {
-          cancela_propietarios_nmero_catastral:
-            "252900100000002150187000000000",
-          cancela_propietarios_numero_propietario: "1",
-          cancela_propietarios_nombre_propietario:
-            "LA SOCIEDAD BERESNAJE COLOMBIA S",
-          cancela_propietarios_tipo_documento: "N",
-          cancela_propietarios_numero_documento: "9005943878",
-        },
-      ],
+      cancela_propietarios_nmero_catastral: interesados,
       inscribe_datos_predio_nmero_catastral:
         auxinfoInscribir.inscribe_datos_predio_nmero_catastral,
       inscribe_propietarios_nmero_catastral:

@@ -26,7 +26,7 @@ export const LoadDataForm = () => {
   const { dataAll, updateDataAll } = useContext(DataContext);
   const { tableData } = useContext(TableContext);
   const [loading, setLoading] = useState(false);
-  const [msjLoading, setMsjLoading] = useState("Prueba");
+  const [msjLoading, setMsjLoading] = useState(true);
   useEffect(() => {
     updateDataAll((prevValues) => ({
       ...prevValues,
@@ -93,17 +93,6 @@ export const LoadDataForm = () => {
             ) : null}
           </td>
           <td className="border-2 rounded-xl p-2">
-            {item.hasOwnProperty("fuente_administrativa") ? (
-              <div>
-                <button onClick={openfuenteResumeForm}>
-                  {" "}
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-                <FuenteResumeForm ref={fuenteResumeForm} datos={item} />
-              </div>
-            ) : null}
-          </td>
-          <td className="border-2 rounded-xl p-2">
             {item.hasOwnProperty("derecho") ? (
               <div>
                 <button onClick={openderechoResumeForm}>
@@ -111,6 +100,17 @@ export const LoadDataForm = () => {
                   <FontAwesomeIcon icon={faSearch} />
                 </button>
                 <DerechoResumeForm ref={derechoResumeForm} datos={item} />
+              </div>
+            ) : null}
+          </td>
+          <td className="border-2 rounded-xl p-2">
+            {item.hasOwnProperty("fuente_administrativa") ? (
+              <div>
+                <button onClick={openfuenteResumeForm}>
+                  {" "}
+                  <FontAwesomeIcon icon={faSearch} />
+                </button>
+                <FuenteResumeForm ref={fuenteResumeForm} datos={item} />
               </div>
             ) : null}
           </td>
@@ -126,8 +126,8 @@ export const LoadDataForm = () => {
               <th className="border-2 rounded-xl p-2">Número Predial</th>
               <th className="border-2 rounded-xl p-2">Predio</th>
               <th className="border-2 rounded-xl p-2">Interesado</th>
-              <th className="border-2 rounded-xl p-2">Fuente Administrativa</th>
               <th className="border-2 rounded-xl p-2">Derecho</th>
+              <th className="border-2 rounded-xl p-2">Fuente Administrativa</th>
             </tr>
           </thead>
           <tbody>{filas}</tbody>
@@ -301,7 +301,6 @@ export const LoadDataForm = () => {
     );
   };
   const sendData = async () => {
-    setMsjLoading("Guardando Datos");
     setLoading(true);
     const entries = Object.entries(tableData);
     for (const [index, [key, item]] of entries.entries()) {
@@ -402,7 +401,6 @@ export const LoadDataForm = () => {
           >
             Siguiente
           </button>
-          <label className="text-xl font-semibold">{msjLoading} </label>
           {loading ? <Loader /> : null}
         </div>
       </div>
