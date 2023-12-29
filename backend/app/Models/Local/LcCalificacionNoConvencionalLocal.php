@@ -17,6 +17,7 @@ class LcCalificacionNoConvencionalLocal extends Model
     protected $fillable = [
         'tipo_anexo',
         'lc_unidad_construccion',
+        'lc_unidad_construccion_conservacion',
     ];
 
     // Relación con lc_anexotipo

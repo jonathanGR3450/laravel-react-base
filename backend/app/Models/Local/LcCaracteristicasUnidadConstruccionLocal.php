@@ -39,6 +39,7 @@ class LcCaracteristicasUnidadConstruccionLocal  extends Model
         'espacio_de_nombres',
         'local_id',
         'sync',
+        't_id_conservacion',
     ];
 
     // Relación con lc_construcciontipo

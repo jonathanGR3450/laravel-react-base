@@ -30,6 +30,7 @@ use App\Http\Controllers\Datosadicionaleslevantamientocatastral\StoreLocal AS St
 use App\Http\Controllers\ContactoVisita\StoreLocal AS StoreContactoVisitaLocal;
 use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
 use App\Http\Controllers\Terreno\UpdateLocal AS UpdateTerrenoLocal;
+use App\Http\Controllers\Clasificacion\StoreLocal AS StoreCaracterisitcasLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
 use App\Http\Controllers\Construccion\UpdateLocal AS UpdateConstruccionLocal;
 use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccionLocal;
@@ -62,6 +63,9 @@ use App\Http\Controllers\Predio\StoreNumeroPredialHomologadoController;
 use App\Http\Controllers\Predio\UpdateLcPredio;
 use App\Http\Controllers\RicTramiteCatastral\IndexLocal AS IndexLocalRicTramiteCatastral;
 use App\Http\Controllers\Terreno\MigrateLocal;
+use App\Http\Controllers\Clasificacion\MigrateLocal AS MigrateCareacteristicasLocal;
+use App\Http\Controllers\Clasificacion\StoreCalificacionConvencionalLocal;
+use App\Http\Controllers\Clasificacion\StoreCalificacionNoConvencionalLocal;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -104,6 +108,14 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('caracteristicasunidadconstruccion')->group(function () {
+
+        Route::post('local', StoreCaracterisitcasLocal::class);
+        Route::post('local/migrar', MigrateCareacteristicasLocal::class);
+
+        Route::put('calificacionconvencional/local/{id}', StoreCalificacionConvencionalLocal::class);
+        Route::put('calificacionnoconvencional/local/{id}', StoreCalificacionNoConvencionalLocal::class);
+
+
         Route::get('convencional', ConvencionalIndexController::class);
         Route::get('convencional/{id}', ConvencionalShowController::class);
         Route::post('convencional', ConvencionalStoreController::class);
