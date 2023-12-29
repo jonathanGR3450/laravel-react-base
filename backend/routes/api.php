@@ -34,7 +34,9 @@ use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
 use App\Http\Controllers\Construccion\UpdateLocal AS UpdateConstruccionLocal;
 use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccionLocal;
 use App\Http\Controllers\TramiteRadicado\StoreLocal AS StoreTramiteRadicadoLocal;
+use App\Http\Controllers\TramiteRadicado\UpdateLocal AS UpdateTramiteRadicadoLocal;
 use App\Http\Controllers\TramiteRadicado\IndexLocal AS IndexLocalTramiteRadicadoLocal;
+use App\Http\Controllers\ExtDireccion\StoreLocal AS StoreExtDireccionLocal;
 use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\Document\ListRadicadoController;
 use App\Http\Controllers\Document\ListTipoTramiteController;
@@ -166,6 +168,11 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('tramite-radicado')->group(function () {
         Route::post('', StoreTramiteRadicadoLocal::class);
+        Route::put('{id}', UpdateTramiteRadicadoLocal::class);
         Route::get('', IndexLocalTramiteRadicadoLocal::class);
+    });
+
+    Route::prefix('extdireccion')->group(function () {
+        Route::post('', StoreExtDireccionLocal::class);
     });
 });
