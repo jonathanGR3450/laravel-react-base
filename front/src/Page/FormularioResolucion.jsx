@@ -32,9 +32,21 @@ const FormularioResolucion = () => {
   const [tipoTramite, setTipoTramite] = useState("");
   let [response, setResponse] = useState(0);
   const [opcionesSeleccionadas, setOpcionesSeleccionadas] = useState([]);
-  const { mostrarAlerta, alerta, submitInfoResolucion, infoInscribir } =
-    useInfo();
-
+  const {
+    numPredial,
+    mostrarAlerta,
+    alerta,
+    submitInfoResolucion,
+    infoInscribir,
+  } = useInfo();
+  console.log("Info Interesados", numPredial);
+  const { data: info } = numPredial;
+  console.log("123 data Info", info);
+  const { Predio } = info || {};
+  const { Numero_Predial } = Predio ? Predio[0] : {};
+  const { terreno } = Predio ? Predio[0] : {};
+  const { unidad_construccion } = Predio ? Predio[0] : {};
+  console.log("data predio", Predio);
   useEffect(() => {
     loadTipo_Tramite();
   }, []);
@@ -70,11 +82,14 @@ const FormularioResolucion = () => {
     }
   };
 
-  //let auxinfoInscribir = Inscripcion;
-  let auxinfoInscribir = infoInscribir;
+  let auxinfoInscribir = Inscripcion;
+  //let auxinfoInscribir = infoInscribir;
+  console.log("info escribir", auxinfoInscribir);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("info escribir", auxinfoInscribir);
+
     /*    if (
       [
         tipoTramite,
@@ -106,27 +121,27 @@ const FormularioResolucion = () => {
       return;
     }*/
 
-    let sum = "";
+    let documentos = "";
     opcionesSeleccionadas.map((item, index) => {
-      sum += " " + item + ", ";
+      documentos += " " + item + ", ";
     });
     console.log("sum ", sum);
     await submitInfoResolucion({
       englobe_texto: "iii) Plano de englobe",
       no_propiedad_horizontal: "005656",
-      fecha_propiedad_horizontal: "01/01/2023",
-      notaria_propiedad_horizo: "001",
-      cuidad_notaria_propiedad_horizontal: "Bogota",
-      fecha_escritura_publica: "01/01/2023",
-      ciudad_notaria: "Bogota",
+      fecha_propiedad_horizontal: fechaEscritutra,
+      notaria_propiedad_horizo: notaria,
+      cuidad_notaria_propiedad_horizontal: ciudadNotaria,
+      fecha_escritura_publica: fechaEscritutra,
+      ciudad_notaria: ciudadNotaria,
       acta_demolicion:
         "Acta de demolición expedida por la (Secretaría de Planeación) (Curaduría Primera/Segunda de Fusagasugá) (Secretaría de Gobierno). ",
       dia_inspeccion_ocular: "10/10/2023",
       argumentos: "argumentos",
       propietario_tipo: "el/la señor/señora",
-      nombre_propietario: "Juan",
-      documento_propietario: "1212",
-      cuidad_propietario: "Villavicencio",
+      nombre_propietario: nombre,
+      documento_propietario: cedula,
+      cuidad_propietario: ciudadCedula,
       departamento_propietario: "Meta",
       calidad_propietario: "propietario/propietaria, apoderado",
       solicitud_propietario:
@@ -147,13 +162,18 @@ const FormularioResolucion = () => {
       texto_inconsistencia_predio:
         "(con vigencias anteriores a la fecha de habilitación del Gestor Catastral Multipropósito del Municipio de Fusagasugá, fue inscrito) (con vigencia 01/01/2023 fue inscrito mediante resolución catastral No. 03-0000-2023 de fecha DD/MM/AAAA )",
       fecha_comunicacion: "DD/MM/AAAA",
-      documentos_relacionados: sum,
+      documentos_relacionados: documentos,
       vigencia_conservacion_catastral: "01/01/2023",
       fecha_resolucion: "DD/MM/AAAA",
-      numero_predial_desde: "252900001000000010007000000000",
-      numero_predial_hasta: "252900001000000010007000000099",
+      numero_predial_desde:
+        auxinfoInscribir.inscribe_datos_predio_nmero_catastral[0]
+          .inscribe_datos_predio_nmero_catastral,
+      numero_predial_hasta:
+        auxinfoInscribir.inscribe_datos_predio_nmero_catastral[
+          auxinfoInscribir.inscribe_datos_predio_nmero_catastral.length - 1
+        ].inscribe_datos_predio_nmero_catastral,
       entidad_aprobo: "Secretaría de Planeación/Curaduría",
-      area_terreno: "20",
+      area_terreno: terreno.area_terreno,
       texto_asignar_puntaje:
         "(y a asignar el puntaje que esté acorde con lo estipulado en la ficha de calificación de construcciones adoptado por el Gestor Catastral. SÓLO SI MODIFICA TAMBIEN CALIFICACIÓN) ",
       unidad_construccion: [
@@ -164,8 +184,7 @@ const FormularioResolucion = () => {
       ],
       argumento_usuario:
         "RELACIONAR TEXTUALMENTE Y ENTRE COMILLAS EL ARGUMENTO DEL USUARIO.",
-      lista_documentos:
-        "i) XXXXXXXXXX; ii) XXXXXXXX; iii) XXXXXXXXXXXXX; iv) XXXXXXXXXX; v) XXXXXXXXXXX; vi) XXXXXXXXX; vi) XXXXXXXXXX.",
+      lista_documentos: documentos,
       analisis_informe_valuatorio: "analisis informe valuatorio",
       se_grabo_base_datos:
         "(se grabó en la base de datos alfanumérica con la zona homogénea geoeconómica “##” y zona homogénea física “##”, siendo lo correcto, zona homogénea geoeconómica “##” y zona homogénea física “##” requiriéndose ajustar sus valores de acuerdo a esta ZHF y ZHG.)(se grabó en la base de datos alfanumérica con la zona homogénea geoeconómica “##” y zona homogénea física “##”, siendo necesario ajustar sus valores de acuerdo a esta ZHF y ZHG.) SELECCIONAR LA PRIMER OPCIÓN CUANDO CAMBIE EL NÚMERO DE LA ZONA O LA SEGUNDA OPCIÓN CUANDO EL NÚMERO DE LA ZONA SEA CORRECTO PERO EL VALOR ESTÉ MAL LIQUIDADO",
@@ -192,7 +211,7 @@ const FormularioResolucion = () => {
       calidad_gestor: "PROPIETARIO",
       no_radicado: numeroRadicado,
       asociado_id: idAasociado,
-      numero_predial: "252900001000000010007000000000",
+      numero_predial: Numero_Predial,
       matricula_inmobiliaria: "1212212112",
       zona_ubicacion: "Rural",
       escritura_publica: numeroEscritura,

@@ -59,6 +59,9 @@ const Menu = () => {
           <li className="ml-2 text-white">
             <Link to="/Resolucion">Generar Resolucion</Link>
           </li>
+          <li className="ml-2 text-white">
+            <Link to="/Resoluciones"> Resoluciones</Link>
+          </li>
         </ul>
       </nav>
 

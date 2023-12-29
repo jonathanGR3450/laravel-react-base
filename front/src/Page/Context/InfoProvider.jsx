@@ -9,7 +9,7 @@ const InfoProvider = ({ children }) => {
   const [alerta, setAlerta] = useState([]);
   const [resultado, setResultado] = useState({});
   const [numPredial, setNumPredial] = useState("");
-
+  const [numPredialOriginal, setNumPredialOriginal] = useState("");
   const [infoInscribir, setInfoInscribir] = useState();
 
   const navigate = useNavigate();
@@ -67,6 +67,7 @@ const InfoProvider = ({ children }) => {
         config
       );
       setNumPredial(data);
+      setNumPredialOriginal(data);
       console.log(data);
     } catch (error) {
       console.log(error);

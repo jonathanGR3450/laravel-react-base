@@ -22,7 +22,6 @@ const InfoPredio = () => {
     Tiene_FMI,
     Codigo_Homologado_FMI,
   } = Predio ? Predio[0] : {};
-
   const { dispname: Tipo } = Predio ? Predio[0].Tipo[0] : {};
   const { dispname: CondicionPredio } = Predio
     ? Predio[0].Condicion_Predio[0]

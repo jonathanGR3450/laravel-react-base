@@ -21,7 +21,7 @@ const TablaResoluciones = () => {
           },
         };
         const { data } = await clienteAxios(
-          "/document/list/radicados?direction=DESC?limit=2000",
+          "/document/list/radicados?limit=2000&direction=DESC",
           config
         );
         const { data: info } = data;
@@ -69,10 +69,7 @@ const TablaResoluciones = () => {
                     <button
                       className="bg-blue-500 text-white px-3 py-1 rounded"
                       onClick={() =>
-                        downloadFile(
-                          item.url,
-                          "nombre_del_archivo.docx"
-                        )
+                        downloadFile(item.url, "nombre_del_archivo.docx")
                       }
                     >
                       Descargar Resolucion
