@@ -316,12 +316,15 @@ class MigracionConservacionController extends AppBaseController
                                     $calificacionNoConvencionalConservacion = LcCalificacionNoConvencional::create($calificacionNoConvencionalData);
                                 }
                             }
+                            $lcCaracteristicasunidadconstruccionId = $lcCaracteristicasunidadconstruccion->t_id;
+                        } else {
+                            $lcCaracteristicasunidadconstruccionId = $unidadConstruccion->lc_caracteristicasunidadconstruccion_conservacion;
                         }
 
 
 
                         $unidadConstruccionData = $unidadConstruccion->makeHidden(['t_id', 'caracteristicasunidadconstruccion'])->toArray();
-                        $unidadConstruccionData['lc_caracteristicasunidadconstruccion'] = $lcCaracteristicasunidadconstruccion->t_id;
+                        $unidadConstruccionData['lc_caracteristicasunidadconstruccion'] = $lcCaracteristicasunidadconstruccionId;
                         $unidadConstruccionData['lc_construccion'] = $lcConstruccion?->t_id;
                         if ($unidadConstruccion->lc_construccion_conservacion) {
                             $unidadConstruccionData['lc_construccion'] = $unidadConstruccion->lc_construccion_conservacion;
