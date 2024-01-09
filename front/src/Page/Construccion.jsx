@@ -145,9 +145,9 @@ const ConstruccionForm = (props, ref) => {
 
                 console.log(result);
               }
+              item1.construccion = construccionData;
             }
           }
-          item1.construccion = construccionData;
         }
 
         console.log("datos de tabla", tableData);
@@ -155,7 +155,7 @@ const ConstruccionForm = (props, ref) => {
 
         updateTableData(tableData);
         console.log("props construccion", props);
-        props.msj("Datos Construccion Guardados Correctamente");
+        props.msj(Math.random());
         props.onClose();
         setLoading(false);
       } catch (error) {
@@ -225,7 +225,6 @@ function soloLetras(event) {
   const input = event.target;
   input.value = input.value.replace(/[^a-zA-Z]/g, ""); // Elimina caracteres no alfabéticos
 }
-
 export const CreateConstruction = (props) => {
   console.log("create props", props);
   const { updateNumPredial } = useInfo();

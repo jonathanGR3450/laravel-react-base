@@ -96,7 +96,7 @@ const InteresadoForm = (props, ref) => {
             }
           });
         });
-        props.msj("Datos Interesado Guardado Correctamente");
+        props.msj(Math.random());
         props.onClose();
         updateTableData(tableData);
       } else {
@@ -259,6 +259,7 @@ async function LoadAgrupacionTipo(data) {
   return tipo;
 }
 async function createAgrupacion(data, cod, est) {
+  console.log(data + " - " + cod + " - " + est);
   let json = "";
   if (est) {
     json = {
@@ -848,14 +849,24 @@ export const ValidarInteresado = (props) => {
 };
 
 export const ModalInteresadoForm = React.forwardRef((props, ref) => {
+  const { tableData } = useContext(TableContext);
   let [dataId, setDataId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  let [cod, setCod] = useState("");
+  console.log("Props modal", props);
   const openModal = (aux) => {
     console.log("Aux", aux);
     setDataId(aux);
     setIsModalOpen(true);
     console.log("Data Id", dataId);
+    tableData.map((item, index) => {
+      aux.map((items) => {
+        if (items - 1 == index) {
+          console.log("123", item);
+          setCod(item.codigo_homologado);
+        }
+      });
+    });
   };
 
   const closeModal = () => {
@@ -873,6 +884,7 @@ export const ModalInteresadoForm = React.forwardRef((props, ref) => {
         dataid={dataId}
         onClose={closeModal}
         msj={props.msj}
+        cod={cod}
       />
     </Modal>
   );

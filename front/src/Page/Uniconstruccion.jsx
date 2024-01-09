@@ -1,4 +1,9 @@
 import { Modal } from "./Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleCheck,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import React, {
   forwardRef,
   useEffect,
@@ -353,10 +358,10 @@ export const CreateUnidad = (props) => {
       <div className="p-4 w-11/12 flex flex-col overflow-auto bg-transparent h-full bg-white bg-opacity-80 items-center justify-center">
         <h1 className="text-3xl">
           Caracteristicas de Unidad de Construccion{" "}
-          {props.est ? "#" + props.index + 1 : null}
+          {props.est ? "#" + (props.index + 1) : null}
         </h1>
         <h2 className="text-2xl">Identificador: {dataUnidad.identificador}</h2>
-        <div className="w-full flex flex-row mt-2">
+        <div className="w-full flex flex-row mt-2 items-center justify-center">
           <div className="w-1/3 flex flex-col">
             <label>Relacion Construccion*</label>
             <select
@@ -378,11 +383,10 @@ export const CreateUnidad = (props) => {
                 : console.log("no carga")}
             </select>
           </div>
-
-          <div className="w-2/3 ml-4 flex flex-col">
+          <div className="w-2/3 ml-4 flex flex-row ">
             <button
               onClick={openCreateCaracRef}
-              className="p-2 text-center rounded-md text-white bg-teal-500 text-lg"
+              className="p-2 w-full text-center rounded-md text-white bg-teal-500 text-lg"
             >
               Crear Caracteristica
             </button>
@@ -391,6 +395,17 @@ export const CreateUnidad = (props) => {
               dataIden={dataUnidad.identificador}
             />
           </div>
+          {dataUnidad.caracteristicas == "" ? (
+            <FontAwesomeIcon
+              className="text-3xl text-red-600 ml-4"
+              icon={faCircleXmark}
+            />
+          ) : (
+            <FontAwesomeIcon
+              className="text-3xl text-green-600 ml-4"
+              icon={faCircleCheck}
+            />
+          )}
         </div>
         <div className="w-full flex flex-row items-center justify-center">
           <div className="w-1/4 flex flex-col">

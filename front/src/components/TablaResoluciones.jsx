@@ -11,7 +11,7 @@ const TablaResoluciones = () => {
     link.download = fileName;
     link.click();
   };
-
+  console.log("resolucion ", resoluciones);
   useEffect(() => {
     const obtenerResoluciones = async () => {
       try {
@@ -49,8 +49,10 @@ const TablaResoluciones = () => {
               <th className="py-2 px-4 border-b">Id</th>
               <th className="py-2 px-4 border-b">Radicado</th>
               <th className="py-2 px-4 border-b">ID Asociado</th>
-              <th className="py-2 px-4 border-b">Resolución</th>
-              <th className="py-2 px-4 border-b">Descargar PDF</th>
+              <th className="py-2 px-4 border-b">Tipo Resolución</th>
+              <th className="py-2 px-4 border-b text-center">
+                Descargar Archivo
+              </th>
             </tr>
           </thead>
           <tbody>

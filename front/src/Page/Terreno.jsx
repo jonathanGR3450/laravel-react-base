@@ -171,10 +171,10 @@ const TerrenoForm = (props, ref) => {
       if (response.ok) {
         const result = await response.json();
         console.log("Dataaaaa", result);
-        props.msj("Datos Terrenos Guardados Correctamente");
+        props.msj(Math.random());
         return result.data;
       } else {
-        props.msj("Error al guardar Datos Terreno");
+        props.msj(Math.random());
         throw new Error("Error en la solicitud");
       }
     } catch (error) {

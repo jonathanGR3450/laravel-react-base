@@ -88,6 +88,7 @@ const InfoProvider = ({ children }) => {
         submitInfoNumPredial,
         numPredial,
         updateNumPredial,
+        numPredialOriginal,
         infoInscribir,
         updateJsonInscribir,
       }}

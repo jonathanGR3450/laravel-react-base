@@ -486,7 +486,7 @@ const UniconstForm = (dataForm) => {
       <div className="flex flex-col w-10/12">
         <div className="flex flex-row  w-full pb-2 text-center">
           <div className="flex flex-col w-1/4 items-center  pb-2">
-            <label className="w-full">Tipo Planta</label>
+            <label className="w-full">Tipo Planta*</label>
             <select
               name="tipo_planta"
               className="p-1 w-full text-center border-2 rounded-md"
@@ -503,7 +503,7 @@ const UniconstForm = (dataForm) => {
             </select>
           </div>
           <div className="flex flex-col items-center w-1/4 pb-2 ml-4">
-            <label className="w-full">Tipo Unidad Construccion</label>
+            <label className="w-full">Tipo Unidad Construccion*</label>
             <select
               name="tipo_unidad_construccion"
               className="p-1 w-full text-center border-2 rounded-md"
@@ -599,7 +599,7 @@ const UniconstForm = (dataForm) => {
           </select>
         </div>
         <div className="flex flex-col items-center w-1/4 pb-2 ml-4 ">
-          <label className="w-full"> Numero Pisos</label>
+          <label className="w-full"> Numero Pisos*</label>
           <input
             name="total_plantas"
             type="number"
@@ -609,7 +609,7 @@ const UniconstForm = (dataForm) => {
           ></input>
         </div>
         <div className="flex flex-col items-center w-1/4 pb-2 ml-4 ">
-          <label className="w-full"> Numero Habitaciones</label>
+          <label className="w-full"> Numero Habitaciones*</label>
           <input
             name="total_habitaciones"
             type="number"
@@ -619,7 +619,7 @@ const UniconstForm = (dataForm) => {
           ></input>
         </div>
         <div className="flex flex-col items-center w-1/4 pb-2 ml-4 ">
-          <label className="w-full"> Numero Baños</label>
+          <label className="w-full"> Numero Baños*</label>
           <input
             name="total_banios"
             type="number"
@@ -631,7 +631,7 @@ const UniconstForm = (dataForm) => {
       </div>
       <div className="flex flex-row items-center w-10/12 pb-2 text-center ">
         <div className="flex flex-col items-center w-1/4 pb-2  ">
-          <label className="w-full"> Numero Locales</label>
+          <label className="w-full"> Numero Locales*</label>
           <input
             name="total_locales"
             type="number"
@@ -659,7 +659,7 @@ const UniconstForm = (dataForm) => {
           ) : null}
         </div>
         <div className="flex flex-col items-center w-1/4 pb-2  ml-4">
-          <label className="w-full"> Area Construida</label>
+          <label className="w-full"> Area Construida*</label>
           <input
             name="area_construida"
             type="number"
