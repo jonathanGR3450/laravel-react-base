@@ -125,7 +125,7 @@ const FormularioResolucion = () => {
     opcionesSeleccionadas.map((item, index) => {
       documentos += " " + item + ", ";
     });
-    console.log("sum ", sum);
+   /*  console.log("sum ", sum); */
     await submitInfoResolucion({
       englobe_texto: "iii) Plano de englobe",
       no_propiedad_horizontal: "005656",
