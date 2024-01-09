@@ -30,11 +30,15 @@ use App\Http\Controllers\Datosadicionaleslevantamientocatastral\StoreLocal AS St
 use App\Http\Controllers\ContactoVisita\StoreLocal AS StoreContactoVisitaLocal;
 use App\Http\Controllers\Terreno\StoreLocal AS StoreTerrenoLocal;
 use App\Http\Controllers\Terreno\UpdateLocal AS UpdateTerrenoLocal;
+use App\Http\Controllers\Clasificacion\StoreLocal AS StoreCaracterisitcasLocal;
 use App\Http\Controllers\Construccion\StoreLocal AS StoreConstruccionLocal;
 use App\Http\Controllers\Construccion\UpdateLocal AS UpdateConstruccionLocal;
 use App\Http\Controllers\UnidadConstruccion\StoreLocal AS StoreUnidadConstruccionLocal;
+use App\Http\Controllers\UnidadConstruccion\MigrarLocal AS MigrarUnidadConstruccionLocal;
 use App\Http\Controllers\TramiteRadicado\StoreLocal AS StoreTramiteRadicadoLocal;
+use App\Http\Controllers\TramiteRadicado\UpdateLocal AS UpdateTramiteRadicadoLocal;
 use App\Http\Controllers\TramiteRadicado\IndexLocal AS IndexLocalTramiteRadicadoLocal;
+use App\Http\Controllers\ExtDireccion\StoreLocal AS StoreExtDireccionLocal;
 use App\Http\Controllers\Document\GenerateDocumentPdf;
 use App\Http\Controllers\Document\ListRadicadoController;
 use App\Http\Controllers\Document\ListTipoTramiteController;
@@ -58,6 +62,13 @@ use App\Http\Controllers\Predio\StoreNumeroPredialController;
 use App\Http\Controllers\Predio\StoreNumeroPredialHomologadoController;
 use App\Http\Controllers\Predio\UpdateLcPredio;
 use App\Http\Controllers\RicTramiteCatastral\IndexLocal AS IndexLocalRicTramiteCatastral;
+use App\Http\Controllers\Terreno\MigrateLocal;
+use App\Http\Controllers\Clasificacion\MigrateLocal AS MigrateCareacteristicasLocal;
+use App\Http\Controllers\Construccion\MigrateLocal AS MigrateConstruccionLocal;
+use App\Http\Controllers\Derecho\MigrateLocal AS MigrateDerechoLocal;
+use App\Http\Controllers\Predio\MigrateLocal AS MigratePredioLocal;
+use App\Http\Controllers\Clasificacion\StoreCalificacionConvencionalLocal;
+use App\Http\Controllers\Clasificacion\StoreCalificacionNoConvencionalLocal;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,6 +97,9 @@ Route::prefix('v1')->group(function () {
         Route::get('', GetPredioController::class);
         Route::put('{id}', UpdateLcPredio::class);
         Route::post('uebaunit', StoreColUebaunitLocal::class);
+        Route::post('uebaunit/local/migrar', MigratePredioLocal::class);
+
+
         Route::post('unidadfuente', StoreColUnidadfuenteLocal::class);
         Route::get('numero-predial', GetPredioNumeroPredialController::class);
         Route::post('numeros-prediales/numeros-homologados', StoreNumeroPredialHomologadoController::class);
@@ -100,6 +114,14 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('caracteristicasunidadconstruccion')->group(function () {
+
+        Route::post('local', StoreCaracterisitcasLocal::class);
+        Route::post('local/migrar', MigrateCareacteristicasLocal::class);
+
+        Route::put('calificacionconvencional/local/{id}', StoreCalificacionConvencionalLocal::class);
+        Route::put('calificacionnoconvencional/local/{id}', StoreCalificacionNoConvencionalLocal::class);
+
+
         Route::get('convencional', ConvencionalIndexController::class);
         Route::get('convencional/{id}', ConvencionalShowController::class);
         Route::post('convencional', ConvencionalStoreController::class);
@@ -131,6 +153,8 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::post('derecho/local', StoreDerechoLocal::class);
+    Route::post('derecho/local/migrar', MigrateDerechoLocal::class);
+
     Route::post('datos-condominio/local', StoreDatosCondominioLocal::class);
     Route::post('predio-copropiedad/local', StorePredioCopropiedadLocal::class);
     Route::post('ric-predio/local', StoreRicPredioLocal::class);
@@ -144,6 +168,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('terreno')->group(function () {
         Route::post('local', StoreTerrenoLocal::class);
+        Route::post('local/migrar', MigrateLocal::class);
         Route::put('local/{id}', UpdateTerrenoLocal::class);
     });
 
@@ -152,6 +177,8 @@ Route::prefix('v1')->group(function () {
     Route::post('contacto-visita/local', StoreContactoVisitaLocal::class);
 
     Route::post('unidad/construccion/local', StoreUnidadConstruccionLocal::class);
+    Route::post('unidad/construccion/local/migrar', MigrarUnidadConstruccionLocal::class);
+    Route::post('construccion/local/migrar', MigrateConstruccionLocal::class);
     Route::post('construccion/local', StoreConstruccionLocal::class);
     Route::put('construccion/local/{id}', UpdateConstruccionLocal::class);
     Route::post('construccion/documentos', StoreDocuments::class);
@@ -166,6 +193,11 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('tramite-radicado')->group(function () {
         Route::post('', StoreTramiteRadicadoLocal::class);
+        Route::put('{id}', UpdateTramiteRadicadoLocal::class);
         Route::get('', IndexLocalTramiteRadicadoLocal::class);
+    });
+
+    Route::prefix('extdireccion')->group(function () {
+        Route::post('', StoreExtDireccionLocal::class);
     });
 });

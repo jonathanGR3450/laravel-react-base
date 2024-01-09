@@ -275,8 +275,11 @@ class MigracionConservacionController extends AppBaseController
                             if ($calificacionConvencional->count() > 0) {
                                 foreach ($calificacionConvencional as $convencional) {
 
-                                    $calificacionConvencionalData = $convencional->makeHidden(['t_id'])->toArray();
+                                    $calificacionConvencionalData = $convencional->makeHidden(['t_id', 'lc_unidad_construccion_conservacion'])->toArray();
                                     $calificacionConvencionalData['lc_unidad_construccion'] = $lcCaracteristicasunidadconstruccion->t_id;
+                                    if ($convencional->lc_unidad_construccion_conservacion) {
+                                        $calificacionConvencionalData['lc_unidad_construccion'] = $convencional->lc_unidad_construccion_conservacion;
+                                    }
                                     $calificacionConvencionalConservacion = LcCalificacionConvencional::create($calificacionConvencionalData);
                                     
                                     // lc_grupocalificacion
@@ -311,18 +314,24 @@ class MigracionConservacionController extends AppBaseController
                             $calificacionNoConvencionalConservacion = null;
                             if ($calificacionNoConvencional->count() > 0) {
                                 foreach ($calificacionNoConvencional as $convencional) {
-                                    $calificacionNoConvencionalData = $convencional->makeHidden(['t_id'])->toArray();
+                                    $calificacionNoConvencionalData = $convencional->makeHidden(['t_id', 'lc_unidad_construccion_conservacion'])->toArray();
                                     $calificacionNoConvencionalData['lc_unidad_construccion'] = $lcCaracteristicasunidadconstruccion->t_id;
+                                    if ($convencional->lc_unidad_construccion_conservacion) {
+                                        $calificacionNoConvencionalData['lc_unidad_construccion'] = $convencional->lc_unidad_construccion_conservacion;
+                                    }
                                     $calificacionNoConvencionalConservacion = LcCalificacionNoConvencional::create($calificacionNoConvencionalData);
                                 }
                             }
+                            $lcCaracteristicasunidadconstruccionId = $lcCaracteristicasunidadconstruccion->t_id;
+                        } else {
+                            $lcCaracteristicasunidadconstruccionId = $unidadConstruccion->lc_caracteristicasunidadconstruccion_conservacion;
                         }
 
 
 
                         $unidadConstruccionData = $unidadConstruccion->makeHidden(['t_id', 'caracteristicasunidadconstruccion'])->toArray();
-                        $unidadConstruccionData['lc_caracteristicasunidadconstruccion'] = $lcCaracteristicasunidadconstruccion->t_id;
-                        $unidadConstruccionData['lc_construccion'] = $lcConstruccion?->t_id;
+                        $unidadConstruccionData['lc_caracteristicasunidadconstruccion'] = $lcCaracteristicasunidadconstruccionId;
+                        $unidadConstruccionData['lc_construccion'] = $lcConstruccionId;
                         if ($unidadConstruccion->lc_construccion_conservacion) {
                             $unidadConstruccionData['lc_construccion'] = $unidadConstruccion->lc_construccion_conservacion;
                         }

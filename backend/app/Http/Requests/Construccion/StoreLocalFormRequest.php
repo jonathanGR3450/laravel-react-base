@@ -44,6 +44,7 @@ class StoreLocalFormRequest extends FormRequest
             'nivel' => 'nullable|exists:pgsqlcatastro.lc_nu_nivel,t_id',
             'fin_vida_util_version' => 'nullable|date',
             'espacio_de_nombres' => 'required|string|max:255',
+            't_id_conservacion' => 'nullable|integer|exists:pgsqlcatastro.lc_construccion,t_id',
         ];
     }
 }
