@@ -25,6 +25,7 @@ class LcTerrenoLocal extends Model
         'fin_vida_util_version',
         'espacio_de_nombres',
         'local_id',
+        't_id_conservacion',
     ];
 
     // public function dimension()
