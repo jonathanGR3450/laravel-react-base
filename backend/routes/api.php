@@ -69,6 +69,7 @@ use App\Http\Controllers\Derecho\MigrateLocal AS MigrateDerechoLocal;
 use App\Http\Controllers\Predio\MigrateLocal AS MigratePredioLocal;
 use App\Http\Controllers\Clasificacion\StoreCalificacionConvencionalLocal;
 use App\Http\Controllers\Clasificacion\StoreCalificacionNoConvencionalLocal;
+use App\Http\Controllers\Predio\GetPredioLocalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,6 +96,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('predio')->group(function () {
         Route::post('', StoreLcPredio::class);
         Route::get('', GetPredioController::class);
+        Route::get('local', GetPredioLocalController::class);
         Route::put('{id}', UpdateLcPredio::class);
         Route::post('uebaunit', StoreColUebaunitLocal::class);
         Route::post('uebaunit/local/migrar', MigratePredioLocal::class);

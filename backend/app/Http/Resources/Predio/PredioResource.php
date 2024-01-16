@@ -288,19 +288,41 @@ class PredioResource extends JsonResource
                                 'local_id' => $item->unidadConstruccion?->construccion?->local_id,
                             ],
                             "lc_caracteristicasunidadconstruccion" => [
+                                "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->t_id,
                                 "identificador" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->identificador,
                                 "tipo_construccion" => [
                                     "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->t_id,
                                     "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoConstruccion->dispname,
                                 ],
+                                'tipo_dominio' => [
+                                    't_id' => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoDominio?->t_id,
+                                    'dispname' => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoDominio?->dispname
+                                ],
                                 "tipo_unidad_construccion" => [
                                     "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoUnidadConstruccion->t_id,
                                     "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoUnidadConstruccion->dispname,
                                 ],
+                                "tipo_planta" => [
+                                    "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoPlanta->t_id,
+                                    "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->tipoPlanta->dispname,
+                                ],
+                                "total_habitaciones" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->total_habitaciones,
+                                "total_banios" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->total_banios,
+                                "total_locales" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->total_locales,
+                                "total_plantas" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->total_plantas,
                                 "uso" => [
                                     "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->usoConstruccion->t_id,
                                     "dispname" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->usoConstruccion->dispname,
                                 ],
+                                "anio_construccion" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->anio_construccion,
+                                "avaluo_unidad_construccion" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->avaluo_unidad_construccion,
+                                "area_construida" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->area_construida,
+                                "area_privada_construida" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->area_privada_construida,
+                                "observaciones" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->observaciones,
+                                "comienzo_vida_util_version" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->comienzo_vida_util_version,
+                                "fin_vida_util_version" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->fin_vida_util_version,
+                                "espacio_de_nombres" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->espacio_de_nombres,
+                                "local_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->local_id,
                                 "calificacionconvencional" => [
                                     "t_id" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionConvencional()->get()->first()?->t_id,
                                     "total_calificacion" => $item?->unidadConstruccion?->caracteristicasunidadconstruccion?->calificacionConvencional()->get()->first()?->total_calificacion,
@@ -375,9 +397,9 @@ class PredioResource extends JsonResource
                             "description" => $this->condicionPredio?->description,
                         ]
                     ],
-                    "Direccion" => $this->extDireccion->transform(function ($item) {
+                    "Direccion" => optional($this->extDireccion)->transform(function ($item) {
                         return [
-                            "t_id" => $item->t_id,
+                            "t_id" => $item?->t_id,
                             "Tipo_Direccion" => [
                                 "t_id" => $item->tipoDireccion?->t_id,
                                 "itfcode" => $item->tipoDireccion?->itfcode,
@@ -406,20 +428,20 @@ class PredioResource extends JsonResource
                     }),
                     "Destinacion_Economica" => [
                         [
-                            "t_id" => $this->destinacionEconomica->t_id,
-                            "itfcode" => $this->destinacionEconomica->itfcode,
-                            "ilicode" => $this->destinacionEconomica->ilicode,
-                            "dispname" => $this->destinacionEconomica->dispname,
-                            "description" => $this->destinacionEconomica->description,
+                            "t_id" => $this->destinacionEconomica?->t_id,
+                            "itfcode" => $this->destinacionEconomica?->itfcode,
+                            "ilicode" => $this->destinacionEconomica?->ilicode,
+                            "dispname" => $this->destinacionEconomica?->dispname,
+                            "description" => $this->destinacionEconomica?->description,
                         ]
                     ],
                     "Clase_Suelo" => [
                         [
-                            "t_id" => $this->claseSuelo->t_id,
-                            "itfcode" => $this->claseSuelo->itfcode,
-                            "ilicode" => $this->claseSuelo->ilicode,
-                            "dispname" => $this->claseSuelo->dispname,
-                            "description" => $this->claseSuelo->description,
+                            "t_id" => $this->claseSuelo?->t_id,
+                            "itfcode" => $this->claseSuelo?->itfcode,
+                            "ilicode" => $this->claseSuelo?->ilicode,
+                            "dispname" => $this->claseSuelo?->dispname,
+                            "description" => $this->claseSuelo?->description,
                         ]
                     ],
                     "Categoria_Suelo" => [
@@ -440,27 +462,27 @@ class PredioResource extends JsonResource
                     "Area_Registral_M2" => $this->datosAdicionalesLevantamientoCatastral?->area_registral_m2,
                     "Procedimiento_Catastral_Registral" => [
                         [
-                            "t_id" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo->t_id,
-                            "itfcode" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo->itfcode,
-                            "ilicode" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo->ilicode,
-                            "dispname" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo->dispname,
-                            "description" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo->description,
+                            "t_id" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo?->t_id,
+                            "itfcode" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo?->itfcode,
+                            "ilicode" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo?->ilicode,
+                            "dispname" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo?->dispname,
+                            "description" => $this->datosAdicionalesLevantamientoCatastral?->procedimientoCatastralRegistraltipo?->description,
                         ]
                     ],
                     "Novedad_Numeros_Prediales" => $this->datosAdicionalesLevantamientoCatastral?->estructuraNovedadNumeroPredial->transform(function ($item) {
                         return [
-                            "t_id" => $item->t_id,
-                            "t_seq" => $item->t_seq,
-                            "numero_predial" => $item->numero_predial,
-                            "tipo_novedad" => $item->tipo_novedad,
+                            "t_id" => $item?->t_id,
+                            "t_seq" => $item?->t_seq,
+                            "numero_predial" => $item?->numero_predial,
+                            "tipo_novedad" => $item?->tipo_novedad,
                         ];
                     }),
                     "Novedad_FMI" => $this->datosAdicionalesLevantamientoCatastral?->estructuraNovedadFMI->transform(function ($item) {
                         return [
-                            "t_id" => $item->t_id,
-                            "t_seq" => $item->t_seq,
-                            "codigo_orip" => $item->codigo_orip,
-                            "numero_fmi" => $item->numero_fmi,
+                            "t_id" => $item?->t_id,
+                            "t_seq" => $item?->t_seq,
+                            "codigo_orip" => $item?->codigo_orip,
+                            "numero_fmi" => $item?->numero_fmi,
                         ];
                     }),
                     "Observaciones" => $this->datosAdicionalesLevantamientoCatastral?->observaciones,
