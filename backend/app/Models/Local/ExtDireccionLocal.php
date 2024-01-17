@@ -39,6 +39,7 @@ class ExtDireccionLocal extends Model
         'lc_predio_direccion',
         'lc_servidumbretransito_ext_direccion_id',
         'lc_numeros_prediales_id',
+        't_id_conservacion',
     ];
 
     public function numeroPredial(): BelongsTo {

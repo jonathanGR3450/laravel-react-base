@@ -63,7 +63,8 @@ class StoreFormRequest extends FormRequest
             'lc_unidadconstruccion_ext_direccion_id' => 'nullable|integer|exists:pgsqlcatastro.lc_unidadconstruccion,t_id',
             'lc_predio_direccion' => 'nullable|integer|exists:pgsqlcatastro.lc_predio,t_id',
             'lc_servidumbretransito_ext_direccion_id' => 'nullable|integer|exists:pgsqlcatastro.lc_servidumbretransito,t_id',
-            'lc_numeros_prediales_id' => 'required|integer|exists:lc_numeros_prediales,t_id',
+            'lc_numeros_prediales_id' => 'nullable|integer|exists:lc_numeros_prediales,t_id',
+            't_id_conservacion' => 'nullable|integer|exists:pgsqlcatastro.extdireccion,t_id',
         ];
     }
 }
