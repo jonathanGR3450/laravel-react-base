@@ -112,8 +112,9 @@ const TerrenoForm = (props, ref) => {
         fin_vida_util_version: null,
         espacio_de_nombres: "Fusagasuga",
         local_id: terrenoData.cod_homo,
+        t_id_conservacion: terrenoData.t_id,
       };
-      console.log(json);
+      console.log("Json Guardar", json);
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
@@ -123,7 +124,7 @@ const TerrenoForm = (props, ref) => {
       const response = await fetch(url, requestOptions);
       if (response.ok) {
         const result = await response.json();
-        json.t_id = result.data.t_id;
+        json.t_id = terrenoData.t_id;
         props.update(json);
         props.onClose();
         console.log("Dataaaaa", result);

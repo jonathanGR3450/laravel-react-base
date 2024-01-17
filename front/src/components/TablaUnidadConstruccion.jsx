@@ -71,7 +71,7 @@ const TablaUnidadConstruccion = (props) => {
                   name={index}
                   className="py-2 px-4 text-center rounded-md text-white bg-orange-700"
                 >
-                  Cambiar Unidad de Construcion
+                  Modificar Unidad de Construcion
                 </button>
               </td>
               {/* Agrega más celdas según tus necesidades */}
@@ -89,9 +89,12 @@ const TablaUnidadConstruccion = (props) => {
 };
 const ModalUnidadConstrucion = React.forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  let id = 0;
+
+  const [id, setId] = useState(0);
+
   const openModal = (data) => {
-    id = data;
+    setId(data);
+    console.log("123", id);
     setIsModalOpen(true);
   };
 

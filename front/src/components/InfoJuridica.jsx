@@ -44,6 +44,7 @@ const InfoJuridica = () => {
   const [fechaDocumentoFuente, setFechaDocumentoFuente] = useState(
     fecha_documento_fuente
   );
+
   /////
   const derechoRef = useRef();
   const fuenteAdministrativaRef = useRef();

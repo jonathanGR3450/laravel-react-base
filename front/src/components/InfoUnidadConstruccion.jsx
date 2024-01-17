@@ -28,7 +28,7 @@ const InfoUnidadConstruccion = () => {
           onClick={editToggle}
           className="p-2 text-center rounded-md text-white bg-orange-700"
         >
-          Editar
+          Agregar Unidad de Construccion
         </button>
         <NormalUniConForm data={Predio ? Predio[0] : {}} ref={uniConstRef} />
       </div>

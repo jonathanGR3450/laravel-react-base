@@ -33,7 +33,6 @@ const UniConstruccionForm = (props, ref) => {
     ({ tableData: contextTableData, updateTableData: contextUpdateTableData } =
       useContext(TableContext));
   }
-
   //Cuantas Unidades Se Crean
   const [numUnidad, setNumUnidad] = useState();
   //Componentes Unidad
@@ -193,7 +192,7 @@ function soloNumeros(event) {
 }
 
 export const CreateUnidad = (props) => {
-  console.log("create props", props);
+  console.log("create props1 ", props);
   const { updateNumPredial } = useInfo();
   let [estMsj, setEstMsj] = useState();
   let aux = "";
@@ -219,15 +218,17 @@ export const CreateUnidad = (props) => {
     let data = dataNoNull[props.id];
     console.log("datos no null unidad", data);
     aux = {
-      identificador: data.identificador,
+      t_id: data.t_id,
+      identificador: data.lc_caracteristicasunidadconstruccion.identificador,
       planta_ubicacion: "",
       altura: "",
       area_construida: data.area_construida,
       etiqueta: "",
-      construccion: "",
+      construccion: data.lc_construccion.t_id,
       caracteristicas: "",
       lc_caracteristicasunidadconstruccion: "",
     };
+    console.log("aux ", aux);
   }
 
   const [dataUnidad, setDataUnidad] = useState(aux);

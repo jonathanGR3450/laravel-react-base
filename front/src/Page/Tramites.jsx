@@ -12,8 +12,8 @@ import Observaciones from "./Observaciones";
 var a = 0;
 const TramitesForm = () => {
   //const { dataDesenglobe } = useAvaluo();
-  let dataDesenglobe = JsonDesenglobe;
-  console.log("Data Desenglobe OBJ", dataDesenglobe);
+  //let dataDesenglobe = JsonDesenglobe;
+  //console.log("Data Desenglobe OBJ", dataDesenglobe);
   //console.log("Data Desenglobe OBJ", JSON.stringify(dataDesenglobe));
   const navigate = useNavigate();
   const [estEstado, setEstEstado] = useState(false);
@@ -48,10 +48,10 @@ const TramitesForm = () => {
   var ab;
   const [tramitesU, setTramitesU] = useState(tramites);
   console.log("data tramite", tramitesU);
+
   async function tramitesGet(data) {
     console.log("Consultando ...");
 
-    setTimeout("alert('Consultando Informacion de tramites ...');", 1);
     console.log("antes de");
     const promise = fetch("http://localhost/api/v1/tramite-radicado", {
       //  const promise =  fetch("http://localhost:81/FusaCatastro/codigosHomologados/php/tramite.php?fnpn=12340", {
@@ -87,7 +87,6 @@ const TramitesForm = () => {
   async function predioGet(data) {
     console.log("Consultando ...");
 
-    setTimeout("alert('Consultando Informacion del predio ...');", 1);
     try {
       const response = await fetch(
         "http://localhost/api/v1/predio?numero_predial=" + npn,
@@ -106,7 +105,6 @@ const TramitesForm = () => {
       console.log("SuccessNpn:", result);
       return result;
     } catch (error) {
-      setTimeout("alert('Error de red');", 1);
       console.error("ErrorNpn:", error);
     }
   }
