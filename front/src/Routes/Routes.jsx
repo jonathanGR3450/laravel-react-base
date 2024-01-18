@@ -81,7 +81,7 @@ const Ruta = () => {
           <Route path="/Avaluo" element={<ProtectedRoute element={AvaluoForm} />}></Route>
           <Route path="/Incremento" element={<ProtectedRoute element={IncrementoForm} />}></Route>
         <Route path="/Login" element={<LoginForm />}></Route>
-        <Route path="/Registrar" element={<RegistrarForm />}></Route>
+        <Route path="/Registrar" element={<ProtectedRoute element={RegistrarForm} />}></Route>
         
           <Route path="/Resolucion" element={<Resolucion />}></Route>
           <Route path="/Resoluciones" element={<Resoluciones />}></Route>

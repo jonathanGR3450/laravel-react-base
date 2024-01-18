@@ -34,9 +34,11 @@ const LoginForm = () => {
         const result = await response.json();
         console.log("Success:", result);
         console.log("Success:", result.authorization.token);
+        console.log("Rol:", result.roles[0]);
         const today = new Date();
         cookies.set('tk', result.authorization.token, { path: '/',sameSite:"lax" });
         cookies.set('loginDate', today);
+        cookies.set('rol', result.roles[0]);
         console.log("Fecha Inicio de Sesion: ");
         console.log(today);
         console.log("Token Log Cookie:", cookies.get('tk'));
