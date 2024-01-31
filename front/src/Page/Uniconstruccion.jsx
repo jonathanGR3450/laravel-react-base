@@ -226,7 +226,8 @@ export const CreateUnidad = (props) => {
       etiqueta: "",
       construccion: data.lc_construccion.t_id,
       caracteristicas: "",
-      lc_caracteristicasunidadconstruccion: "",
+      lc_caracteristicasunidadconstruccion:
+        data.lc_caracteristicasunidadconstruccion.t_id,
     };
     console.log("aux ", aux);
   }
